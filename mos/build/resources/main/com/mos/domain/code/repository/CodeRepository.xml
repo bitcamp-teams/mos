@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mos.domain.code.repository.CodeRepository">
+
+<!--    <resultMap id="CodeMap" type="Code">-->
+<!--        <id column="code_group" property="codeGroup"/>-->
+<!--        <result column="code_name" property="codeName"/>-->
+<!--        <result column="code" property="code"/>-->
+<!--        <result column="code_name" property="codeName"/>-->
+<!--        <result column="create_date" property="createDate"/>-->
+<!--        <result column="update_date" property="updateDate"/>-->
+
+<!--        <collection property="codeGroups" ofType="CodeGroup">-->
+<!--            <id column="code_group" property="codeGroup"/>-->
+<!--            <result column="code_group_name" property="codeGroupName"/>-->
+<!--            <result column="module_code" property="moduleCode"/>-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+
+    <insert id="add" parameterType="Code">
+        insert into common_code(code_group, code, code_name)
+        values (#{codeGroup.codeGroup}, #{code}, #{codeName})
+    </insert>
+
+    <insert id="addCodeGroup" parameterType="CodeGroup">
+        insert into common_code_group(code_group, code_group_name, module_code)
+        values (#{codeGroup}, #{codeGroupName}, #{moduleCode})
+    </insert>
+
+<!--    <delete id="delete" parameterType="int">-->
+<!--        delete from assignments where assignment_no=#{value}-->
+<!--    </delete>-->
+
+    <select id="findAllGroup" resultType="CodeGroup">
+        select
+            code_group,
+            code_group_name,
+            module_code,
+            create_date,
+            update_date
+        from
+            common_code_group
+<!--        limit #{rowCount} offset #{offset}-->
+    </select>
+
+    <select id="findAllCode" resultType="Code">
+        select
+            code_group,
+            code,
+            code_name,
+            create_date,
+            update_date
+        from
+            common_code
+        <!--        limit #{rowCount} offset #{offset}-->
+    </select>
+
+<!--    <select id="findBy" resultMap="AssignmentMap" parameterType="int">-->
+<!--        select-->
+<!--            assignment_no,-->
+<!--            title,-->
+<!--            deadline,-->
+<!--            content-->
+<!--        from-->
+<!--            assignments-->
+<!--        where assignment_no = #{value}-->
+<!--    </select>-->
+
+<!--    <update id="update" parameterType="Assignment">-->
+<!--        update assignments set-->
+<!--            title=#{title},-->
+<!--            content=#{content},-->
+<!--            deadline=#{deadline}-->
+<!--        where assignment_no = #{no}-->
+<!--    </update>-->
+
+<!--    <select id="countAll" resultType="int">-->
+<!--        select count(*) from assignments-->
+<!--    </select>-->
+
+</mapper>
