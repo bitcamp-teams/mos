@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>모두의스터디</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .choose_login {
+      margin-top: 5%;
+      margin-bottom: 5%;
+      background-color: #DBEAFE;
+      margin-left: 30%;
+      margin-right: 30%;
+      padding-top: 5%;
+      padding-bottom: 5%;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 300px;
+    }
+
+    .login-option {
+      text-align: center;
+      margin: 0 40px; /* 각 로그인 옵션 사이의 간격을 조정할 수 있습니다. */
+    }
+  </style>
+</head>
+<body>
+
+<div data-th-replace="header::header">머리말</div>
+
+<div class="choose_login" style="text-align:center;">
+  <img src="/img/logo_text.png">
+  <div class="container">
+    <div class="login-option">
+      <img src="/img/github_logo.png">
+      <p>Github 로그인</p>
+    </div>
+    <div class="login-option">
+      <a href="https://kauth.kakao.com/oauth/authorize">
+        <img src="/img/kakao_logo.png">
+        <p>Kakao 로그인</p>
+      </a>
+    </div>
+    <div class="login-option">
+      <img src="/img/google_logo.png">
+      <p>Google 로그인</p>
+    </div>
+  </div>
+</div>
+
+<div data-th-replace="footer::footer">꼬리말</div>
+
+</body>
+</html>
