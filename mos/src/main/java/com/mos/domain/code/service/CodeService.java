@@ -1,22 +1,23 @@
 package com.mos.domain.code.service;
 
-import com.mos.domain.code.dto.Code;
-import com.mos.domain.code.dto.CodeGroup;
-import org.springframework.stereotype.Service;
+import com.mos.domain.code.dto.CodeDto;
+import com.mos.domain.code.dto.CodeGroupDto;
+import com.mos.domain.code.entity.Code;
+import com.mos.domain.code.entity.CodeGroup;
 
 import java.util.List;
 
 public interface CodeService {
-  void add(Code code);
+  void add(CodeDto codeDto);
 
-  void addCodeGroup(CodeGroup codeGroup);
+  void addCodeGroup(CodeGroupDto codeGroupDto);
 
-  List<CodeGroup> listGroup();
-  List<Code> list();
+  List<CodeGroupDto> listGroup();
+  List<CodeDto> list();
 
-  Code get(int no);
+  CodeDto get(int no);
 
-  int update(Code code);
+  int update(CodeDto code);
 
   int delete(int no);
 
