@@ -1,7 +1,9 @@
 package com.mos.domain.code.controller;
 
-import com.mos.domain.code.dto.Code;
-import com.mos.domain.code.dto.CodeGroup;
+import com.mos.domain.code.dto.CodeDto;
+import com.mos.domain.code.dto.CodeGroupDto;
+import com.mos.domain.code.entity.Code;
+import com.mos.domain.code.entity.CodeGroup;
 import com.mos.domain.code.service.CodeService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
@@ -12,13 +14,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/code")
+@RequestMapping("/admin/code")
 public class CodeController {
   private static final Log log = LogFactory.getLog(CodeController.class);
 
@@ -26,29 +27,29 @@ public class CodeController {
 
 
   @PostMapping("add")
-  public void add(Code code) throws Exception {
-    codeService.add(code);
+  public void add(CodeDto codeDto) throws Exception {
+    codeService.add(codeDto);
 
   }
 
   @PostMapping("add/group")
-  public void addCodeGroup(CodeGroup codeGroup) throws Exception {
-    codeService.addCodeGroup(codeGroup);
+  public void addCodeGroup(CodeGroupDto codeGroupDto) throws Exception {
+    codeService.addCodeGroup(codeGroupDto);
   }
 
   @GetMapping("list/group")
-  public ResponseEntity<List<CodeGroup>> listGroup() {
-    List<CodeGroup> codeGroups = codeService.listGroup();
+  public ResponseEntity<List<CodeGroupDto>> listGroup() {
+    List<CodeGroupDto> codeGroups = codeService.listGroup();
     HttpHeaders headers= new HttpHeaders();
     headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-
     return new ResponseEntity<>(codeGroups, headers, HttpStatus.OK);
   }
 
   @GetMapping("list")
-  public ResponseEntity<List<Code>> list() {
+  public ResponseEntity<List<CodeDto>> list() {
     HttpHeaders headers= new HttpHeaders();
     headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-    return new ResponseEntity<>(codeService.list(), headers, HttpStatus.OK);
+    List<CodeDto> list = codeService.list();
+    return new ResponseEntity<>(list, headers, HttpStatus.OK);
   }
 }

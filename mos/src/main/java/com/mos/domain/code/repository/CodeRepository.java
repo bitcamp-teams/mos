@@ -1,9 +1,10 @@
 package com.mos.domain.code.repository;
 
-import com.mos.domain.code.dto.Code;
-import com.mos.domain.code.dto.CodeGroup;
+import com.mos.domain.code.dto.CodeDto;
+import com.mos.domain.code.dto.CodeGroupDto;
+import com.mos.domain.code.entity.Code;
+import com.mos.domain.code.entity.CodeGroup;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
