@@ -17,7 +17,7 @@
       <p>Github 로그인</p>
     </div>
     <div class="login-option">
-      <a href="https://kauth.kakao.com/oauth/authorize">
+      <a data-th-href="@{${kakaoUrl}}" >
         <img src="/img/kakao_logo.png">
         <p>Kakao 로그인</p>
       </a>
@@ -32,4 +32,8 @@
 <div data-th-replace="footer::footer">꼬리말</div>
 
 </body>
+<script>
+  debugger
+  const url = '[[ ${kakaoUrl} ]]'
+</script>
 </html>
