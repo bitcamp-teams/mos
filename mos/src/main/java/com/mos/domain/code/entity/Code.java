@@ -1,6 +1,7 @@
 package com.mos.domain.code.entity;
 
-import com.mos.domain.code.dto.CodeDto;
+import com.mos.domain.code.dto.CodeRequestDto;
+import com.mos.domain.code.dto.CodeResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,8 +21,8 @@ public class Code {
   Date createDate;
   Date updateDate;
 
-  public CodeDto toDto() {
-    return CodeDto.builder()
+  public CodeResponseDto toDto() {
+    return CodeResponseDto.builder()
         .codeGroup(group)
         .code(code)
         .codeName(codeName)

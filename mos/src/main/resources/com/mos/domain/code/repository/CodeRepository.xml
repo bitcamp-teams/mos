@@ -32,7 +32,7 @@
 <!--        delete from assignments where assignment_no=#{value}-->
 <!--    </delete>-->
 
-    <select id="findAllGroup" resultType="CodeGroup">
+    <select id="findAllGroup" parameterType="Paging" resultType="CodeGroup">
         select
             code_group as codeGroup,
             code_group_name as codeGroupName,
@@ -41,10 +41,12 @@
             update_date as updateDate
         from
             common_code_group
-<!--        limit #{rowCount} offset #{offset}-->
+        <if test="startRow >= 0 and endRow >= 0">
+            LIMIT #{pageSize} offset #{startRow}
+        </if>
     </select>
 
-    <select id="findAllCode" resultMap="CodeMap">
+    <select id="findAllCode" parameterType="Paging" resultMap="CodeMap">
         select
             cc.code,
             cc.code_name,
@@ -58,7 +60,21 @@
         left join
             common_code_group ccg
         on ccg.code_group = cc.code_group
-        <!--        limit #{rowCount} offset #{offset}-->
+        <if test="startRow >= 0 and endRow >= 0">
+            LIMIT #{pageSize} offset #{startRow}
+        </if>
+    </select>
+
+    <select id="countAll" resultType="int">
+        select
+            count(*)
+        from common_code
+    </select>
+
+    <select id="countAllGroup" resultType="int">
+        select
+        count(*)
+        from common_code_group
     </select>
 
 <!--    <select id="findBy" resultMap="AssignmentMap" parameterType="int">-->
