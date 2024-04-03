@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mos.domain.study.repository.StudyRepository">
+  <resultMap id="StudyDtoMap" type="StudyDto">
+    <result column="study_no" property="studyNo"/>
+    <result column="member_no" property="memberNo"/>
+    <result column="title" property="title"/>
+    <result column="intake" property="intake"/>
+    <result column="method" property="method"/>
+    <result column="recruitment_deadline" property="recruitmentDeadline"/>
+  </resultMap>
+
+  <select id="findAll" resultMap="StudyDtoMap">
+    SELECT
+      study_no,
+      member_no,
+      title,
+      intake,
+      method,
+      recruitment_deadline
+    FROM
+      study
+  </select>
+
+</mapper>

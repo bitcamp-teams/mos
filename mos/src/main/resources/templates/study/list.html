@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>모두의스터디</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header id="header">
+  <a href="/">
+    <img src='/img/logo_text.png'>
+  </a>
+  <div>
+    <a>스터디 찾기</a>
+    <a>모집 글 쓰기</a>
+    <a>모두의 위키</a>
+    <button onclick="location.href='/auth/login';">로그인</button>
+  </div>
+</header>
+
+<div class="page-margin">
+
+  <h1>스터디 모집 목록</h1>
+  <table border='1'>
+    <thead>
+    <tr>
+      <th>번호</th>
+      <th>진햏방법</th>
+      <th>모집글 제목</th>
+      <th>스터디장</th>
+      <th>정원</th>
+      <th>마감일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-th-each="study : ${studyList}" data-th-object="${study}">
+      <td data-th-text="*{studyNo}">100</td>
+      <td data-th-text="*{method}">북스터디</td>
+      <td data-th-text="*{title}">OO스터디 모집합니다.</td>
+      <td data-th-text="*{memberNo}">10</td>
+      <td data-th-text="*{intake}">5</td>
+      <td data-th-text="*{recruitmentDeadline}">2024-03-27</td>
+    </tr>
+    </tbody>
+  </table>
+
+
+
+</div>
+</body>
+</html>
