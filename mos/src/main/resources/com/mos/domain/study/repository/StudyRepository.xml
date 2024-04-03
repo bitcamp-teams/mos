@@ -4,8 +4,8 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mos.domain.study.repository.StudyRepository">
-  <resultMap id="StudyDtoMap" type="StudyDto">
-    <result column="study_no" property="studyNo"/>
+  <resultMap id="showStudy" type="StudyDto">
+    <id column="study_no" property="studyNo"/>
     <result column="member_no" property="memberNo"/>
     <result column="title" property="title"/>
     <result column="intake" property="intake"/>
@@ -13,7 +13,7 @@
     <result column="recruitment_deadline" property="recruitmentDeadline"/>
   </resultMap>
 
-  <select id="findAll" resultMap="StudyDtoMap">
+  <select id="findAll" resultMap="showStudy">
     SELECT
       study_no,
       member_no,
@@ -24,5 +24,12 @@
     FROM
       study
   </select>
+
+  <insert id="add" parameterType="StudyDto">
+<!--  아직 유저 로그인을 구현/통합하지 않았으므로, 스터디장은 1번 유저를 대상으로 하도록 하드코딩하였음 -->
+    INSERT INTO
+      study(member_no, title, intake, recruitment_deadline, introduction)
+    VALUES(1, #{title}, #{intake}, #{recruitmentDeadline}, #{introduction})
+  </insert>
 
 </mapper>

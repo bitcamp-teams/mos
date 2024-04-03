@@ -13,6 +13,11 @@ public class DefaultStudyService implements StudyService {
   private final StudyRepository studyRepository;
 
   @Override
+  public void add(StudyDto studyDto) {
+    studyRepository.add(studyDto);
+  }
+
+  @Override
   public List<StudyDto> list() {
     return studyRepository.findAll();
   }
