@@ -6,18 +6,8 @@
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<header id="header">
-  <a href="/">
-    <img src='/img/logo_text.png'>
-  </a>
-  <div>
-    <a>스터디 찾기</a>
-    <a>모집 글 쓰기</a>
-    <a>모두의 위키</a>
-    <button onclick="location.href='/auth/login';">로그인</button>
-  </div>
-</header>
 
+<div data-th-replace="header::header">머리말</div>
 <div class="page-margin">
 
   <h1>스터디 모집 목록</h1>
@@ -25,7 +15,7 @@
     <thead>
     <tr>
       <th>번호</th>
-      <th>진햏방법</th>
+      <th>진행방법</th>
       <th>모집글 제목</th>
       <th>스터디장</th>
       <th>정원</th>
@@ -44,8 +34,7 @@
     </tbody>
   </table>
 
-
-
+  <div data-th-replace="footer::footer">꼬리말</div>
 </div>
 </body>
 </html>
