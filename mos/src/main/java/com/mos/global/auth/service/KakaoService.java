@@ -1,6 +1,6 @@
 package com.mos.global.auth.service;
 
-import com.mos.global.auth.dto.KakaoDTO;
+import com.mos.global.auth.dto.KakaoDto;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONObject;
@@ -38,7 +38,7 @@ public class KakaoService {
         + "&response_type=code";
   }
 
-  public KakaoDTO getKakaoInfo(String code) throws Exception {
+  public KakaoDto getKakaoInfo(String code) throws Exception {
     if (code == null) throw new Exception("Failed get authorization code");
 
     String accessToken = "";
@@ -77,7 +77,7 @@ public class KakaoService {
     return getUserInfoWithToken(accessToken);
   }
 
-  private KakaoDTO getUserInfoWithToken(String accessToken) throws Exception {
+  private KakaoDto getUserInfoWithToken(String accessToken) throws Exception {
     //HttpHeader 생성
     HttpHeaders headers = new HttpHeaders();
     headers.add("Authorization", "Bearer " + accessToken);
@@ -103,7 +103,7 @@ public class KakaoService {
     String email = String.valueOf(account.get("email"));
     String nickname = String.valueOf(profile.get("nickname"));
 
-    return KakaoDTO.builder()
+    return KakaoDto.builder()
         .id(id)
         .email(email)
         .nickname(nickname).build();
