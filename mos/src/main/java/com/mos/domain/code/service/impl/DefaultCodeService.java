@@ -1,11 +1,14 @@
 package com.mos.domain.code.service.impl;
 
-import com.mos.domain.code.dto.CodeDto;
-import com.mos.domain.code.dto.CodeGroupDto;
+import com.mos.domain.code.dto.CodeGroupResponseDto;
+import com.mos.domain.code.dto.CodeRequestDto;
+import com.mos.domain.code.dto.CodeGroupRequestDto;
+import com.mos.domain.code.dto.CodeResponseDto;
 import com.mos.domain.code.entity.Code;
 import com.mos.domain.code.entity.CodeGroup;
 import com.mos.domain.code.repository.CodeRepository;
 import com.mos.domain.code.service.CodeService;
+import com.mos.global.common.paging.Paging;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,35 +22,32 @@ public class DefaultCodeService implements CodeService {
   private final CodeRepository codeRepository;
 
   @Override
-  public void add(CodeDto codeDto) {
-    codeRepository.add(codeDto.toEntity());
+  public void add(CodeRequestDto codeRequestDto) {
+    codeRepository.add(codeRequestDto.toEntity());
   }
 
   @Override
-  public void addCodeGroup(CodeGroupDto codeGroupDto) {
-    codeRepository.addCodeGroup(codeGroupDto.toEntity());
+  public void addCodeGroup(CodeGroupRequestDto codeGroupRequestDto) {
+    codeRepository.addCodeGroup(codeGroupRequestDto.toEntity());
   }
 
   @Override
-  public List<CodeGroupDto> listGroup() {
-    return codeRepository.findAllGroup().stream().map(CodeGroup::toDto).collect(Collectors.toList());
+  public List<CodeGroupResponseDto> listGroup(Paging paging) {
+    return codeRepository.findAllGroup(paging).stream().map(CodeGroup::toDto).collect(Collectors.toList());
   }
 
   @Override
-  public List<CodeDto> list() {
-    List<Code> allCode = codeRepository.findAllCode();
-    List<CodeDto> collect =
-        allCode.stream().map(Code::toDto).collect(Collectors.toList());
-    return collect;
+  public List<CodeResponseDto> list(Paging paging) {
+    return codeRepository.findAllCode(paging).stream().map(Code::toDto).collect(Collectors.toList());
   }
 
   @Override
-  public CodeDto get(int no) {
+  public CodeResponseDto get(int no) {
     return null;
   }
 
   @Override
-  public int update(CodeDto codeDto) {
+  public int update(CodeRequestDto codeRequestDto) {
     return 0;
   }
 
@@ -58,6 +58,11 @@ public class DefaultCodeService implements CodeService {
 
   @Override
   public int countAll() {
-    return 0;
+    return codeRepository.countAll();
+  }
+
+  @Override
+  public int countAllGroup() {
+    return codeRepository.countAllGroup();
   }
 }

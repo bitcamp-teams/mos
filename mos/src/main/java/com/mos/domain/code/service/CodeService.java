@@ -1,26 +1,28 @@
 package com.mos.domain.code.service;
 
-import com.mos.domain.code.dto.CodeDto;
-import com.mos.domain.code.dto.CodeGroupDto;
-import com.mos.domain.code.entity.Code;
-import com.mos.domain.code.entity.CodeGroup;
+import com.mos.domain.code.dto.CodeGroupResponseDto;
+import com.mos.domain.code.dto.CodeRequestDto;
+import com.mos.domain.code.dto.CodeGroupRequestDto;
+import com.mos.domain.code.dto.CodeResponseDto;
+import com.mos.global.common.paging.Paging;
 
 import java.util.List;
 
 public interface CodeService {
-  void add(CodeDto codeDto);
+  void add(CodeRequestDto codeRequestDto);
 
-  void addCodeGroup(CodeGroupDto codeGroupDto);
+  void addCodeGroup(CodeGroupRequestDto codeGroupRequestDto);
 
-  List<CodeGroupDto> listGroup();
-  List<CodeDto> list();
+  List<CodeGroupResponseDto> listGroup(Paging paging);
+  List<CodeResponseDto> list(Paging paging);
 
-  CodeDto get(int no);
+  CodeResponseDto get(int no);
 
-  int update(CodeDto code);
+  int update(CodeRequestDto code);
 
   int delete(int no);
 
   int countAll();
 
+  int countAllGroup();
 }
