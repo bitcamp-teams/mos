@@ -1,4 +1,4 @@
-package com.mos.domain.auth.controller;
+package com.mos.global.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @CrossOrigin("*")
 @RequestMapping("/auth")
-public class AuthController {
+public class OAuthController {
 
-  private static final Log log = LogFactory.getLog(AuthController.class);
+  private static final Log log = LogFactory.getLog(OAuthController.class);
 
-  @GetMapping("form")
-  public void form() {
+  @GetMapping("login")
+  public void login() {
 
   }
 
