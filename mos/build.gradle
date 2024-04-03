@@ -41,6 +41,11 @@ dependencies {
     // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
+    //OAuth 관련 라이브러리
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+
 }
 
 tasks.named('bootBuildImage') {
