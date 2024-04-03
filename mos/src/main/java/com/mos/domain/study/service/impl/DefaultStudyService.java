@@ -18,6 +18,10 @@ public class DefaultStudyService implements StudyService {
   }
 
   @Override
+  public StudyDto getByStudyNo(int studyNo) {
+    return studyRepository.getByStudyNo(studyNo);
+  }
+  @Override
   public List<StudyDto> list() {
     return studyRepository.findAll();
   }

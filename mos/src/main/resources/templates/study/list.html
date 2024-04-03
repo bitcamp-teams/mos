@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <html lang='en'>
 <head>
   <meta charset='UTF-8'>
@@ -24,7 +25,7 @@
     <tr data-th-each="study : ${studyList}" data-th-object="${study}">
       <td data-th-text="*{studyNo}">100</td>
       <td data-th-text="*{method}">북스터디</td>
-      <td data-th-text="*{title}">OO스터디 모집합니다.</td>
+      <td><a data-th-href="@{view(studyNo=*{studyNo})}" data-th-text="*{title}">OO스터디 모집합니다.</a></td>
       <td data-th-text="*{memberNo}">10</td>
       <td data-th-text="*{intake}">5</td>
       <td data-th-text="*{recruitmentDeadline}">2024-03-27</td>

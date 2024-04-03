@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mos.domain.study.repository.StudyRepository">
-  <resultMap id="showStudy" type="StudyDto">
+  <resultMap id="studyList" type="StudyDto">
     <id column="study_no" property="studyNo"/>
     <result column="member_no" property="memberNo"/>
     <result column="title" property="title"/>
@@ -13,7 +13,18 @@
     <result column="recruitment_deadline" property="recruitmentDeadline"/>
   </resultMap>
 
-  <select id="findAll" resultMap="showStudy">
+  <resultMap id="studyDetail" type="studyDto">
+    <id column="study_no" property="studyNo"/>
+    <result column="member_no" property="memberNo"/>
+    <result column="title" property="title"/>
+    <result column="method" property="method"/>
+    <result column="intake" property="intake"/>
+    <result column="recruitment_deadline" property="recruitmentDeadline"/>
+    <result column="end_date" property="endDate"/>
+    <result column="introduction" property="introduction"/>
+  </resultMap>
+
+  <select id="findAll" resultMap="studyList">
     SELECT
       study_no,
       member_no,
@@ -25,6 +36,22 @@
       study
     ORDER BY
       study_no DESC
+  </select>
+
+  <select id="getByStudyNo" resultMap="studyDetail">
+    SELECT
+      study_no,
+      member_no,
+      title,
+      method,
+      intake,
+      recruitment_deadline,
+		  end_date,
+		  introduction
+    FROM
+		  study
+	  WHERE
+		  study_no=#{studyNo};
   </select>
 
   <insert id="add" parameterType="StudyDto">

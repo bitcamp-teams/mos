@@ -32,6 +32,15 @@ public class StudyController {
     return "redirect:list";
   }
 
+  @GetMapping("view")
+  public void view(int studyNo, Model model) throws Exception {
+    StudyDto studyDto = studyService.getByStudyNo(studyNo);
+    if(studyDto==null) {
+      throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
+    }
+    model.addAttribute("study", studyDto);
+  }
+
 
   @GetMapping("list")
   public void list(Model model) {

@@ -11,4 +11,6 @@ public interface StudyRepository {
 
   List<StudyDto> findAll();
 
+  StudyDto getByStudyNo(int studyNo);
+
 }
