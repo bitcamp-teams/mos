@@ -35,17 +35,6 @@ public class OAuthController {
     return "auth/login";
   }
 
-  /* 카카오 REST API 사용자 정보 가져오기 테스트
-  @GetMapping("/kakao/callback")
-  public ResponseEntity<MsgEntity> callback(HttpServletRequest request) throws Exception {
-     KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
-     System.out.println("이메일: " + kakaoInfo.getEmail());
-     System.out.println("닉네임: " + kakaoInfo.getNickname());
-
-    return ResponseEntity.ok()
-        .body(new MsgEntity("Success", kakaoInfo));
-  }
-  */
 
   @GetMapping("/kakao/callback")
   public String callback(HttpServletRequest request) throws Exception {
