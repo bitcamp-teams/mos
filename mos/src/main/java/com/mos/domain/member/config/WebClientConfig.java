@@ -1,4 +1,4 @@
-package com.mos.domain.githuboauth.config;
+package com.mos.domain.member.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

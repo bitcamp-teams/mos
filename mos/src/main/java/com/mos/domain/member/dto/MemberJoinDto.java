@@ -1,6 +1,4 @@
-package com.mos.domain.githuboauth.vo;
-
-import lombok.Data;
+package com.mos.domain.member.dto;
 
 public class MemberJoinDto {
     private String email;
