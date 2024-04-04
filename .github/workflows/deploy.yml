@@ -80,7 +80,7 @@ jobs:
         if: contains(github.ref, 'main')
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile-dev -t ${{ secrets.DOCKER_USERNAME }}/docker-test-prod .
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/docker-test-prod .
           docker push ${{ secrets.DOCKER_USERNAME }}/docker-test-prod
 
       # docker build & push to develop
@@ -88,7 +88,7 @@ jobs:
         if: contains(github.ref, 'develop')
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile-dev -t ${{ secrets.DOCKER_USERNAME }}/docker-test-dev .
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/docker-test-dev .
           docker push ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
 
       ## deploy to production
