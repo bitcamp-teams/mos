@@ -21,7 +21,7 @@ public class MBMemberService  {
         return memberDao.add(joinDto);
     }
 
-    public boolean validateDuplicateUserEmail(String email) {
-        return email.equals(memberDao.validateEmail(email));
+    public boolean existsByEmail(String email) {
+        return email.equals(memberDao.existsByEmail(email));
     }
 }

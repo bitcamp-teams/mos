@@ -25,7 +25,7 @@
     values(#{email},#{name},#{belong},#{career},#{jobGroup})
   </insert>
 
-  <select id="validateEmail" parameterType="String">
+  <select id="existsByEmail" parameterType="boolean">
     select email from member where email=#{email};
   </select>
 

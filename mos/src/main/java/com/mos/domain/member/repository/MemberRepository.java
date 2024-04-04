@@ -16,6 +16,5 @@ public interface MemberRepository {
     MemberDto findByNo(int no);
     MemberDto findByUsername(String username);
 
-
-    String validateEmail(String email);
+    boolean existsByEmail(String email);
 }
