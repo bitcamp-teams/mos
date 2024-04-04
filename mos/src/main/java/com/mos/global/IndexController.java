@@ -1,16 +1,17 @@
 package com.mos.global;
 
+import com.mos.domain.code.controller.CodeApiController;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
+  private static final Log log = LogFactory.getLog(CodeApiController.class);
 
 
   @GetMapping("/admin")
