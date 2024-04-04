@@ -13,4 +13,6 @@ public interface StudyRepository {
 
   StudyDto getByStudyNo(int studyNo);
 
+  void delete(int studyNo);
+
 }
