@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>모두의스터디</title>
+  <link rel="stylesheet" href="/css/auth/styles.css">
+</head>
+<body>
+
+<div data-th-replace="header::header">머리말</div>
+
+<div class="choose_login">
+  <a href="https://github.com/login/oauth/authorize?client_id=Iv1.3954010d06ea3b68&scope=user:email"/>
+  <img src="/img/logo_text.png">
+  <div class="container">
+    <div class="login-option">
+      <img src="/img/github_logo.png">
+      <p>Github 로그인</p>
+    </div>
+    <div class="login-option">
+      <a data-th-href="@{${kakaoUrl}}">
+        <img src="/img/kakao_logo.png">
+        <p>Kakao 로그인</p>
+      </a>
+    </div>
+    <div class="login-option">
+      <img src="/img/google_logo.png">
+      <p>Google 로그인</p>
+    </div>
+  </div>
+</div>
+
+<div data-th-replace="footer::footer">꼬리말</div>
+
+</body>
+
+</html>

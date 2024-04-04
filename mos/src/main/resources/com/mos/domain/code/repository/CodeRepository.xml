@@ -5,20 +5,18 @@
 
 <mapper namespace="com.mos.domain.code.repository.CodeRepository">
 
-<!--    <resultMap id="CodeMap" type="Code">-->
-<!--        <id column="code_group" property="codeGroup"/>-->
-<!--        <result column="code_name" property="codeName"/>-->
-<!--        <result column="code" property="code"/>-->
-<!--        <result column="code_name" property="codeName"/>-->
-<!--        <result column="create_date" property="createDate"/>-->
-<!--        <result column="update_date" property="updateDate"/>-->
+    <resultMap id="CodeMap" type="Code">
+        <id column="code" property="code"/>
+        <result column="code_name" property="codeName"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
 
-<!--        <collection property="codeGroups" ofType="CodeGroup">-->
-<!--            <id column="code_group" property="codeGroup"/>-->
-<!--            <result column="code_group_name" property="codeGroupName"/>-->
-<!--            <result column="module_code" property="moduleCode"/>-->
-<!--        </collection>-->
-<!--    </resultMap>-->
+        <association property="group" javaType="CodeGroup">
+            <id column="code_group" property="codeGroup"/>
+            <result column="code_group_name" property="codeGroupName"/>
+            <result column="module_code" property="moduleCode"/>
+        </association>
+    </resultMap>
 
     <insert id="add" parameterType="Code">
         insert into common_code(code_group, code, code_name)
@@ -34,28 +32,49 @@
 <!--        delete from assignments where assignment_no=#{value}-->
 <!--    </delete>-->
 
-    <select id="findAllGroup" resultType="CodeGroup">
+    <select id="findAllGroup" parameterType="Paging" resultType="CodeGroup">
         select
-            code_group,
-            code_group_name,
-            module_code,
-            create_date,
-            update_date
+            code_group as codeGroup,
+            code_group_name as codeGroupName,
+            module_code as moduleCode,
+            create_date as createDate,
+            update_date as updateDate
         from
             common_code_group
-<!--        limit #{rowCount} offset #{offset}-->
+        <if test="startRow >= 0 and endRow >= 0">
+            LIMIT #{pageSize} offset #{startRow}
+        </if>
     </select>
 
-    <select id="findAllCode" resultType="Code">
+    <select id="findAllCode" parameterType="Paging" resultMap="CodeMap">
         select
-            code_group,
-            code,
-            code_name,
-            create_date,
-            update_date
+            cc.code,
+            cc.code_name,
+            cc.create_date,
+            cc.update_date,
+            ccg.code_group,
+            ccg.module_code,
+            ccg.code_group_name
         from
-            common_code
-        <!--        limit #{rowCount} offset #{offset}-->
+            common_code cc
+        left join
+            common_code_group ccg
+        on ccg.code_group = cc.code_group
+        <if test="startRow >= 0 and endRow >= 0">
+            LIMIT #{pageSize} offset #{startRow}
+        </if>
+    </select>
+
+    <select id="countAll" resultType="int">
+        select
+            count(*)
+        from common_code
+    </select>
+
+    <select id="countAllGroup" resultType="int">
+        select
+        count(*)
+        from common_code_group
     </select>
 
 <!--    <select id="findBy" resultMap="AssignmentMap" parameterType="int">-->

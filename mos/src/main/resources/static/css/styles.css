@@ -1,0 +1,17 @@
+#header {
+  background-color: #DBEAFE;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#footer {
+  background-color:#DBEAFE;
+  padding:50px;
+  text-align:center;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+}

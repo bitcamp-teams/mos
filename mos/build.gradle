@@ -26,6 +26,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.2'
+    // Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
     // AWS S3 API 라이브러리
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.688'
     compileOnly 'org.projectlombok:lombok'
@@ -35,6 +37,14 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    //OAuth 관련 라이브러리
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
 
 }
 
@@ -52,6 +62,9 @@ java {
     }
 }
 
+jar {
+    enabled = false
+}
 // 자바 소스를 컴파일 할 때 적용할 옵션(Gradle 로 컴파일 할 때)
 tasks.withType(JavaCompile).configureEach {
     // 프로젝트의 소스 파일 인코딩을 gradle에게 알려준다.
