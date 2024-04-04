@@ -20,6 +20,14 @@
     select email from member where email=#{email};
   </select>
 
+  <insert id="add" parameterType="MemberJoinDto">
+    insert into member(email, username, belong, career, job_group)
+    values(#{email},#{name},#{belong},#{career},#{jobGroup})
+  </insert>
+
+  <select id="validateEmail" parameterType="String">
+    select email from member where email=#{email};
+  </select>
 
   <select id="findByNo" resultMap="MemberMap" parameterType="int">
     select

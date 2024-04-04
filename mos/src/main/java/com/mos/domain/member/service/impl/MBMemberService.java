@@ -17,8 +17,11 @@ public class MBMemberService  {
         this.memberDao = memberDao;
     }
 
-    public int add(MemberJoinDto joinDto) {
+    public int join(MemberJoinDto joinDto) {
         return memberDao.add(joinDto);
     }
 
+    public boolean validateDuplicateUserEmail(String email) {
+        return email.equals(memberDao.validateEmail(email));
+    }
 }

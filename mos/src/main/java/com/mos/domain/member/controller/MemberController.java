@@ -38,7 +38,7 @@ public class MemberController {
 
   @PostMapping("add")
   public String add(MemberJoinDto joinDto) {
-    mbMemberService.add(joinDto);
+    mbMemberService.join(joinDto);
     return "redirect:/";
   }
 
