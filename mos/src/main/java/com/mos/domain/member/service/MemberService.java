@@ -6,6 +6,10 @@ public interface MemberService {
 
   MemberDto get(String email);
 
-//  int add(MemberJoinDto joinDto);
+
+
+   MemberDto getNo(int no);
+
+    MemberDto getUsername(String username);
 
 }

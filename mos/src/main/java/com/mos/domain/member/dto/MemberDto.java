@@ -17,9 +17,11 @@ public class MemberDto {
   private String status;
   private int score;
   private String biography;
+  private String photo;
   private String belong;
   private String jogGroup;
   private String socialLink;
   private String filePath;
   private String location;
+
 }
