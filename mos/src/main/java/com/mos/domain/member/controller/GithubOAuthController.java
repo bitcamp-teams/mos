@@ -24,7 +24,7 @@ public class GithubOAuthController {
 
     if (emailOpt.isPresent()) {
       joinDto.setEmail(emailOpt.get());
-      if (memberService.validateDuplicateUserEmail(joinDto.getEmail())) {
+      if (memberService.existsByEmail(joinDto.getEmail())) {
         return "redirect:/";
       }
       model.addAttribute("joinDto", joinDto);
