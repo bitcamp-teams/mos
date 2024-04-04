@@ -61,4 +61,12 @@
     VALUES(1, #{method}, #{title}, #{intake}, #{recruitmentDeadline}, #{introduction})
   </insert>
 
+  <delete id="delete" parameterType="int">
+    DELETE
+      FROM
+        study
+    WHERE
+      study_no = #{studyNo}
+  </delete>
+
 </mapper>
