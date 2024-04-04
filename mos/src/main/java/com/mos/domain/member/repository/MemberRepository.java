@@ -17,4 +17,5 @@ public interface MemberRepository {
     MemberDto findByUsername(String username);
 
 
+    String validateEmail(String email);
 }

@@ -14,19 +14,19 @@
 
 <form action="/member/add" data-th-action="@{/member/add}" enctype='multipart/form-data' method='post'>
   <div>
-    email: <input data-th-value='${email}' name='email' type='text' >
+    email: <input data-th-value='${joinDto.email}' name='email' type='text' >
   </div>
   <div>
-    이름: <input name='name' type='text'>
+    이름: <input name='name' type='text' data-th-text='${joinDto.name}'>
   </div>
   <div>
-    belong: <input name='belong' type='text'>
+    belong: <input name='belong' type='text' data-th-text='${joinDto.belong}'>
   </div>
   <div>
-    career: <input name='career' type='text'>
+    career: <input name='career' type='text' data-th-text='${joinDto.career}'>
   </div>
   <div>
-    jobGroup: <input name='jobGroup' type='text'>
+    jobGroup: <input name='jobGroup' type='text' data-th-text='${joinDto.jobGroup}'>
   </div>
   <div>
     <button>등록</button>
