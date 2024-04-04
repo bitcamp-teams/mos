@@ -5,5 +5,7 @@ import com.mos.domain.member.dto.MemberDto;
 public interface MemberService {
 
   MemberDto get(String email);
+
   MemberDto getName(String username);
+
 }

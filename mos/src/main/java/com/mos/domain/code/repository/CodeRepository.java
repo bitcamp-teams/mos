@@ -1,9 +1,8 @@
 package com.mos.domain.code.repository;
 
-import com.mos.domain.code.dto.CodeDto;
-import com.mos.domain.code.dto.CodeGroupDto;
 import com.mos.domain.code.entity.Code;
 import com.mos.domain.code.entity.CodeGroup;
+import com.mos.global.common.paging.Paging;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,12 +15,14 @@ public interface CodeRepository {
 
   int delete(int no);
 
-  List<CodeGroup> findAllGroup();
-  List<Code> findAllCode();
+  List<CodeGroup> findAllGroup(Paging paging);
+  List<Code> findAllCode(Paging paging);
 
   Code findBy(int no);
 
   int update(Code code);
 
   int countAll();
+
+  int countAllGroup();
 }

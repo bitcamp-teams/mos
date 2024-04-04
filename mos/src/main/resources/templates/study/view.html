@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>모두의스터디</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page-margin">
+  <div data-th-replace="header::header">머리말</div>
+
+  <div th:object="${study}">
+
+
+  <h1 th:text="*{title}"></h1>
+
+    <p> 스터디장 =  <span th:text="*{memberNo}"> </span> </p>
+    <p> 진행방식 =  <span th:text="*{method}"> </span> </p>
+    <p> 모집정원 =  <span th:text="*{intake}"> </span> </p>
+    <p> 모집마감 =  <span th:text="*{recruitmentDeadline}"> </span> </p>
+    <p> 예상종료일 =  <span th:text="*{endDate}"> </span> </p>
+    <p> 소개 =  <span th:text="*{introduction}"> </span> </p>
+
+  </div>
+
+  <div data-th-replace="footer::footer">꼬리말</div>
+</div>
+</body>
+</html>

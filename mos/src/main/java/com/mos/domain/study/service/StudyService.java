@@ -6,4 +6,6 @@ import java.util.List;
 public interface StudyService {
 
   List<StudyDto> list();
+  void add(StudyDto studyDto);
+  StudyDto getByStudyNo(int studyNo);
 }

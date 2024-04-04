@@ -26,10 +26,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.2'
+    // Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
     // AWS S3 API 라이브러리
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.688'
     compileOnly 'org.projectlombok:lombok'
-    compileOnly 'com.google.api-client:google-api-client:1.32.1'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -39,6 +40,11 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    //OAuth 관련 라이브러리
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
 
 }
 

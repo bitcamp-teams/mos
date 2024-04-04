@@ -6,6 +6,11 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface StudyRepository {
+
+  void add(StudyDto studyDto);
+
   List<StudyDto> findAll();
+
+  StudyDto getByStudyNo(int studyNo);
 
 }

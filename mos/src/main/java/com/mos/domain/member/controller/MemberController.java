@@ -1,13 +1,12 @@
 package com.mos.domain.member.controller;
 
 import com.mos.domain.member.dto.MemberDto;
-import com.mos.domain.member.service.MemberService;
+import com.mos.domain.member.service.impl.DefaultMemberService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member")
 public class MemberController {
 
-  private final MemberService memberService;
+  private final DefaultMemberService memberService;
 
   @GetMapping("findByEmail")
   public void findByEmail(String email) throws Exception{
@@ -36,5 +35,6 @@ public class MemberController {
 
     System.out.println("사용가능한 닉네임입니다.");
     return "/index";
+
   }
 }
