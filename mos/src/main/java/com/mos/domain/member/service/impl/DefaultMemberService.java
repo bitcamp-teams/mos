@@ -20,7 +20,6 @@ public class DefaultMemberService implements MemberService {
 
     @Override
     public MemberDto getNo(int no) {
-
         return memberRepository.findByNo(no);
     }
 
