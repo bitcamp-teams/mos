@@ -34,17 +34,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # 환경별 properties 파일 생성(1) - application.properties
-      - name: make application.properties
-        if: |
-          contains(github.ref, 'main') ||
-          contains(github.ref, 'develop')
-        run: |
-          mkdir -p ./src/main/resources
-          cd ./src/main/resources
-          touch ./application.properties
-          echo "${{ secrets.PROPERTIES }}" > ./application.properties
-        shell: bash
+      # 환경별 properties 파일 생성(1) - 해당 작업은 git에 올라가 있지 않은 추가적인 application-*.properties 경우에 필요함. 
+      # 경로 이동 시 mos 하위에 있는 mos 폴더로 들어가야됨!
+      # - name: make application.properties
+      #   if: |
+      #     contains(github.ref, 'main') ||
+      #     contains(github.ref, 'develop')
+      #   run: |
+      #     mkdir -p mos/src/main/resources
+      #     cd mos/src/main/resources
+      #     touch ./application.properties
+      #     echo "${{ secrets.PROPERTIES }}" > ./application.properties
+      #   shell: bash
 
       # 환경별 yml 파일 생성(2) - dev
       # - name: make application-dev.yml
@@ -68,6 +69,8 @@ jobs:
       - name: Build with Gradle
         run: |
           echo $(pwd)
+          echo $(ls)
+          cd mos
           echo $(ls)
           chmod +x ./gradlew
           ./gradlew clean build -x test
