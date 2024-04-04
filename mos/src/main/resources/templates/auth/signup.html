@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>모두의스터디</title>
+  <link rel="stylesheet" href="/css/auth/signup.css">
+</head>
+<body>
+
+<div data-th-replace="header::header">머리말</div>
+
+<div class="page-margin">
+  <div class="container content-margin" >
+    <form action="findByUsername" data-th-action="@{findByUsername}" method='post'>
+      <div class="title-margin">
+        <p class="title-font">Mos에 오신 것을 환영합니다!<br>
+          스터디 활동에 사용하실 닉네임을 설정해주세요!</p>
+      </div>
+      <div class="name-area">
+        <div class="name-font">닉네임:</div><input type="text" class="text-size">
+      </div>
+      <div class="button-margin">
+        <button class="button-size">다음</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div data-th-replace="footer::footer">꼬리말</div>
+</body>
+</html>

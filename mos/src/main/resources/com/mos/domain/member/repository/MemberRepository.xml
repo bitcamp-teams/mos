@@ -8,7 +8,7 @@
   <resultMap id="MemberMap" type="MemberDto">
     <id column="member_no" property="no"/>
     <result column="email" property="email"/>
-    <result column="username" property="userName"/>
+    <result column="username" property="username"/>
     <result column="create_date" property="createDate"/>
     <result column="update_date" property="updateDate"/>
     <result column="stat" property="status"/>
@@ -17,6 +17,10 @@
 
   <select id="findByEmail" parameterType="MemberDto">
     select email from member where email=#{email};
+  </select>
+
+  <select id="findByUsername" parameterType="MemberDto">
+    select username from member where username=#{username};
   </select>
 
 

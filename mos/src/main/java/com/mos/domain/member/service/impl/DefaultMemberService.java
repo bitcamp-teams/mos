@@ -16,4 +16,9 @@ public class DefaultMemberService implements MemberService {
   public MemberDto get(String email) {
     return memberRepository.findByEmail(email);
   }
+
+  @Override
+  public MemberDto getName(String username) {
+    return memberRepository.findByUsername(username);
+  }
 }

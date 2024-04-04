@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface MemberRepository {
 
   MemberDto findByEmail(String email);
+  MemberDto findByUsername(String username);
 }
