@@ -67,6 +67,7 @@ jobs:
       # gradle build
       - name: Build with Gradle
         run: |
+          echo $(pwd)
           cd ../../../..
           chmod +x ./gradlew
           ./gradlew clean build -x test
