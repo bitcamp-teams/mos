@@ -123,7 +123,8 @@ jobs:
           port: 22
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            sudo docker ps
+            sudo docker stop $(sudo docker ps -a -q)
+            sudo docker rm -f $(sudo docker ps -a -q)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
             sudo docker run -d -p 8888:8888 ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
             sudo docker image prune -f
