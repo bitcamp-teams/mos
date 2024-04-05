@@ -8,10 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.mos.domain.member.service.MemberService;
-import java.util.Optional;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -39,12 +35,16 @@ public class MemberController {
       return "auth/signup";
     }
 
+
+  @PostMapping("add")
+  public String add(MemberJoinDto joinDto) {
+    memberService.join(joinDto);
     System.out.println("사용가능한 닉네임입니다.");
     return "/index";
 
   }
 
-  @PostMapping("add")
+  @PostMapping("add/github")
   public String add(MemberJoinDto joinDto) {
     //mbMemberService.join(joinDto);
     return "redirect:/";
