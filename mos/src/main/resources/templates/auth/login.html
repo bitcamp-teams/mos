@@ -15,7 +15,7 @@
 
   <div class="container">
     <div class="login-option">
-      <a href="https://github.com/login/oauth/authorize?client_id=Iv1.3954010d06ea3b68&scope=user:email">
+      <a data-th-href="@{'https://github.com/login/oauth/authorize?client_id=' + ${clientId} + '&scope=user:email'}">
         <img src="/img/github_logo.png">
         <p>Github 로그인</p>
       </a>
