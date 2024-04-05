@@ -1,6 +1,7 @@
 package com.mos.domain.member.service.impl;
 
 import com.mos.domain.member.dto.MemberDto;
+import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.repository.MemberRepository;
 import com.mos.domain.member.service.MemberService;
 
@@ -29,4 +30,13 @@ public class DefaultMemberService implements MemberService {
         return memberRepository.findByUsername(username);
     }
 
+    @Override
+    public int join(MemberJoinDto joinDto) {
+    return memberRepository.add(joinDto);
+  }
+
+    @Override
+    public boolean existsByEmail(String email) {
+      return memberRepository.existsByEmail(email);
+    }
 }

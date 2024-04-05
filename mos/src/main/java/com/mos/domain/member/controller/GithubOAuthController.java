@@ -1,8 +1,9 @@
 package com.mos.domain.member.controller;
 
 import com.mos.domain.member.dto.MemberJoinDto;
+import com.mos.domain.member.service.MemberService;
+import com.mos.domain.member.service.impl.DefaultMemberService;
 import com.mos.domain.member.service.impl.GithubOAuthService;
-import com.mos.domain.member.service.impl.MBMemberService;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ public class GithubOAuthController {
   @Autowired
   private GithubOAuthService loginService;
   @Autowired
-  private MBMemberService memberService;
+  private DefaultMemberService memberService;
 
   @GetMapping("callback")
   public String githubLogin(@RequestParam String code, MemberJoinDto joinDto, Model model) {
