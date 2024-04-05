@@ -1,0 +1,49 @@
+.page-margin {
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.container {
+  display: flow;
+  text-align: center;
+  border: 1px solid black;
+  height: 400px;
+}
+
+.title-margin {
+  margin-top: 7%;
+}
+
+.title-font {
+  font-size: 28px;
+  font-weight: bold;
+  color: gray;
+}
+
+.name-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 7%;
+}
+
+.name-font {
+  font-size: large;
+  font-weight: bold;
+  color: gray;
+}
+
+.text-size {
+  margin-left: 10px;
+  font-size: x-large;
+}
+
+.button-margin {
+  margin-top: 7%;
+}
+
+.button-size {
+  font-size: x-large;
+}

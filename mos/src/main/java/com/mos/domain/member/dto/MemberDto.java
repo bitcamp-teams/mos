@@ -1,7 +1,6 @@
 package com.mos.domain.member.dto;
 
 import java.sql.Date;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

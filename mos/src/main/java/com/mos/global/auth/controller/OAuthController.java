@@ -1,5 +1,6 @@
 package com.mos.global.auth.controller;
 
+import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.service.MemberService;
 import com.mos.global.auth.dto.KakaoDto;
 import com.mos.global.auth.service.KakaoService;
@@ -48,8 +49,11 @@ public class OAuthController {
     }
 
     System.out.println("회원 정보가 없음!!!!!!!!");
-    return "auth/login";
+    return "auth/signup";
   }
 
+  @GetMapping("signup")
+  public void signup() {
+  }
 
 }

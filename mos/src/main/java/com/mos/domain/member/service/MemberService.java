@@ -7,7 +7,8 @@ public interface MemberService {
 
     MemberDto get(String email);
 
-    MemberDto getNo(int no);
+  MemberDto getName(String username);
+   MemberDto getNo(int no);
 
     MemberDto getUsername(String username);
 
