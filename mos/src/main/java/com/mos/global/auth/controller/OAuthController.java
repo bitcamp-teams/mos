@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Controller
@@ -42,8 +43,8 @@ public class OAuthController {
 
 
   @GetMapping("/kakao/callback")
-  public String callback(HttpServletRequest request) throws Exception {
-    KakaoDto kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
+  public String callback(@RequestParam String code) throws Exception {
+    KakaoDto kakaoInfo = kakaoService.getKakaoInfo(code);
     System.out.println("이메일: " + kakaoInfo.getEmail());
     System.out.println("닉네임: " + kakaoInfo.getNickname());
 

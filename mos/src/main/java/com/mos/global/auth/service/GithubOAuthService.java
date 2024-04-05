@@ -1,4 +1,4 @@
-package com.mos.domain.member.service.impl;
+package com.mos.global.auth.service;
 
 import java.util.Arrays;
 import java.util.Optional;

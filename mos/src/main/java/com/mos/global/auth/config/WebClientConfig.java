@@ -1,4 +1,4 @@
-package com.mos.domain.member.config;
+package com.mos.global.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
