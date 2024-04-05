@@ -8,7 +8,7 @@
   <resultMap id="MemberMap" type="MemberDto">
     <id column="member_no" property="no"/>
     <result column="email" property="email"/>
-    <result column="username" property="userName"/>
+    <result column="username" property="username"/>
     <result column="create_date" property="createDate"/>
     <result column="update_date" property="updateDate"/>
     <result column="stat" property="status"/>
@@ -20,10 +20,17 @@
     select email from member where email=#{email};
   </select>
 
+<<<<<<< HEAD
+  <select id="findByUsername" parameterType="MemberDto">
+    select username from member where username=#{username};
+  </select>
+
+=======
   <insert id="add" parameterType="MemberJoinDto">
     insert into member(email, username, belong, career, job_group)
     values(#{email},#{name},#{belong},#{career},#{jobGroup})
   </insert>
+>>>>>>> 7310a230df6b6dde02c4a5dab023ebb362297aff
 
   <select id="existsByEmail" parameterType="boolean">
     select email from member where email=#{email};
