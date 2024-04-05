@@ -12,16 +12,44 @@
     <result column="create_date" property="createDate"/>
     <result column="update_date" property="updateDate"/>
     <result column="stat" property="status"/>
-
+    <result column="biography" property="biography"/>
+    <result column="photo" property="photo"/>
   </resultMap>
 
   <select id="findByEmail" parameterType="MemberDto">
     select email from member where email=#{email};
   </select>
 
+<<<<<<< HEAD
   <select id="findByUsername" parameterType="MemberDto">
     select username from member where username=#{username};
   </select>
+
+=======
+  <insert id="add" parameterType="MemberJoinDto">
+    insert into member(email, username, belong, career, job_group)
+    values(#{email},#{name},#{belong},#{career},#{jobGroup})
+  </insert>
+>>>>>>> 7310a230df6b6dde02c4a5dab023ebb362297aff
+
+  <select id="existsByEmail" parameterType="boolean">
+    select email from member where email=#{email};
+  </select>
+
+  <select id="findByNo" resultMap="MemberMap" parameterType="int">
+    select
+      member_no,
+      email,
+      username,
+      photo,
+      biography
+    from
+      member
+    where
+      member_no=#{no}
+  </select>
+
+
 
 
 </mapper>

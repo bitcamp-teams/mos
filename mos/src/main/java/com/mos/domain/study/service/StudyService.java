@@ -8,4 +8,6 @@ public interface StudyService {
   List<StudyDto> list();
   void add(StudyDto studyDto);
   StudyDto getByStudyNo(int studyNo);
+
+  void deleteStudy(int studyNo);
 }

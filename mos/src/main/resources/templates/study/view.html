@@ -15,12 +15,18 @@
 
   <h1 th:text="*{title}"></h1>
 
+<!--    <form action="update" data-th-action="@{update}" method='post'>-->
+
+
     <p> 스터디장 =  <span th:text="*{memberNo}"> </span> </p>
     <p> 진행방식 =  <span th:text="*{method}"> </span> </p>
     <p> 모집정원 =  <span th:text="*{intake}"> </span> </p>
     <p> 모집마감 =  <span th:text="*{recruitmentDeadline}"> </span> </p>
     <p> 예상종료일 =  <span th:text="*{endDate}"> </span> </p>
     <p> 소개 =  <span th:text="*{introduction}"> </span> </p>
+    <a data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">[삭제]</a>
+
+    <!--    </form>-->
 
   </div>
 

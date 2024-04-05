@@ -2,6 +2,7 @@ package com.mos.domain.study.controller;
 
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.service.StudyService;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,6 +41,20 @@ public class StudyController {
     }
     model.addAttribute("study", studyDto);
   }
+
+  @GetMapping("delete")
+  public String delete(int studyNo, HttpSession session) throws Exception {
+    //TODO 스터디장만 삭제 권한 있고, 연결된 다른 참여회원이 존재할 경우 삭제 불가함
+    studyService.deleteStudy(studyNo);
+
+    //TODO 연결된 위키도 전부 삭제함
+    //wikiService.deleteAllByStudyNo(studyNo);
+
+
+
+    return "redirect:list";
+  }
+
 
 
   @GetMapping("list")
