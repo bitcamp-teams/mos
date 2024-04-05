@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class KakaoDto {
+public class OAuthDto {
 
   private long id;
   private String email;

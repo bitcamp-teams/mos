@@ -1,10 +1,8 @@
 package com.mos.global.auth.controller;
 
-import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.service.MemberService;
-import com.mos.global.auth.dto.KakaoDto;
+import com.mos.global.auth.dto.OAuthDto;
 import com.mos.global.auth.service.KakaoService;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,7 +42,7 @@ public class OAuthController {
 
   @GetMapping("/kakao/callback")
   public String callback(@RequestParam String code) throws Exception {
-    KakaoDto kakaoInfo = kakaoService.getKakaoInfo(code);
+    OAuthDto kakaoInfo = kakaoService.getAccessToken(code);
     System.out.println("이메일: " + kakaoInfo.getEmail());
     System.out.println("닉네임: " + kakaoInfo.getNickname());
 

@@ -1,6 +1,6 @@
 package com.mos.global.auth.service;
 
-import com.mos.global.auth.dto.KakaoDto;
+import com.mos.global.auth.dto.OAuthDto;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONObject;
@@ -16,7 +16,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class KakaoService {
+public class KakaoService implements OAuthService{
 
   private static final Log log = LogFactory.getLog(KakaoService.class);
   @Value("${kakao.client.id}")
@@ -38,7 +38,7 @@ public class KakaoService {
         + "&response_type=code";
   }
 
-  public KakaoDto getKakaoInfo(String code) throws Exception {
+  public OAuthDto getAccessToken(String code) throws Exception {
     if (code == null) throw new Exception("Failed get authorization code");
 
     String accessToken = "";
@@ -77,7 +77,7 @@ public class KakaoService {
     return getUserInfoWithToken(accessToken);
   }
 
-  private KakaoDto getUserInfoWithToken(String accessToken) throws Exception {
+  private OAuthDto getUserInfoWithToken(String accessToken) throws Exception {
     //HttpHeader 생성
     HttpHeaders headers = new HttpHeaders();
     headers.add("Authorization", "Bearer " + accessToken);
@@ -103,7 +103,7 @@ public class KakaoService {
     String email = String.valueOf(account.get("email"));
     String nickname = String.valueOf(profile.get("nickname"));
 
-    return KakaoDto.builder()
+    return OAuthDto.builder()
         .id(id)
         .email(email)
         .nickname(nickname).build();

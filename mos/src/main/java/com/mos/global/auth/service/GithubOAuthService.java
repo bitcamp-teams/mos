@@ -1,7 +1,7 @@
 package com.mos.global.auth.service;
 
+import com.mos.global.auth.dto.OAuthDto;
 import java.util.Arrays;
-import java.util.Optional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 //@RequiredArgsConstructor
 //@ConfigurationProperties(prefix = "github")
 //@ConstructorBinding
-public class GithubOAuthService {
+public class GithubOAuthService implements OAuthService{
 
   private static final Log log = LogFactory.getLog(GithubOAuthService.class);
 
@@ -47,7 +47,7 @@ public class GithubOAuthService {
   }
 
 
-  public Optional<String> getAccessToken(String code){
+  public OAuthDto getAccessToken(String code) throws Exception{
     MultiValueMap<String, String> formData = setFormData(code);
 
     String tokenBeforeParsing = requestAccessToken(formData);
@@ -56,7 +56,7 @@ public class GithubOAuthService {
     String tokenAfterParsing = parsingResponse(tokenBeforeParsing, tokenParser);
     log.debug(String.format("Github accessToken = " + tokenAfterParsing));
 
-    return Optional.ofNullable(getEmail(tokenAfterParsing)).orElse(null);
+    return getUserInfoWithToken(tokenAfterParsing);
   }
 
   private MultiValueMap<String, String> setFormData(String code) {
@@ -95,15 +95,15 @@ public class GithubOAuthService {
         .block();
   }
 
-  public Optional<String> getEmail(String token) {
+  private OAuthDto getUserInfoWithToken(String token) {
 
     String emailBeforeParsing = requestUserEmail(token);
 
     String emailParser = "[{\"email\":\"";
     if (emailBeforeParsing == null) {
-      return Optional.empty();
+      return OAuthDto.builder().build();
     }
     String emailAfterParsing = parsingResponse(emailBeforeParsing, emailParser);
-    return Optional.ofNullable(emailAfterParsing);
+    return OAuthDto.builder().email(emailAfterParsing).build();
   }
 }

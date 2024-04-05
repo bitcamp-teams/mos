@@ -3,6 +3,7 @@ package com.mos.domain.member.controller;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.service.impl.DefaultMemberService;
+import com.mos.global.auth.dto.OAuthDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,8 +39,8 @@ public class MemberController {
   }
 
   @PostMapping("add")
-  public String add(MemberJoinDto joinDto) {
-    memberService.join(joinDto);
+  public String add(OAuthDto oauthDto) {
+    memberService.join(oauthDto);
     System.out.println("사용가능한 닉네임입니다.");
     return "index";
   }

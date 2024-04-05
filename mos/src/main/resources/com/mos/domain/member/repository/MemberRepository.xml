@@ -24,8 +24,8 @@
     select username from member where username=#{username};
   </select>
 
-  <insert id="add" parameterType="MemberJoinDto">
-    insert into member(email, username, belong, career, job_group)
+  <insert id="add" parameterType="OAuthDto">
+    insert into member(id, email, username, belong, career, job_group)
     values(#{email},#{name},#{belong},#{career},#{jobGroup})
   </insert>
 

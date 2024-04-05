@@ -5,6 +5,7 @@ import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.repository.MemberRepository;
 import com.mos.domain.member.service.MemberService;
 
+import com.mos.global.auth.dto.OAuthDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,8 @@ public class DefaultMemberService implements MemberService {
     }
 
     @Override
-    public int join(MemberJoinDto joinDto) {
-    return memberRepository.add(joinDto);
+    public int join(OAuthDto oauthDto) {
+    return memberRepository.add(oauthDto);
   }
 
     @Override
