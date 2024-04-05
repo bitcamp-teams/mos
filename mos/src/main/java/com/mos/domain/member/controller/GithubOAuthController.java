@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class GithubOAuthController {
 
   @Autowired
-  private GithubOAuthService loginService;
+  private GithubOAuthService githubService;
   @Autowired
   private DefaultMemberService memberService;
 
   @GetMapping("callback")
   public String githubLogin(@RequestParam String code, MemberJoinDto joinDto, Model model) {
-    Optional<String> emailOpt = loginService.getAccessToken(code);
+    Optional<String> emailOpt = githubService.getAccessToken(code);
 
     if (emailOpt.isPresent()) {
       joinDto.setEmail(emailOpt.get());

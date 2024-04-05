@@ -25,8 +25,16 @@
     values(#{email},#{name},#{belong},#{career},#{jobGroup})
   </insert>
 
-  <select id="existsByEmail" parameterType="boolean">
-    select email from member where email=#{email};
+  <select id="existsByEmail" resultType="boolean" parameterType="String">
+    SELECT
+      CASE
+        WHEN COUNT(*) > 0 THEN 'true' -- 이메일이 이미 존재하는 경우
+        ELSE 'false' -- 이메일이 존재하지 않는 경우
+      END AS email_exists
+    FROM
+      member
+    WHERE
+      email = #{email};
   </select>
 
   <select id="findByNo" resultMap="MemberMap" parameterType="int">
