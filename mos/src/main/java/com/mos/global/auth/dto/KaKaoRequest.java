@@ -35,7 +35,7 @@ public class KaKaoRequest extends RequestAttributes {
 
   private final static String KAKAO_AUTH_URI = "https://kauth.kakao.com";
 
-  private static String body;
+  private static final String body;
 
   static {
     RequestEntity<String> request = RequestEntity.post(KAKAO_AUTH_URI + "/oauth/token")

@@ -6,8 +6,8 @@ import lombok.Getter;
 
 import java.util.Map;
 
+@Getter
 public abstract class LoginResponseHandler {
-    @Getter
     private final Map<String, Object> response;
 
     public LoginResponseHandler(String response) {
