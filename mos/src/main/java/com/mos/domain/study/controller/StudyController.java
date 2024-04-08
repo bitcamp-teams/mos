@@ -1,7 +1,9 @@
 package com.mos.domain.study.controller;
 
+import com.mos.domain.study.dto.StudyDto;
+import com.mos.domain.study.service.StudyService;
 import javax.servlet.http.HttpSession;
-
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -10,12 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.mos.domain.study.dto.StudyDto;
-import com.mos.domain.study.service.StudyService;
-
-import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,7 +36,7 @@ public class StudyController {
   }
 
   @GetMapping("view")
-  public void view(int studyNo, Model model) throws Exception {
+  public void view(@RequestParam int studyNo, Model model) throws Exception {
     StudyDto studyDto = studyService.getByStudyNo(studyNo);
     if (studyDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");

@@ -6,4 +6,6 @@ import java.util.List;
 public interface WikiService {
 
   List<WikiDto> listByStudyNo(int studyNo);
+
+  WikiDto getByWikiNo(int wikiNo);
 }

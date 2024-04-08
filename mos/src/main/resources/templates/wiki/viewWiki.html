@@ -1,0 +1,37 @@
+<html lang='en'
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset='UTF-8'>
+  <title>모두의스터디</title>
+  <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="page-margin">
+  <div data-th-replace="header::header">머리말</div>
+
+  <div th:object="${wiki}">
+
+
+    <h1 th:text="*{title}"></h1>
+    <a data-th-href="@{editWiki(wikiNo=*{wikiNo})}" href="edit.html">[편집]</a>
+
+    <p> 이 위키가 작성된 스터디 = <span th:hrev="@{/study/view(studyNo=*{studyNo})}"> </span></p>
+    <p> 제목 = <span th:text="*{title}">제목</span></p>
+    <p> 작성자 = <span th:text="*{member_no}">회원번호</span></p>
+    <p> 작성일 = <span th:text="*{content_created_date}">작성일</span></p>
+    <p> 마지막 편집일 = <span th:text="*{content_updated_date}">마지막 편집일</span></p>
+    <p> 내용 <pre th:text="*{content}">내용</pre></p>
+    <p> 좋아요 수 : <span th:text="*{likes}">좋아요수</span></p>
+    <br>
+    <a data-th-href="@{delete(wikiNo=*{wikiNo})}" href="delete.html">[삭제]</a>
+
+  </div>
+
+  <div data-th-replace="footer::footer">꼬리말</div>
+</div>
+<script>
+  console.dir('[[${study}]]')
+</script>
+</body>
+</html>

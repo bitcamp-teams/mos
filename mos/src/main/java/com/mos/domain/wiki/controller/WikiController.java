@@ -1,5 +1,6 @@
 package com.mos.domain.wiki.controller;
 
+import com.mos.domain.wiki.dto.WikiDto;
 import com.mos.domain.wiki.service.WikiService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
@@ -17,6 +18,7 @@ public class WikiController {
 
   private static final Log log = LogFactory.getLog(Thread.currentThread().getClass());
   private final WikiService wikiService;
+
   //
   //  @GetMapping("form")
   //  public void form() throws Exception {
@@ -28,14 +30,14 @@ public class WikiController {
   //    return "redirect:list";
   //  }
   //
-  //  @GetMapping("view")
-  //  public void view(int studyNo, Model model) throws Exception {
-  //    WikiDto wikiDto = wikiService.getByStudyNo(studyNo);
-  //    if (wikiDto == null) {
-  //      throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
-  //    }
-  //    model.addAttribute("study", wikiDto);
-  //  }
+  @GetMapping("viewWiki")
+  public void view(@RequestParam int wikiNo, Model model) throws Exception {
+    WikiDto wikiDto = wikiService.getByWikiNo(wikiNo);
+    if (wikiDto == null) {
+      throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
+    }
+    model.addAttribute("wiki", wikiDto);
+  }
 
 
   @GetMapping("list")

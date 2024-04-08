@@ -17,4 +17,9 @@ public class DefaultWikiService implements WikiService {
   public List<WikiDto> listByStudyNo(int studyNo) {
     return wikiRepository.listByStudyNo(studyNo);
   }
+
+  @Override
+  public WikiDto getByWikiNo(int wikiNo) {
+    return wikiRepository.getByWikiNo(wikiNo);
+  }
 }

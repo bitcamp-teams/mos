@@ -26,4 +26,5 @@ public class WikiDto {
   Date contentCreatedDate;
   Date contentUpdatedDate;
   String stat;
+  int memberNo;
 }
