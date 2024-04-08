@@ -2,7 +2,8 @@ package com.mos.global.auth.controller;
 
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.service.MemberService;
-import com.mos.global.auth.dto.KakaoDto;
+import com.mos.global.auth.handler.LoginApiManager;
+import com.mos.global.auth.handler.LoginResponseHandler;
 import com.mos.global.auth.service.KakaoService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @Controller
@@ -26,6 +28,8 @@ public class OAuthController {
 
   private final KakaoService kakaoService;
   private final MemberService memberService;
+  private final LoginApiManager loginApiManager;
+  private final RestTemplate restTemplate = new RestTemplate();
 
   @Value("${github.clientId}")
   private String clientId;
@@ -44,9 +48,10 @@ public class OAuthController {
 
   @GetMapping("/kakao/callback")
   public String callback(@RequestParam String code) throws Exception {
-    KakaoDto kakaoInfo = kakaoService.getKakaoInfo(code);
-    System.out.println("이메일: " + kakaoInfo.getEmail());
-    System.out.println("닉네임: " + kakaoInfo.getNickname());
+//    KakaoDto kakaoInfo = kakaoService.getKakaoInfo(code);
+
+    LoginResponseHandler kakaoInfo =
+        loginApiManager.getProvider("KAKAO").getUserInfo(restTemplate, code);
 
     if (memberService.get(kakaoInfo.getEmail()) != null) {
       System.out.println("로그인 성공!!!!!!!!");
