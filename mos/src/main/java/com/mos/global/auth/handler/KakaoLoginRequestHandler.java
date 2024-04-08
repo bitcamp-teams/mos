@@ -24,7 +24,7 @@ public class KakaoLoginRequestHandler implements LoginRequestHandler {
     var response = restTemplate.exchange(requestEntity, String.class);
 
     if (!response.getStatusCode().is2xxSuccessful()) {
-      throw new LoginApiException("네이버 oauth 로그인 실패");
+      throw new LoginApiException("카카오 oauth 로그인 실패");
     }
     return new KakaoLoginResponseHandler(response.getBody());
   }
