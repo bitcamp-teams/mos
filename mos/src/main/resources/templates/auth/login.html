@@ -27,8 +27,14 @@
       </a>
     </div>
     <div class="login-option">
-      <img src="/img/google_logo.png">
+        <a data-th-href="@{'http://accounts.google.com/o/oauth2/v2/auth
+        ?client_id=67002553427-n9637hfcv8ds77vp3po5be7enb5t5blu.apps.googleusercontent.com
+        &redirect_url=http://localhost:8888/login/oauth2/code/google
+        &response_type=token
+        &scope=https://www.googleapis.com/auth/userinfo.email'}">
+        <img src="/img/google_logo.png">
       <p>Google 로그인</p>
+      </a>
     </div>
   </div>
 </div>
