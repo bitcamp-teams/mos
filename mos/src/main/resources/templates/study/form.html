@@ -1,21 +1,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+>
 <html lang='en'>
 <head>
   <meta charset='UTF-8'>
   <title>모두의스터디</title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
 <div class="page-margin">
-<div data-th-replace="header::header">머리말</div>
+  <div data-th-replace="header::header">머리말</div>
 
   <form action="add" data-th-action="@{add}" method="post">
     <div>
       스터디는 어떻게 진행되나요? : <input name='method' type='text'>
     </div>
     <div>
-      최대 정원을 정하시겠어요? (선택) : <input name='intake' type='text'>
+      최대 정원을 정하시겠어요? (선택) : <input name='intake' type='number'>
     </div>
     <div>
       언제까지 모집하시겠어요? (선택) : <input name="recruitmentDeadline" type="date">
@@ -32,7 +32,7 @@
   </form>
 
 
-<div data-th-replace="footer::footer">꼬리말</div>
+  <div data-th-replace="footer::footer">꼬리말</div>
 </div>
 </body>
 </html>

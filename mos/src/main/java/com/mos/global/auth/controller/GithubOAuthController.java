@@ -2,6 +2,7 @@ package com.mos.global.auth.controller;
 
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.service.impl.DefaultMemberService;
+import com.mos.global.auth.service.GithubOAuthService;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
