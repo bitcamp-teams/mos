@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mos.domain.study.repository.StudyRepository">
-  <delete id="delete" parameterType="int">
+    <delete id="delete" parameterType="int">
     DELETE
       FROM
         study
@@ -18,6 +18,7 @@
       study(member_no, method, title, intake, recruitment_deadline, introduction)
     VALUES(1, #{method}, #{title}, #{intake}, #{recruitmentDeadline}, #{introduction})
   </insert>
+
 
   <resultMap id="studyList" type="StudyDto">
     <id column="study_no" property="studyNo"/>

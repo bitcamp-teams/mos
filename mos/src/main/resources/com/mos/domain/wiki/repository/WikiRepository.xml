@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mos.domain.wiki.repository.WikiRepository">
+
+  <resultMap id="wikis" type="WikiDto">
+    <id column="wiki_no" property="wikiNo"/>
+    <result column="title" property="title"/>
+    <result column="ordr" property="order"/>
+    <result column="layer" property="layer"/>
+    <result column="layer_ordr" property="layerOrder"/>
+  </resultMap>
+
+  <select id="listByStudyNo" parameterType="int" resultMap="wikis">
+    SELECT title, ordr, layer, layer_ordr
+    FROM curriculum
+    WHERE study_no = #{studyNo}
+    ORDER BY ordr, layer, layer_ordr;
+  </select>
+
+
+</mapper>
