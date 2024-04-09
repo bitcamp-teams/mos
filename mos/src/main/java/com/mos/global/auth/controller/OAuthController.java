@@ -4,7 +4,10 @@ import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.service.MemberService;
 import com.mos.global.auth.dto.KakaoDto;
 import com.mos.global.auth.service.KakaoService;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,16 +49,24 @@ public class OAuthController {
     return "auth/login";
   }
 
+  @GetMapping("logout")
+  public String logout(HttpSession session) throws Exception {
+    session.invalidate();
+    return "redirect:/";
+  }
+
 
   @GetMapping("/kakao/callback")
-  public String callback(@RequestParam String code) throws Exception {
+  public String callback(@RequestParam String code, MemberDto member, HttpServletResponse response,HttpSession session) throws Exception {
     KakaoDto kakaoInfo = kakaoService.getKakaoInfo(code);
-    System.out.println("이메일: " + kakaoInfo.getEmail());
-    System.out.println("닉네임: " + kakaoInfo.getNickname());
-
-    if (memberService.get(kakaoInfo.getEmail()) != null) {
+    //System.out.println("이메일: " + kakaoInfo.getEmail());
+    //System.out.println("닉네임: " + kakaoInfo.getNickname());
+    member.setEmail(kakaoInfo.getEmail());
+    System.out.println(member.getEmail());
+    if (member != null) {
       System.out.println("로그인 성공!!!!!!!!");
-      return "/index";
+      session.setAttribute("loginUser", member);
+      return "redirect:/";
     }
 
     System.out.println("회원 정보가 없음!!!!!!!!");
