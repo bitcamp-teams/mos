@@ -1,7 +1,5 @@
 package com.mos.global.auth.service;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.util.Optional;
@@ -21,28 +19,35 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 //@ConfigurationProperties(prefix = "github")
 //@ConstructorBinding
-public class GithubOAuthService implements OAuthService{
+public class GoogleOAuthService implements OAuthService{
 
-  private static final Log log = LogFactory.getLog(GithubOAuthService.class);
+  private static final Log log = LogFactory.getLog(GoogleOAuthService.class);
   @Autowired
   private WebClient webClient;
 
   private final String clientId;
+
   private final String clientSecret;
 
+  private final String redirectUri;
+
+
   @Autowired
-  public GithubOAuthService(
-      @Value("${github.clientId}")String clientId,
-      @Value("${github.clientSecret}")String clientSecret) {
+  public GoogleOAuthService(WebClient webClient,
+      @Value("${google.clientId}") String clientId,
+      @Value("${google.clientSecret}") String clientSecret,
+      @Value("${google.redirect-uri}") String redirectUri) {
+    this.webClient = webClient;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
+    this.redirectUri = redirectUri;
   }
 
 
 
   private String requestAccessToken(MultiValueMap<String, String> formData) {
     return webClient.post()
-        .uri("https://github.com/login/oauth/access_token")
+        .uri("https://oauth2.googleapis.com/token")
         .header("Accept", "application/json")
         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         .body(BodyInserters.fromFormData(formData))
@@ -50,6 +55,7 @@ public class GithubOAuthService implements OAuthService{
         .bodyToMono(String.class)
         .block();
   }
+
 
   @Override
   public Optional<String> getAccessToken(String code){
@@ -70,6 +76,8 @@ public class GithubOAuthService implements OAuthService{
     formData.add("client_id", clientId);
     formData.add("client_secret", clientSecret);
     formData.add("code", code);
+    formData.add("grant_type", "authorization_code");
+    formData.add("redirect_uri", redirectUri);
     return formData;
   }
 
@@ -90,22 +98,13 @@ public class GithubOAuthService implements OAuthService{
 //        .map(part -> part.substring(parser.length(), part.length() - 1)) // 객체에 substring 조건을 적용
 //        .findFirst()                       // 위 조건을 통과한 첫 객체
 //        .orElse(null);               // 없으면 null
-    JsonElement element = JsonParser.parseString(response);
-    if (element.isJsonArray()) {
-      JsonArray jsonArray = element.getAsJsonArray();
-      if (!jsonArray.isEmpty()) {
-        return jsonArray.get(0).getAsJsonObject().get("email").getAsString();
-      }
-    } else {
-      JsonObject json = JsonParser.parseString(response).getAsJsonObject();
-      return json.get(key).getAsString();
-    }
-    return null;
+    JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+    return json.has(key) ? json.get(key).getAsString() : null;
   }
 
   private String requestUserEmail(String token) {
     return webClient.get()
-        .uri("https://api.github.com/user/emails")
+        .uri("https://www.googleapis.com/oauth2/v2/userinfo")
         .header("Authorization", "Bearer " + token)
         .retrieve()
         .bodyToMono(String.class)
@@ -126,3 +125,4 @@ public class GithubOAuthService implements OAuthService{
     return Optional.ofNullable(emailAfterParsing);
   }
 }
+
