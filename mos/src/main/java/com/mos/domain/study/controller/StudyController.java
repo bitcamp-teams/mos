@@ -60,7 +60,7 @@ public class StudyController {
     StudyDto result = studyService.getByStudyNo(studyDto.getStudyNo());
     model.addAttribute("study", result);
     // return "view?studyNo=" + studyDto.getStudyNo();
-    return "study/view";
+    return "/study/view";
   }
 
   @GetMapping("delete")

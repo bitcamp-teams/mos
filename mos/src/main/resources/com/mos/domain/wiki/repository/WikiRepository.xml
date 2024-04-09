@@ -33,9 +33,11 @@
   </select>
 
   <select id="getByWikiNo" parameterType="int" resultMap="wiki">
-    SELECT wiki_no, study_no, title, member_no, content_created_date, content_updated_date, content, likes
+    SELECT
+      wiki_no, study_no, title, curriculum.member_no, username, content_created_date, content_updated_date, content, likes
     FROM curriculum
-    WHERE wiki_no = #{wikiNo};
+    JOIN member ON curriculum.member_no = member.member_no
+    WHERE wiki_no =  #{wikiNo};
   </select>
 
 

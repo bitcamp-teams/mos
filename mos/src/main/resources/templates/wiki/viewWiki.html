@@ -11,17 +11,18 @@
   <div data-th-replace="header::header">머리말</div>
 
   <div th:object="${wiki}">
-
-
     <h1 th:text="*{title}"></h1>
-    <a data-th-href="@{editWiki(wikiNo=*{wikiNo})}" href="edit.html">[편집]</a>
+    <a data-th-href="@{/wiki/editWiki(wikiNo=*{wikiNo})}" href="edit.html">[편집]</a>
+    <br>
+    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="list.html">[리스트로 돌아가기]</a>
 
-    <p> 이 위키가 작성된 스터디 = <span th:hrev="@{/study/view(studyNo=*{studyNo})}"> </span></p>
+    <p> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span> </a></p>
     <p> 제목 = <span th:text="*{title}">제목</span></p>
-    <p> 작성자 = <span th:text="*{member_no}">회원번호</span></p>
-    <p> 작성일 = <span th:text="*{content_created_date}">작성일</span></p>
-    <p> 마지막 편집일 = <span th:text="*{content_updated_date}">마지막 편집일</span></p>
-    <p> 내용 <pre th:text="*{content}">내용</pre></p>
+    <p> 작성자 = <span th:text="*{username}">회원 이름</span></p>
+    <p> 작성일 = <span th:text="*{contentCreatedDate}">작성일</span></p>
+    <p> 마지막 편집일 = <span th:text="*{contentUpdatedDate}">마지막 편집일</span></p>
+    <p> 내용 <pre style="border: 1px solid black; /* 테두리 스타일과 색상 설정 */
+    padding: 10px; /* 내부 여백 설정 */" th:text="*{content}">내용</pre></p>
     <p> 좋아요 수 : <span th:text="*{likes}">좋아요수</span></p>
     <br>
     <a data-th-href="@{delete(wikiNo=*{wikiNo})}" href="delete.html">[삭제]</a>
@@ -30,8 +31,8 @@
 
   <div data-th-replace="footer::footer">꼬리말</div>
 </div>
-<script>
-  console.dir('[[${study}]]')
-</script>
+<!--<script>-->
+<!--  console.dir('[[${study}]]')-->
+<!--</script>-->
 </body>
 </html>
