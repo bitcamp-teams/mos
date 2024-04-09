@@ -8,11 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,6 +28,8 @@ public class OAuthController {
   private static final Log log = LogFactory.getLog(OAuthController.class);
 
   private final KakaoService kakaoService;
+
+  @Autowired
   private final MemberService memberService;
 
   @Value("${github.clientId}")
@@ -57,8 +62,38 @@ public class OAuthController {
     return "auth/signup";
   }
 
-  @GetMapping("signup")
-  public void signup() {
+  @PostMapping("signup")
+  public void signup(@RequestParam String username) {
+    // 중복확인 완료한 후 가입을 진행하던 중
+    // 그 시점에 같은 닉네임으로 가입을 완료한 사람이 있다면??
+
+    /*MemberDto member = memberService.getName(username);
+
+    if (memberService.getName(username) != null) {
+      System.out.println("중복된 닉네임입니다.");
+      return "auth/signup";
+    }
+
+    System.out.println("사용가능한 닉네임입니다!!");
+    return "auth/signup";*/
   }
 
+  // 닉네임 중복확인
+  @GetMapping("checkUsername")
+  public ResponseEntity<String> checkUsername(@RequestParam String username) {
+    MemberDto member = memberService.getName(username);
+
+    if (member != null) {
+      // 이미 존재하는 닉네임인 경우
+      return ResponseEntity.ok("duplicate");
+    } else {
+      // 존재하지 않는 닉네임인 경우
+      return ResponseEntity.ok("available");
+    }
+  }
+
+  @PostMapping("signup2")
+  public void signup2() {
+
+  }
 }
