@@ -1,3 +1,8 @@
+    body {
+      font-family: "Roboto", sans-serif;
+      font-weight: 400;
+    }
+
     #sidenav{
     height: 100%;
     width: 15%;
@@ -32,9 +37,11 @@
 
     #profile {
       margin-top: 20px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       list-style: none;
+
     }
     #profile-2 {
     padding-top: 40px;

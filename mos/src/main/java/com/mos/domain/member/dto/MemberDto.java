@@ -1,7 +1,6 @@
 package com.mos.domain.member.dto;
 
 import java.sql.Date;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +13,7 @@ public class MemberDto {
   private String userName;
   private Date createDate;
   private Date updateDate;
-  private String status;
+  private String stat;
   private int score;
   private String biography;
   private String photo;
