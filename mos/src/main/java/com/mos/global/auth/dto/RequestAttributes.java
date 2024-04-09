@@ -2,6 +2,7 @@ package com.mos.global.auth.dto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import lombok.Getter;
 
 import java.util.Map;

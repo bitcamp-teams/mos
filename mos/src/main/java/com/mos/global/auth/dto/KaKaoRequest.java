@@ -1,53 +1,43 @@
 package com.mos.global.auth.dto;
 
-import com.amazonaws.Response;
 import com.google.gson.GsonBuilder;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 
-
 public class KaKaoRequest extends RequestAttributes {
-  private final String grantType = "authorization_code";
 
-  @Value("${kakao.redirect.url}")
-  private String RedirectUrl;
+  private static String body;
 
-  @Value("${kakao.client.id}")
-  private String KAKAO_CLIENT_ID;
+  private static synchronized String getBody(String code) {
+    if (body == null) {
+      var request = RequestEntity.post(RequestParam.KAKAO_AUTH_URI.getParam() + "/oauth/token")
+          .contentType(MediaType.APPLICATION_FORM_URLENCODED).acceptCharset(StandardCharsets.UTF_8)
+          .accept(MediaType.APPLICATION_JSON)
+          .body(merge(code));
 
-  @Value("${kakao.client.secret}")
-  private String KAKAO_CLIENT_SECRET;
+      body = new RestTemplate().exchange(request, String.class).getBody();
+    }
+    return body;
+  }
 
-  @Value("${kakao.redirect.url}")
-  private String KAKAO_REDIRECT_URL;
-
-  private String code;
-
-  private final static String KAKAO_AUTH_URI = "https://kauth.kakao.com";
-
-  private static final String body;
-
-  static {
-    RequestEntity<String> request = RequestEntity.post(KAKAO_AUTH_URI + "/oauth/token")
-        .accept(MediaType.APPLICATION_FORM_URLENCODED).acceptCharset(StandardCharsets.UTF_8)
-        .body(new GsonBuilder().create().toJson(KaKaoRequest.class));
-
-    body = new RestTemplate().exchange(request, String.class).getBody();
+  private static MultiValueMap<String, String> merge(String code) {
+    MultiValueMap<String, String> enumMap = new LinkedMultiValueMap<>();
+    enumMap.add("code", code);
+    for (RequestParam value : RequestParam.values()) {
+      if (value.getKey() != null)
+        enumMap.add(value.getKey(), value.getParam());
+    }
+    /* serialize 제외 : KAKAO_API_URI, KAKAO_AUTH_URI */
+    return enumMap;
   }
 
   public KaKaoRequest(String code) {
-    super(body);
-    this.code = code;
+    super(getBody(code));
   }
 
   @Override
@@ -55,8 +45,4 @@ public class KaKaoRequest extends RequestAttributes {
     return (String) getResponse().get("access_token");
   }
 
-  @Override
-  public String toString() {
-    return new GsonBuilder().serializeNulls().create().toJson(this);
-  }
 }

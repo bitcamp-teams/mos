@@ -1,25 +1,26 @@
 package com.mos.global.auth.handler;
 
 import com.mos.global.auth.dto.KaKaoRequest;
+import com.mos.global.auth.dto.RequestParam;
 import com.mos.global.auth.exception.LoginApiException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 
-
+@RequiredArgsConstructor
 public class KakaoLoginRequestHandler implements LoginRequestHandler {
-  private final static String KAKAO_API_URI = "https://kapi.kakao.com";
 
   @Override
   public LoginResponseHandler getUserInfo(RestTemplate restTemplate, String code) {
     var requestEntity =
-        RequestEntity.post(KAKAO_API_URI + "/v2/user/me")
+        RequestEntity.post(RequestParam.KAKAO_API_URI.getParam() + "/v2/user/me")
             .header("Authorization", getBearerToken(code))
-            .accept(MediaType.APPLICATION_FORM_URLENCODED).acceptCharset(StandardCharsets.UTF_8)
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED).acceptCharset(StandardCharsets.UTF_8)
+            .accept(MediaType.APPLICATION_JSON)
             .build();
-
 
     var response = restTemplate.exchange(requestEntity, String.class);
 
@@ -35,9 +36,7 @@ public class KakaoLoginRequestHandler implements LoginRequestHandler {
     if (token.startsWith("Bearer"))
       return token;
     else
-      return "Bearer" + token;
+      return "Bearer " + token;
   }
-
-
 
 }
