@@ -47,3 +47,14 @@
 .button-size {
   font-size: x-large;
 }
+
+/* signup.html 자바스크립트 용 */
+.message {
+    font-weight: bold;
+}
+.error {
+    color: red;
+}
+.success {
+    color: blue;
+}

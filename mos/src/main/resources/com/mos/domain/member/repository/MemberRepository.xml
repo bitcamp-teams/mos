@@ -8,7 +8,7 @@
   <resultMap id="MemberMap" type="MemberDto">
     <id column="member_no" property="no"/>
     <result column="email" property="email"/>
-    <result column="username" property="username"/>
+    <result column="username" property="userName"/>
     <result column="create_date" property="createDate"/>
     <result column="update_date" property="updateDate"/>
     <result column="stat" property="status"/>
@@ -21,7 +21,7 @@
   </select>
 
   <select id="findByUsername" parameterType="MemberDto">
-    select username from member where username=#{username};
+    select username from member where username=#{userName};
   </select>
 
   <insert id="add" parameterType="MemberJoinDto">
