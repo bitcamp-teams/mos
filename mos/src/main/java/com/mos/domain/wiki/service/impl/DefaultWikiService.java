@@ -13,8 +13,24 @@ public class DefaultWikiService implements WikiService {
 
   private final WikiRepository wikiRepository;
 
+  //개별 스터디에 따라 위키들을 정렬하는 메서드임!
   @Override
   public List<WikiDto> listByStudyNo(int studyNo) {
     return wikiRepository.listByStudyNo(studyNo);
+  }
+
+  @Override
+  public WikiDto getByWikiNo(int wikiNo) {
+    return wikiRepository.getByWikiNo(wikiNo);
+  }
+
+  @Override
+  public int updateWiki(WikiDto wikiDto) {
+    return wikiRepository.updateWiki(wikiDto);
+  }
+
+  @Override
+  public void deleteWiki(int wikiNo) {
+    wikiRepository.deleteWiki(wikiNo);
   }
 }

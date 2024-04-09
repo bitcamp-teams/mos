@@ -1,7 +1,9 @@
 package com.mos.domain.study.controller;
 
+import com.mos.domain.study.dto.StudyDto;
+import com.mos.domain.study.service.StudyService;
 import javax.servlet.http.HttpSession;
-
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -10,12 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.mos.domain.study.dto.StudyDto;
-import com.mos.domain.study.service.StudyService;
-
-import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,7 +36,7 @@ public class StudyController {
   }
 
   @GetMapping("view")
-  public void view(int studyNo, Model model) throws Exception {
+  public void view(@RequestParam int studyNo, Model model) throws Exception {
     StudyDto studyDto = studyService.getByStudyNo(studyNo);
     if (studyDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
@@ -62,12 +60,14 @@ public class StudyController {
     StudyDto result = studyService.getByStudyNo(studyDto.getStudyNo());
     model.addAttribute("study", result);
     // return "view?studyNo=" + studyDto.getStudyNo();
-    return "study/view";
+    return "/study/view";
   }
 
   @GetMapping("delete")
   public String delete(HttpSession session, int studyNo) throws Exception {
-    // TODO 스터디장만 삭제 권한 있고, 연결된 다른 참여회원이 존재할 경우 삭제 불가함
+    // TODO 스터디장만 삭제 권한 있고, 
+    //  연결된 다른 참여회원이 존재할 경우 삭제 불가하며
+    //  타인이 작성된 위키가 있는 경우는 삭제 불가
     studyService.deleteStudy(studyNo);
 
     // TODO 연결된 위키도 전부 삭제함
@@ -81,10 +81,11 @@ public class StudyController {
     model.addAttribute("studyList", studyService.list());
   }
 
+
   @GetMapping("test")
   @ResponseBody
   public String test() {
-    return "HEL2!";
+    return "This is a test";
   }
 
 }

@@ -1,0 +1,36 @@
+<html lang='en'
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset='UTF-8'>
+  <title>모두의스터디</title>
+  <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="page-margin">
+  <div data-th-replace="header::header">머리말</div>
+<!--  여기 히스토리백이라 원치 않는 결과가 자주 나는데, 페이지 프래그먼트로 쓰면 이 템플릿에는 필요없는 기능이므로 이렇게 두었음 -->
+  <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="list.html">[편집 취소하고 리스트로 돌아가기]</a>
+
+  <div th:object="${wiki}">
+    <form action="update" data-th-action="@{/wiki/updateWiki}" method="post">
+    <h1>제목: <input name="title" th:value="*{title}"></h1>
+    <br>
+      <!--POST 방식이라 Hidden Field 방식으로 wikiNo 전달함-->
+      <input name="wikiNo" th:value="*{wikiNo}" type="hidden">
+      <p> 내용 <input style="border: 1px solid black; /* 테두리 스타일과 색상 설정 */
+    padding: 10px; /* 내부 여백 설정 */" name="content" th:value="*{content}" type="text" value="내용"></p>
+      <br>
+      <button>편집완료</button>
+    </form>
+
+
+  </div>
+
+  <div data-th-replace="footer::footer">꼬리말</div>
+</div>
+<!--<script>-->
+<!--  console.dir('[[${study}]]')-->
+<!--</script>-->
+</body>
+</html>

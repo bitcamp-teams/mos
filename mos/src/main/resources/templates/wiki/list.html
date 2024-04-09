@@ -37,9 +37,12 @@
 <div class="page-margin">
   <div th:replace="header::header">머리말</div>
   <h1>위키 리스트 확인</h1>
+  <a href="javascript:history.back()">뒤로 가기</a>
   <ul>
     <li th:class="'indent-' + ${wiki.layer}" th:each="wiki : ${wikis}">
-      <span th:text="${wiki.title}"><a href="wiki/view?wikiNo=1">리스트</a></span>
+      <a href="wiki/viewWiki"
+         th:href="@{/wiki/viewWiki(wikiNo=*{wiki.wikiNo})}">
+        <span th:text="${wiki.title}">리스트</span></a>
     </li>
   </ul>
 

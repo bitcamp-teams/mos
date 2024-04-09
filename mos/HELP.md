@@ -7,7 +7,6 @@ For further reference, please consider the following sections:
 * [Official Gradle documentation](https://docs.gradle.org)
 * [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.1.10/gradle-plugin/reference/html/)
 * [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.1.10/gradle-plugin/reference/html/#build-image)
-* [Spring Configuration Processor](https://docs.spring.io/spring-boot/docs/3.1.10/reference/htmlsingle/index.html#appendix.configuration-metadata.annotation-processor)
 * [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/3.1.10/reference/htmlsingle/index.html#using.devtools)
 * [MyBatis Framework](https://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)
 * [Thymeleaf](https://docs.spring.io/spring-boot/docs/3.1.10/reference/htmlsingle/index.html#web.servlet.spring-mvc.template-engines)

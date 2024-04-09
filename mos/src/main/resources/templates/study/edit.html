@@ -12,7 +12,7 @@
 
 
   <div data-th-object="${study}">
-    <form action="update" data-th-action="@{update}" method='post'>
+    <form action="update" data-th-action="@{/study/update}" method='post'>
 
       <!--POST 방식이라 Hidden Field 방식으로 studyNo 전달함-->
       <input name="studyNo" th:value="*{studyNo}" type="hidden">
