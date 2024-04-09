@@ -50,5 +50,13 @@
       wiki_no=#{wikiNo}
   </update>
 
+  <delete id="deleteWiki" parameterType="int">
+    DELETE
+      FROM
+        curriculum
+    WHERE
+      wiki_no=#{wikiNo}
+  </delete>
+
 
 </mapper>

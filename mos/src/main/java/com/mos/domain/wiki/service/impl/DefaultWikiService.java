@@ -28,4 +28,9 @@ public class DefaultWikiService implements WikiService {
   public int updateWiki(WikiDto wikiDto) {
     return wikiRepository.updateWiki(wikiDto);
   }
+
+  @Override
+  public void deleteWiki(int wikiNo) {
+    wikiRepository.deleteWiki(wikiNo);
+  }
 }

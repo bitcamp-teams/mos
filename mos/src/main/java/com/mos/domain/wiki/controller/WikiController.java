@@ -3,6 +3,7 @@ package com.mos.domain.wiki.controller;
 import com.mos.domain.study.service.impl.DefaultStudyService;
 import com.mos.domain.wiki.dto.WikiDto;
 import com.mos.domain.wiki.service.WikiService;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,6 +64,14 @@ public class WikiController {
   @GetMapping("list")
   public void list(@RequestParam int studyNo, Model model) {
     model.addAttribute("wikis", wikiService.listByStudyNo(studyNo));
+  }
+
+  @GetMapping("delete")
+  public String delete(HttpSession session, @RequestParam int wikiNo) throws Exception {
+    //TODO 1. 작성자만 삭제 가능
+    int studyNo = wikiService.getByWikiNo(wikiNo).getStudyNo();
+    wikiService.deleteWiki(wikiNo);
+    return "redirect:/wiki/list?studyNo="+studyNo;
   }
 
 

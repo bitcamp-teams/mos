@@ -12,4 +12,6 @@ public interface WikiRepository {
   WikiDto getByWikiNo(int wikiNo);
 
   int updateWiki(WikiDto wikiDto);
+
+  void deleteWiki(int wikiNo);
 }
