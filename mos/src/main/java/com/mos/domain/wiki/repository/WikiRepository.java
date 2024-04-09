@@ -10,4 +10,6 @@ public interface WikiRepository {
   List<WikiDto> listByStudyNo(int studyNo);
 
   WikiDto getByWikiNo(int wikiNo);
+
+  int updateWiki(WikiDto wikiDto);
 }

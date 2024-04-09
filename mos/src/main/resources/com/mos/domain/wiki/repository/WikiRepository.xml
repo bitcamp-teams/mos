@@ -40,5 +40,15 @@
     WHERE wiki_no =  #{wikiNo};
   </select>
 
+  <update id="updateWiki" parameterType="WikiDto">
+    UPDATE
+      curriculum
+    SET
+      title=#{title},
+      content=#{content}
+    WHERE
+      wiki_no=#{wikiNo}
+  </update>
+
 
 </mapper>

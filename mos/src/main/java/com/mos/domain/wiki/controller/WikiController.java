@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,9 +53,10 @@ public class WikiController {
   }
 
   @PostMapping("updateWiki")
-  public String update() {
-    //TODO update 포스트 메서드로 요청 받아서 처리
-    return "/wiki/list?studyNo=1";
+  public String update(@ModelAttribute WikiDto wikiDto, Model model) throws Exception {
+    wikiService.updateWiki(wikiDto);
+    model.addAttribute("wiki", wikiDto);
+    return "redirect:/wiki/viewWiki?wikiNo="+wikiDto.getWikiNo();
   }
 
 
