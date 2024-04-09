@@ -1,3 +1,4 @@
+// auth/login.html 모달 구현
 document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById('loginModal');
     const btnOpenModal = document.querySelector('.btn-open-modal');
