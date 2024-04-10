@@ -1,31 +1,30 @@
-package com.mos.global.auth.dto;
+package com.mos.global.auth.handler;
 
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Getter
 @Component
-public class RequestData implements InitializingBean {
-  private static final Log log = LogFactory.getLog(RequestData.class);
-  /* KAKAO */
+public class OAuthRequestData {
+
+  public String code;
+
+  /* KAKAO
+  *     kakao.client.id=
+        kakao.client.secret=
+        kakao.redirect.url=
+        kakao.auth.uri=
+        kakao.api.url=
+  * */
   public static String KAKAO_API_URI;
   public static String KAKAO_CLIENT_ID;
   public static String KAKAO_CLIENT_SECRET;
   public static String KAKAO_REDIRECT_URL;
   public static String KAKAO_AUTH_URI;
-  public String code;
 
-  @Override
-  public void afterPropertiesSet() throws Exception {
-    log.debug(String.format("RequestData: %s", KAKAO_API_URI));
-  }
-
-  public RequestData setCode(String code) {
+  public OAuthRequestData setCode(String code) {
     this.code = code;
     return this;
   }
@@ -55,7 +54,23 @@ public class RequestData implements InitializingBean {
     KAKAO_AUTH_URI = kakaoAuthUri;
   }
 
-  /* */
+
+  /* GITHUB
+  *     github.clientId=
+        github.clientSecret=
+  * */
+  public static String GITHUB_CLIENT_ID;
+  public static String GITHUB_CLIENT_SECRET;
+
+  @Value("${github.clientId}")
+  public static void setGithubClientId(String githubClientId) {
+    GITHUB_CLIENT_ID = githubClientId;
+  }
+
+  @Value("${github.clientSecret}")
+  public static void setGithubClientSecret(String githubClientSecret) {
+    GITHUB_CLIENT_SECRET = githubClientSecret;
+  }
 
   @Override
   public String toString() {

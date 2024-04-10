@@ -1,8 +1,8 @@
-package com.mos.global.auth.handler;
+package com.mos.global.auth.handler.response;
 
 import java.util.Map;
 
-public class KakaoLoginResponseHandler extends LoginResponseHandler{
+public class KakaoLoginResponseHandler extends LoginResponseHandler {
   public KakaoLoginResponseHandler(String response) {
     super(response);
   }

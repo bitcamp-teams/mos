@@ -1,4 +1,4 @@
-package com.mos.global.auth.handler;
+package com.mos.global.auth.handler.response;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
