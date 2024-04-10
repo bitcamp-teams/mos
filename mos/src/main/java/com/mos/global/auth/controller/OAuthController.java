@@ -9,6 +9,7 @@ import com.mos.global.auth.service.KakaoService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,6 +30,9 @@ public class OAuthController {
   private final MemberService memberService;
   private final LoginApiManager loginApiManager;
   private final RestTemplate restTemplate = new RestTemplate();
+  {
+    restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+  }
 
 
   @GetMapping("/auth/login")
