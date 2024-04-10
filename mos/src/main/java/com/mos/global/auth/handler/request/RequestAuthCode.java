@@ -8,17 +8,16 @@ import static com.mos.global.auth.handler.LoginApiProvider.KAKAO;
 
 public class RequestAuthCode extends RequestAttributes {
 
-  private static String getBody(LoginApiProvider provider, String code) {
+  private void getBody(LoginApiProvider provider, String code) {
     if (provider.equals(KAKAO)) {
       authenticate(provider, OAuthRequestParam.KAKAO_AUTH_URI.getParam(), code);
     } else if (provider.equals(GITHUB)) {
       authenticate(provider, "https://github.com/login/oauth/access_token", code);
     }
-    return body;
   }
 
   public RequestAuthCode(LoginApiProvider provider, String code) {
-    super(getBody(provider, code));
+    getBody(provider, code);
   }
 
   @Override

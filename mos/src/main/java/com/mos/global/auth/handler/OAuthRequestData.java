@@ -63,12 +63,12 @@ public class OAuthRequestData {
   public static String GITHUB_CLIENT_SECRET;
 
   @Value("${github.clientId}")
-  public static void setGithubClientId(String githubClientId) {
+  public void setGithubClientId(String githubClientId) {
     GITHUB_CLIENT_ID = githubClientId;
   }
 
   @Value("${github.clientSecret}")
-  public static void setGithubClientSecret(String githubClientSecret) {
+  public void setGithubClientSecret(String githubClientSecret) {
     GITHUB_CLIENT_SECRET = githubClientSecret;
   }
 

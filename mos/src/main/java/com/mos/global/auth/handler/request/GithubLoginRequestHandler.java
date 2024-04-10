@@ -17,7 +17,7 @@ public class GithubLoginRequestHandler implements LoginRequestHandler {
   @Override
   public LoginResponseHandler getUserInfo(RestTemplate restTemplate, String code) {
     var requestEntity =
-        RequestEntity.post("https://api.github.com/user/emails")
+        RequestEntity.post("https://api.github.com/user")
             .header("Authorization", getBearerToken(code))
             .contentType(MediaType.APPLICATION_FORM_URLENCODED).acceptCharset(StandardCharsets.UTF_8)
             .accept(MediaType.APPLICATION_JSON)
@@ -34,13 +34,11 @@ public class GithubLoginRequestHandler implements LoginRequestHandler {
 
   private String getBearerToken(String code) {
     String token = new RequestAuthCode(GITHUB, code).getAccessToken();
-
+    // github 은 앞에 "token " 붙여야됨
     if (token.startsWith("Bearer"))
-      return token;
+      return "token " + token;
     else
-      return "Bearer" + token;
+      return "Bearer token " + token;
   }
-
-
 
 }

@@ -36,7 +36,7 @@ public class OAuthController {
 
     // 카카오 인증 URL 저장
     model.addAttribute("kakaoUrl", kakaoService.getKakaoLogin());
-    model.addAttribute("clientId", OAuthRequestParam.GITHUB_CLIENT_ID);
+    model.addAttribute("clientId", OAuthRequestParam.GITHUB_CLIENT_ID.getParam());
     //log.debug(String.format("requestUrl : %s", model));
 
     return "auth/login";
