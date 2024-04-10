@@ -1,6 +1,6 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang='en'
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<html lang='en'>
 <head>
   <meta charset='UTF-8'>
   <title>모두의스터디</title>
@@ -22,6 +22,8 @@
     <p> 모집마감 = <span th:text="*{recruitmentDeadline}"> </span></p>
     <p> 예상종료일 = <span th:text="*{endDate}"> </span></p>
     <p> 소개 = <span th:text="*{introduction}"> </span></p>
+    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>
+    <br><br>
     <a data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">[삭제]</a>
 
   </div>

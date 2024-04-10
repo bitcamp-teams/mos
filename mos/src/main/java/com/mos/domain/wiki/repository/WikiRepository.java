@@ -7,10 +7,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface WikiRepository {
 
-  void add(WikiDto studyDto);
+  List<WikiDto> listByStudyNo(int studyNo);
 
-  List<WikiDto> findAll();
+  WikiDto getByWikiNo(int wikiNo);
 
-  WikiDto getByStudyNo(int studyNo);
+  int updateWiki(WikiDto wikiDto);
 
+  void deleteWiki(int wikiNo);
 }
