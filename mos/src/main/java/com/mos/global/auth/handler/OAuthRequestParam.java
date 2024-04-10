@@ -17,7 +17,13 @@ public enum OAuthRequestParam {
 
   /* GITHUB */
   GITHUB_CLIENT_ID("client_id", OAuthRequestData.GITHUB_CLIENT_ID),
-  GITHUB_CLIENT_SECRET("client_secret", OAuthRequestData.GITHUB_CLIENT_SECRET);
+  GITHUB_CLIENT_SECRET("client_secret", OAuthRequestData.GITHUB_CLIENT_SECRET),
+
+  /* GOOGLE */
+  GOOGLE_AUTHORIZATION_CODE("grant_type", "authorization_code"),
+  GOOGLE_CLIENT_ID("client_id", OAuthRequestData.GOOGLE_CLIENT_ID),
+  GOOGLE_CLIENT_SECRET("client_secret", OAuthRequestData.GOOGLE_CLIENT_SECRET),
+  GOOGLE_REDIRECT_URI("redirect_uri", OAuthRequestData.GOOGLE_REDIRECT_URI);
 
   private final String key;
   private final String param;

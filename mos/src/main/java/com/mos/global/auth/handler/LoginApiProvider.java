@@ -1,15 +1,15 @@
 package com.mos.global.auth.handler;
 
 import com.mos.global.auth.handler.request.GithubLoginRequestHandler;
+import com.mos.global.auth.handler.request.GoogleLoginRequestHandler;
 import com.mos.global.auth.handler.request.KakaoLoginRequestHandler;
-import com.mos.global.auth.handler.request.LoginRequestHandler;
 import com.mos.global.auth.handler.response.LoginResponseHandler;
 import lombok.Getter;
 import org.springframework.web.client.RestTemplate;
 
 @Getter
 public enum LoginApiProvider implements LoginRequestHandler {
-//  GOOGLE(new GoogleLoginRequestHandler),
+  GOOGLE(new GoogleLoginRequestHandler()),
   GITHUB(new GithubLoginRequestHandler()),
   KAKAO(new KakaoLoginRequestHandler());
 

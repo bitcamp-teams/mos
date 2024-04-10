@@ -6,11 +6,9 @@ import com.mos.domain.member.service.MemberService;
 import com.mos.global.auth.handler.LoginApiManager;
 import com.mos.global.auth.handler.OAuthRequestParam;
 import com.mos.global.auth.handler.response.LoginResponseHandler;
-import com.mos.global.auth.service.KakaoService;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import javax.servlet.http.HttpSession;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Controller
 @CrossOrigin("*")
@@ -33,10 +33,10 @@ public class OAuthController {
 
   private static final Log log = LogFactory.getLog(OAuthController.class);
 
-  private final KakaoService kakaoService;
   private final MemberService memberService;
   private final LoginApiManager loginApiManager;
   private final RestTemplate restTemplate = new RestTemplate();
+
   {
     restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
   }
@@ -44,10 +44,19 @@ public class OAuthController {
 
   @GetMapping("/auth/login")
   public String login(Model model) {
-
-    model.addAttribute("kakaoUrl", kakaoService.getKakaoLogin());
+    // 카카오
+    model.addAttribute("kakaoUrl",
+        OAuthRequestParam.KAKAO_AUTH_URI.getParam() +
+        "/oauth/authorize?client_id=" + OAuthRequestParam.KAKAO_CLIENT_ID.getParam()
+        + "&redirect_uri=" + OAuthRequestParam.KAKAO_REDIRECT_URL.getParam()
+        + "&response_type=code");
+    // 깃헙
     model.addAttribute("clientId", OAuthRequestParam.GITHUB_CLIENT_ID.getParam());
-    //log.debug(String.format("requestUrl : %s", model));
+    // 구글
+    model.addAttribute("googleUrl",
+        "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + OAuthRequestParam.GOOGLE_CLIENT_ID.getParam()
+        + "&redirect_uri=" + OAuthRequestParam.GOOGLE_REDIRECT_URI.getParam()
+        + "&response_type=code&scope=email");
 
     return "auth/login";
   }
@@ -67,14 +76,9 @@ public class OAuthController {
     return "auth/signup";
   }
 
-  @GetMapping("logout")
-  public String logout(HttpSession session) throws Exception {
-    session.invalidate();
-    return "redirect:/";
-  }
-
 
   // 깃헙
+
   @GetMapping("callback")
   public String githubLogin(@RequestParam String code, MemberJoinDto joinDto, Model model) {
     LoginResponseHandler githubInfo =
@@ -90,6 +94,30 @@ public class OAuthController {
       model.addAttribute("error", "github 로그인 실패");
     }
     return "auth/form";
+  }
+  // 구글
+
+  @GetMapping("login/oauth2/code/google")
+  public String googleOAuth(@RequestParam String code, MemberJoinDto joinDto, Model model) {
+    LoginResponseHandler googleInfo =
+        loginApiManager.getProvider("GOOGLE").getUserInfo(restTemplate, code);
+
+    if (!googleInfo.getEmail().isEmpty()) {
+      joinDto.setEmail(googleInfo.getEmail());
+      if (memberService.existsByEmail(joinDto.getEmail())) {
+        return "redirect:/";
+      }
+      model.addAttribute("joinDto", joinDto);
+    } else {
+      model.addAttribute("error", "github 로그인 실패");
+    }
+    return "auth/form";
+  }
+
+  @GetMapping("logout")
+  public String logout(HttpSession session) throws Exception {
+    session.invalidate();
+    return "redirect:/";
   }
 
   @PostMapping("signup")

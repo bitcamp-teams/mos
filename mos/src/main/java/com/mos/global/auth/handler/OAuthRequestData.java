@@ -12,11 +12,11 @@ public class OAuthRequestData {
   public String code;
 
   /* KAKAO
-  *     kakao.client.id=
-        kakao.client.secret=
-        kakao.redirect.url=
-        kakao.auth.uri=
-        kakao.api.url=
+  *     kakao.client.id
+        kakao.client.secret
+        kakao.redirect.url
+        kakao.auth.uri
+        kakao.api.url
   * */
   public static String KAKAO_API_URI;
   public static String KAKAO_CLIENT_ID;
@@ -56,8 +56,8 @@ public class OAuthRequestData {
 
 
   /* GITHUB
-  *     github.clientId=
-        github.clientSecret=
+  *     github.clientId
+        github.clientSecret
   * */
   public static String GITHUB_CLIENT_ID;
   public static String GITHUB_CLIENT_SECRET;
@@ -70,6 +70,31 @@ public class OAuthRequestData {
   @Value("${github.clientSecret}")
   public void setGithubClientSecret(String githubClientSecret) {
     GITHUB_CLIENT_SECRET = githubClientSecret;
+  }
+
+  /*
+  * GOOGLE
+  *     google.clientId
+  *     google.clientSecret
+  *     google.redirect-uri
+  * */
+  public static String GOOGLE_CLIENT_ID;
+  public static String GOOGLE_CLIENT_SECRET;
+  public static String GOOGLE_REDIRECT_URI;
+
+  @Value("${google.clientId}")
+  public void setGoogleClientId(String googleClientId) {
+    GOOGLE_CLIENT_ID = googleClientId;
+  }
+
+  @Value("${google.clientSecret}")
+  public void setGoogleClientSecret(String googleClientSecret) {
+    GOOGLE_CLIENT_SECRET = googleClientSecret;
+  }
+
+  @Value("${google.redirect-uri}")
+  public void setGoogleRedirectUri(String googleRedirectUri) {
+    GOOGLE_REDIRECT_URI = googleRedirectUri;
   }
 
   @Override

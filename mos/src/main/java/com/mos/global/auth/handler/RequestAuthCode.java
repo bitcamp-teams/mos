@@ -1,10 +1,6 @@
-package com.mos.global.auth.handler.request;
+package com.mos.global.auth.handler;
 
-import com.mos.global.auth.handler.LoginApiProvider;
-import com.mos.global.auth.handler.OAuthRequestParam;
-
-import static com.mos.global.auth.handler.LoginApiProvider.GITHUB;
-import static com.mos.global.auth.handler.LoginApiProvider.KAKAO;
+import static com.mos.global.auth.handler.LoginApiProvider.*;
 
 public class RequestAuthCode extends RequestAttributes {
 
@@ -13,6 +9,8 @@ public class RequestAuthCode extends RequestAttributes {
       authenticate(provider, OAuthRequestParam.KAKAO_AUTH_URI.getParam(), code);
     } else if (provider.equals(GITHUB)) {
       authenticate(provider, "https://github.com/login/oauth/access_token", code);
+    } else if (provider.equals(GOOGLE)) {
+      authenticate(provider, "https://oauth2.googleapis.com/token", code);
     }
   }
 
