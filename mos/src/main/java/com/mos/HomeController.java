@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping
 public class HomeController {
 
+
   private static final Log log = LogFactory.getLog(HomeController.class);
   private final KakaoService kakaoService;
 

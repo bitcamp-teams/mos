@@ -1,0 +1,28 @@
+.list-group-item {
+  /*width: 300px;*/
+}
+
+.indent-0 {
+  /* 들여쓰기가 필요 없는 경우 */
+  font-weight: bolder; /* 기본 글꼴 강도 */
+  text-align: center;
+}
+
+.indent-1 {
+  /* 첫 번째 레벨의 들여쓰기 */
+  margin-left: 10px;
+  font-weight: bold; /* 굵은 글꼴 */
+}
+
+.indent-2 {
+  /* 두 번째 레벨의 들여쓰기 */
+  margin-left: 30px;
+  /*font-style: italic; !* 이탤릭체 *!*/
+}
+
+.indent-3 {
+  /* 세 번째 레벨의 들여쓰기 */
+  margin-left: 50px;
+  font-weight: bold; /* 굵은 글꼴 */
+  /*font-style: italic; !* 이탤릭체 *!*/
+}

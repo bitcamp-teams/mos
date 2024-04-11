@@ -49,7 +49,7 @@ public class WikiController {
     if (wikiDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
-//    log.debug(wikiDto.toString());
+    //    log.debug(wikiDto.toString());
     model.addAttribute("wiki", wikiDto);
   }
 
@@ -72,6 +72,11 @@ public class WikiController {
     int studyNo = wikiService.getByWikiNo(wikiNo).getStudyNo();
     wikiService.deleteWiki(wikiNo);
     return "redirect:/wiki/list?studyNo="+studyNo;
+  }
+
+  @GetMapping("sortableTest")
+  public void sortableTest(@RequestParam int studyNo, Model model) throws Exception {
+    model.addAttribute("wikis", wikiService.listByStudyNo(studyNo));
   }
 
 
