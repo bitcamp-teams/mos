@@ -122,10 +122,9 @@ jobs:
           port: 22
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            sudo docker stop $(sudo docker ps -a -q)
-            sudo docker rm -f $(sudo docker ps -a -q)
+            docker ps -aq --filter name=modu_study | grep -q . && docker rm -f $(docker ps -aq --filter name=modu_study)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
-            sudo docker run -d -p 8888:8888 ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
+            sudo docker run -d --name modu_study -p 8888:8888 ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
             sudo docker image prune -f
 
       # slack으로 메시지 발송
