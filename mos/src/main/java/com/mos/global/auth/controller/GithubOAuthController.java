@@ -30,6 +30,7 @@ public class GithubOAuthController {
       if (memberService.existsByEmail(joinDto.getEmail())) {
         return "redirect:/";
       }
+      joinDto.setPlatform("github");
       model.addAttribute("joinDto", joinDto);
     } else {
       model.addAttribute("error", "github 로그인 실패");
@@ -46,6 +47,7 @@ public class GithubOAuthController {
       if (memberService.existsByEmail(joinDto.getEmail())) {
         return "redirect:/";
       }
+      joinDto.setPlatform("google");
       model.addAttribute("joinDto", joinDto);
     } else {
       model.addAttribute("error", "github 로그인 실패");

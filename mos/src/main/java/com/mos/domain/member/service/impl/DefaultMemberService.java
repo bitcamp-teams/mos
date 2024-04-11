@@ -36,6 +36,7 @@ public class DefaultMemberService implements MemberService {
 
     @Override
     public int join(MemberJoinDto joinDto) {
+    System.out.println("joinDto = " + joinDto);
     return memberRepository.add(joinDto);
   }
 
