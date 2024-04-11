@@ -15,4 +15,6 @@ public interface StudyRepository {
 
   void delete(int studyNo);
 
+  int update(StudyDto studyDto);
+
 }

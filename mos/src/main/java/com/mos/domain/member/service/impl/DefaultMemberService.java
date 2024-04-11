@@ -2,9 +2,9 @@ package com.mos.domain.member.service.impl;
 
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
+import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.repository.MemberRepository;
 import com.mos.domain.member.service.MemberService;
-import com.mos.domain.study.dto.StudyDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,13 @@ public class DefaultMemberService implements MemberService {
     return memberRepository.findByEmail(email);
   }
 
+  @Override
+  public MemberDto getName(String username) {
+    return memberRepository.findByUsername(username);
+  }
     @Override
     public MemberDto getNo(int no) {
+
         return memberRepository.findByNo(no);
     }
 
@@ -40,4 +45,13 @@ public class DefaultMemberService implements MemberService {
     List<MemberStudyDto> myStudy = memberRepository.findMyStudies(no);
     return myStudy;
   }
+    @Override
+    public int join(MemberJoinDto joinDto) {
+    return memberRepository.add(joinDto);
+  }
+
+    @Override
+    public boolean existsByEmail(String email) {
+      return memberRepository.existsByEmail(email);
+    }
 }

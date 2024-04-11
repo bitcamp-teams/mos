@@ -8,7 +8,7 @@
       justify-content: space-between; /* 카드 사이의 간격을 균등하게 배치합니다. */
       flex-wrap: nowrap; /* 카드가 너비를 넘어가면 줄 바꿈하지 않도록 합니다. */
       /* border: 1px solid red; */
-      margin-bottom: 100px;
+      margin-bottom: 0px;
     }
 
     .container .card {

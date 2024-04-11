@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>모두의스터디</title>
+  <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="page-margin">
+  <div data-th-replace="header::header">머리말</div>
+
+
+  <div data-th-object="${study}">
+    <form action="update" data-th-action="@{/study/update}" method='post'>
+
+      <!--POST 방식이라 Hidden Field 방식으로 studyNo 전달함-->
+      <input name="studyNo" th:value="*{studyNo}" type="hidden">
+      <h1>제목: <input name="title" th:value="*{title}" type="text"></h1>
+      <p> 진행방식 = <input name="method" th:value="*{method}" type="text"></p>
+      <p> 모집정원 = <input name="intake" th:value="*{intake}" type="number"></p>
+      <p> 모집마감 = <input name="recruitmentDeadline" th:value="*{recruitmentDeadline}" type="date">
+      </p>
+      <!--      <p> 예상종료일 = <input name="endDate" th:value="*{endDate}" type="date"></p>-->
+      <p> 소개 = <input name="introduction" th:value="*{introduction}" type="text"></p>
+      <button>편집완료</button>
+      <a href="list">저장하지 않고 돌아가기</a>
+
+    </form>
+
+  </div>
+
+  <div data-th-replace="footer::footer">꼬리말</div>
+
+</div>
+</body>
+</html>

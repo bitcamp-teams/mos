@@ -12,18 +12,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WikiDto {
+
+  int wikiNo;
   int studyNo;
-  int memberNo;
   String title;
-  String introduction;
-  String location;
-  Date startDate;
-  Date endDate;
-  String stat;
-  int intake;
-  String method;
-  Date recruitmentDeadline;
+  String content;
+  int order;
+  int layer;
+  int layerOrder;
+  int likes; //반정규화
   Date createdDate;
   Date updatedDate;
-  int siggNo;
+  Date contentCreatedDate;
+  Date contentUpdatedDate;
+  String stat;
+  int memberNo;
+  String username;
 }

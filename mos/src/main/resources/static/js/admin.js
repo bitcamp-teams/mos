@@ -1,18 +1,20 @@
 
 function codeList() {
+    debugger
     $.ajax({
-        type: 'post',
+        type: 'get',
         url: "/api/v1/admin/code/list",
         data: {
-            identifyNumber: identifyNumber,
-            identifyCode: identifyCode,
-            studentNumber: studentNumber
+            paging: {
+                pageNo: null
+            }
         },
         dataType: "json",
         async: false,
         success: function (data) {
-            // $("#contC ul.tabs").find(".tab-link").remove();
-            // $("#contC ul.tabs").prepend(data.tabs);
+            debugger
+            console.log(data)
+            codeList = data
         },
         error: function (request, status, error) {
         }

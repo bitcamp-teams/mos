@@ -1,18 +1,15 @@
-package com.mos.domain.member.service.impl;
+package com.mos.global.auth.service;
 
-import java.io.IOException;
-import java.util.Arrays;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -20,18 +17,20 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@Service
 //@RequiredArgsConstructor
+@Service
 //@ConfigurationProperties(prefix = "github")
 //@ConstructorBinding
-public class GithubOAuthService {
+public class GithubOAuthService implements OAuthService{
 
   private static final Log log = LogFactory.getLog(GithubOAuthService.class);
+  @Autowired
+  private WebClient webClient;
 
   private final String clientId;
-
   private final String clientSecret;
 
+  @Autowired
   public GithubOAuthService(
       @Value("${github.clientId}")String clientId,
       @Value("${github.clientSecret}")String clientSecret) {
@@ -39,8 +38,7 @@ public class GithubOAuthService {
     this.clientSecret = clientSecret;
   }
 
-  @Autowired
-  private WebClient webClient;
+
 
   private String requestAccessToken(MultiValueMap<String, String> formData) {
     return webClient.post()
@@ -53,16 +51,17 @@ public class GithubOAuthService {
         .block();
   }
 
-
+  @Override
   public Optional<String> getAccessToken(String code){
     MultiValueMap<String, String> formData = setFormData(code);
 
     String tokenBeforeParsing = requestAccessToken(formData);
 
-    String tokenParser = "{\"access_token\":\"";
-    String tokenAfterParsing = parsingResponse(tokenBeforeParsing, tokenParser);
-    log.debug(String.format("Github accessToken = " + tokenAfterParsing));
+    System.out.println("tokenBeforeParsing = " + tokenBeforeParsing);
+    String tokenAfterParsing = parsingResponse(tokenBeforeParsing, "access_token");
+//    log.debug(String.format("Github accessToken = " + tokenAfterParsing));
 
+    System.out.println("tokenAfterParsing = " + tokenAfterParsing);
     return Optional.ofNullable(getEmail(tokenAfterParsing)).orElse(null);
   }
 
@@ -75,8 +74,8 @@ public class GithubOAuthService {
   }
 
 
-  private String parsingResponse(String str, String parser) {
-    String[] tokens = str.split(",");
+  private String parsingResponse(String response, String key) {
+//    String[] tokens = str.split(",");
     //반복문 사용
     //for (String part : tokens) {
     //  System.out.println("part =" + part);
@@ -86,31 +85,44 @@ public class GithubOAuthService {
     //  }
 
     // 스트림 사용
-    return Arrays.stream(tokens)           // 필터링 할 배열
-        .filter(f -> f.startsWith(parser))// 필터링 조건에 부합하는 객체 반환
-        .map(part -> part.substring(parser.length(), part.length() - 1)) // 객체에 substring 조건을 적용
-        .findFirst()                       // 위 조건을 통과한 첫 객체
-        .orElse(null);               // 없으면 null
+//    return Arrays.stream(tokens)           // 필터링 할 배열
+//        .filter(f -> f.startsWith(parser))// 필터링 조건에 부합하는 객체 반환
+//        .map(part -> part.substring(parser.length(), part.length() - 1)) // 객체에 substring 조건을 적용
+//        .findFirst()                       // 위 조건을 통과한 첫 객체
+//        .orElse(null);               // 없으면 null
+    JsonElement element = JsonParser.parseString(response);
+    if (element.isJsonArray()) {
+      JsonArray jsonArray = element.getAsJsonArray();
+      if (!jsonArray.isEmpty()) {
+        return jsonArray.get(0).getAsJsonObject().get("email").getAsString();
+      }
+    } else {
+      JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+      return json.get(key).getAsString();
+    }
+    return null;
   }
 
   private String requestUserEmail(String token) {
     return webClient.get()
         .uri("https://api.github.com/user/emails")
-        .header("Authorization", "token " + token)
+        .header("Authorization", "Bearer " + token)
         .retrieve()
         .bodyToMono(String.class)
         .block();
   }
 
+  @Override
   public Optional<String> getEmail(String token) {
 
     String emailBeforeParsing = requestUserEmail(token);
+    System.out.println("emailBeforeParsing = " + emailBeforeParsing);
 
-    String emailParser = "[{\"email\":\"";
     if (emailBeforeParsing == null) {
       return Optional.empty();
     }
-    String emailAfterParsing = parsingResponse(emailBeforeParsing, emailParser);
+    String emailAfterParsing = parsingResponse(emailBeforeParsing, "email");
+    System.out.println("emailAfterParsing = " + emailAfterParsing);
     return Optional.ofNullable(emailAfterParsing);
   }
 }

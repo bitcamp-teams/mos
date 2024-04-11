@@ -35,6 +35,26 @@
     select email from member where email=#{email};
   </select>
 
+  <select id="findByUsername" parameterType="MemberDto">
+    select username from member where username=#{userName};
+  </select>
+
+  <insert id="add" parameterType="MemberJoinDto">
+    insert into member(email, username, belong, career, job_group)
+    values(#{email},#{name},#{belong},#{career},#{jobGroup})
+  </insert>
+
+  <select id="existsByEmail" resultType="boolean" parameterType="String">
+    SELECT
+      CASE
+        WHEN COUNT(*) > 0 THEN 'true' -- 이메일이 이미 존재하는 경우
+        ELSE 'false' -- 이메일이 존재하지 않는 경우
+      END AS email_exists
+    FROM
+      member
+    WHERE
+      email = #{email};
+  </select>
 
   <select id="findByNo" resultMap="MemberMap" parameterType="int">
     select

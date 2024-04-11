@@ -1,8 +1,5 @@
-# github repository actions 페이지에 나타날 이름
 name: CI/CD using github actions & docker
 
-# event trigger
-# main이나 develop 브랜치에 push가 되었을 때 실행
 on:
   push:
     branches: [ "main", "develop" ]
@@ -14,8 +11,6 @@ jobs:
   CI-CD:
     runs-on: ubuntu-latest
     steps:
-
-      # JDK setting - github actions에서 사용할 JDK 설정 (프로젝트나 AWS의 java 버전과 달라도 무방)
       - uses: actions/checkout@v3
       - name: Set up JDK 21
         uses: actions/setup-java@v3
@@ -34,7 +29,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # 환경별 properties 파일 생성(1) - 해당 작업은 git에 올라가 있지 않은 추가적인 application-*.properties 경우에 필요함. 
+      # 환경별 properties 파일 생성(1) - 공통 실행 환경 (현재 ide 환경 설정이 안되서 주석처리함)
       # 경로 이동 시 mos 하위에 있는 mos 폴더로 들어가야됨!
       # - name: make application.properties
       #   if: |
@@ -48,22 +43,26 @@ jobs:
       #   shell: bash
 
       # 환경별 yml 파일 생성(2) - dev
-      # - name: make application-dev.yml
-      #   if: contains(github.ref, 'develop')
-      #   run: |
-      #     cd ./src/main/resources
-      #     touch ./application-dev.yml
-      #     echo "${{ secrets.YML_DEV }}" > ./application-dev.yml
-      #   shell: bash
+      # 경로 이동 시 mos 하위에 있는 mos 폴더로 들어가야됨!
+      - name: make application-dev.properties
+        if: contains(github.ref, 'develop')
+        run: |
+          mkdir -p mos/src/main/resources
+          cd mos/src/main/resources
+          touch ./application-dev.properties
+          echo "${{ secrets.PROPERTIES_DEV }}" > ./application-dev.properties
+        shell: bash
 
       # 환경별 yml 파일 생성(3) - prod
-      # - name: make application-prod.yml
-      #   if: contains(github.ref, 'main')
-      #   run: |
-      #     cd ./src/main/resources
-      #     touch ./application-prod.yml
-      #     echo "${{ secrets.YML_PROD }}" > ./application-prod.yml
-      #   shell: bash
+      # 경로 이동 시 mos 하위에 있는 mos 폴더로 들어가야됨!
+      - name: make application-prod.properties
+        if: contains(github.ref, 'main')
+        run: |
+          mkdir -p mos/src/main/resources
+          cd mos/src/main/resources
+          touch ./application-prod.properties
+          echo "${{ secrets.PROPERTIES_PROD }}" > ./application-prod.properties
+        shell: bash
 
       # gradle build
       - name: Build with Gradle
@@ -101,7 +100,7 @@ jobs:
       #   id: deploy-prod
       #   if: contains(github.ref, 'main')
       #   with:
-      #     host: ${{ secrets.HOST_PROD }} # EC2 퍼블릭 IPv4 DNS
+      #     host: ${{ secrets.HOST_PROD }}
       #     username: ubuntu
       #     key: ${{ secrets.PRIVATE_KEY }}
       #     envs: GITHUB_SHA
@@ -123,7 +122,8 @@ jobs:
           port: 22
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            sudo docker ps
+            sudo docker stop $(sudo docker ps -a -q)
+            sudo docker rm -f $(sudo docker ps -a -q)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
             sudo docker run -d -p 8888:8888 ${{ secrets.DOCKER_USERNAME }}/docker-test-dev
             sudo docker image prune -f

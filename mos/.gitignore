@@ -2,6 +2,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,intellij,eclipse,visualstudiocode,java
 
 build
+application-dev.properties
+application-prod.properties
 ### Eclipse ###
 .metadata
 bin/
@@ -197,7 +199,7 @@ fabric.properties
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.nar
 *.ear
