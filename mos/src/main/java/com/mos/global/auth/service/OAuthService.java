@@ -8,6 +8,5 @@ public interface OAuthService {
 
   Optional<String> getAccessToken(String code);
 
-  Optional<String> getEmail(String token);
-
+  String getEmail(String token);
 }

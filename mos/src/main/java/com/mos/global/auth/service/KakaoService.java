@@ -25,19 +25,27 @@ public class KakaoService {
 
   private static final Log log = LogFactory.getLog(KakaoService.class);
 
-  @Autowired
-  private WebClient webClient;
-  @Value("${kakao.client.id}")
-  private String KAKAO_CLIENT_ID;
-
-  @Value("${kakao.client.secret}")
-  private String KAKAO_CLIENT_SECRET;
-
-  @Value("${kakao.redirect.url}")
-  private String KAKAO_REDIRECT_URL;
-
+  private final WebClient webClient;
+  private final String KAKAO_CLIENT_ID;
+  private final String KAKAO_CLIENT_SECRET;
+  private final String KAKAO_REDIRECT_URL;
   private final static String KAKAO_AUTH_URI = "https://kauth.kakao.com";
   private final static String KAKAO_API_URI = "https://kapi.kakao.com";
+
+  @Autowired
+  public KakaoService(
+      WebClient webClient,
+      @Value("${kakao.client.id}")
+      String KAKAO_CLIENT_ID,
+      @Value("${kakao.client.secret}")
+      String KAKAO_CLIENT_SECRET,
+      @Value("${kakao.redirect.url}")
+      String KAKAO_REDIRECT_URL) {
+    this.webClient = webClient;
+    this.KAKAO_CLIENT_ID = KAKAO_CLIENT_ID;
+    this.KAKAO_CLIENT_SECRET = KAKAO_CLIENT_SECRET;
+    this.KAKAO_REDIRECT_URL = KAKAO_REDIRECT_URL;
+  }
 
   public String getKakaoLogin() {
     return KAKAO_AUTH_URI + "/oauth/authorize"

@@ -16,29 +16,27 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
-//@RequiredArgsConstructor
 @Service
 //@ConfigurationProperties(prefix = "github")
 //@ConstructorBinding
-public class GithubOAuthService implements OAuthService{
+public class GithubOAuthService implements OAuthService {
 
   private static final Log log = LogFactory.getLog(GithubOAuthService.class);
-  @Autowired
-  private WebClient webClient;
 
+  private final WebClient webClient;
   private final String clientId;
   private final String clientSecret;
 
   @Autowired
-  public GithubOAuthService(
-      @Value("${github.clientId}")String clientId,
+  public GithubOAuthService(WebClient webClient,
+      @Value("${github.clientId}") String clientId,
       @Value("${github.clientSecret}")String clientSecret) {
+    this.webClient = webClient;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
   }
-
-
 
   private String requestAccessToken(MultiValueMap<String, String> formData) {
     return webClient.post()
@@ -48,21 +46,23 @@ public class GithubOAuthService implements OAuthService{
         .body(BodyInserters.fromFormData(formData))
         .retrieve()
         .bodyToMono(String.class)
+        .map(token -> {
+          System.out.println("token = " + token);
+          return parsingResponse(token, "access_token");
+        })
         .block();
   }
 
   @Override
   public Optional<String> getAccessToken(String code){
     MultiValueMap<String, String> formData = setFormData(code);
-
-    String tokenBeforeParsing = requestAccessToken(formData);
-
-    System.out.println("tokenBeforeParsing = " + tokenBeforeParsing);
-    String tokenAfterParsing = parsingResponse(tokenBeforeParsing, "access_token");
-//    log.debug(String.format("Github accessToken = " + tokenAfterParsing));
-
-    System.out.println("tokenAfterParsing = " + tokenAfterParsing);
-    return Optional.ofNullable(getEmail(tokenAfterParsing)).orElse(null);
+    return Optional.ofNullable(getEmail(requestAccessToken(formData)));
+//    System.out.println("tokenBeforeParsing = " + tokenBeforeParsing);
+//    String tokenAfterParsing = parsingResponse(tokenBeforeParsing, "access_token");
+////    log.debug(String.format("Github accessToken = " + tokenAfterParsing));
+//
+//    System.out.println("tokenAfterParsing = " + tokenAfterParsing);
+//    return Optional.ofNullable(getEmail(tokenAfterParsing)).orElse(null);
   }
 
   private MultiValueMap<String, String> setFormData(String code) {
@@ -109,20 +109,15 @@ public class GithubOAuthService implements OAuthService{
         .header("Authorization", "Bearer " + token)
         .retrieve()
         .bodyToMono(String.class)
+        .map(response -> {
+          System.out.println("response = " + response);
+          return parsingResponse(response, "email");
+        })
         .block();
   }
 
   @Override
-  public Optional<String> getEmail(String token) {
-
-    String emailBeforeParsing = requestUserEmail(token);
-    System.out.println("emailBeforeParsing = " + emailBeforeParsing);
-
-    if (emailBeforeParsing == null) {
-      return Optional.empty();
-    }
-    String emailAfterParsing = parsingResponse(emailBeforeParsing, "email");
-    System.out.println("emailAfterParsing = " + emailAfterParsing);
-    return Optional.ofNullable(emailAfterParsing);
+  public String getEmail(String token) {
+    return requestUserEmail(token);
   }
 }
