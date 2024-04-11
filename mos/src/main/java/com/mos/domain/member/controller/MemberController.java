@@ -44,7 +44,6 @@ public class MemberController {
     return "index";
   }
 
-
     @GetMapping("view")
     public void view(int no, Model model) throws Exception {
         MemberDto member = memberService.getNo(no);
