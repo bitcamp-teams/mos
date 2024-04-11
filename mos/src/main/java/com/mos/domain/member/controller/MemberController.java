@@ -58,13 +58,13 @@ public class MemberController {
     }
 
     @GetMapping("mystudy")
-    public void viewMyStudy(@RequestParam(value = "no") int no, Model model) {
+    public void viewMyStudy(int no, Model model) throws Exception {
+
 
         // 회원 번호를 이용하여 회원의 스터디 목록을 조회
         List<MemberStudyDto> myStudy = memberService.findMyStudies(no);
-        for(MemberStudyDto memberStudyDto : myStudy) {
-            log.debug(memberStudyDto.toString());
-            System.out.println(memberStudyDto);
+        if (myStudy == null) {
+            throw new Exception("회원 번호가 유효하지 않습니다.");
         }
 
         // 회원 정보와 스터디 정보를 함께 담는 MemberStudyDto 리스트 생성

@@ -9,6 +9,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
+<style>
+  .container {
+  padding-left: 10%;
+  }
+</style>
 <body>
 
 <div data-th-replace="header :: header">머리말</div>
@@ -27,6 +32,7 @@
       <th>Role</th> <!-- "role" 대문자로 수정 -->
       <th>Start Date</th>
       <th>End Date</th>
+      <th></th>
       <!-- 다른 필요한 열들도 추가할 수 있습니다 -->
     </tr>
     </thead>
@@ -36,6 +42,9 @@
       <td data-th-text="${memberStudy.stat}"></td>
       <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.startDate, 'yyyy-MM-dd') : ''}"></td>
       <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.endDate, 'yyyy-MM-dd') : ''}"></td>
+      <td>
+        <a href="" class="btn btn-primary">스터디 관리</a>
+      </td>
     </tr>
     </tbody>
   </table>
