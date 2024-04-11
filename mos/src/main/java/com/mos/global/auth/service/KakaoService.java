@@ -7,16 +7,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -26,9 +20,9 @@ public class KakaoService {
   private static final Log log = LogFactory.getLog(KakaoService.class);
 
   private final WebClient webClient;
-  private final String KAKAO_CLIENT_ID;
-  private final String KAKAO_CLIENT_SECRET;
-  private final String KAKAO_REDIRECT_URL;
+  private final String kakaoClientId;
+  private final String kakaoClientSecret;
+  private final String kakaoRedirectUrl;
   private final static String KAKAO_AUTH_URI = "https://kauth.kakao.com";
   private final static String KAKAO_API_URI = "https://kapi.kakao.com";
 
@@ -36,21 +30,21 @@ public class KakaoService {
   public KakaoService(
       WebClient webClient,
       @Value("${kakao.client.id}")
-      String KAKAO_CLIENT_ID,
+      String kakaoClientId,
       @Value("${kakao.client.secret}")
-      String KAKAO_CLIENT_SECRET,
+      String kakaoClientSecret,
       @Value("${kakao.redirect.url}")
-      String KAKAO_REDIRECT_URL) {
+      String kakaoRedirectUrl) {
     this.webClient = webClient;
-    this.KAKAO_CLIENT_ID = KAKAO_CLIENT_ID;
-    this.KAKAO_CLIENT_SECRET = KAKAO_CLIENT_SECRET;
-    this.KAKAO_REDIRECT_URL = KAKAO_REDIRECT_URL;
+    this.kakaoClientId = kakaoClientId;
+    this.kakaoClientSecret = kakaoClientSecret;
+    this.kakaoRedirectUrl = kakaoRedirectUrl;
   }
 
   public String getKakaoLogin() {
     return KAKAO_AUTH_URI + "/oauth/authorize"
-        + "?client_id=" + KAKAO_CLIENT_ID
-        + "&redirect_uri=" + KAKAO_REDIRECT_URL
+        + "?client_id=" + kakaoClientId
+        + "&redirect_uri=" + kakaoRedirectUrl
         + "&response_type=code";
   }
 
@@ -64,10 +58,10 @@ public class KakaoService {
 
       MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
       params.add("grant_type"   , "authorization_code");
-      params.add("client_id"    , KAKAO_CLIENT_ID);
-      params.add("client_secret", KAKAO_CLIENT_SECRET);
+      params.add("client_id"    , kakaoClientId);
+      params.add("client_secret", kakaoClientSecret);
       params.add("code"         , code);
-      params.add("redirect_uri" , KAKAO_REDIRECT_URL);
+      params.add("redirect_uri" , kakaoRedirectUrl);
 
       String webClientToken = webClient.post()
           .uri(KAKAO_AUTH_URI + "/oauth/token")

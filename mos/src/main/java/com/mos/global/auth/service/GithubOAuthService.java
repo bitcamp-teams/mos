@@ -29,6 +29,8 @@ public class GithubOAuthService implements OAuthService {
   private final String clientId;
   private final String clientSecret;
 
+  private static final int LOGIN_INFO_INDEX = 0;
+
   @Autowired
   public GithubOAuthService(WebClient webClient,
       @Value("${github.clientId}") String clientId,
@@ -94,7 +96,7 @@ public class GithubOAuthService implements OAuthService {
     if (element.isJsonArray()) {
       JsonArray jsonArray = element.getAsJsonArray();
       if (!jsonArray.isEmpty()) {
-        return jsonArray.get(0).getAsJsonObject().get("email").getAsString();
+        return jsonArray.get(LOGIN_INFO_INDEX).getAsJsonObject().get("email").getAsString();
       }
     } else {
       JsonObject json = JsonParser.parseString(response).getAsJsonObject();
