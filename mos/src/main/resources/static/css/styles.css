@@ -6,6 +6,16 @@
   align-items: center;
 }
 
+#header .content {
+  margin-right: 50px;
+}
+
+#link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 #footer {
   background-color:#DBEAFE;
   padding:50px;

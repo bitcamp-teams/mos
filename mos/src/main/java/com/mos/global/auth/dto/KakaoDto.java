@@ -12,5 +12,6 @@ public class KakaoDto {
   private String email;
   private String nickname;
   private MemberDto member;
+  private String accessToken;
 
 }

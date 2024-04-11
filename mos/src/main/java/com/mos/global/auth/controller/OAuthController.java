@@ -44,27 +44,33 @@ public class OAuthController {
     // 카카오 인증 URL 저장
     model.addAttribute("kakaoUrl", kakaoService.getKakaoLogin());
     model.addAttribute("clientId", clientId);
-    //log.debug(String.format("requestUrl : %s", model));
+    log.debug(String.format("requestUrl : %s", model));
 
     return "auth/login";
   }
 
   @GetMapping("logout")
   public String logout(HttpSession session) throws Exception {
+
     session.invalidate();
     return "redirect:/";
   }
 
 
   @GetMapping("/kakao/callback")
-  public String callback(@RequestParam String code, MemberDto member, HttpServletResponse response,HttpSession session) throws Exception {
+  public String callback(@RequestParam String code, MemberDto member, Model model, HttpSession session) throws Exception {
     KakaoDto kakaoInfo = kakaoService.getKakaoInfo(code);
     //System.out.println("이메일: " + kakaoInfo.getEmail());
     //System.out.println("닉네임: " + kakaoInfo.getNickname());
-    member.setEmail(kakaoInfo.getEmail());
-    System.out.println(member.getEmail());
-    if (member != null) {
+    //System.out.println("accessToken: " + kakaoInfo.getAccessToken());
+    if (memberService.get(kakaoInfo.getEmail()) != null) {
       System.out.println("로그인 성공!!!!!!!!");
+      member.setEmail(kakaoInfo.getEmail());
+      System.out.println(member.getEmail());
+
+      // 로그아웃 URL 생성 부분 - 구현 필요!!
+      model.addAttribute("kakaoLogoutUrl", kakaoService.getKakaoLogout(kakaoInfo.getAccessToken()));
+      log.debug(String.format("kakaoLogoutUrl : %s", model.getAttribute("kakaoLogoutUrl")));
       session.setAttribute("loginUser", member);
       return "redirect:/";
     }
