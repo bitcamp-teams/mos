@@ -22,8 +22,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class GoogleOAuthService implements OAuthService{
 
   private static final Log log = LogFactory.getLog(GoogleOAuthService.class);
-  @Autowired
-  private WebClient webClient;
+  private final WebClient webClient;
 
   private final String clientId;
 
@@ -33,10 +32,11 @@ public class GoogleOAuthService implements OAuthService{
 
 
   @Autowired
-  public GoogleOAuthService(WebClient webClient,
+  public GoogleOAuthService(
       @Value("${google.clientId}") String clientId,
       @Value("${google.clientSecret}") String clientSecret,
-      @Value("${google.redirect-uri}") String redirectUri) {
+      @Value("${google.redirect-uri}") String redirectUri,
+      WebClient webClient) {
     this.webClient = webClient;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
@@ -53,6 +53,10 @@ public class GoogleOAuthService implements OAuthService{
         .body(BodyInserters.fromFormData(formData))
         .retrieve()
         .bodyToMono(String.class)
+        .map(token -> {
+          log.debug("token = " + token);
+          return parsingResponse(token, "access_token");
+        })
         .block();
   }
 
@@ -61,14 +65,14 @@ public class GoogleOAuthService implements OAuthService{
   public Optional<String> getAccessToken(String code){
     MultiValueMap<String, String> formData = setFormData(code);
 
-    String tokenBeforeParsing = requestAccessToken(formData);
+    return Optional.ofNullable(getEmail(requestAccessToken(formData)));
 
-    System.out.println("tokenBeforeParsing = " + tokenBeforeParsing);
-    String tokenAfterParsing = parsingResponse(tokenBeforeParsing, "access_token");
-//    log.debug(String.format("Github accessToken = " + tokenAfterParsing));
-
-    System.out.println("tokenAfterParsing = " + tokenAfterParsing);
-    return Optional.ofNullable(getEmail(tokenAfterParsing)).orElse(null);
+//    System.out.println("tokenBeforeParsing = " + tokenBeforeParsing);
+//    String tokenAfterParsing = parsingResponse(tokenBeforeParsing, "access_token");
+////    log.debug(String.format("Github accessToken = " + tokenAfterParsing));
+//
+//    System.out.println("tokenAfterParsing = " + tokenAfterParsing);
+//    return Optional.ofNullable(getEmail(tokenAfterParsing)).orElse(null);
   }
 
   private MultiValueMap<String, String> setFormData(String code) {
@@ -108,21 +112,24 @@ public class GoogleOAuthService implements OAuthService{
         .header("Authorization", "Bearer " + token)
         .retrieve()
         .bodyToMono(String.class)
+        .map(email -> {
+          log.debug("email = " + email);
+          return parsingResponse(email, "email");
+        })
         .block();
   }
 
   @Override
-  public Optional<String> getEmail(String token) {
-
-    String emailBeforeParsing = requestUserEmail(token);
-    System.out.println("emailBeforeParsing = " + emailBeforeParsing);
-
-    if (emailBeforeParsing == null) {
-      return Optional.empty();
-    }
-    String emailAfterParsing = parsingResponse(emailBeforeParsing, "email");
-    System.out.println("emailAfterParsing = " + emailAfterParsing);
-    return Optional.ofNullable(emailAfterParsing);
+  public String getEmail(String token) {
+    return requestUserEmail(token);
+//    System.out.println("emailBeforeParsing = " + emailBeforeParsing);
+//
+//    if (emailBeforeParsing == null) {
+//      return Optional.empty();
+//    }
+//    String emailAfterParsing = parsingResponse(emailBeforeParsing, "email");
+//    System.out.println("emailAfterParsing = " + emailAfterParsing);
+//    return Optional.ofNullable(emailAfterParsing);
   }
 }
 

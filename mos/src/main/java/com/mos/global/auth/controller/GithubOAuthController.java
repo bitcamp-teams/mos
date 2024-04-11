@@ -4,6 +4,7 @@ import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.service.impl.DefaultMemberService;
 import com.mos.global.auth.service.GithubOAuthService;
 import com.mos.global.auth.service.GoogleOAuthService;
+import com.mos.global.auth.service.OAuthService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class GithubOAuthController {
 
-  @Autowired
-  private GithubOAuthService githubOAuthService;
-  @Autowired
-  private GoogleOAuthService googleOAuthService;
-  @Autowired
-  private DefaultMemberService memberService;
+  private final OAuthService githubOAuthService;
+  private final OAuthService googleOAuthService;
+  private final DefaultMemberService memberService;
 
   @GetMapping("callback")
   public String githubLogin(@RequestParam String code, MemberJoinDto joinDto, Model model) {
