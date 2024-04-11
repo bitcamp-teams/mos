@@ -3,8 +3,8 @@ package com.mos.global.auth.handler.response;
 import java.util.Map;
 
 public class GithubLoginResponseHandler extends LoginResponseHandler {
-  public GithubLoginResponseHandler(String response) {
-    super(response);
+  public GithubLoginResponseHandler(String response, String token) {
+    super(response, token);
   }
 
   private Map<String, Object> getProfile() {

@@ -3,8 +3,8 @@ package com.mos.global.auth.handler.response;
 import java.util.Map;
 
 public class KakaoLoginResponseHandler extends LoginResponseHandler {
-  public KakaoLoginResponseHandler(String response) {
-    super(response);
+  public KakaoLoginResponseHandler(String response, String token) {
+    super(response, token);
   }
 
   private Map<String, Object> getProfile() {
@@ -30,4 +30,5 @@ public class KakaoLoginResponseHandler extends LoginResponseHandler {
   public String getId() {
     return (String) getProfile().get("id");
   }
+
 }

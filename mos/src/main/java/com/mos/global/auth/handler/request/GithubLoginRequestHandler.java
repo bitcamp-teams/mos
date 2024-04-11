@@ -18,6 +18,8 @@ import static com.mos.global.auth.handler.LoginApiProvider.GITHUB;
 
 public class GithubLoginRequestHandler implements LoginRequestHandler {
 
+  private String token;
+
   @Override
   public LoginResponseHandler getUserInfo(WebClient webClient, String code) {
     String userInfo = webClient.get()
@@ -27,11 +29,11 @@ public class GithubLoginRequestHandler implements LoginRequestHandler {
         .bodyToMono(String.class)
         .block();
 
-    return new GithubLoginResponseHandler(userInfo);
+    return new GithubLoginResponseHandler(userInfo, token);
   }
 
   private String getBearerToken(String code) {
-    String token = new RequestAuthCode(GITHUB, code).getAccessToken();
+    token = new RequestAuthCode(GITHUB, code).getAccessToken();
     if (token.startsWith("Bearer"))
       return token;
     else

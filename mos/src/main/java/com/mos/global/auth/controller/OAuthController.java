@@ -59,10 +59,13 @@ public class OAuthController {
 
   // 카카오
   @GetMapping("/auth/kakao/callback")
-  public String callback(@RequestParam String code) throws Exception {
+  public String callback(@RequestParam String code, Model model) throws Exception {
     LoginResponseHandler kakaoInfo =
         loginApiManager.getProvider("KAKAO").getUserInfo(webClient, code);
 
+    String token = kakaoInfo.getToken();
+
+    model.addAttribute("accessToken", token);
     if (memberService.get(kakaoInfo.getEmail()) != null) {
       System.out.println("로그인 성공!!!!!!!!");
       return "/index";

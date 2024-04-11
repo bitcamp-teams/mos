@@ -19,6 +19,8 @@ import static com.mos.global.auth.handler.LoginApiProvider.GOOGLE;
 
 public class GoogleLoginRequestHandler implements LoginRequestHandler {
 
+  private String token;
+
   @Override
   public LoginResponseHandler getUserInfo(WebClient webClient, String code) {
     String userInfo = webClient.get()
@@ -28,11 +30,11 @@ public class GoogleLoginRequestHandler implements LoginRequestHandler {
         .bodyToMono(String.class)
         .block();
 
-    return new GoogleLoginResponseHandler(userInfo);
+    return new GoogleLoginResponseHandler(userInfo, token);
   }
 
   private String getBearerToken(String code) {
-    String token = new RequestAuthCode(GOOGLE, code).getAccessToken();
+    token = new RequestAuthCode(GOOGLE, code).getAccessToken();
     if (token.startsWith("Bearer"))
       return token;
     else
