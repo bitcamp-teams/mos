@@ -6,7 +6,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public interface LoginRequestHandler {
 
     LoginResponseHandler getUserInfo(WebClient webClient, String token);
-
+//    Long logout(WebClient webClient, String token);
 
 }
 

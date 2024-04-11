@@ -24,4 +24,11 @@ public enum LoginApiProvider implements LoginRequestHandler {
   public LoginResponseHandler getUserInfo(WebClient webClient, String code) {
     return this.strategy.getUserInfo(webClient, code);
   }
+
+//  @Override
+//  public Long logout(WebClient webClient, String token) {
+//    return this.strategy.logout(webClient, token);
+//  }
+
+
 }

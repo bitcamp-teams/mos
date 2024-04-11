@@ -19,6 +19,16 @@ import static com.mos.global.auth.handler.LoginApiProvider.KAKAO;
 @RequiredArgsConstructor
 public class KakaoLoginRequestHandler implements LoginRequestHandler {
 
+//  @Override
+//  public Long logout(WebClient webClient, String token) {
+//    return webClient.post()
+//        .uri(OAuthRequestParam.KAKAO_LOGOUT_API.getParam())
+//        .header("Authorization", getBearerToken(token))
+//        .retrieve()
+//        .bodyToMono(Long.class)
+//        .block();
+//  }
+
   @Override
   public LoginResponseHandler getUserInfo(WebClient webClient, String code) {
     String userInfo = webClient.post()

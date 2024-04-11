@@ -7,6 +7,7 @@ import com.mos.global.auth.handler.LoginApiManager;
 import com.mos.global.auth.handler.OAuthRequestParam;
 import com.mos.global.auth.handler.response.LoginResponseHandler;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
@@ -71,6 +72,16 @@ public class OAuthController {
     System.out.println("회원 정보가 없음!!!!!!!!");
     return "auth/signup";
   }
+
+  // 카카오 로그아웃
+//  @GetMapping("logout")
+//  public String logout(HttpSession session, String token) throws Exception {
+////    LoginResponseHandler kakaoInfo =
+////        loginApiManager.getProvider("KAKAO").logout(webClient, token);
+//
+//    session.invalidate();
+//    return "redirect:/";
+//  }
 
   // 깃헙
   @GetMapping("login/oauth2/code/github")

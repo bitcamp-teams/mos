@@ -14,6 +14,7 @@ public enum OAuthRequestParam {
   KAKAO_CLIENT_SECRET("client_secret", OAuthRequestData.KAKAO_CLIENT_SECRET),
   KAKAO_REDIRECT_URL("redirect_uri", OAuthRequestData.KAKAO_REDIRECT_URL),
   KAKAO_AUTH_URI(null, OAuthRequestData.KAKAO_AUTH_URI),
+  KAKAO_LOGOUT_API(null, OAuthRequestData.KAKAO_API_URI + "/v1/usr/logout"),
 
   /* GITHUB */
   GITHUB_CLIENT_ID("client_id", OAuthRequestData.GITHUB_CLIENT_ID),
