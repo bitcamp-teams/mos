@@ -21,7 +21,7 @@ public class GithubOAuthController {
   private final OAuthService googleOAuthService;
   private final DefaultMemberService memberService;
 
-  @GetMapping("callback")
+  @GetMapping("login/oauth2/code/github")
   public String githubLogin(@RequestParam String code, MemberJoinDto joinDto, Model model) {
     Optional<String> emailOpt = githubOAuthService.getAccessToken(code);
 
