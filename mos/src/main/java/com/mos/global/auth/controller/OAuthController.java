@@ -1,19 +1,19 @@
 package com.mos.global.auth.controller;
 
 import com.mos.domain.member.dto.MemberDto;
+import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.service.MemberService;
-import com.mos.global.auth.dto.KakaoDto;
-import com.mos.global.auth.service.KakaoService;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.mos.global.auth.handler.LoginApiManager;
+import com.mos.global.auth.handler.OAuthRequestParam;
+import com.mos.global.auth.handler.response.LoginResponseHandler;
+
 import javax.servlet.http.HttpSession;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,56 +21,97 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
 @CrossOrigin("*")
-@RequestMapping("/auth")
+@RequestMapping()
 public class OAuthController {
 
   private static final Log log = LogFactory.getLog(OAuthController.class);
 
-  private final KakaoService kakaoService;
-
-  @Autowired
   private final MemberService memberService;
+  private final LoginApiManager loginApiManager;
+  private final WebClient webClient;
 
-  @Value("${github.clientId}")
-  private String clientId;
-
-  @GetMapping("login")
+  @GetMapping("/auth/login")
   public String login(Model model) {
-
-    // 카카오 인증 URL 저장
-    model.addAttribute("kakaoUrl", kakaoService.getKakaoLogin());
-    model.addAttribute("clientId", clientId);
-    //log.debug(String.format("requestUrl : %s", model));
+    // 카카오
+    model.addAttribute("kakaoUrl",
+        OAuthRequestParam.KAKAO_AUTH_URI.getParam() +
+        "/oauth/authorize?client_id=" + OAuthRequestParam.KAKAO_CLIENT_ID.getParam()
+        + "&redirect_uri=" + OAuthRequestParam.KAKAO_REDIRECT_URL.getParam()
+        + "&response_type=code");
+    // 깃헙
+    model.addAttribute("clientId", OAuthRequestParam.GITHUB_CLIENT_ID.getParam());
+    // 구글
+    model.addAttribute("googleUrl",
+        "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + OAuthRequestParam.GOOGLE_CLIENT_ID.getParam()
+        + "&redirect_uri=" + OAuthRequestParam.GOOGLE_REDIRECT_URI.getParam()
+        + "&response_type=code&scope=email");
 
     return "auth/login";
+  }
+
+  // 카카오
+  @GetMapping("/auth/kakao/callback")
+  public String callback(@RequestParam String code) throws Exception {
+    LoginResponseHandler kakaoInfo =
+        loginApiManager.getProvider("KAKAO").getUserInfo(webClient, code);
+
+    if (memberService.get(kakaoInfo.getEmail()) != null) {
+      System.out.println("로그인 성공!!!!!!!!");
+      return "/index";
+    }
+
+    System.out.println("회원 정보가 없음!!!!!!!!");
+    return "auth/signup";
+  }
+
+  // 깃헙
+  @GetMapping("login/oauth2/code/github")
+  public String githubLogin(@RequestParam String code, MemberJoinDto joinDto, Model model) {
+    LoginResponseHandler githubInfo =
+        loginApiManager.getProvider("GITHUB").getUserInfo(webClient, code);
+
+    if (!githubInfo.getEmail().isEmpty()) {
+      joinDto.setEmail(githubInfo.getEmail());
+      if (memberService.existsByEmail(joinDto.getEmail())) {
+        return "redirect:/";
+      }
+      model.addAttribute("joinDto", joinDto);
+    } else {
+      model.addAttribute("error", "github 로그인 실패");
+    }
+    return "auth/form";
+  }
+
+  // 구글
+  @GetMapping("login/oauth2/code/google")
+  public String googleOAuth(@RequestParam String code, MemberJoinDto joinDto, Model model) {
+    LoginResponseHandler googleInfo =
+        loginApiManager.getProvider("GOOGLE").getUserInfo(webClient, code);
+
+    if (!googleInfo.getEmail().isEmpty()) {
+      joinDto.setEmail(googleInfo.getEmail());
+      if (memberService.existsByEmail(joinDto.getEmail())) {
+        return "redirect:/";
+      }
+      model.addAttribute("joinDto", joinDto);
+    } else {
+      model.addAttribute("error", "github 로그인 실패");
+    }
+    return "auth/form";
   }
 
   @GetMapping("logout")
   public String logout(HttpSession session) throws Exception {
     session.invalidate();
     return "redirect:/";
-  }
-
-
-  @GetMapping("/kakao/callback")
-  public String callback(@RequestParam String code, MemberDto member, HttpServletResponse response,HttpSession session) throws Exception {
-    KakaoDto kakaoInfo = kakaoService.getKakaoInfo(code);
-    //System.out.println("이메일: " + kakaoInfo.getEmail());
-    //System.out.println("닉네임: " + kakaoInfo.getNickname());
-    member.setEmail(kakaoInfo.getEmail());
-    System.out.println(member.getEmail());
-    if (member != null) {
-      System.out.println("로그인 성공!!!!!!!!");
-      session.setAttribute("loginUser", member);
-      return "redirect:/";
-    }
-
-    System.out.println("회원 정보가 없음!!!!!!!!");
-    return "auth/signup";
   }
 
   @PostMapping("signup")

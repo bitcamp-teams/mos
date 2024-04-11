@@ -1,0 +1,33 @@
+package com.mos.global.auth.handler.response;
+
+import java.util.Map;
+
+public class GoogleLoginResponseHandler extends LoginResponseHandler {
+  public GoogleLoginResponseHandler(String response) {
+    super(response);
+  }
+
+  private Map<String, Object> getProfile() {
+    return getResponse();
+  }
+
+  @Override
+  public String getEmail() {
+    return (String) getProfile().get("email");
+  }
+
+  @Override
+  public String getName() {
+    return "";
+  }
+
+  @Override
+  public String getPassword() {
+    return "";
+  }
+
+  @Override
+  public String getId() {
+    return "";
+  }
+}
