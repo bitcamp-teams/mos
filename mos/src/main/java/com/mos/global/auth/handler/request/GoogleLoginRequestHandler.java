@@ -9,6 +9,7 @@ import com.mos.global.auth.handler.response.LoginResponseHandler;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.nio.charset.StandardCharsets;
 
@@ -19,21 +20,15 @@ import static com.mos.global.auth.handler.LoginApiProvider.GOOGLE;
 public class GoogleLoginRequestHandler implements LoginRequestHandler {
 
   @Override
-  public LoginResponseHandler getUserInfo(RestTemplate restTemplate, String code) {
-    var requestEntity =
-        RequestEntity.post("https://www.googleapis.com/oauth2/v2/userinfo")
-            .header("Authorization", getBearerToken(code))
-            .contentType(MediaType.APPLICATION_FORM_URLENCODED).acceptCharset(StandardCharsets.UTF_8)
-            .accept(MediaType.APPLICATION_JSON)
-            .build();
+  public LoginResponseHandler getUserInfo(WebClient webClient, String code) {
+    String userInfo = webClient.get()
+        .uri("https://www.googleapis.com/oauth2/v2/userinfo")
+        .header("Authorization", getBearerToken(code))
+        .retrieve()
+        .bodyToMono(String.class)
+        .block();
 
-
-    var response = restTemplate.exchange(requestEntity, String.class);
-
-    if (!response.getStatusCode().is2xxSuccessful()) {
-      throw new LoginApiException("구글 oauth 로그인 실패");
-    }
-    return new GoogleLoginResponseHandler(response.getBody());
+    return new GoogleLoginResponseHandler(userInfo);
   }
 
   private String getBearerToken(String code) {

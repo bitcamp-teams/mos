@@ -1,11 +1,11 @@
 package com.mos.global.auth.handler;
 
 import com.mos.global.auth.handler.response.LoginResponseHandler;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 public interface LoginRequestHandler {
 
-    LoginResponseHandler getUserInfo(RestTemplate restTemplate, String token);
+    LoginResponseHandler getUserInfo(WebClient webClient, String token);
 
 
 }

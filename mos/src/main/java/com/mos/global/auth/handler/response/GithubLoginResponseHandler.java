@@ -8,7 +8,7 @@ public class GithubLoginResponseHandler extends LoginResponseHandler {
   }
 
   private Map<String, Object> getProfile() {
-    return (Map<String, Object>) getResponse().get("email");
+    return getResponse();
   }
 
   @Override

@@ -10,6 +10,8 @@ import org.springframework.http.RequestEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -17,6 +19,7 @@ import java.util.Map;
 @Getter
 public abstract class RequestAttributes {
   private Map<String, Object> response;
+  WebClient webClient = WebClient.create();
 
   private void setResponse(String response) {
     try {
@@ -28,13 +31,14 @@ public abstract class RequestAttributes {
   }
 
   protected void authenticate(LoginApiProvider provider, String uri, String code) {
-    var request = RequestEntity.post(uri)
-        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-        .acceptCharset(StandardCharsets.UTF_8)
+    var request = webClient.post()
+        .uri(uri)
         .accept(MediaType.APPLICATION_JSON)
-        .body(merge(provider, code));
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .body(BodyInserters.fromFormData(merge(provider, code)))
+        .retrieve().bodyToMono(String.class).block();
 
-    setResponse(new RestTemplate().exchange(request, String.class).getBody());
+    setResponse(request);
   }
 
   private MultiValueMap<String, String> merge(LoginApiProvider provider, String code) {

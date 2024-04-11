@@ -6,6 +6,7 @@ import com.mos.global.auth.handler.request.KakaoLoginRequestHandler;
 import com.mos.global.auth.handler.response.LoginResponseHandler;
 import lombok.Getter;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Getter
 public enum LoginApiProvider implements LoginRequestHandler {
@@ -20,7 +21,7 @@ public enum LoginApiProvider implements LoginRequestHandler {
   }
 
   @Override
-  public LoginResponseHandler getUserInfo(RestTemplate restTemplate, String code) {
-    return this.strategy.getUserInfo(restTemplate, code);
+  public LoginResponseHandler getUserInfo(WebClient webClient, String code) {
+    return this.strategy.getUserInfo(webClient, code);
   }
 }

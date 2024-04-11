@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Optional;
 
@@ -35,12 +36,7 @@ public class OAuthController {
 
   private final MemberService memberService;
   private final LoginApiManager loginApiManager;
-  private final RestTemplate restTemplate = new RestTemplate();
-
-  {
-    restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-  }
-
+  private final WebClient webClient;
 
   @GetMapping("/auth/login")
   public String login(Model model) {
@@ -65,7 +61,7 @@ public class OAuthController {
   @GetMapping("/auth/kakao/callback")
   public String callback(@RequestParam String code) throws Exception {
     LoginResponseHandler kakaoInfo =
-        loginApiManager.getProvider("KAKAO").getUserInfo(restTemplate, code);
+        loginApiManager.getProvider("KAKAO").getUserInfo(webClient, code);
 
     if (memberService.get(kakaoInfo.getEmail()) != null) {
       System.out.println("로그인 성공!!!!!!!!");
@@ -76,13 +72,11 @@ public class OAuthController {
     return "auth/signup";
   }
 
-
   // 깃헙
-
-  @GetMapping("callback")
+  @GetMapping("login/oauth2/code/github")
   public String githubLogin(@RequestParam String code, MemberJoinDto joinDto, Model model) {
     LoginResponseHandler githubInfo =
-        loginApiManager.getProvider("GITHUB").getUserInfo(restTemplate, code);
+        loginApiManager.getProvider("GITHUB").getUserInfo(webClient, code);
 
     if (!githubInfo.getEmail().isEmpty()) {
       joinDto.setEmail(githubInfo.getEmail());
@@ -95,12 +89,12 @@ public class OAuthController {
     }
     return "auth/form";
   }
-  // 구글
 
+  // 구글
   @GetMapping("login/oauth2/code/google")
   public String googleOAuth(@RequestParam String code, MemberJoinDto joinDto, Model model) {
     LoginResponseHandler googleInfo =
-        loginApiManager.getProvider("GOOGLE").getUserInfo(restTemplate, code);
+        loginApiManager.getProvider("GOOGLE").getUserInfo(webClient, code);
 
     if (!googleInfo.getEmail().isEmpty()) {
       joinDto.setEmail(googleInfo.getEmail());
