@@ -12,4 +12,17 @@ public class MemberJoinDto {
     private String belong;
     private String career;
     private String jobGroup;
+    private String platform;
+
+    @Override
+    public String toString() {
+        return "MemberJoinDto{" +
+            "email='" + email + '\'' +
+            ", name='" + name + '\'' +
+            ", belong='" + belong + '\'' +
+            ", career='" + career + '\'' +
+            ", jobGroup='" + jobGroup + '\'' +
+            ", platform='" + platform + '\'' +
+            '}';
+    }
 }
