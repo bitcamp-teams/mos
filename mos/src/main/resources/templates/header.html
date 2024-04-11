@@ -21,7 +21,6 @@
     <button data-th-if="${session.loginUser != null}" onclick="location.href='/auth/logout';">로그아웃</button>
     <!-- 로그인 버튼 클릭 시 모달 열기 -->
     <button data-th-if="${session.loginUser == null}" class="btn-open-modal">로그인</button>
-
   </div>
 </header>
 
@@ -32,6 +31,11 @@
 
 <!-- 별도의 JavaScript 파일 추가 -->
 <script src="/js/auth/modal.js"></script>
+<script>
+  const token = "[[${accessToken}]]";
+  console.log("[[${accessToken}]]")
+  localStorage.setItem('accessToken', token);
+</script>
 
 </body>
 </html>
