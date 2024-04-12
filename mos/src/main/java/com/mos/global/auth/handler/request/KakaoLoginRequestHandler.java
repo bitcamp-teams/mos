@@ -6,6 +6,7 @@ import com.mos.global.auth.handler.RequestAuthCode;
 import com.mos.global.auth.handler.response.KakaoLoginResponseHandler;
 import com.mos.global.auth.handler.response.LoginResponseHandler;
 import com.mos.global.auth.exception.LoginApiException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -16,18 +17,21 @@ import java.nio.charset.StandardCharsets;
 
 import static com.mos.global.auth.handler.LoginApiProvider.KAKAO;
 
+@Getter
 @RequiredArgsConstructor
 public class KakaoLoginRequestHandler implements LoginRequestHandler {
 
-//  @Override
-//  public Long logout(WebClient webClient, String token) {
-//    return webClient.post()
-//        .uri(OAuthRequestParam.KAKAO_LOGOUT_API.getParam())
-//        .header("Authorization", getBearerToken(token))
-//        .retrieve()
-//        .bodyToMono(Long.class)
-//        .block();
-//  }
+  private String token;
+
+  @Override
+  public String logout(WebClient webClient, String token) {
+    return webClient.post()
+        .uri(OAuthRequestParam.KAKAO_API_URI.getParam() + "/v1/user/logout")
+        .header("Authorization", /*getBearerToken(*/"Bearer " + token/*)*/)
+        .retrieve()
+        .bodyToMono(String.class)
+        .block();
+  }
 
   @Override
   public LoginResponseHandler getUserInfo(WebClient webClient, String code) {
@@ -38,11 +42,11 @@ public class KakaoLoginRequestHandler implements LoginRequestHandler {
         .bodyToMono(String.class)
         .block();
 
-    return new KakaoLoginResponseHandler(userInfo);
+    return new KakaoLoginResponseHandler(userInfo, token);
   }
 
   private String getBearerToken(String code) {
-    String token = new RequestAuthCode(KAKAO, code).getAccessToken();
+    token = new RequestAuthCode(KAKAO, code).getAccessToken();
 
     if (token.startsWith("Bearer"))
       return token;

@@ -22,5 +22,11 @@ public class IndexController {
     return "admin/index-admin";
   }
 
+  @GetMapping("/")
+  public String index(Model model) {
+    System.out.println();
+    return "index.html";
+  }
+
 
 }

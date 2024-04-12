@@ -3,6 +3,7 @@ package com.mos.global.auth.handler.request;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mos.global.auth.exception.LoginApiException;
 import com.mos.global.auth.handler.LoginRequestHandler;
+import com.mos.global.auth.handler.OAuthRequestParam;
 import com.mos.global.auth.handler.RequestAuthCode;
 import com.mos.global.auth.handler.response.GithubLoginResponseHandler;
 import com.mos.global.auth.handler.response.LoginResponseHandler;
@@ -18,6 +19,18 @@ import static com.mos.global.auth.handler.LoginApiProvider.GITHUB;
 
 public class GithubLoginRequestHandler implements LoginRequestHandler {
 
+  private String token;
+
+  @Override
+  public String logout(WebClient webClient, String token) {
+    return webClient.post()
+        .uri(OAuthRequestParam.KAKAO_LOGOUT_API.getParam())
+        .header("Authorization", getBearerToken(token))
+        .retrieve()
+        .bodyToMono(String.class)
+        .block();
+  }
+
   @Override
   public LoginResponseHandler getUserInfo(WebClient webClient, String code) {
     String userInfo = webClient.get()
@@ -27,11 +40,11 @@ public class GithubLoginRequestHandler implements LoginRequestHandler {
         .bodyToMono(String.class)
         .block();
 
-    return new GithubLoginResponseHandler(userInfo);
+    return new GithubLoginResponseHandler(userInfo, token);
   }
 
   private String getBearerToken(String code) {
-    String token = new RequestAuthCode(GITHUB, code).getAccessToken();
+    token = new RequestAuthCode(GITHUB, code).getAccessToken();
     if (token.startsWith("Bearer"))
       return token;
     else

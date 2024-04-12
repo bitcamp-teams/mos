@@ -25,10 +25,10 @@ public enum LoginApiProvider implements LoginRequestHandler {
     return this.strategy.getUserInfo(webClient, code);
   }
 
-//  @Override
-//  public Long logout(WebClient webClient, String token) {
-//    return this.strategy.logout(webClient, token);
-//  }
+  @Override
+  public String logout(WebClient webClient, String token) {
+    return this.strategy.logout(webClient, token);
+  }
 
 
 }

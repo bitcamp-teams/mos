@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -60,28 +62,37 @@ public class OAuthController {
 
   // 카카오
   @GetMapping("/auth/kakao/callback")
-  public String callback(@RequestParam String code) throws Exception {
+  public String callback(@RequestParam String code, Model model, HttpSession session) throws Exception {
     LoginResponseHandler kakaoInfo =
         loginApiManager.getProvider("KAKAO").getUserInfo(webClient, code);
 
+    String token = kakaoInfo.getToken();
+
+    model.addAttribute("accessToken", token);
     if (memberService.get(kakaoInfo.getEmail()) != null) {
       System.out.println("로그인 성공!!!!!!!!");
-      return "/index";
+      session.setAttribute("loginUser", kakaoInfo.getEmail());
+      session.setAttribute("accessToken1", token);
+      return "index.html";
     }
 
     System.out.println("회원 정보가 없음!!!!!!!!");
     return "auth/signup";
   }
 
-  // 카카오 로그아웃
-//  @GetMapping("logout")
-//  public String logout(HttpSession session, String token) throws Exception {
-////    LoginResponseHandler kakaoInfo =
-////        loginApiManager.getProvider("KAKAO").logout(webClient, token);
-//
+  // 카카오 로그아웃 - 수정중
+  @GetMapping("/auth/kakao/logout")
+  @ResponseBody
+  public ResponseEntity logout(HttpSession session, String accessToken) throws Exception {
+
+    String kakaoUserId =
+        loginApiManager.getProvider("KAKAO").logout(webClient, accessToken);
+    System.out.println(kakaoUserId);
+
 //    session.invalidate();
 //    return "redirect:/";
-//  }
+    return ResponseEntity.ok().build();
+  }
 
   // 깃헙
   @GetMapping("login/oauth2/code/github")

@@ -23,6 +23,7 @@ public class OAuthRequestData {
   public static String KAKAO_CLIENT_SECRET;
   public static String KAKAO_REDIRECT_URL;
   public static String KAKAO_AUTH_URI;
+  public static String KAKAO_LOGOUT_REDIRECT_URL;
 
   public OAuthRequestData setCode(String code) {
     this.code = code;
@@ -54,7 +55,10 @@ public class OAuthRequestData {
     KAKAO_AUTH_URI = kakaoAuthUri;
   }
 
-
+  @Value("${logout_redirect_uri}")
+  public void setKakaoLogoutRedirectUrl(String kakaoLogoutRedirectUrl) {
+    KAKAO_LOGOUT_REDIRECT_URL = kakaoLogoutRedirectUrl;
+  }
   /* GITHUB
   *     github.clientId
         github.clientSecret

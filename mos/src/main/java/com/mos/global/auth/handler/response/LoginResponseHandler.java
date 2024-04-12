@@ -10,9 +10,11 @@ import java.util.Map;
 @Getter
 public abstract class LoginResponseHandler {
     private Map<String, Object> response;
+    private final String token;
 
-    public LoginResponseHandler(String response) {
+    public LoginResponseHandler(String response, String token) {
         try {
+            this.token = token;    // 로그아웃 요청 시 엑세스토큰 필요함.
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(response);
             if (jsonNode.isArray()) {
@@ -27,11 +29,7 @@ public abstract class LoginResponseHandler {
     }
 
     public abstract String getEmail();
-
     public abstract String getName();
-
     public abstract String getPassword();
-
     public abstract String getId();
-
 }

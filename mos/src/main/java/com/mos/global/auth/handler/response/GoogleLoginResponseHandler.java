@@ -3,8 +3,8 @@ package com.mos.global.auth.handler.response;
 import java.util.Map;
 
 public class GoogleLoginResponseHandler extends LoginResponseHandler {
-  public GoogleLoginResponseHandler(String response) {
-    super(response);
+  public GoogleLoginResponseHandler(String response, String token) {
+    super(response, token);
   }
 
   private Map<String, Object> getProfile() {

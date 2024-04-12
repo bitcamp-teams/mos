@@ -10,24 +10,44 @@
 <body>
 
 <header id="header">
-    <a href="/">
-      <img src='/img/logo_text.png'>
-    </a>
-    <div>
-      <a class="content" href="/study/list">스터디 찾기</a>
-      <a class="content" href="/study/form">모집 글 쓰기</a>
-      <a class="content" href="/wiki/list">모두의 위키</a>
-      <img data-th-if="${session.loginUser != null}" class="content" src="/img/notibell_none.png">
-      <a class="content" data-th-if="${session.loginUser != null}">
-        <img src="/img/user_defalt.png">
-        <b data-th-text="${session.loginUser.email}"></b>
-      </a>
-      <button data-th-if="${session.loginUser != null}" onclick="window.location.href='/auth/logout'">로그아웃</button>
-      <!-- 로그인 버튼 클릭 시 모달 열기 -->
-      <button data-th-if="${session.loginUser == null}" class="btn-open-modal">로그인</button>
-
-    </div>
+  <a href="/">
+    <img src='/img/logo_text.png'>
+  </a>
+  <div>
+    <a href="/study/list">스터디 찾기</a>
+    <a href="/study/form">모집 글 쓰기</a>
+    <a href="/wiki/list">모두의 위키</a>
+<!--    <button onclick="location.href='/auth/login';">로그인</button>-->
+    <button data-th-if="${session.loginUser != null}" data-th-onclick="logoutWithAccessToken()">로그아웃</button>
+    <!-- 로그인 버튼 클릭 시 모달 열기 -->
+    <button data-th-if="${session.loginUser == null}" class="btn-open-modal">로그인</button>
+  </div>
 </header>
+
+<script>
+
+
+  function logoutWithAccessToken() {
+    var accessToken = "[[${accessToken}]]";
+    alert("AccessToken: " + "[[${accessToken}]]");
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/auth/kakao/logout?accessToken=" + encodeURIComponent(accessToken), true);
+    xhr.onload = () => {
+        if(xhr.status === 201) {
+            //201 상태코드는 요청이 성공적으로 처리 됬다는말/ 일반적으로 POST요청에 대한 응답
+            const res = JSON.parse(xhr.response); // 응답데이터를 JSON.parse 함수의 JSON 객체로 변경
+            console.log(res); //응답데이터 출력
+            location.href = "/";
+        } else {
+            //에러발생
+            console.error(xhr.status, xhr.statusText); //응답상태와 응답 메시지 출력
+        }
+    }
+
+    xhr.send();
+  }
+
+</script>
 
 <!-- 모달 -->
 <div class="modal" id="loginModal">
