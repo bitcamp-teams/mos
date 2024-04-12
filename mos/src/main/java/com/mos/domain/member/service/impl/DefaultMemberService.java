@@ -44,4 +44,9 @@ public class DefaultMemberService implements MemberService {
     public boolean existsByEmail(String email) {
       return memberRepository.existsByEmail(email);
     }
+
+    @Override
+    public boolean existsByUserName(String username) {
+      return memberRepository.existsByUserName(username);
+    }
 }

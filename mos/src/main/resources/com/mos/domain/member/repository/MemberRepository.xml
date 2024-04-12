@@ -32,13 +32,25 @@
   <select id="existsByEmail" resultType="boolean" parameterType="String">
     SELECT
       CASE
-        WHEN COUNT(*) > 0 THEN 'true' -- 이메일이 이미 존재하는 경우
-        ELSE 'false' -- 이메일이 존재하지 않는 경우
+        WHEN COUNT(*) > 0 THEN 'true'  <!-- 이메일이 이미 존재하는 경우 -->
+        ELSE 'false' <!-- 이메일이 존재하지 않는 경우 -->
       END AS email_exists
     FROM
       member
     WHERE
       email = #{email};
+  </select>
+
+  <select id="existsByUserName" resultType="boolean" parameterType="String">
+    SELECT
+      CASE
+        WHEN COUNT(*) > 0 THEN 'true' <!-- username이 이미 존재하는 경우 -->
+        ELSE 'false' <!-- username이 존재하지 않는 경우 -->
+      END AS username_exists
+    FROM
+      member
+    WHERE
+      username = #{username};
   </select>
 
   <select id="findByNo" resultMap="MemberMap" parameterType="int">
