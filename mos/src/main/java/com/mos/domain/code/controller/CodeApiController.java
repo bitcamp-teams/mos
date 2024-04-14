@@ -51,7 +51,7 @@ public class CodeApiController {
     return new Result<>(json, paging);
   }
 
-  @GetMapping("list")
+  @PostMapping("list")
   public Result<List<CodeResponseDto>> list(@RequestBody CodeRequestDto codeRequestDto) {
     int totalCnt = codeService.countAll();
 
