@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mos.domain.comment.repository.CommentRepository">
+
+  <resultMap id="StudyCommentDtoList" type="StudyCommentDto">
+    <id column="comment_no" property="commentNo"/>
+    <result column="content" property="content"/>
+    <result column="created_date" property="createdDate"/>
+    <result column="parent_comment_no" property="parentCommentNo"/>
+    <result column="layer" property="layer"/>
+  </resultMap>
+
+  <select id="findAllStudyComments" resultMap="StudyCommentDtoList">
+    SELECT comment_no, study_comment.member_no, username, content, study_comment.created_date, parent_comment_no, layer
+    FROM study_comment
+    JOIN member ON study_comment.member_no = member.member_no
+    WHERE study_no = #{studyNo}
+    ORDER BY parent_comment_no ASC, layer ASC, comment_no ASC
+  </select>
+
+<insert id="addStudyComment" parameterType="StudyDto">
+  INSERT INTO study_comment
+  (member_no, study_no, parent_comment_no, content)
+  VALUES(#{memberNo}, #{studyNo}, (SELECT LAST_INSERT_ID()+1), #{content})
+</insert>
+
+</mapper>

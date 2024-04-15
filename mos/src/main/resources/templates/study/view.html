@@ -7,6 +7,7 @@
   <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
+
 <div class="page-margin">
   <div data-th-replace="header::header">머리말</div>
 
@@ -28,10 +29,32 @@
 
   </div>
 
+    <div th:each="comment : ${studyComment}" style="border: 1px solid #000;">
+      <p>
+        <span th:text="${comment.username}"/>
+      </p>
+      <span th:text="${comment.content}"></span>
+      <span th:text="${comment.createdDate}"/>
+
+    </div>
+
+  <form th:action="@{/comment/study/add}" method="post">
+    <p>
+      <input type="hidden" name="studyNo" th:value="${study.studyNo}">
+<!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
+<!--      POST 방식으로 userNo를 넘기지 말 것-->
+      <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
+    </p>
+    <p>
+      <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
+    </p>
+    <button type="submit">댓글 등록</button>
+  </form>
+
+
   <div data-th-replace="footer::footer">꼬리말</div>
+
+
 </div>
-<script>
-  console.dir('[[${study}]]')
-</script>
 </body>
 </html>
