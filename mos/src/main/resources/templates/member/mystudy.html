@@ -21,8 +21,8 @@
 <div data-th-replace="header :: header">머리말</div>
 
 <div id="sidenav" class="sidenav">
-  <a href="">대시보드</a>
-  <a data-th-href="@{/member/mystudy}" href="/member/mystudy">My 스터디</a>
+  <a data-th-href="@{'/member/view?no=' + ${member.no}}" href="">대시보드</a>
+  <a data-th-href="@{'/member/mystudy?no=' + ${member.no}}" href="">My 스터디</a>
   <a href="">회원 정보 수정</a>
 </div>
 

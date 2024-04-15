@@ -13,3 +13,4 @@ public class MemberJoinDto {
     private String career;
     private String jobGroup;
 }
+ 

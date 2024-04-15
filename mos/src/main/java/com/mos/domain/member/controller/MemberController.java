@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Controller
@@ -61,8 +62,13 @@ public class MemberController {
     }
 
     @GetMapping("mystudy")
-    public void viewMyStudy(int no, Model model) throws Exception {
+    public String viewMyStudy(@RequestParam("no") int no, Model model) throws Exception {
 
+        MemberDto member = memberService.getNo(no);
+        if (member == null) {
+            throw new Exception("회원 번호가 유효하지 않습니다.");
+        }
+        model.addAttribute("member", member);
 
         // 회원 번호를 이용하여 회원의 스터디 목록을 조회
         List<MemberStudyDto> myStudy = memberService.findMyStudies(no);
@@ -86,5 +92,8 @@ public class MemberController {
         }
 
         model.addAttribute("memberStudyList", memberStudyList);
+        return "member/mystudy";
     }
+
+
 }
