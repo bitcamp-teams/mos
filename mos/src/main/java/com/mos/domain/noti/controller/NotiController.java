@@ -22,16 +22,15 @@ public class NotiController {
       NotiAddDto notiDto,
       @RequestParam int recipientId,
       @RequestParam String message,
-      HttpServletRequest request
+      @RequestParam String url
   ) {
-    String url = request.getRequestURI();
-    System.out.println("url = " + url);
     notiDto.setLink(url);
+    System.out.println("url = " + url);
     notiDto.setRecipientId(recipientId);
     System.out.println("recipientId = " + recipientId);
     notiDto.setMessage(message);
     System.out.println("message = " + message);
     notiService.sendNoti(notiDto);
-    return "redirect:/";
+    return "redirect:" + url;
   }
 }
