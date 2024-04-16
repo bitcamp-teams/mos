@@ -1,7 +1,10 @@
 package com.mos.domain.study.controller;
 
+import com.mos.domain.comment.dto.StudyCommentDto;
+import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.service.StudyService;
+import java.util.List;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
@@ -24,13 +27,14 @@ public class StudyController {
   private static final Log log = LogFactory.getLog(Thread.currentThread().getClass());
   private final StudyService studyService;
   // 스터디에 파일저장 / 이미지 옵티마이징 따로 없으므로 변수 추가 없음
+  private final CommentService commentService;
 
   @GetMapping("form")
   public void form() throws Exception {
   }
 
   @PostMapping("add")
-  public String add(StudyDto studyDto) {
+  public String add(@ModelAttribute StudyDto studyDto) {
     studyService.add(studyDto);
     return "redirect:list";
   }
@@ -42,6 +46,9 @@ public class StudyController {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
     model.addAttribute("study", studyDto);
+
+    List<StudyCommentDto> studyCommentDtoList = commentService.getStudyComments(studyNo);
+    model.addAttribute("studyComment", studyCommentDtoList);
   }
 
   @GetMapping("edit")

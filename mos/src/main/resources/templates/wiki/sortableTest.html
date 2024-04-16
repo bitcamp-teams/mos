@@ -1,0 +1,100 @@
+<html lang='en'
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<!--추후 중복되는 head/header/footer 재사용성을 높일면, layout dialect를 적용할 수 있다-->
+<!--xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--layout:decorate="~{layout.html}"-->
+
+<head>
+  <title>모두의 스터디</title>
+  <meta charset='UTF-8'>
+
+  <!--  bootstrap-->
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!--  /bootstrap-->
+
+  <link href="/css/styles.css" rel="stylesheet">
+  <link href="/css/wiki/indentation.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+  <style>
+    body {
+      margin: 10px;
+    }
+
+    .glyphicon-move {
+      cursor: move;
+      cursor: -webkit-grabbing;
+    }
+  </style>
+
+</head>
+
+<body>
+<div th:replace="header::header">머리말</div>
+
+
+<button id="appendButton" type="button">위키 추가하기</button>
+<script>
+  document.getElementById('appendButton').addEventListener('click', function () {
+    // Create a new div element for the list item
+    var newItem = document.createElement('div');
+    newItem.className = 'list-group-item col-xs-1';
+
+    // You can set the layer class and wiki object properties as needed
+    var layer = 1; // Example layer value
+    var wiki = {
+      wikiNo: 123, // Replace with actual wiki number
+      title: 'New Wiki Title' // Replace with actual wiki title
+    };
+
+    // Add the layer class
+    newItem.classList.add('indent-' + layer);
+
+    // Add the badge span
+    var badgeSpan = document.createElement('span');
+    badgeSpan.className = 'badge';
+    badgeSpan.textContent = '14'; // Replace with actual badge number if needed
+    newItem.appendChild(badgeSpan);
+
+    // Add the link with glyphicon
+    var link = document.createElement('a');
+    link.href = '/wiki/viewWiki?wikiNo=' + wiki.wikiNo; // Update href with correct URL
+    var glyphicon = document.createElement('span');
+    glyphicon.className = 'glyphicon glyphicon-move';
+    glyphicon.setAttribute('aria-hidden', 'true');
+    glyphicon.textContent = wiki.title;
+    link.appendChild(glyphicon);
+    newItem.appendChild(link);
+
+    // Append the new item to the list
+    document.getElementById('listWithHandle').appendChild(newItem);
+  });
+</script>
+
+<div id="listWithHandle" class="list-group">
+  <div class="list-group-item col-xs-1" th:classappend="'indent-' + ${wiki.layer}"
+       th:each="wiki : ${wikis}">
+    <span class="badge">14</span>
+
+    <a href="wiki/viewWiki"
+       th:href="@{/wiki/viewWiki(wikiNo=*{wiki.wikiNo})}">
+      <span class="glyphicon glyphicon-move" aria-hidden="true"
+            th:text="${wiki.title}">리스트</span></a>
+  </div>
+</div>
+<script>
+  // List with handle
+  Sortable.create(listWithHandle, {
+    handle: '.glyphicon-move',
+    animation: 150
+  });
+</script>
+
+<div th:replace="footer::footer">꼬리말</div>
+
+</body>
+</html>

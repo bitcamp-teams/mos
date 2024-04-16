@@ -1,22 +1,6 @@
-<!doctype html>
-<html lang="en" data-th-fragment="codeList">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>admin | 공통코드</title>
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-</head>
 <div data-th-replace="admin/header :: header"></div>
 <div data-th-replace="admin/main-sidebar :: mainSideBar"></div>
-<body class="hold-transition sidebar-mini">
+<!--<body class="hold-transition sidebar-mini">-->
 <div class="wrapper">
 
     <!-- Content Wrapper. Contains page content -->
@@ -62,16 +46,6 @@
                                         <th>수정일</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr data-th-each="board : ${list}" data-th-object="${board}">
-                                        <td data-th-text="*{no}"></td>
-                                        <td><a data-th-href='@{view(category=${category},no=*{no})}'
-                                               data-th-text="*{title}"></a></td>
-                                        <td data-th-text="*{writer.name}"></td>
-                                        <td data-th-text="${#dates.format(board.createdDate,'yyyy-MM-dd')}"></td>
-                                        <td data-th-text="*{fileCount}"></td>
-                                    <tr>
-                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->
@@ -90,44 +64,19 @@
 </div>
 <!-- ./wrapper -->
 
-
-<!-- DataTables  & Plugins -->
-<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="/plugins/jszip/jszip.min.js"></script>
-<script src="/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- Page specific script -->
 <script>
-    let codes;
 
-    $(function () {
-        codeList()
-
-        $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-        });
-    });
+    // $('#example2').DataTable({
+    //     "paging": true,
+    //     "lengthChange": false,
+    //     "searching": false,
+    //     "ordering": true,
+    //     "info": true,
+    //     "autoWidth": false,
+    //     "responsive": true,
+    // });
 </script>
-</body>
 <div data-th-replace="admin/footer :: footer"></div>
-</html>
 
 
