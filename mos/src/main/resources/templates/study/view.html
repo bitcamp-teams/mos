@@ -28,15 +28,57 @@
     <a data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">[삭제]</a>
 
   </div>
-
-    <div th:each="comment : ${studyComment}" style="border: 1px solid #000;">
-      <p>
-        <span th:text="${comment.username}"/>
-      </p>
-      <span th:text="${comment.content}"></span>
+  <div th:each="comment : ${studyComment}" th:if="${comment.stat} != '삭제'" style="border: 1px solid #000;">
+    <p>
+      <a th:href="@{/comment/study/delete(commentNo=${comment.commentNo}, studyNo=${comment.studyNo})}" href="#">[삭제]</a>
+      <button th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'" th:text="'편집'"></button>
+    </p>
+    <p>
+      <span th:text="${comment.username}"/>
       <span th:text="${comment.createdDate}"/>
-
+    </p>
+    <div class="comment-content" th:id="'comment-' + ${comment.commentNo}">
+      <span th:text="${comment.content}"></span>
     </div>
+    <input type="text" class="comment-input" th:id="'comment-input-' + ${comment.commentNo}" th:value="${comment.content}" style="display: none;">
+    <div class="button-group" style="display: none;" th:id="'button-group-' + ${comment.commentNo}">
+      <button class="save-btn" th:id="'save-btn-' + ${comment.commentNo}" th:onclick="'saveComment(' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'">저장</button>
+      <button class="cancel-btn" th:onclick="'cancelEdit(' + ${comment.commentNo} + ');'">취소</button>
+    </div>
+  </div>
+
+  <script>
+    function editComment(element, commentNo, studyNo) {
+      var commentContent = document.getElementById('comment-' + commentNo);
+      var commentInput = document.getElementById('comment-input-' + commentNo);
+      var buttonGroup = document.getElementById('button-group-' + commentNo);
+
+      commentContent.style.display = 'none';
+      commentInput.style.display = 'inline';
+      buttonGroup.style.display = 'inline';
+    }
+
+    function saveComment(commentNo, studyNo) {
+      var commentInput = document.getElementById('comment-input-' + commentNo);
+      var newContent = commentInput.value;
+
+      서버에 업데이트 요청 보내기
+      ...
+
+      location.reload(); // 페이지 새로고침
+    }
+
+    function cancelEdit(commentNo) {
+      var commentContent = document.getElementById('comment-' + commentNo);
+      var commentInput = document.getElementById('comment-input-' + commentNo);
+      var buttonGroup = document.getElementById('button-group-' + commentNo);
+
+      commentContent.style.display = 'inline';
+      commentInput.style.display = 'none';
+      buttonGroup.style.display = 'none';
+    }
+  </script>
+
 
   <form th:action="@{/comment/study/add}" method="post">
     <p>

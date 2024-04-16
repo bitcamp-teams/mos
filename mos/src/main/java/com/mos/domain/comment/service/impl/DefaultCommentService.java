@@ -24,4 +24,9 @@ public class DefaultCommentService implements CommentService {
   public void addStudyComment(StudyCommentDto studyCommentDto) {
     commentRepository.addStudyComment(studyCommentDto);
   }
+
+  @Override
+  public void deleteStudyComment(int commentNo) {
+    commentRepository.deleteStudyComment(commentNo);
+  }
 }

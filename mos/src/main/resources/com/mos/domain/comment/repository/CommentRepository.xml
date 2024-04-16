@@ -7,24 +7,38 @@
 
   <resultMap id="StudyCommentDtoList" type="StudyCommentDto">
     <id column="comment_no" property="commentNo"/>
+    <result column="study_no" property="studyNo"/>
     <result column="content" property="content"/>
     <result column="created_date" property="createdDate"/>
     <result column="parent_comment_no" property="parentCommentNo"/>
     <result column="layer" property="layer"/>
+    <result column="stat" property="stat"/>
   </resultMap>
 
   <select id="findAllStudyComments" resultMap="StudyCommentDtoList">
-    SELECT comment_no, study_comment.member_no, username, content, study_comment.created_date, parent_comment_no, layer
+    SELECT study_no, comment_no, study_comment.member_no, study_comment.stat, username, content, study_comment.created_date, parent_comment_no, layer
     FROM study_comment
     JOIN member ON study_comment.member_no = member.member_no
     WHERE study_no = #{studyNo}
     ORDER BY parent_comment_no ASC, layer ASC, comment_no ASC
   </select>
 
-<insert id="addStudyComment" parameterType="StudyDto">
-  INSERT INTO study_comment
-  (member_no, study_no, parent_comment_no, content)
-  VALUES(#{memberNo}, #{studyNo}, (SELECT LAST_INSERT_ID()+1), #{content})
-</insert>
+  <insert id="addStudyComment" parameterType="StudyDto" useGeneratedKeys="true">
+    INSERT INTO
+      study_comment(member_no, study_no, parent_comment_no, content)
+    VALUES
+      (#{memberNo}, #{studyNo}, (SELECT LAST_INSERT_ID()+1), #{content})
+<!--  TODO: parent_comment_no를 자기 자신으로 두기 위해 사용한 위 로직을 개선해야 함  -->
+  </insert>
+
+  <update id="deleteStudyComment" parameterType="int">
+    UPDATE
+      study_comment
+    SET
+      content = "삭제되었습니다.",
+      stat = "삭제"
+    WHERE
+      comment_no = #{commentNo}
+  </update>
 
 </mapper>

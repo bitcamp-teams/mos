@@ -1,6 +1,6 @@
 package com.mos.domain.comment.dto;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ public class StudyCommentDto {
   String username;
   String content;
   int layer;
-  int stat;
-  Date createdDate;
-  Date updatedDate;
+  String stat;
+  Timestamp createdDate;
+  Timestamp updatedDate;
 }

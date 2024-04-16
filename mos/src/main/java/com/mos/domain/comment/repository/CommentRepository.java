@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 public interface CommentRepository {
 
   List<StudyCommentDto> findAllStudyComments(int studyNo);
+
   void addStudyComment(StudyCommentDto studyCommentDto);
 
+  void deleteStudyComment(int commentNo);
 }
