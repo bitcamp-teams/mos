@@ -1,13 +1,12 @@
 package com.mos.domain.noti.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-@Getter
-@Setter
+@Data
+@RequiredArgsConstructor
 public class NotiAddDto {
   private String message;
-  private int senderId;
   private int recipientId;
   private String link;
 }

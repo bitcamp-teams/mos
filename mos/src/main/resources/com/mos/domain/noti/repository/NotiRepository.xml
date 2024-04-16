@@ -14,8 +14,10 @@
     <result column="read_or_not" property="read"/>
   </resultMap>
 
-  <insert id="send" parameterType="NotiAddDto">
-    insert into notification(member_no, message, link)
-    values (#{recipientId}, #{message}, #{link});
+  <insert id="add" parameterType="NotiAddDto">
+    INSERT INTO notification(member_no, message, link)
+    SELECT member_no, #{message}, #{link}
+    FROM member
+    WHERE member_no = #{recipientId};
   </insert>
 </mapper>

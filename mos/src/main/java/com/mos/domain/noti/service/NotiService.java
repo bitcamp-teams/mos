@@ -11,8 +11,8 @@ public class NotiService {
 
   private final NotiRepository notiRepository;
 
-  public void send(NotiAddDto notiDto) {
-
+  public void sendNoti(NotiAddDto notiDto) {
+    System.out.println("notiDto = " + notiDto);
     notiRepository.add(notiDto);
   }
 }
