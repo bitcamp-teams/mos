@@ -41,4 +41,45 @@
       comment_no = #{commentNo}
   </update>
 
+<!--  스터디 댓글 변경 기능을 위한 매퍼 추가  -->
+
+
+<!--  위키 댓글을 위한 매퍼  -->
+
+  <resultMap id="WikiCommentDtoList" type="WikiCommentDto">
+    <id column="comment_no" property="commentNo"/>
+    <result column="wiki_no" property="wikiNo"/>
+    <result column="content" property="content"/>
+    <result column="created_date" property="createdDate"/>
+    <result column="parent_comment_no" property="parentCommentNo"/>
+    <result column="layer" property="layer"/>
+    <result column="stat" property="stat"/>
+  </resultMap>
+
+  <select id="findAllWikiComments" resultMap="WikiCommentDtoList">
+    SELECT wiki_no, comment_no, wiki_comment.member_no, wiki_comment.stat, username, content, wiki_comment.created_date, parent_comment_no, layer
+    FROM wiki_comment
+    JOIN member ON wiki_comment.member_no = member.member_no
+    WHERE wiki_no = #{wikiNo}
+    ORDER BY parent_comment_no ASC, layer ASC, comment_no ASC
+  </select>
+
+  <insert id="addWikiComment" parameterType="WikiDto" useGeneratedKeys="true">
+    INSERT INTO
+      wiki_comment(member_no, wiki_no, parent_comment_no, content)
+    VALUES
+      (#{memberNo}, #{wikiNo}, (SELECT LAST_INSERT_ID()+1), #{content})
+      <!--  TODO: parent_comment_no를 자기 자신으로 두기 위해 사용한 위 로직을 개선해야 함  -->
+  </insert>
+
+  <update id="deleteWikiComment" parameterType="int">
+    UPDATE
+      wiki_comment
+    SET
+      content = "삭제되었습니다.",
+      stat = "삭제"
+    WHERE
+      comment_no = #{commentNo}
+  </update>
+
 </mapper>
