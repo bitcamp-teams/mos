@@ -28,7 +28,7 @@
       <result column="end_date" property="endDate"/>
     </association>
 
-    <association property="MemberDto" javaType="MemberDto">
+    <association property="memberDto" javaType="MemberDto">
       <id column="member_no" property="no"/>
       <result column="photo" property="photo"/>
       <result column="username" property="userName"/>
