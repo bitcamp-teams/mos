@@ -3,6 +3,8 @@
 <html lang='en'>
 <head data-th-fragment="header">
     <meta charset='UTF-8'>
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
     <!-- TUI 에디터 CSS CDN -->
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
     <!-- code syntax-->
@@ -34,21 +36,27 @@
     <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-    <!-- summernote -->
-    <!--    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">-->
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
     <title>mos</title>
     <style>
         .toastui-editor-contents {
             font-size: 20px !important;
         }
     </style>
+    <!-- custom css-->
+    <link rel="stylesheet" href="/css/code/style.css">
 </head>
 
 <header>
     <!-- Preloader -->
-<!--    <div class="preloader flex-column justify-content-center align-items-center">-->
-<!--        <img class="animation__shake" src="/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">-->
-<!--    </div>-->
+    <!--    <div class="preloader flex-column justify-content-center align-items-center">-->
+    <!--        <img class="animation__shake" src="/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">-->
+    <!--    </div>-->
 
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -58,7 +66,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="index3.html" class="nav-link">Home</a>
+                <a href="/admin" class="nav-link">Home</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Contact</a>
@@ -190,7 +198,6 @@
     </nav>
     <!-- /.navbar -->
 
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
@@ -208,6 +215,7 @@
     <script src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
     <!-- axios -->
     <script src="/plugins/axios/axios.min.js"></script>
+
     <script>
         // sse 테스트
         // window.addEventListener('DOMContentLoaded', () => {
@@ -236,4 +244,4 @@
         // });
     </script>
 </header>
-<body>
+<body class="hold-transition sidebar-mini">

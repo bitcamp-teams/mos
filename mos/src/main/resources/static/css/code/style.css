@@ -1,0 +1,10 @@
+#example1_filter {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    justify-content: flex-end;
+}
+
+#modalOpenBtn {
+    width: 100px;
+}

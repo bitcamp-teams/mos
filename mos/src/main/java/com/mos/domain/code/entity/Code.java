@@ -1,6 +1,5 @@
 package com.mos.domain.code.entity;
 
-import com.mos.domain.code.dto.CodeRequestDto;
 import com.mos.domain.code.dto.CodeResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
