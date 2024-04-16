@@ -62,37 +62,22 @@ public class MemberController {
     }
 
     @GetMapping("mystudy")
-    public String viewMyStudy(@RequestParam("no") int no, Model model) throws Exception {
+    public String viewMyStudy(Model model) throws Exception {
 
 
-        MemberDto member = memberService.getNo(no);
+        MemberDto member = memberService.getNo(3);
         if (member == null) {
             throw new Exception("회원 번호가 유효하지 않습니다.");
         }
         model.addAttribute("member", member);
 
         // 회원 번호를 이용하여 회원의 스터디 목록을 조회
-        List<MemberStudyDto> myStudy = memberService.findMyStudies(no);
+        List<MemberStudyDto> myStudy = memberService.findMyStudies(3);
         if (myStudy == null) {
             throw new Exception("회원 번호가 유효하지 않습니다.");
         }
 
-        // 회원 정보와 스터디 정보를 함께 담는 MemberStudyDto 리스트 생성
-        List<MemberStudyDto> memberStudyList = new ArrayList<>();
-        for (MemberStudyDto memberStudyDto : myStudy) {
-            MemberStudyDto updatedMemberStudyDto = new MemberStudyDto();
-            updatedMemberStudyDto.setNo(memberStudyDto.getNo());
-            MemberDto memberDto = memberStudyDto.getMemberDto();
-            updatedMemberStudyDto.setMemberDto(memberDto);
-            com.mos.domain.study.dto.StudyDto studyDto = memberStudyDto.getStudyDto();
-            // 패키지명을 명시하여 StudyDto를 MemberStudyDto에 설정
-            updatedMemberStudyDto.setStudyDto(studyDto);
-            updatedMemberStudyDto.setStat(memberStudyDto.getStat());
-            updatedMemberStudyDto.setApplyMsg(memberStudyDto.getApplyMsg());
-            memberStudyList.add(updatedMemberStudyDto);
-        }
-
-        model.addAttribute("memberStudyList", memberStudyList);
+        model.addAttribute("memberStudyList", myStudy);
         return "member/mystudy";
     }
 

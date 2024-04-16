@@ -3,7 +3,6 @@
 <head>
   <meta charset='UTF-8'>
   <title>my study</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/member/view.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,33 +50,7 @@
   </table>
 </div> <!-- 부트스트랩 컨테이너 닫기 -->
 
-<!-- 모달 창 추가 -->
-
-<!-- 모달 -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" data-th-each="memberStudy : ${memberStudyList}">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel" data-th-text="${memberStudy.studyDto != null ? memberStudy.studyDto.title : ''}"></h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" data-th-if="${memberStudy != null}">
-        <div data-th-if="${memberStudy.studyDto.memberNo == memberStudy.memberDto.no}">
-          <!-- 여기에 StudyDto의 memberNo와 MemberStudyDto의 memberDto.no가 같을 때 보여줄 내용을 작성하세요 -->
-          <p data-th-text="${memberStudy.applyMsg}"></p>
-        </div>
-        <div data-th-unless="${memberStudy.studyDto.memberNo == memberStudy.memberDto.no}">
-          <!-- 여기에 StudyDto의 memberNo와 MemberStudyDto의 memberDto.no가 다를 때 보여줄 내용을 작성하세요 -->
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
-        <button data-th-if="${memberStudy.studyDto.memberNo == memberStudy.memberDto.no}" type="button" class="btn btn-primary">승인</button>
-        <button data-th-unless="${memberStudy.studyDto.memberNo == memberStudy.memberDto.no}" type="button" class="btn btn-primary">탈퇴하기</button>
-      </div>
-    </div>
-  </div>
-</div>
+<div data-th-replace="member/mystudy-view :: modal(${memberStudyList})"></div>
 
 <div data-th-replace="footer :: footer">꼬리말</div>
 
@@ -86,6 +59,7 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous">
 </script>
+
 
 </body>
 </html>
