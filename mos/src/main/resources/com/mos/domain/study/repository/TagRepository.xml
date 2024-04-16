@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mos.domain.study.repository.TagRepository">
+  <resultMap id="tagMap" type="TagDto">
+    <id column="tag_no" property="tagNo"/>
+    <result column="study_no" property="studyNo"/>
+    <result column="name" property="name"/>
+    <result column="path" property="path"/>
+
+  </resultMap>
+
+  <insert id="addAll">
+    INSERT INTO study_tag_stat (study_no, tag_no)
+    VALUES
+    <foreach collection="tagList" item="item" separator=",">
+      (#{item.studyNo}, #{item.tagNo})
+    </foreach>
+  </insert>
+
+  <select id="findAll" resultMap="tagMap">
+    SELECT
+      tag_no,
+      name,
+      path
+    FROM
+      tag
+    ORDER BY
+      tag_no ASC;
+  </select>
+
+  <select id="getByTagNo" resultMap="tagMap">
+    SELECT
+      tag_no,
+      name,
+      path
+    FROM
+      tag
+    ORDER BY
+      tag_no ASC;
+  </select>
+
+</mapper>

@@ -3,7 +3,10 @@ package com.mos.domain.study.controller;
 import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.study.dto.StudyDto;
+import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.service.StudyService;
+
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +33,25 @@ public class StudyController {
   private final CommentService commentService;
 
   @GetMapping("form")
-  public void form() throws Exception {
+  public String form(Model model) throws Exception {
+    List<TagDto> tagList = studyService.getAllTags();
+    model.addAttribute("tagList", tagList);
+    return "study/form";
   }
 
   @PostMapping("add")
-  public String add(@ModelAttribute StudyDto studyDto) {
+  public String add(@ModelAttribute StudyDto studyDto,
+                    @RequestParam("tags") List<Integer> tagNums) {
+
+    List<TagDto> tagList = new ArrayList<>();
+
+    for (int no : tagNums) {
+      TagDto tag = TagDto.builder().tagNo(no).build();
+      tagList.add(tag);
+    }
+    studyDto.setTagList(tagList);
     studyService.add(studyDto);
+
     return "redirect:list";
   }
 

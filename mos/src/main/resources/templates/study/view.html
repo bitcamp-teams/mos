@@ -20,6 +20,11 @@
     <p> 스터디장 = <span th:text="*{memberNo}"> </span></p>
     <p> 진행방식 = <span th:text="*{method}"> </span></p>
     <p> 모집정원 = <span th:text="*{intake}"> </span></p>
+    <p> 기술스택 =
+      <span th:each="tag : ${study.tagList}">
+        <span th:text="${tag.name}"></span>
+    </span>
+    </p>
     <p> 모집마감 = <span th:text="*{recruitmentDeadline}"> </span></p>
     <p> 예상종료일 = <span th:text="*{endDate}"> </span></p>
     <p> 소개 = <span th:text="*{introduction}"> </span></p>
