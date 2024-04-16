@@ -10,26 +10,77 @@
 <div class="page-margin">
   <div data-th-replace="header::header">머리말</div>
 
+  <h2 style="padding: 0.6em 0.5em 0.6em 0.5em; margin: 0.5em 0em; color: #000;
+              border-bottom: 2px solid #e5e5e5; font-weight: bold;" data-ke-size="size23">스터디 모집하기!
+  </h2>
+  <p data-ke-size="size16"></p>
+
   <form action="add" data-th-action="@{add}" method="post">
     <div>
-      스터디는 어떻게 진행되나요? : <input name='method' type='text'>
+      스터디 제목을 입력해주세요!<br> <input name="title" type="text">
     </div>
+    <br>
     <div>
-      최대 정원을 정하시겠어요? (선택) : <input name='intake' type='number'>
+      스터디 방식을 선택해주세요!<br>
+      <input type="radio" value="온라인" name="method"> 온라인<br>
+      <input type="radio" value="오프라인" name="method"> 오프라인<br>
+      <input type="radio" value="자유방식" name="method"> 자유방식<br>
     </div>
+    <br>
     <div>
-      언제까지 모집하시겠어요? (선택) : <input name="recruitmentDeadline" type="date">
+      모집 인원수를 설정해주세요!<br>
+      <input name="intake" type="number">
     </div>
+    <br>
     <div>
-      스터디의 이름을 정해주세요! 여기서 입력하신 스터디 이름이 다른 이용자들에게 노출됩니다. <br> <input name="title" type="text">
+      언제까지 모집하시겠어요?<br>
+      <input name="recruitmentDeadline" type="date">
     </div>
+    <br>
     <div>
-      스터디에 대해서 설명해주세요 : <textarea name='introduction'></textarea>
+      스터디 빈도와 진행 기간은 어떻게 되나요?<br>
+      시작일 : <input name="startDate" type="date"><br>
+      종료일 : <input name="endDate" type="date"><br>
     </div>
+    <br>
     <div>
-      <button>스터디 등록하기!</button>
+      태그들을 선택하세요!<br>
+      <div data-th-each="tag : ${tagList}" data-th-object="${tag}">
+        <input type="checkbox" data-th-checkbox="true" data-th-value="*{tagNo}" name="tags">
+        <span data-th-text="*{name}"></span>
+      </div>
+    </div>
+    <br>
+    <div>
+      스터디에 대해서 설명해주세요.<br>
+      <textarea name="introduction" rows="4" cols="55"></textarea>
+    </div>
+    <br>
+    <div>
+      <button>등록</button>
     </div>
   </form>
+
+<!--  <form action="add" data-th-action="@{add}" method="post">-->
+<!--    <div>-->
+<!--      스터디는 어떻게 진행되나요? : <input name='method' type='text'>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      최대 정원을 정하시겠어요? (선택) : <input name='intake' type='number'>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      언제까지 모집하시겠어요? (선택) : <input name="recruitmentDeadline" type="date">-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      스터디의 이름을 정해주세요! 여기서 입력하신 스터디 이름이 다른 이용자들에게 노출됩니다. <br> <input name="title" type="text">-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      스터디에 대해서 설명해주세요 : <textarea name='introduction'></textarea>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <button>스터디 등록하기!</button>-->
+<!--    </div>-->
+<!--  </form>-->
 
 
   <div data-th-replace="footer::footer">꼬리말</div>

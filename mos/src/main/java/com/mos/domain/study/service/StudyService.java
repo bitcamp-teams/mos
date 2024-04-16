@@ -1,8 +1,8 @@
 package com.mos.domain.study.service;
 
 import java.util.List;
-
 import com.mos.domain.study.dto.StudyDto;
+import com.mos.domain.study.dto.TagDto;
 
 public interface StudyService {
 
@@ -15,4 +15,6 @@ public interface StudyService {
   void deleteStudy(int studyNo);
 
   int update(StudyDto studyDto);
+
+  List<TagDto> getAllTags();
 }
