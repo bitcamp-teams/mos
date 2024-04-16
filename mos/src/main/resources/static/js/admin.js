@@ -44,7 +44,6 @@ const index = {
         })
     },
     save(data) {
-        debugger
         const form = new FormData(data)
         let tmp = [];
         for (const data of form.entries()) {
@@ -52,11 +51,19 @@ const index = {
         }
 
         const result = JSON.stringify(convertToObject(tmp));
-        console.log(result);
 
         codes.createCode(result).then(res => {
-            alert('전송완료')
-            $('div[class=modal]').hide();
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            Toast.fire({
+                icon: 'success',
+                title: '코드가 정상적으로 등록되었습니다.'
+            })
+            $('#modal-lg').modal('hide');
         })
     },
     modalOpen() {
