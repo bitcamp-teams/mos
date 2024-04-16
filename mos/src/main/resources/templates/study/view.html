@@ -55,6 +55,9 @@
       <input type="text" id="message" name="message" required>
     </div>
     <div>
+      <input type="hidden" name="url" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">
+    </div>
+    <div>
       <button type="submit">알림 보내기</button>
     </div>
   </form>
