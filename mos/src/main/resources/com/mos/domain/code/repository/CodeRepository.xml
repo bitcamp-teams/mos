@@ -19,8 +19,8 @@
     </resultMap>
 
     <insert id="add" parameterType="Code">
-        insert into common_code(code_group, code, code_name)
-        values (#{codeGroup.codeGroup}, #{code}, #{codeName})
+        insert into common_code(code_group, code, code_name, create_date, update_date)
+        values (#{group.codeGroup}, #{code}, #{codeName}, NOW(), NOW())
     </insert>
 
     <insert id="addCodeGroup" parameterType="CodeGroup">

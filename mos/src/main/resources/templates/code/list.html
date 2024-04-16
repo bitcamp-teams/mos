@@ -64,18 +64,85 @@
 </div>
 <!-- ./wrapper -->
 
+
+<div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+        <form id="addFrm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">코드추가</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card card-default">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>코드그룹</label>
+                                        <select name="codeGroup.codeGroup" class="form-control select2bs4 js-example-data-array"
+                                                style="width: 100%;">
+                                        </select>
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <div class="form-group">
+                                        <label for="codeGroupInput">코드그룹명</label>
+                                        <input name="codeGroup.codeGroupName" type="text" class="form-control form-control-border border-width-2"
+                                               id="codeGroupInput" placeholder="ex) 스터디 진행 방식">
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="codeGroupNameInput">모듈명</label>
+                                        <input name="codeGroup.moduleCode" type="text" class="form-control form-control-border border-width-2"
+                                               id="codeGroupNameInput" placeholder="ex) MEMBER">
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="code">코드</label>
+                                        <input name="code" type="text" class="form-control form-control-border border-width-2"
+                                               id="code" placeholder="ex) S01-101">
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="codeName">코드명</label>
+                                        <input name="codeName" type="text" class="form-control form-control-border border-width-2"
+                                               id="codeName" placeholder="ex) 신고">
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
 <!-- Page specific script -->
 <script>
 
-    // $('#example2').DataTable({
-    //     "paging": true,
-    //     "lengthChange": false,
-    //     "searching": false,
-    //     "ordering": true,
-    //     "info": true,
-    //     "autoWidth": false,
-    //     "responsive": true,
-    // });
 </script>
 <div data-th-replace="admin/footer :: footer"></div>
 
