@@ -46,6 +46,18 @@
       <button class="cancel-btn" th:onclick="'cancelEdit(' + ${comment.commentNo} + ');'">취소</button>
     </div>
   </div>
+  <form action="#" th:action="@{/noti/add}" method="get">
+    <div>
+      <input type="hidden" name="recipientId" th:value="${study.memberNo}">
+    </div>
+    <div>
+      <label for="message">메시지:</label>
+      <input type="text" id="message" name="message" required>
+    </div>
+    <div>
+      <button type="submit">알림 보내기</button>
+    </div>
+  </form>
 
   <script>
     function editComment(element, commentNo, studyNo) {

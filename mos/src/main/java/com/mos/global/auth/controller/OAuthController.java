@@ -83,6 +83,7 @@ public class OAuthController {
 
     if (!githubInfo.getEmail().isEmpty()) {
       joinDto.setEmail(githubInfo.getEmail());
+      joinDto.setPlatform("github");
       if (memberService.existsByEmail(joinDto.getEmail())) {
         return "redirect:/";
       }
@@ -101,6 +102,7 @@ public class OAuthController {
 
     if (!googleInfo.getEmail().isEmpty()) {
       joinDto.setEmail(googleInfo.getEmail());
+      joinDto.setPlatform("google");
       if (memberService.existsByEmail(joinDto.getEmail())) {
         return "redirect:/";
       }
