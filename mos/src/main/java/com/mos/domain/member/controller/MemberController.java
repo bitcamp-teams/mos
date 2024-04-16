@@ -64,6 +64,7 @@ public class MemberController {
     @GetMapping("mystudy")
     public String viewMyStudy(@RequestParam("no") int no, Model model) throws Exception {
 
+
         MemberDto member = memberService.getNo(no);
         if (member == null) {
             throw new Exception("회원 번호가 유효하지 않습니다.");
@@ -81,13 +82,13 @@ public class MemberController {
         for (MemberStudyDto memberStudyDto : myStudy) {
             MemberStudyDto updatedMemberStudyDto = new MemberStudyDto();
             updatedMemberStudyDto.setNo(memberStudyDto.getNo());
-            // MemberStudyDto에서 memberNo를 가져와 설정
-            updatedMemberStudyDto.setMemberNo(memberStudyDto.getMemberNo());
-            // 패키지명을 명시하여 StudyDto를 구분
+            MemberDto memberDto = memberStudyDto.getMemberDto();
+            updatedMemberStudyDto.setMemberDto(memberDto);
             com.mos.domain.study.dto.StudyDto studyDto = memberStudyDto.getStudyDto();
             // 패키지명을 명시하여 StudyDto를 MemberStudyDto에 설정
             updatedMemberStudyDto.setStudyDto(studyDto);
             updatedMemberStudyDto.setStat(memberStudyDto.getStat());
+            updatedMemberStudyDto.setApplyMsg(memberStudyDto.getApplyMsg());
             memberStudyList.add(updatedMemberStudyDto);
         }
 

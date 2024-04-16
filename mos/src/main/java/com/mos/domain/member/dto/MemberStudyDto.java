@@ -1,6 +1,7 @@
 package com.mos.domain.member.dto;
 
 import com.mos.domain.study.dto.StudyDto;
+import com.mos.domain.member.dto.MemberDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,8 @@ import lombok.NoArgsConstructor;
 public class MemberStudyDto {
 
     private int no;
-    private int memberNo;
+
+    private MemberDto memberDto;
 
     private StudyDto studyDto;
 

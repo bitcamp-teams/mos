@@ -39,6 +39,7 @@
     </thead>
     <tbody>
     <tr data-th-each="memberStudy : ${memberStudyList}">
+      <!-- 스터디 제목 -->
       <td data-th-text="${memberStudy.studyDto != null ? memberStudy.studyDto.title : ''}"></td>
       <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.startDate, 'yyyy-MM-dd') : ''}"></td>
       <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.endDate, 'yyyy-MM-dd') : ''}"></td>
@@ -55,17 +56,24 @@
 <!-- 모달 -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+    <div class="modal-content" data-th-each="memberStudy : ${memberStudyList}">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel" data-th-text="${memberStudy.studyDto != null ? memberStudy.studyDto.title : ''}"></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        ...
+      <div class="modal-body" data-th-if="${memberStudy != null}">
+        <div data-th-if="${memberStudy.studyDto.memberNo == memberStudy.memberNo}">
+          <!-- 여기에 StudyDto의 memberNo와 MemberStudyDto의 memberNo가 같을 때 보여줄 내용을 작성하세요 -->
+          <p data-th-text="${memberStudy.applyMsg}"></p>
+        </div>
+        <div data-th-unless="${memberStudy.studyDto.memberNo == memberStudy.memberNo}">
+
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
-        <button type="button" class="btn btn-primary">탈퇴하기</button>
+        <button data-th-if="${memberStudy.studyDto.memberNo == memberStudy.memberNo}" type="button" class="btn btn-primary">승인</button>
+        <button data-th-unless="${memberStudy.studyDto.memberNo == memberStudy.memberNo}" type="button" class="btn btn-primary">탈퇴하기</button>
       </div>
     </div>
   </div>
