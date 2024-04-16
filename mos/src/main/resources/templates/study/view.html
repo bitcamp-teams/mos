@@ -51,8 +51,7 @@
       <input type="hidden" name="recipientId" th:value="${study.memberNo}">
     </div>
     <div>
-      <label for="message">메시지:</label>
-      <input type="text" id="message" name="message" required>
+      <input type="hidden" name="message" th:value="${study.title + '글에 댓글이 달렸습니다!'}">
     </div>
     <div>
       <input type="hidden" name="url" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">
