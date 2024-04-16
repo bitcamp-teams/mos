@@ -7,6 +7,7 @@
   <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
+
 <div class="page-margin">
   <div data-th-replace="header::header">머리말</div>
 
@@ -27,11 +28,90 @@
     <a data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">[삭제]</a>
 
   </div>
+  <div th:each="comment : ${studyComment}" th:if="${comment.stat} != '삭제'" style="border: 1px solid #000;">
+    <p>
+      <a th:href="@{/comment/study/delete(commentNo=${comment.commentNo}, studyNo=${comment.studyNo})}" href="#">[삭제]</a>
+      <button th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'" th:text="'편집'"></button>
+    </p>
+    <p>
+      <span th:text="${comment.username}"/>
+      <span th:text="${comment.createdDate}"/>
+    </p>
+    <div class="comment-content" th:id="'comment-' + ${comment.commentNo}">
+      <span th:text="${comment.content}"></span>
+    </div>
+    <input type="text" class="comment-input" th:id="'comment-input-' + ${comment.commentNo}" th:value="${comment.content}" style="display: none;">
+    <div class="button-group" style="display: none;" th:id="'button-group-' + ${comment.commentNo}">
+      <button class="save-btn" th:id="'save-btn-' + ${comment.commentNo}" th:onclick="'saveComment(' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'">저장</button>
+      <button class="cancel-btn" th:onclick="'cancelEdit(' + ${comment.commentNo} + ');'">취소</button>
+    </div>
+  </div>
+  <form action="#" th:action="@{/noti/add}" method="get">
+    <div>
+      <input type="hidden" name="recipientId" th:value="${study.memberNo}">
+    </div>
+    <div>
+      <label for="message">메시지:</label>
+      <input type="text" id="message" name="message" required>
+    </div>
+    <div>
+      <input type="hidden" name="url" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">
+    </div>
+    <div>
+      <button type="submit">알림 보내기</button>
+    </div>
+  </form>
+
+  <script>
+    function editComment(element, commentNo, studyNo) {
+      var commentContent = document.getElementById('comment-' + commentNo);
+      var commentInput = document.getElementById('comment-input-' + commentNo);
+      var buttonGroup = document.getElementById('button-group-' + commentNo);
+
+      commentContent.style.display = 'none';
+      commentInput.style.display = 'inline';
+      buttonGroup.style.display = 'inline';
+    }
+
+    function saveComment(commentNo, studyNo) {
+      var commentInput = document.getElementById('comment-input-' + commentNo);
+      var newContent = commentInput.value;
+
+      서버에 업데이트 요청 보내기
+      ...
+
+      location.reload(); // 페이지 새로고침
+    }
+
+    function cancelEdit(commentNo) {
+      var commentContent = document.getElementById('comment-' + commentNo);
+      var commentInput = document.getElementById('comment-input-' + commentNo);
+      var buttonGroup = document.getElementById('button-group-' + commentNo);
+
+      commentContent.style.display = 'inline';
+      commentInput.style.display = 'none';
+      buttonGroup.style.display = 'none';
+    }
+  </script>
+
+
+  <form th:action="@{/comment/study/add}" method="post">
+    <p>
+      <input type="hidden" name="studyNo" th:value="${study.studyNo}">
+<!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
+<!--      POST 방식으로 userNo를 넘기지 말 것-->
+      <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
+    </p>
+    <p>
+      <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
+    </p>
+    <button type="submit">댓글 등록</button>
+  </form>
+
 
   <div data-th-replace="footer::footer">꼬리말</div>
+
+
 </div>
-<script>
-  console.dir('[[${study}]]')
-</script>
 </body>
 </html>

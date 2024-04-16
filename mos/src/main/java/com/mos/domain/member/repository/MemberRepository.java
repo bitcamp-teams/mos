@@ -9,9 +9,10 @@ import org.apache.ibatis.annotations.Mapper;
 public interface MemberRepository {
 
   MemberDto findByEmail(String email);
-    int add(MemberJoinDto joinDto);
-    MemberDto save(MemberDto member);
-    MemberDto findByNo(int no);
-    MemberDto findByUsername(String username);
-    boolean existsByEmail(String email);
+  int add(MemberJoinDto joinDto);
+  MemberDto save(MemberDto member);
+  MemberDto findByNo(int no);
+  MemberDto findByUsername(String username);
+  boolean existsByEmail(String email);
+  boolean existsByUserName(String username);
 }
