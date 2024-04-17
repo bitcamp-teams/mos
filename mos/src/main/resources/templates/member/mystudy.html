@@ -43,14 +43,16 @@
       <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.startDate, 'yyyy-MM-dd') : ''}"></td>
       <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.endDate, 'yyyy-MM-dd') : ''}"></td>
       <td>
-        <button type="button" data-th-text="${memberStudy.stat}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="openModal()"></button>
+        <a data-th-href="@{'/member/mystudy-view?studyNo=' + ${memberStudy.studyDto.studyNo}}">
+        <button type="button" data-th-text="${memberStudy.stat}" class="btn btn-primary"></button>
+        </a>
       </td>
     </tr>
     </tbody>
   </table>
 </div> <!-- 부트스트랩 컨테이너 닫기 -->
 
-<div data-th-replace="member/mystudy-view :: modal(${memberStudyList})"></div>
+<!--<div data-th-replace="member/mystudy-view :: modal(${memberStudyList})"></div>-->
 
 <div data-th-replace="footer :: footer">꼬리말</div>
 

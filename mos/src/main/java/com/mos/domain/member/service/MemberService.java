@@ -21,4 +21,5 @@ public interface MemberService {
 
     int join(MemberJoinDto joinDto);
 
+    List<MemberStudyDto> viewMyStudies(int no);
 }

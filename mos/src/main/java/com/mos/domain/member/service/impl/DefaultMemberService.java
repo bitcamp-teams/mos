@@ -5,6 +5,8 @@ import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.repository.MemberRepository;
 import com.mos.domain.member.service.MemberService;
+import com.mos.domain.study.dto.StudyDto;
+import com.mos.domain.study.repository.StudyRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class DefaultMemberService implements MemberService {
 
   private final MemberRepository memberRepository;
+  private final StudyRepository studyRepository;
 
   @Override
   public MemberDto get(String email) {
@@ -54,4 +57,14 @@ public class DefaultMemberService implements MemberService {
     public boolean existsByEmail(String email) {
       return memberRepository.existsByEmail(email);
     }
+
+  @Override
+  public List<MemberStudyDto> viewMyStudies(int no) {
+    StudyDto studyDto = studyRepository.getByStudyNo(no);
+
+    List<MemberStudyDto> myStudy = memberRepository.viewMyStudies(no);
+    return myStudy;
+  }
+
+
 }

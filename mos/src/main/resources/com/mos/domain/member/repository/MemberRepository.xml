@@ -23,6 +23,7 @@
 
     <association property="studyDto" javaType="StudyDto">
       <id column="study_no" property="studyNo"/>
+      <result column="member_no" property="memberNo"/>
       <result column="title" property="title"/>
       <result column="start_date" property="startDate"/>
       <result column="end_date" property="endDate"/>
@@ -79,9 +80,9 @@
     select
       s.study_no,
       s.member_no,
-      s.TITLE,
-      s.START_DATE,
-      s.END_DATE,
+      s.title,
+      s.start_date,
+      s.end_date,
       mss.member_study_stat_no,
       mss.stat,
       mss.apply_msg
@@ -90,6 +91,22 @@
       inner join study s on mss.study_no = s.study_no
     where
       mss.member_no=#{no}
+  </select>
+
+  <select id="viewMyStudies" resultMap="MemberStudyMap" parameterType="int">
+    select
+    s.study_no,
+    s.title,
+    m.member_no,
+    m.photo,
+    m.username,
+    mss.apply_msg
+    from
+    member_study_stat mss
+    inner join member m on mss.member_no = m.member_no
+    inner join study s on mss.study_no = s.study_no
+    where
+    mss.study_no = #{no}
   </select>
 
 

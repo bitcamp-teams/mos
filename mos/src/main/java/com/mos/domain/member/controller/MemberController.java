@@ -4,6 +4,7 @@ import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.member.service.impl.DefaultMemberService;
+import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.service.impl.DefaultStudyService;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class MemberController {
     }
 
     @GetMapping("mystudy")
-    public String viewMyStudy(Model model) throws Exception {
+    public String getMyStudy(Model model) throws Exception {
 
 
         MemberDto member = memberService.getNo(3);
@@ -81,5 +82,26 @@ public class MemberController {
         return "member/mystudy";
     }
 
+    @GetMapping("mystudy-view")
+    public void viewMyStudy(int studyNo, Model model) throws Exception {
+        MemberDto member = memberService.getNo(3);
+        if (member == null) {
+            throw new Exception("회원 번호가 유효하지 않습니다.");
+        }
+        model.addAttribute("member", member);
+
+        StudyDto studyDto = studyService.getByStudyNo(studyNo);
+        studyNo = studyDto.getStudyNo();
+
+        model.addAttribute("study", studyDto);
+
+        // 스터디 번호를 이용하여 회원의 스터디 목록을 조회
+        List<MemberStudyDto> myStudy = memberService.viewMyStudies(studyNo);
+        if (myStudy == null) {
+            throw new Exception("스터디 번호가 유효하지 않습니다.");
+        }
+
+        model.addAttribute("memberStudyView", myStudy);
+    }
 
 }
