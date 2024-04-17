@@ -5,12 +5,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Getter
 public abstract class LoginResponseHandler {
     private Map<String, Object> response;
-    private final String token;
+    private String token;
 
     public LoginResponseHandler(String response, String token) {
         try {
@@ -18,11 +19,10 @@ public abstract class LoginResponseHandler {
             ObjectMapper om = new ObjectMapper();
             JsonNode jsonNode = om.readTree(response);
             if (jsonNode.isArray()) {
-                this. response = om.readValue(jsonNode.get(0).toString(), Map.class);
+                this.response = om.readValue(jsonNode.get(0).toString(), Map.class);
             } else if (jsonNode.isObject()) {
                 this.response = om.readValue(jsonNode.toString(), Map.class);
             }
-
         } catch (JsonProcessingException ex) {
             throw new IllegalArgumentException("로그인 API 응답 결과가 올바르지 않습니다");
         }

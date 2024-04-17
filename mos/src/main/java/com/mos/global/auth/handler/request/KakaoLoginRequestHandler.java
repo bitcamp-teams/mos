@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import static com.mos.global.auth.handler.LoginApiProvider.KAKAO;
 
 @Getter
-@RequiredArgsConstructor
 public class KakaoLoginRequestHandler implements LoginRequestHandler {
 
   private String token;
