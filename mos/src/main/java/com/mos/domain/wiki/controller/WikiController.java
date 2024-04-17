@@ -22,17 +22,24 @@ public class WikiController {
 
   private static final Log log = LogFactory.getLog(Thread.currentThread().getClass());
   private final WikiService wikiService;
-  //
-  //  @GetMapping("form")
-  //  public void form() throws Exception {
-  //  }
-  //
-  //  @PostMapping("add")
-  //  public String add(WikiDto wikiDto) {
-  //    wikiService.add(wikiDto);
-  //    return "redirect:list";
-  //  }
-  //
+
+    @GetMapping("form")
+    public void form(@RequestParam int studyNo, Model model) throws Exception {
+
+      model.addAttribute("studyNo", studyNo);
+    }
+
+    @PostMapping("add")
+    public String add(@ModelAttribute WikiDto wikiDto,
+                      @RequestParam("studyNo") int studyNo) {
+
+      wikiService.add(wikiDto);
+
+//      model.addAttribute("studyNo", studyNo);
+      return "redirect:/wiki/list?studyNo=" + studyNo;
+//      return "redirect:/wiki/list?";
+    }
+
 
   @GetMapping("editWiki")
   public void edit(@RequestParam int wikiNo, Model model) throws Exception {
@@ -63,6 +70,7 @@ public class WikiController {
 
   @GetMapping("list")
   public void list(@RequestParam int studyNo, Model model) {
+    model.addAttribute("studyNo", studyNo);
     model.addAttribute("wikis", wikiService.listByStudyNo(studyNo));
   }
 

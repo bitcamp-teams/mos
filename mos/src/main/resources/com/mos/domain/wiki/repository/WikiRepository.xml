@@ -58,5 +58,11 @@
       wiki_no=#{wikiNo}
   </delete>
 
+  <insert id="add" parameterType="WikiDto">
+    INSERT INTO
+      curriculum(wiki_no, study_no, member_no, title, content)
+    VALUES(#{wikiNo}, #{studyNo}, 1, #{title}, #{content});
+  </insert>
+
 
 </mapper>

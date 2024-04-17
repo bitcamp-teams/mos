@@ -3,6 +3,7 @@ package com.mos.domain.study.repository;
 import com.mos.domain.study.dto.TagDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface TagRepository {
 
   void add(TagDto tagDto);
 
-  int addAll(List<TagDto> tagList);
+  int addAll(@Param("tagList") List<TagDto> tagList);
 
   int delete(int tagNo);
 
