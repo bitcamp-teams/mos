@@ -1,15 +1,16 @@
 package com.mos.domain.member.dto;
 
-import java.io.Serializable;
 import java.sql.Date;
-
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-public class MemberDto implements Serializable {
+public class MemberDto {
 
   private int memberNo;
   private String email;

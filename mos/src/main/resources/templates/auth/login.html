@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
-  <meta charset="UTF-8">
-  <title>모두의스터디</title>
-  <link rel="stylesheet" href="/css/auth/styles.css">
+    <meta charset="UTF-8">
+    <title>모두의스터디</title>
+    <link rel="stylesheet" href="/css/auth/styles.css">
 </head>
 <body>
 
@@ -11,26 +11,26 @@
 
     <img src="/img/logo_text.png">
 
-  <div class="container">
-    <div class="login-option">
-      <a data-th-href="@{'https://github.com/login/oauth/authorize?client_id=' + ${clientId} + '&scope=user:email'}">
-        <img src="/img/github_logo.png">
-        <p>Github 로그인</p>
-      </a>
+    <div class="container">
+        <div class="login-option">
+            <a data-th-href="@{'https://github.com/login/oauth/authorize?client_id=' + ${clientId} + '&scope=user:email'}">
+                <img src="/img/github_logo.png">
+                <p>Github 로그인</p>
+            </a>
+        </div>
+        <div class="login-option">
+            <a data-th-href="@{${kakaoUrl}}">
+                <img src="/img/kakao_logo.png">
+                <p>Kakao 로그인</p>
+            </a>
+        </div>
+        <div class="login-option">
+            <a data-th-href="@{${googleUrl}}">
+                <img src="/img/google_logo.png">
+                <p>Google 로그인</p>
+            </a>
+        </div>
     </div>
-    <div class="login-option">
-      <a data-th-href="@{${kakaoUrl}}">
-        <img src="/img/kakao_logo.png">
-        <p>Kakao 로그인</p>
-      </a>
-    </div>
-    <div class="login-option">
-      <a data-th-href="@{${googleUrl}}">
-      <img src="/img/google_logo.png">
-      <p>Google 로그인</p>
-      </a>
-    </div>
-  </div>
 </div>
 
 </body>
