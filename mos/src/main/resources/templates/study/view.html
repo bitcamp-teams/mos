@@ -46,7 +46,7 @@
       <button class="cancel-btn" th:onclick="'cancelEdit(' + ${comment.commentNo} + ');'">취소</button>
     </div>
   </div>
-  <form action="#" th:action="@{/noti/add}" method="get">
+  <form action="#" th:action="@{/noti/save}" method="post">
     <div>
       <input type="hidden" name="recipientId" th:value="${study.memberNo}">
     </div>
@@ -54,7 +54,7 @@
       <input type="hidden" name="message" th:value="${study.title + '글에 댓글이 달렸습니다!'}">
     </div>
     <div>
-      <input type="hidden" name="url" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">
+      <input type="hidden" name="link" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">
     </div>
     <div>
       <button type="submit">알림 보내기</button>

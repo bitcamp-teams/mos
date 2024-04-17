@@ -9,7 +9,7 @@
     <id column="noti_no" property="no"/>
     <result column="member_no" property="recipientId"/>
     <result column="message" property="message"/>
-    <result column="create_date" property="createDate"/>
+    <result column="created_date" property="createDate"/>
     <result column="link" property="link"/>
     <result column="read_or_not" property="read"/>
   </resultMap>
@@ -20,4 +20,11 @@
     FROM member
     WHERE member_no = #{recipientId};
   </insert>
+
+  <select id="findById" resultMap="NotiMap">
+    SELECT member_no, message, link
+    FROM notification n
+    where n.member_no = #{recipientId} AND read_or_not = 'N'
+    order by created_date
+  </select>
 </mapper>
