@@ -6,6 +6,8 @@ import com.mos.global.auth.handler.LoginRequestHandler;
 import com.mos.global.auth.handler.RequestAuthCode;
 import com.mos.global.auth.handler.response.GithubLoginResponseHandler;
 import com.mos.global.auth.handler.response.LoginResponseHandler;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.web.client.RestTemplate;
@@ -15,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 
 import static com.mos.global.auth.handler.LoginApiProvider.GITHUB;
 
-
+@Getter
 public class GithubLoginRequestHandler implements LoginRequestHandler {
 
   private String token;

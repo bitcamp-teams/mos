@@ -1,6 +1,7 @@
 package com.mos.domain.comment.service.impl;
 
 import com.mos.domain.comment.dto.StudyCommentDto;
+import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.comment.repository.CommentRepository;
 import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.study.repository.StudyRepository;
@@ -28,5 +29,20 @@ public class DefaultCommentService implements CommentService {
   @Override
   public void deleteStudyComment(int commentNo) {
     commentRepository.deleteStudyComment(commentNo);
+  }
+
+  @Override
+  public List<WikiCommentDto> getWikiComments(int wikiNo) {
+    return commentRepository.findAllWikiComments(wikiNo);
+  }
+
+  @Override
+  public void addWikiComment(WikiCommentDto wikiCommentDto) {
+    commentRepository.addWikiComment(wikiCommentDto);
+  }
+
+  @Override
+  public void deleteWikiComment(int commentNo) {
+    commentRepository.deleteWikiComment(commentNo);
   }
 }

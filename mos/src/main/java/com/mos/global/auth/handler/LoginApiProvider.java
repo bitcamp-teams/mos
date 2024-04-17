@@ -5,7 +5,6 @@ import com.mos.global.auth.handler.request.GoogleLoginRequestHandler;
 import com.mos.global.auth.handler.request.KakaoLoginRequestHandler;
 import com.mos.global.auth.handler.response.LoginResponseHandler;
 import lombok.Getter;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Getter

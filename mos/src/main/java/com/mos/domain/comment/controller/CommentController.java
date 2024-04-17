@@ -1,13 +1,12 @@
 package com.mos.domain.comment.controller;
 
 import com.mos.domain.comment.dto.StudyCommentDto;
+import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.comment.service.CommentService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +21,10 @@ public class CommentController {
   private static final Log log = LogFactory.getLog(Thread.currentThread().getClass());
   private final CommentService commentService;
 
+  //조회를 위한 컨트롤러 없음. SSR 로 처리할 것이므로, Study/Wiki Controller 에서 CommentService 요청하도록 함.
+
   @PostMapping("study/add")
-  public String add(StudyCommentDto studyCommentDto) throws Exception {
+  public String addStudyComment(StudyCommentDto studyCommentDto) throws Exception {
 
     commentService.addStudyComment(studyCommentDto);
 
@@ -31,15 +32,36 @@ public class CommentController {
   }
 
   @GetMapping("study/delete")
-  public String delete(@RequestParam int commentNo, @RequestParam int studyNo) throws Exception {
+  public String deleteStudyComment(@RequestParam int commentNo, @RequestParam int studyNo) throws Exception {
     commentService.deleteStudyComment(commentNo);
     return "redirect:/study/view?studyNo="+studyNo;
   }
 
-  //TODO 댓글 변경 기능
+  //TODO 댓글 변경기능 추가할 것 (ajax)
   @PostMapping("study/update")
-  public String update(@ModelAttribute StudyCommentDto studyCommentDto) throws Exception {
-//    commentService.updateStudyComment(studyCommentDto);
+  public String updateStudyComment(@ModelAttribute StudyCommentDto studyCommentDto) throws Exception {
+  //  commentService.updateStudyComment(studyCommentDto);
+    return "";
+  }
+
+  @PostMapping("wiki/add")
+  public String addWikiComment(WikiCommentDto wikiCommentDto) throws Exception {
+
+    commentService.addWikiComment(wikiCommentDto);
+
+    return "redirect:/wiki/viewWiki?wikiNo=" + wikiCommentDto.getWikiNo();
+  }
+
+  @GetMapping("wiki/delete")
+  public String deleteWikiComment(@RequestParam int commentNo, @RequestParam int wikiNo) throws Exception {
+    commentService.deleteStudyComment(commentNo);
+    return "redirect:/wiki/viewWiki?wikiNo="+ wikiNo;
+  }
+
+  //TODO 댓글 변경기능 추가할 것 (ajax)
+  @PostMapping("wiki/update")
+  public String updateWikiComment(@ModelAttribute StudyCommentDto studyCommentDto) throws Exception {
+    //  commentService.updateWikiComment(wikiCommentDto);
     return "";
   }
 

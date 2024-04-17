@@ -3,6 +3,7 @@ package com.mos.global.auth.controller;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.service.MemberService;
+import com.mos.global.auth.LoginUser;
 import com.mos.global.auth.handler.LoginApiManager;
 import com.mos.global.auth.handler.OAuthRequestParam;
 import com.mos.global.auth.handler.response.LoginResponseHandler;
@@ -13,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,10 +21,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Optional;
+import static com.mos.global.auth.handler.LoginApiProvider.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -59,81 +58,60 @@ public class OAuthController {
 
   // 카카오
   @GetMapping("/auth/kakao/callback")
-  public String callback(@RequestParam String code, Model model) throws Exception {
+  public String callback(@RequestParam String code, Model model, HttpSession session) throws Exception {
     LoginResponseHandler kakaoInfo =
         loginApiManager.getProvider("KAKAO").getUserInfo(webClient, code);
-
-    String token = kakaoInfo.getToken();
-
-    model.addAttribute("accessToken", token);
-    if (memberService.get(kakaoInfo.getEmail()) != null) {
-      System.out.println("로그인 성공!!!!!!!!");
-      return "/index";
-    }
-
-    System.out.println("회원 정보가 없음!!!!!!!!");
-    return "auth/signup";
+    model.addAttribute("platform", KAKAO.name());
+    return url(session, kakaoInfo);
   }
 
   // 깃헙
   @GetMapping("login/oauth2/code/github")
-  public String githubLogin(@RequestParam String code, MemberJoinDto joinDto, Model model) {
+  public String githubLogin(@RequestParam String code, Model model, HttpSession session) {
     LoginResponseHandler githubInfo =
         loginApiManager.getProvider("GITHUB").getUserInfo(webClient, code);
-
-    if (!githubInfo.getEmail().isEmpty()) {
-      joinDto.setEmail(githubInfo.getEmail());
-      joinDto.setPlatform("github");
-      if (memberService.existsByEmail(joinDto.getEmail())) {
-        return "redirect:/";
-      }
-      model.addAttribute("joinDto", joinDto);
-    } else {
-      model.addAttribute("error", "github 로그인 실패");
-    }
-    return "auth/form";
+    model.addAttribute("platform", GITHUB.name());
+    return url(session, githubInfo);
   }
 
   // 구글
   @GetMapping("login/oauth2/code/google")
-  public String googleOAuth(@RequestParam String code, MemberJoinDto joinDto, Model model) {
+  public String googleOAuth(@RequestParam String code, Model model, HttpSession session) {
     LoginResponseHandler googleInfo =
         loginApiManager.getProvider("GOOGLE").getUserInfo(webClient, code);
-
-    if (!googleInfo.getEmail().isEmpty()) {
-      joinDto.setEmail(googleInfo.getEmail());
-      joinDto.setPlatform("google");
-      if (memberService.existsByEmail(joinDto.getEmail())) {
-        return "redirect:/";
-      }
-      model.addAttribute("joinDto", joinDto);
-    } else {
-      model.addAttribute("error", "github 로그인 실패");
-    }
-    return "auth/form";
+    model.addAttribute("platform", GOOGLE.name());
+    return url(session, googleInfo);
   }
 
-  @GetMapping("logout")
+
+  @GetMapping("auth/logout")
   public String logout(HttpSession session) throws Exception {
     session.invalidate();
     return "redirect:/";
   }
 
-  @PostMapping("signup")
-  public void signup(@RequestParam String username) {
-    // 중복확인 완료한 후 가입을 진행하던 중
-    // 그 시점에 같은 닉네임으로 가입을 완료한 사람이 있다면??
-
-    /*MemberDto member = memberService.getName(username);
-
-    if (memberService.getName(username) != null) {
-      System.out.println("중복된 닉네임입니다.");
-      return "auth/signup";
-    }
-
-    System.out.println("사용가능한 닉네임입니다!!");
-    return "auth/signup";*/
+  @GetMapping("auth/form")
+  public String form(@LoginUser MemberDto user, Model model) throws Exception {
+    model.addAttribute("user", user);
+    return "auth/form";
   }
+
+
+//  @PostMapping("signup")
+//  public void signup(@RequestParam String username) {
+//    // 중복확인 완료한 후 가입을 진행하던 중
+//    // 그 시점에 같은 닉네임으로 가입을 완료한 사람이 있다면??
+//
+//    /*MemberDto member = memberService.getName(username);
+//
+//    if (memberService.getName(username) != null) {
+//      System.out.println("중복된 닉네임입니다.");
+//      return "auth/signup";
+//    }
+//
+//    System.out.println("사용가능한 닉네임입니다!!");
+//    return "auth/signup";*/
+//  }
 
   // 닉네임 중복확인
   @GetMapping("checkUsername")
@@ -149,8 +127,15 @@ public class OAuthController {
     }
   }
 
-  @PostMapping("signup2")
-  public void signup2() {
-
+  private String url(HttpSession session, LoginResponseHandler info) {
+    if (memberService.existsByEmail(info.getEmail())) {
+      // OAuth 이메일 이외에 다른 정보도 받을 경우 회원정보 업데이트 쿼리 필요함
+      session.setAttribute("accessToken", info.getToken());
+      session.setAttribute("loginUser", memberService.get(info.getEmail()));
+      return "redirect:/";
+    } else {
+      session.setAttribute("loginUser", MemberDto.builder().email(info.getEmail()).build());
+    }
+    return "forward:/auth/form";
   }
 }

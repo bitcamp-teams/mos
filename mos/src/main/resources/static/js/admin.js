@@ -1,5 +1,5 @@
 import codes from "./api/admin/code/codes.js";
-import { convertToObject } from "./util/objectConverter.js";
+import {convertToObject} from "./util/objectConverter.js";
 
 const index = {
     init() {
@@ -44,7 +44,6 @@ const index = {
         })
     },
     save(data) {
-        debugger
         const form = new FormData(data)
         let tmp = [];
         for (const data of form.entries()) {
@@ -52,12 +51,29 @@ const index = {
         }
 
         const result = JSON.stringify(convertToObject(tmp));
-        console.log(result);
 
         codes.createCode(result).then(res => {
-            alert('전송완료')
-            $('div[class=modal]').hide();
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            console.log(res.data)
+
+            if (res.data.errorCode === '-32') {
+                Toast.fire({
+                    icon: 'error',
+                    title: '코드 저장 실패!'
+                })
+            } else {
+                Toast.fire({
+                    icon: 'success',
+                    title: '코드 저장 성공!'
+                })
+            }
         })
+        $('.close').click();
     },
     modalOpen() {
         const param = {

@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset='UTF-8'>
+  <title>모두의스터디</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page-margin">
+<div data-th-replace="header::header">머리말</div>
+
+
+
+  <button onclick="fetchNotifications()">알림 받기</button>
+  <div id="notifications"></div>
+
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    function fetchNotifications() {
+        console.log("fetchNotifications 함수가 호출되었습니다.");
+        // 타임리프를 사용하여 서버 사이드에서 전달한 모델의 JSON 데이터를 할당
+        var notiListJson = /*[[${notiListJson}]]*/ '[]';
+        console.log(notiListJson);
+        displayNotifications(notiListJson);
+    }
+
+    // 알림 데이터를 파싱하고 화면에 표시하는 함수
+    function displayNotifications(notiListJson) {
+        console.log(notiListJson);
+
+        console.log("displayNotifications 함수가 호출되었습니다.");
+        var notiList = JSON.parse(notiListJson);
+
+        var notificationsContainer = document.getElementById('notifications');
+        // 기존에 표시된 알림을 클리어
+        notificationsContainer.innerHTML = '';
+
+        notiList.forEach(function(noti) {
+            var notiElement = document.createElement('div');
+            var linkElement = document.createElement('a');
+            linkElement.href = noti.link; // 링크 설정
+            linkElement.textContent = noti.message; // 메시지 텍스트 설정
+            linkElement.target = "_blank"; // 새 탭에서 링크 열기
+            notiElement.appendChild(linkElement);
+            notificationsContainer.appendChild(notiElement);
+        });
+    }
+    /*]]>*/
+  </script>
+<div data-th-replace="footer::footer">꼬리말</div>
+</div>
+</body>
+</html>

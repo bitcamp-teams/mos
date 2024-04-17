@@ -64,7 +64,7 @@ public class StudyController {
     model.addAttribute("study", studyDto);
 
     List<StudyCommentDto> studyCommentDtoList = commentService.getStudyComments(studyNo);
-    model.addAttribute("studyComment", studyCommentDtoList);
+    model.addAttribute("studyComments", studyCommentDtoList);
   }
 
   @GetMapping("edit")
@@ -87,8 +87,8 @@ public class StudyController {
   }
 
   @GetMapping("delete")
-  public String delete(HttpSession session, Integer studyNo) throws Exception {
-    // TODO 스터디장만 삭제 권한 있고, 
+  public String delete(HttpSession session, int studyNo) throws Exception {
+    // TODO 스터디장만 삭제 권한 있고,
     //  연결된 다른 참여회원이 존재할 경우 삭제 불가하며
     //  타인이 작성된 위키가 있는 경우는 삭제 불가
     studyService.deleteStudy(studyNo);

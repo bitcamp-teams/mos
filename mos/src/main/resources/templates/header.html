@@ -1,43 +1,79 @@
 <!DOCTYPE html>
 <html lang='en' data-th-fragment="header">
 <head>
-  <meta charset='UTF-8'>
-  <title>모두의스터디</title>
-  <link rel="stylesheet" href="/css/styles.css">
-  <link rel="stylesheet" href="/css/auth/modal.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>모두의스터디</title>
+    <link rel="stylesheet" href="/css/styles.css">
+<!--    <link rel="stylesheet" href="/css/auth/modal.css">-->
+    <link rel="stylesheet" href="/css/home/styles.css">
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- bootstrap 4 css   -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <!-- TUI 에디터 CSS CDN -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    <!-- code syntax-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css"/>
+    <link rel="stylesheet"
+          href="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- BS Stepper -->
+    <link rel="stylesheet" href="/plugins/bs-stepper/css/bs-stepper.min.css">
 
 </head>
-<body>
 
 <header id="header">
-  <a href="/">
-    <img src='/img/logo_text.png'>
-  </a>
-  <div>
-    <a href="/study/list">스터디 찾기</a>
-    <a href="/study/form">모집 글 쓰기</a>
-    <a href="/wiki/list">모두의 위키</a>
-<!--    <button onclick="location.href='/auth/login';">로그인</button>-->
-    <button data-th-if="${session.loginUser != null}" onclick="location.href='/auth/logout';">로그아웃</button>
-    <!-- 로그인 버튼 클릭 시 모달 열기 -->
-    <button data-th-if="${session.loginUser == null}" class="btn-open-modal">로그인</button>
-  </div>
+    <a href="/">
+        <img src='/img/logo_text.png'>
+    </a>
+    <div>
+        <a href="/study/list">스터디 찾기</a>
+        <a href="/study/form">모집 글 쓰기</a>
+        <a href="/wiki/list">모두의 위키</a>
+        <span data-th-if="${loginUser != null}" data-th-text="${loginUser.email}">로그인 이메일</span>
+        <span data-th-if="${loginUser != null}">[[${platform != null ? platform : loginUser.platform}]]</span>
+        <button data-th-if="${loginUser != null}" onclick="location.href='/auth/logout';">로그아웃</button>
+        <!-- 로그인 버튼 클릭 시 모달 열기 -->
+        <button data-th-if="${loginUser == null}" class="btn-open-modal">로그인</button>
+    </div>
 </header>
+<body>
 
 <!-- 모달 -->
 <div class="modal" id="loginModal">
-  <div class="modal-content" id="loginModalContent"></div>
+    <div class="modal-content" id="loginModalContent"></div>
 </div>
 
 <!-- 별도의 JavaScript 파일 추가 -->
 <script src="/js/auth/modal.js"></script>
-<script>
-  // const token = "[[${accessToken}]]";
-  // console.log("[[${accessToken}]]")
-  // window.localStorage.setItem('accessToken', token);
-  // let item = window.localStorage.getItem("accessToken");
-  // console.log("token : ", item)
-</script>
 
-</body>
-</html>

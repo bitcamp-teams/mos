@@ -6,27 +6,49 @@
 <mapper namespace="com.mos.domain.member.repository.MemberRepository">
 
   <resultMap id="MemberMap" type="MemberDto">
-    <id column="member_no" property="no"/>
+    <id column="member_no" property="memberNo"/>
     <result column="email" property="email"/>
     <result column="username" property="userName"/>
-    <result column="create_date" property="createDate"/>
-    <result column="update_date" property="updateDate"/>
+    <result column="created_date" property="createdDate"/>
+    <result column="updated_date" property="updatedDate"/>
     <result column="stat" property="status"/>
     <result column="biography" property="biography"/>
     <result column="photo" property="photo"/>
   </resultMap>
 
-  <select id="findByEmail" parameterType="MemberDto">
-    select email from member where email=#{email};
+  <resultMap id="MemberStudyMap" type="MemberStudyDto">
+    <id column="member_study_stat_no" property="no"/>
+    <result column="stat" property="stat"/>
+    <result column="apply_msg" property="applyMsg"/>
+
+    <association property="studyDto" javaType="StudyDto">
+      <id column="study_no" property="studyNo"/>
+      <result column="member_no" property="memberNo"/>
+      <result column="title" property="title"/>
+      <result column="start_date" property="startDate"/>
+      <result column="end_date" property="endDate"/>
+    </association>
+
+    <association property="memberDto" javaType="MemberDto">
+      <id column="member_no" property="memberNo"/>
+      <result column="photo" property="photo"/>
+      <result column="username" property="userName"/>
+    </association>
+
+  </resultMap>
+
+
+  <select id="findByEmail" parameterType="MemberDto" resultType="MemberDto">
+    select * from member where email=#{email};
   </select>
 
-  <select id="findByUsername" parameterType="MemberDto">
-    select username from member where username=#{userName};
+  <select id="findByUsername" parameterType="MemberDto" resultType="MemberDto">
+    select * from member where username=#{userName};
   </select>
 
   <insert id="add" parameterType="MemberJoinDto">
-    insert into member(email, username, belong, career, job_group, platform)
-    values(#{email},#{name},#{belong},#{career},#{jobGroup},#{platform})
+    insert into member(email, username, belong, career, job_group, platform, created_date, updated_date)
+    values(#{email},#{name},#{belong},#{career},#{jobGroup},#{platform}, NOW(), NOW())
   </insert>
 
   <select id="existsByEmail" resultType="boolean" parameterType="String">
@@ -53,18 +75,48 @@
       username = #{username};
   </select>
 
-  <select id="findByNo" resultMap="MemberMap" parameterType="int">
+  <select id="findByNo" resultType="MemberDto" parameterType="int">
     select
-      member_no,
-      email,
-      username,
-      photo,
-      biography
+      *
     from
       member
     where
-      member_no=#{no}
+      member_no=#{memberNo}
   </select>
+
+  <select id="findMyStudies" resultMap="MemberStudyMap" parameterType="int">
+    select
+      s.study_no,
+      s.member_no,
+      s.title,
+      s.start_date,
+      s.end_date,
+      mss.member_study_stat_no,
+      mss.stat,
+      mss.apply_msg
+    from
+      member_study_stat mss
+      inner join study s on mss.study_no = s.study_no
+    where
+      mss.member_no=#{no}
+  </select>
+
+  <select id="viewMyStudies" resultMap="MemberStudyMap" parameterType="int">
+    select
+    s.study_no,
+    s.title,
+    m.member_no,
+    m.photo,
+    m.username,
+    mss.apply_msg
+    from
+    member_study_stat mss
+    inner join member m on mss.member_no = m.member_no
+    inner join study s on mss.study_no = s.study_no
+    where
+    mss.study_no = #{no}
+  </select>
+
 
 
 
