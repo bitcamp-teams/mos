@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mos.global.auth.handler.LoginApiProvider;
 import com.mos.global.auth.handler.OAuthRequestParam;
+import com.mos.global.config.SpringContext;
 import lombok.Getter;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -19,7 +20,7 @@ import java.util.Map;
 @Getter
 public abstract class RequestAttributes {
   private Map<String, Object> response;
-  WebClient webClient = WebClient.create();
+  WebClient webClient = SpringContext.getBean(WebClient.class);
 
   private void setResponse(String response) {
     try {
