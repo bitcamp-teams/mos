@@ -6,6 +6,8 @@ import com.mos.global.auth.handler.RequestAuthCode;
 import com.mos.global.auth.handler.response.GithubLoginResponseHandler;
 import com.mos.global.auth.handler.response.GoogleLoginResponseHandler;
 import com.mos.global.auth.handler.response.LoginResponseHandler;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.web.client.RestTemplate;
@@ -16,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import static com.mos.global.auth.handler.LoginApiProvider.GITHUB;
 import static com.mos.global.auth.handler.LoginApiProvider.GOOGLE;
 
-
+@Getter
 public class GoogleLoginRequestHandler implements LoginRequestHandler {
 
   private String token;
