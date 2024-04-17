@@ -32,8 +32,26 @@
     <br><br>
     <a data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">[삭제]</a>
 
+<!--댓글추가 기능 시작-->
+    <form th:action="@{/comment/study/add}" method="post">
+      <p>
+        <input type="hidden" name="studyNo" th:value="${study.studyNo}">
+        <!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
+        <!--      POST 방식으로 userNo를 넘기지 말 것-->
+        <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
+      </p>
+      <p>
+        <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
+      </p>
+      <button type="submit">댓글 등록</button>
+    </form>
+<!--댓글추가 기능 끝-->
+<!--댓글 리스트 기능 시작-->
   </div>
-  <div th:each="comment : ${studyComment}" th:if="${comment.stat} != '삭제'" style="border: 1px solid #000;">
+  <div th:if="${#lists.isEmpty(studyComments)}">
+    <p>아직 댓글이 없어요.</p>
+  </div>
+  <div th:each="comment : ${studyComments}" th:if="${comment.stat} != '삭제'" style="border: 1px solid #000;">
     <p>
       <a th:href="@{/comment/study/delete(commentNo=${comment.commentNo}, studyNo=${comment.studyNo})}" href="#">[삭제]</a>
       <button th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'" th:text="'편집'"></button>
@@ -65,6 +83,7 @@
       <button type="submit">알림 보내기</button>
     </div>
   </form>
+<!--댓글 리스트 기능 끝-->
 
   <script>
     function editComment(element, commentNo, studyNo) {
@@ -81,8 +100,8 @@
       var commentInput = document.getElementById('comment-input-' + commentNo);
       var newContent = commentInput.value;
 
-      서버에 업데이트 요청 보내기
-      ...
+      // TODO: 서버에 업데이트 요청 보내기
+      // ...
 
       location.reload(); // 페이지 새로고침
     }
@@ -97,20 +116,6 @@
       buttonGroup.style.display = 'none';
     }
   </script>
-
-
-  <form th:action="@{/comment/study/add}" method="post">
-    <p>
-      <input type="hidden" name="studyNo" th:value="${study.studyNo}">
-<!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
-<!--      POST 방식으로 userNo를 넘기지 말 것-->
-      <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
-    </p>
-    <p>
-      <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
-    </p>
-    <button type="submit">댓글 등록</button>
-  </form>
 
 
   <div data-th-replace="footer::footer">꼬리말</div>

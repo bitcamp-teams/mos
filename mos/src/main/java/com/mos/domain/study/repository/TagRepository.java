@@ -11,6 +11,7 @@ public interface TagRepository {
 
   void add(TagDto tagDto);
 
+
   //들어오는 파라미터가 다수이니 반드시 명시해야 합니다!!
   int addAll(@Param("tagList") List<TagDto> tagList);
 

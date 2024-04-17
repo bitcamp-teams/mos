@@ -64,7 +64,7 @@ public class StudyController {
     model.addAttribute("study", studyDto);
 
     List<StudyCommentDto> studyCommentDtoList = commentService.getStudyComments(studyNo);
-    model.addAttribute("studyComment", studyCommentDtoList);
+    model.addAttribute("studyComments", studyCommentDtoList);
   }
 
   @GetMapping("edit")

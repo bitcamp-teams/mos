@@ -1,8 +1,11 @@
 package com.mos.domain.wiki.controller;
 
+import com.mos.domain.comment.dto.WikiCommentDto;
+import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.study.service.impl.DefaultStudyService;
 import com.mos.domain.wiki.dto.WikiDto;
 import com.mos.domain.wiki.service.WikiService;
+import java.util.List;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
@@ -22,6 +25,7 @@ public class WikiController {
 
   private static final Log log = LogFactory.getLog(Thread.currentThread().getClass());
   private final WikiService wikiService;
+  private final CommentService commentService;
   //
   //  @GetMapping("form")
   //  public void form() throws Exception {
@@ -51,6 +55,9 @@ public class WikiController {
     }
 //    log.debug(wikiDto.toString());
     model.addAttribute("wiki", wikiDto);
+
+    List<WikiCommentDto> wikiCommentDtoList = commentService.getWikiComments(wikiNo);
+    model.addAttribute("wikiComments", wikiCommentDtoList);
   }
 
   @PostMapping("updateWiki")
