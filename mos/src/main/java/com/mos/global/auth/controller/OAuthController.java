@@ -97,21 +97,21 @@ public class OAuthController {
   }
 
 
-  @PostMapping("signup")
-  public void signup(@RequestParam String username) {
-    // 중복확인 완료한 후 가입을 진행하던 중
-    // 그 시점에 같은 닉네임으로 가입을 완료한 사람이 있다면??
-
-    /*MemberDto member = memberService.getName(username);
-
-    if (memberService.getName(username) != null) {
-      System.out.println("중복된 닉네임입니다.");
-      return "auth/signup";
-    }
-
-    System.out.println("사용가능한 닉네임입니다!!");
-    return "auth/signup";*/
-  }
+//  @PostMapping("signup")
+//  public void signup(@RequestParam String username) {
+//    // 중복확인 완료한 후 가입을 진행하던 중
+//    // 그 시점에 같은 닉네임으로 가입을 완료한 사람이 있다면??
+//
+//    /*MemberDto member = memberService.getName(username);
+//
+//    if (memberService.getName(username) != null) {
+//      System.out.println("중복된 닉네임입니다.");
+//      return "auth/signup";
+//    }
+//
+//    System.out.println("사용가능한 닉네임입니다!!");
+//    return "auth/signup";*/
+//  }
 
   // 닉네임 중복확인
   @GetMapping("checkUsername")
