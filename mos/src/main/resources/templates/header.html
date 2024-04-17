@@ -57,7 +57,7 @@
     <a href="/study/form">모집 글 쓰기</a>
     <a href="/wiki/list">모두의 위키</a>
     <span data-th-if="${loginUser != null}" data-th-text="${loginUser.email}">로그인 이메일</span>
-    <span data-th-if="${loginUser != null}">[[${loginUser.platform}]]</span>
+    <span data-th-if="${loginUser != null}">[[${platform != null ? platform : loginUser.platform}]]</span>
     <button data-th-if="${loginUser != null}" onclick="location.href='/auth/logout';">로그아웃</button>
     <!-- 로그인 버튼 클릭 시 모달 열기 -->
     <button data-th-if="${loginUser == null}" class="btn-open-modal">로그인</button>
