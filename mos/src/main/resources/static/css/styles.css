@@ -15,5 +15,50 @@
   width: 100%;
   left: 0;
   bottom: 0;
+}
 
+.study-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.study-card {
+  width: 300px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.study-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.study-no {
+  font-weight: bold;
+}
+
+.study-method {
+  font-size: 14px;
+  color: #666;
+}
+
+.study-title a {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.study-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
 }

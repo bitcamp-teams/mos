@@ -26,7 +26,8 @@ public class CodeApiController {
 
 
   @PostMapping("add")
-  public void add(CodeRequestDto codeRequestDto) throws Exception {
+  public void add(@RequestBody CodeRequestDto codeRequestDto) throws Exception {
+    System.out.println("dfff" + codeRequestDto);
     codeService.add(codeRequestDto);
   }
 
@@ -35,7 +36,7 @@ public class CodeApiController {
     codeService.addCodeGroup(codeGroupRequestDto);
   }
 
-  @GetMapping("list/group")
+  @PostMapping("list/group")
   public Result<List<CodeGroupResponseDto>> listGroup(@RequestBody CodeGroupRequestDto codeGroupRequestDto) {
     int totalCnt = codeService.countAllGroup();
 
@@ -51,7 +52,7 @@ public class CodeApiController {
     return new Result<>(json, paging);
   }
 
-  @GetMapping("list")
+  @PostMapping("list")
   public Result<List<CodeResponseDto>> list(@RequestBody CodeRequestDto codeRequestDto) {
     int totalCnt = codeService.countAll();
 

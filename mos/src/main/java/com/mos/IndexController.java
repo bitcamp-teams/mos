@@ -1,6 +1,8 @@
-package com.mos.global;
+package com.mos;
 
 import com.mos.domain.code.controller.CodeApiController;
+import com.mos.domain.member.dto.MemberDto;
+import com.mos.global.auth.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,5 +24,11 @@ public class IndexController {
     return "admin/index-admin";
   }
 
+  @GetMapping("/")
+  public String index(Model model, @LoginUser MemberDto user) {
+
+    model.addAttribute("loginUser", user);
+    return "index";
+  }
 
 }

@@ -19,8 +19,8 @@
     </resultMap>
 
     <insert id="add" parameterType="Code">
-        insert into common_code(code_group, code, code_name)
-        values (#{codeGroup.codeGroup}, #{code}, #{codeName})
+        insert into common_code(code_group, code, code_name, create_date, update_date)
+        values (#{group.codeGroup}, #{code}, #{codeName}, NOW(), NOW())
     </insert>
 
     <insert id="addCodeGroup" parameterType="CodeGroup">
@@ -41,6 +41,7 @@
             update_date as updateDate
         from
             common_code_group
+        order by createDate desc
         <if test="startRow >= 0 and endRow >= 0">
             LIMIT #{pageSize} offset #{startRow}
         </if>
@@ -60,6 +61,7 @@
         left join
             common_code_group ccg
         on ccg.code_group = cc.code_group
+        order by create_date desc
         <if test="startRow >= 0 and endRow >= 0">
             LIMIT #{pageSize} offset #{startRow}
         </if>
