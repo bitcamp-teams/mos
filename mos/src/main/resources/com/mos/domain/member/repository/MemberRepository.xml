@@ -17,7 +17,7 @@
   </resultMap>
 
   <select id="findByEmail" parameterType="MemberDto">
-    select email from member where email=#{email};
+    select * from member where email=#{email};
   </select>
 
   <select id="findByUsername" parameterType="MemberDto">
