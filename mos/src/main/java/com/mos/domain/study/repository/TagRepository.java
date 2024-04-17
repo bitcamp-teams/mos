@@ -11,7 +11,7 @@ public interface TagRepository {
 
   void add(TagDto tagDto);
 
-  int addAll(List<TagDto> tagList);
+  int addAll(@Param("tagList") List<TagDto> tagList);
 
   int delete(int tagNo);
 

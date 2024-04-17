@@ -23,12 +23,12 @@
     ORDER BY parent_comment_no ASC, layer ASC, comment_no ASC
   </select>
 
+  <!--부모가 되는 댓글이 없는, 게시글에 직접 댓글을 다는 경우-->
   <insert id="addStudyComment" parameterType="StudyDto" useGeneratedKeys="true">
     INSERT INTO
-      study_comment(member_no, study_no, parent_comment_no, content)
+      study_comment(member_no, study_no, content)
     VALUES
-      (#{memberNo}, #{studyNo}, (SELECT LAST_INSERT_ID()+1), #{content})
-<!--  TODO: parent_comment_no를 자기 자신으로 두기 위해 사용한 위 로직을 개선해야 함  -->
+      (#{memberNo}, #{studyNo}, #{content})
   </insert>
 
   <update id="deleteStudyComment" parameterType="int">
@@ -64,12 +64,12 @@
     ORDER BY parent_comment_no ASC, layer ASC, comment_no ASC
   </select>
 
+  <!--부모가 되는 댓글이 없는, 게시글에 직접 댓글을 다는 경우-->
   <insert id="addWikiComment" parameterType="WikiDto" useGeneratedKeys="true">
     INSERT INTO
-      wiki_comment(member_no, wiki_no, parent_comment_no, content)
+      wiki_comment(member_no, wiki_no, content)
     VALUES
-      (#{memberNo}, #{wikiNo}, (SELECT LAST_INSERT_ID()+1), #{content})
-      <!--  TODO: parent_comment_no를 자기 자신으로 두기 위해 사용한 위 로직을 개선해야 함  -->
+      (#{memberNo}, #{wikiNo}, #{content})
   </insert>
 
   <update id="deleteWikiComment" parameterType="int">
