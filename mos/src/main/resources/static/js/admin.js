@@ -72,8 +72,12 @@ const index = {
                     title: '코드 저장 성공!'
                 })
             }
+            $('.close').click();
         })
-        $('.close').click();
+        $('#modal-lg').on('hidden.bs.modal', function (e) {
+           // 테이블 갱신
+            location.reload();
+        });
     },
     modalOpen() {
         const param = {
