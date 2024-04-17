@@ -14,4 +14,6 @@ public interface WikiRepository {
   int updateWiki(WikiDto wikiDto);
 
   void deleteWiki(int wikiNo);
+
+  void add(WikiDto wikiDto);
 }

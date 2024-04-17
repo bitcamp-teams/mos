@@ -122,8 +122,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
   <delete id="delete" parameterType="int">
     DELETE
-    FROM
-      study
+      FROM
+        study
     WHERE
       study_no = #{studyNo};
   </delete>

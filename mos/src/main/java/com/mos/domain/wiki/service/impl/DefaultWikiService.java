@@ -33,4 +33,9 @@ public class DefaultWikiService implements WikiService {
   public void deleteWiki(int wikiNo) {
     wikiRepository.deleteWiki(wikiNo);
   }
+
+  @Override
+  public void add(WikiDto wikiDto) {
+    wikiRepository.add(wikiDto);
+  }
 }
