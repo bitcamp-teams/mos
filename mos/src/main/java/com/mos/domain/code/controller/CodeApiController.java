@@ -7,6 +7,7 @@ import com.mos.domain.code.dto.CodeGroupRequestDto;
 import com.mos.domain.code.dto.CodeGroupResponseDto;
 import com.mos.domain.code.dto.CodeResponseDto;
 import com.mos.domain.code.service.CodeService;
+import com.mos.global.common.ErrorCode;
 import com.mos.global.common.message.Result;
 import com.mos.global.common.paging.Paging;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +27,24 @@ public class CodeApiController {
 
 
   @PostMapping("add")
-  public void add(@RequestBody CodeRequestDto codeRequestDto) throws Exception {
+  public Result<?> add(@RequestBody CodeRequestDto codeRequestDto) throws Exception {
     System.out.println("dfff" + codeRequestDto);
-    codeService.add(codeRequestDto);
+    try {
+      codeService.add(codeRequestDto);
+    } catch (Exception e) {
+      return new Result<>().setResultData(e.getMessage()).setResultCode("fail").setErrorMessage(ErrorCode.INSERT_ERROR);
+    }
+    return new Result<>();
   }
 
   @PostMapping("add/group")
-  public void addCodeGroup(CodeGroupRequestDto codeGroupRequestDto) throws Exception {
-    codeService.addCodeGroup(codeGroupRequestDto);
+  public Result<?> addCodeGroup(CodeGroupRequestDto codeGroupRequestDto) throws Exception {
+    try {
+      codeService.addCodeGroup(codeGroupRequestDto);
+    } catch (Exception e) {
+      return new Result<>().setResultData(e.getMessage()).setResultCode("fail").setErrorMessage(ErrorCode.INSERT_ERROR);
+    }
+    return new Result<>();
   }
 
   @PostMapping("list/group")

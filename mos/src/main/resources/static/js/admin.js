@@ -1,5 +1,5 @@
 import codes from "./api/admin/code/codes.js";
-import { convertToObject } from "./util/objectConverter.js";
+import {convertToObject} from "./util/objectConverter.js";
 
 const index = {
     init() {
@@ -59,12 +59,21 @@ const index = {
                 showConfirmButton: false,
                 timer: 3000
             });
-            Toast.fire({
-                icon: 'success',
-                title: '코드가 정상적으로 등록되었습니다.'
-            })
-            $('#modal-lg').modal('hide');
+            console.log(res.data)
+
+            if (res.data.errorCode === '-32') {
+                Toast.fire({
+                    icon: 'error',
+                    title: '코드 저장 실패!'
+                })
+            } else {
+                Toast.fire({
+                    icon: 'success',
+                    title: '코드 저장 성공!'
+                })
+            }
         })
+        $('.close').click();
     },
     modalOpen() {
         const param = {
