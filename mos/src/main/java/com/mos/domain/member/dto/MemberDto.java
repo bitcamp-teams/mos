@@ -11,16 +11,17 @@ import lombok.*;
 @Data
 public class MemberDto implements Serializable {
 
-  private int no;
+  private int memberNo;
   private String email;
   private String userName;
-  private Date createDate;
-  private Date updateDate;
+  private Date createdDate;
+  private Date updatedDate;
   private String stat;
   private int score;
   private String biography;
   private String photo;
   private String belong;
+  private String career;
   private String jobGroup;
   private String socialLink;
   private String filePath;

@@ -6,27 +6,27 @@
 <mapper namespace="com.mos.domain.member.repository.MemberRepository">
 
   <resultMap id="MemberMap" type="MemberDto">
-    <id column="member_no" property="no"/>
+    <id column="member_no" property="memberNo"/>
     <result column="email" property="email"/>
     <result column="username" property="userName"/>
-    <result column="create_date" property="createDate"/>
-    <result column="update_date" property="updateDate"/>
+    <result column="created_date" property="createdDate"/>
+    <result column="updated_date" property="updatedDate"/>
     <result column="stat" property="status"/>
     <result column="biography" property="biography"/>
     <result column="photo" property="photo"/>
   </resultMap>
 
-  <select id="findByEmail" parameterType="MemberDto">
+  <select id="findByEmail" parameterType="MemberDto" resultType="MemberDto">
     select * from member where email=#{email};
   </select>
 
-  <select id="findByUsername" parameterType="MemberDto">
-    select username from member where username=#{userName};
+  <select id="findByUsername" parameterType="MemberDto" resultType="MemberDto">
+    select * from member where username=#{userName};
   </select>
 
   <insert id="add" parameterType="MemberJoinDto">
-    insert into member(email, username, belong, career, job_group, platform)
-    values(#{email},#{name},#{belong},#{career},#{jobGroup},#{platform})
+    insert into member(email, username, belong, career, job_group, platform, created_date, updated_date)
+    values(#{email},#{name},#{belong},#{career},#{jobGroup},#{platform}, NOW(), NOW())
   </insert>
 
   <select id="existsByEmail" resultType="boolean" parameterType="String">
@@ -53,17 +53,13 @@
       username = #{username};
   </select>
 
-  <select id="findByNo" resultMap="MemberMap" parameterType="int">
+  <select id="findByNo" resultType="MemberDto" parameterType="int">
     select
-      member_no,
-      email,
-      username,
-      photo,
-      biography
+      *
     from
       member
     where
-      member_no=#{no}
+      member_no=#{memberNo}
   </select>
 
 
