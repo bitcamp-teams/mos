@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,23 +28,14 @@ public class CodeApiController {
 
 
   @PostMapping("add")
-  public Result<?> add(@RequestBody CodeRequestDto codeRequestDto) throws Exception {
-    System.out.println("dfff" + codeRequestDto);
-    try {
-      codeService.add(codeRequestDto);
-    } catch (Exception e) {
-      return new Result<>().setResultData(e.getMessage()).setResultCode("fail").setErrorMessage(ErrorCode.INSERT_ERROR);
-    }
-    return new Result<>();
+  public String add(@RequestBody @Valid CodeRequestDto codeRequestDto) throws Exception {
+    codeService.add(codeRequestDto);
+    return new Result<>().setResultData(codeService.list(Paging.builder().build())).toString();
   }
 
   @PostMapping("add/group")
   public Result<?> addCodeGroup(CodeGroupRequestDto codeGroupRequestDto) throws Exception {
-    try {
-      codeService.addCodeGroup(codeGroupRequestDto);
-    } catch (Exception e) {
-      return new Result<>().setResultData(e.getMessage()).setResultCode("fail").setErrorMessage(ErrorCode.INSERT_ERROR);
-    }
+    codeService.addCodeGroup(codeGroupRequestDto);
     return new Result<>();
   }
 
@@ -67,15 +59,13 @@ public class CodeApiController {
   public Result<List<CodeResponseDto>> list(@RequestBody CodeRequestDto codeRequestDto) {
     int totalCnt = codeService.countAll();
 
-    Paging paging = Paging.builder()
-        .pageNo(codeRequestDto.paging().getPageNo())
-        .pageSize(codeRequestDto.paging().getPageSize())
-        .numOfRecord(totalCnt)
-        .build();
+    Paging paging = Paging.builder().pageNo(codeRequestDto.paging().getPageNo())
+        .pageSize(codeRequestDto.paging().getPageSize()).numOfRecord(totalCnt).build();
 
     List<CodeResponseDto> list = codeService.list(paging);
 
-    List<CodeResponseDto> json = new Gson().fromJson(new Gson().toJson(list), new TypeToken<List<CodeResponseDto>>() {}.getType());
+    List<CodeResponseDto> json =
+        new Gson().fromJson(new Gson().toJson(list), new TypeToken<List<CodeResponseDto>>() {}.getType());
     return new Result<>(json, paging);
   }
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,5 +22,12 @@ public class ApiControllerAdvice {
     return new Result<>(errors).setResultCode("fail").setErrorMessage(ErrorCode.VALIDATION_ERROR);
 //    return ResponseEntity.badRequest().body(errors);
   }
+
+  @ExceptionHandler(SQLException.class)
+  public String handleSqlExceptions(SQLException ex) {
+    ex.printStackTrace();
+    return new Result<>().setResultData("SQL 오류가 발생했습니다.").setResultCode("fail").setErrorMessage(ErrorCode.DB_ERROR).toString();
+  }
+
 
 }
