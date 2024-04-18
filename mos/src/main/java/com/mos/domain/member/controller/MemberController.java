@@ -8,6 +8,7 @@ import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.service.impl.DefaultStudyService;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,17 +63,22 @@ public class MemberController {
     }
 
     @GetMapping("mystudy")
-    public String getMyStudy(Model model) throws Exception {
+    public String getMyStudy(Model model, HttpSession session) throws Exception {
 
+        // 세션에서 로그인한 회원 정보 가져오기
+        MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
 
-        MemberDto member = memberService.getNo(3);
+        // 로그인한 회원의 번호 가져오기
+        int memberNo = loginUser.getMemberNo();
+
+        MemberDto member = memberService.getNo(memberNo);
         if (member == null) {
             throw new Exception("회원 번호가 유효하지 않습니다.");
         }
         model.addAttribute("member", member);
 
         // 회원 번호를 이용하여 회원의 스터디 목록을 조회
-        List<MemberStudyDto> myStudy = memberService.findMyStudies(3);
+        List<MemberStudyDto> myStudy = memberService.findMyStudies(memberNo);
         if (myStudy == null) {
             throw new Exception("회원 번호가 유효하지 않습니다.");
         }
@@ -82,25 +88,35 @@ public class MemberController {
     }
 
     @GetMapping("mystudy-view")
-    public void viewMyStudy(int studyNo, Model model) throws Exception {
-        MemberDto member = memberService.getNo(3);
+    public void viewMyStudy(int studyNo, Model model, HttpSession session) throws Exception {
+
+        MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+
+        int memberNo = loginUser.getMemberNo();
+
+        MemberDto member = memberService.getNo(memberNo);
         if (member == null) {
             throw new Exception("회원 번호가 유효하지 않습니다.");
         }
         model.addAttribute("member", member);
+
+        List<MemberStudyDto> myStudy = memberService.findMyStudies(memberNo);
+        if (myStudy == null || myStudy.isEmpty()) {
+            throw new Exception("회원이 참여하고 있는 스터디가 없습니다.");
+        }
 
         StudyDto studyDto = studyService.getByStudyNo(studyNo);
         studyNo = studyDto.getStudyNo();
 
         model.addAttribute("study", studyDto);
 
-        // 스터디 번호를 이용하여 회원의 스터디 목록을 조회
-        List<MemberStudyDto> myStudy = memberService.viewMyStudies(studyNo);
+        // 스터디 번호를 이용하여 회원의 스터디 상세보기 조회
+        List<MemberStudyDto> editMyStudy = memberService.viewMyStudies(studyNo);
         if (myStudy == null) {
             throw new Exception("스터디 번호가 유효하지 않습니다.");
         }
 
-        model.addAttribute("memberStudyView", myStudy);
+        model.addAttribute("memberStudyView", editMyStudy);
     }
 
 }

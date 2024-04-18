@@ -27,9 +27,9 @@ public class DefaultMemberService implements MemberService {
   public MemberDto getName(String username) {
     return memberRepository.findByUsername(username);
   }
+
     @Override
     public MemberDto getNo(int no) {
-
         return memberRepository.findByNo(no);
     }
 
