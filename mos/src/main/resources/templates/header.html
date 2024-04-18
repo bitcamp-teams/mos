@@ -66,15 +66,19 @@
         <span data-th-if="${loginUser != null}">[[${platform != null ? platform : loginUser.platform}]]</span>
         <button data-th-if="${loginUser != null}" onclick="location.href='/auth/logout';">로그아웃</button>
         <!-- 로그인 버튼 클릭 시 모달 열기 -->
-        <button data-th-if="${loginUser == null}" class="btn-open-modal">로그인</button>
+        <button data-th-if="${loginUser == null}" class="btn-open-modal btn btn-outline-info" data-toggle="modal" data-target="#loginModal">로그인</button>
     </div>
 </header>
 <body>
 
 <!-- 모달 -->
 <div class="modal" id="loginModal">
-    <div class="modal-content" id="loginModalContent"></div>
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" id="loginModalContent">
+        </div>
+    </div>
 </div>
+
 
 <!-- 별도의 JavaScript 파일 추가 -->
 <script src="/js/auth/modal.js"></script>
