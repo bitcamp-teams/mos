@@ -9,7 +9,6 @@
 <body>
 <div class="page-margin">
   <div data-th-replace="header::header">머리말</div>
-<!--  여기 히스토리백이라 원치 않는 결과가 자주 나는데, 페이지 프래그먼트로 쓰면 이 템플릿에는 필요없는 기능이므로 이렇게 두었음 -->
   <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="list.html">[편집 취소하고 리스트로 돌아가기]</a>
 
   <div th:object="${wiki}">
