@@ -20,6 +20,11 @@ public class DefaultWikiService implements WikiService {
   }
 
   @Override
+  public List<WikiDto> listByWikiNo() {
+    return wikiRepository.listByWikiNo();
+  }
+
+  @Override
   public WikiDto getByWikiNo(int wikiNo) {
     return wikiRepository.getByWikiNo(wikiNo);
   }

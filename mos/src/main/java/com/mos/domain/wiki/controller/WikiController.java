@@ -2,7 +2,6 @@ package com.mos.domain.wiki.controller;
 
 import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.comment.service.CommentService;
-import com.mos.domain.study.service.impl.DefaultStudyService;
 import com.mos.domain.wiki.dto.WikiDto;
 import com.mos.domain.wiki.service.WikiService;
 import java.util.List;
@@ -26,8 +25,10 @@ public class WikiController {
   private static final Log log = LogFactory.getLog(Thread.currentThread().getClass());
   private final WikiService wikiService;
     private final CommentService commentService;
+  private int wikiNo;
+  private Model model;
 
-    @GetMapping("form")
+  @GetMapping("form")
     public void form(@RequestParam int studyNo, Model model) throws Exception {
 
       model.addAttribute("studyNo", studyNo);
@@ -76,6 +77,11 @@ public class WikiController {
   public void list(@RequestParam int studyNo, Model model) {
     model.addAttribute("studyNo", studyNo);
     model.addAttribute("wikis", wikiService.listByStudyNo(studyNo));
+  }
+
+  @GetMapping("modoowikilist")
+  public void modoowikilist(Model model) {
+    model.addAttribute("wiki", wikiService.listByWikiNo());
   }
 
   @GetMapping("delete")

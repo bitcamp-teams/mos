@@ -7,6 +7,8 @@ public interface WikiService {
 
   List<WikiDto> listByStudyNo(int studyNo);
 
+  List<WikiDto> listByWikiNo();
+
   WikiDto getByWikiNo(int wikiNo);
 
   int updateWiki(WikiDto wikiDto);

@@ -62,7 +62,7 @@
     <div>
         <a href="/study/list">스터디 찾기</a>
         <a href="/study/form">모집 글 쓰기</a>
-        <a href="/wiki/list">모두의 위키</a>
+        <a href="/wiki/modoowikilist">모두의 위키</a>
         <span data-th-if="${session.loginUser != null}" data-th-text="${session.loginUser.email}">로그인 이메일</span>
         <span data-th-if="${session.loginUser != null}">[[${session.platform}]]</span>
         <button data-th-if="${session.loginUser != null}" onclick="location.href='/auth/logout';">로그아웃</button>
