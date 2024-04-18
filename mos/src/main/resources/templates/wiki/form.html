@@ -1,59 +1,49 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
->
-<html lang='en'>
-<head>
-  <meta charset='UTF-8'>
-  <title>모두의스터디</title>
-  <link href="/css/styles.css" rel="stylesheet">
-</head>
-<body>
+<div data-th-replace="header::header">머리말</div>
 <div class="page-margin">
-  <div data-th-replace="header::header">머리말</div>
 
   <h2 style="padding: 0.6em 0.5em 0.6em 0.5em; margin: 0.5em 0em; color: #000;
               border-bottom: 2px solid #e5e5e5; font-weight: bold;" data-ke-size="size23">스터디 모집하기!
   </h2>
   <p data-ke-size="size16"></p>
 
-  <form action="add" data-th-action="@{add}" method="post">
+  <form id="wikiInfo" action="add" data-th-action="@{add}" method="post">
     <input type="hidden" name="studyNo" th:value="${studyNo}">
     <div>
       위키 제목을 입력해주세요!<br> <input name="title" type="text">
     </div>
     <br>
     <div>
-      위키에 대해서 설명해주세요.<br>
-      <textarea name="content" rows="4" cols="55"></textarea>
+      <div id="editor"></div>
+      <input type="hidden" name="content" id="editor-content">
     </div>
     <br>
     <div>
       <button type="submit">등록</button>
     </div>
   </form>
+  <script>
+    const {Editor} = toastui;
+    const {codeSyntaxHighlight} = Editor.plugin;
 
-<!--  <form action="add" data-th-action="@{add}" method="post">-->
-<!--    <div>-->
-<!--      스터디는 어떻게 진행되나요? : <input name='method' type='text'>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--      최대 정원을 정하시겠어요? (선택) : <input name='intake' type='number'>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--      언제까지 모집하시겠어요? (선택) : <input name="recruitmentDeadline" type="date">-->
-<!--    </div>-->
-<!--    <div>-->
-<!--      스터디의 이름을 정해주세요! 여기서 입력하신 스터디 이름이 다른 이용자들에게 노출됩니다. <br> <input name="title" type="text">-->
-<!--    </div>-->
-<!--    <div>-->
-<!--      스터디에 대해서 설명해주세요 : <textarea name='introduction'></textarea>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--      <button>스터디 등록하기!</button>-->
-<!--    </div>-->
-<!--  </form>-->
+    let editor = new toastui.Editor({
+      el: document.querySelector('#editor'),
+      height: '70%',
+      initialEditType: 'markdown',
+      previewStyle: 'vertical',
+      plugins: [codeSyntaxHighlight],
+      placeholder: '스터디에 대해서 설명해주세요.',
+      useCommandShortcut: true,
+    });
 
+    const form = document.getElementById('wikiInfo');
+    const editorContent = document.getElementById('editor-content');
 
-  <div data-th-replace="footer::footer">꼬리말</div>
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const editorContent = editor.getMarkdown();
+      document.getElementById('editor-content').value = editorContent;
+      form.submit();
+    });
+  </script>
 </div>
-</body>
-</html>
+<div data-th-replace="footer::footer">꼬리말</div>

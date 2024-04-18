@@ -1,37 +1,53 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-<html lang='en'>
-<head>
-  <meta charset='UTF-8'>
-  <title>모두의스터디</title>
-  <link href="/css/styles.css" rel="stylesheet">
-</head>
-<body>
+<div data-th-replace="header::header">머리말</div>
 <div class="page-margin">
-  <div data-th-replace="header::header">머리말</div>
-
-
   <div data-th-object="${study}">
-    <form action="update" data-th-action="@{/study/update}" method='post'>
-
+    <form id="studyInfo" action="update" data-th-action="@{/study/update}" method='post'>
       <!--POST 방식이라 Hidden Field 방식으로 studyNo 전달함-->
       <input name="studyNo" th:value="*{studyNo}" type="hidden">
       <h1>제목: <input name="title" th:value="*{title}" type="text"></h1>
-      <p> 진행방식 = <input name="method" th:value="*{method}" type="text"></p>
-      <p> 모집정원 = <input name="intake" th:value="*{intake}" type="number"></p>
-      <p> 모집마감 = <input name="recruitmentDeadline" th:value="*{recruitmentDeadline}" type="date">
+      <p>진행방식 = <input name="method" th:value="*{method}" type="text"></p>
+      <p>모집정원 = <input name="intake" th:value="*{intake}" type="number"></p>
+      <p>모집마감 = <input name="recruitmentDeadline" th:value="*{recruitmentDeadline}" type="date">
       </p>
       <!--      <p> 예상종료일 = <input name="endDate" th:value="*{endDate}" type="date"></p>-->
-      <p> 소개 = <input name="introduction" th:value="*{introduction}" type="text"></p>
-      <button>편집완료</button>
+<!--      <p> 소개 = <input name="introduction" th:value="*{introduction}" type="text"></p>-->
+      <div id="editor"></div>
+      <input type="hidden" name="introduction" th:attr="introduction=*{introduction}"
+             id="editor-content" value="소개">
+      <button type="submit">편집완료</button>
       <a href="list">저장하지 않고 돌아가기</a>
-
     </form>
 
+    <script>
+      var content = document.querySelector('[introduction]').getAttribute('introduction');
+      const {Editor} = toastui;
+      const {codeSyntaxHighlight} = Editor.plugin;
+
+      let editor = new toastui.Editor({
+        el: document.querySelector(('#editor')),
+        height: '70%',
+        initialEditType: 'markdown',
+        previewStyle: 'vertical',
+        plugins: [codeSyntaxHighlight],
+        placeholder: 'placeholder',
+        useCommandShortcut: true,
+        initialValue: content
+      });
+
+      const form = document.getElementById('studyInfo');
+      // const editorContent = document.getElementById('editor-content');
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const editorContent = editor.getMarkdown();
+        document.getElementById('editor-content').value = editorContent;
+        form.submit();
+      })
+    </script>
+
+
+
+
   </div>
-
-  <div data-th-replace="footer::footer">꼬리말</div>
-
 </div>
-</body>
-</html>
+<div data-th-replace="footer::footer">꼬리말</div>
