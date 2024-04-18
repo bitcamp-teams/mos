@@ -51,33 +51,46 @@ const index = {
         }
 
         const result = JSON.stringify(convertToObject(tmp));
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
 
         codes.createCode(result).then(res => {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
-            });
             console.log(res.data)
-
+            let errorMessage = res.data.errorMessage;
             if (res.data.errorCode === '-32') {
                 Toast.fire({
                     icon: 'error',
-                    title: '코드 저장 실패!'
+                    title: '코드 저장 실패!',
+                    text: `${errorMessage}`
+                })
+            } else if (res.data.errorCode === '-99') {
+                Toast.fire({
+                    icon: 'error',
+                    title: '코드 저장 실패!',
+                    text: `${errorMessage}`
                 })
             } else {
                 Toast.fire({
                     icon: 'success',
-                    title: '코드 저장 성공!'
+                    title: '코드 저장 성공!',
+                    text: ``
                 })
             }
             $('.close').click();
+            $('.modal-backdrop').remove();
+        }).catch(res => {
+            Toast.fire({
+                icon: 'error',
+                title: '코드 저장 실패!',
+                text: res.data.resultData
+            })
+        }).finally(() => {
+            $('#addFrm')[0].reset()
         })
-        $('#modal-lg').on('hidden.bs.modal', function (e) {
-           // 테이블 갱신
-            location.reload();
-        });
     },
     modalOpen() {
         const param = {
