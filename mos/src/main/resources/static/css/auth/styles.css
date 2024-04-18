@@ -1,18 +1,69 @@
-.choose_login {
-  background-color: #DBEAFE;
-  padding-top: 5%;
-  padding-bottom: 5%;
-  text-align: center;
+/*.choose_login {*/
+/*  background-color: #DBEAFE;*/
+/*  padding-top: 5%;*/
+/*  padding-bottom: 5%;*/
+/*  text-align: center;*/
+/*}*/
+
+/*.container {*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
+/*  height: 300px;*/
+/*}*/
+
+/*.login-option {*/
+/*  text-align: center;*/
+/*  margin: 0 40px; !* 각 로그인 옵션 사이의 간격을 조정할 수 있습니다. *!*/
+/*}*/
+
+/* 모달 창 스타일 */
+.modal {
+    text-align: center;
+    backdrop-filter: blur(5px);
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 300px;
+.modal-dialog {
+    max-width: 300px;
+    margin: 1.75rem auto;
 }
 
+.modal-content {
+    height: fit-content;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* 로고 이미지 스타일 */
+.modal-content img {
+    display: block;
+    margin: 0 auto;
+    max-width: 200px;
+    margin-bottom: 2rem;
+}
+
+/* 로그인 옵션 스타일 */
 .login-option {
-  text-align: center;
-  margin: 0 40px; /* 각 로그인 옵션 사이의 간격을 조정할 수 있습니다. */
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.login-option a {
+    display: inline-block;
+    text-decoration: none;
+    color: #333;
+}
+
+.login-option img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-bottom: 0.5rem;
+}
+
+.login-option p {
+    font-size: 1rem;
+    font-weight: bold;
 }
