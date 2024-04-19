@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang='en' data-th-fragment="header">
+<html lang='en' data-th-fragment="header" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>모두의스터디</title>
@@ -63,6 +64,8 @@
         <a href="/study/list">스터디 찾기</a>
         <a href="/study/form">모집 글 쓰기</a>
         <a href="/wiki/modoowikilist">모두의 위키</a>
+        <button onclick="fetchNotifications()">알림</button>
+        <div id="notifications"></div>
         <span data-th-if="${session.loginUser != null}" data-th-text="${session.loginUser.email}">로그인 이메일</span>
         <span data-th-if="${session.loginUser != null}">[[${session.platform}]]</span>
         <button data-th-if="${session.loginUser != null}" onclick="location.href='/auth/logout';">로그아웃</button>
@@ -73,6 +76,147 @@
     </div>
 </header>
 <body>
+
+<style>
+    /* 모달 창 스타일 */
+.modal-noti {
+  display: none; /* 기본적으로 숨김 */
+  position: fixed; /* 스크롤해도 위치 고정 */
+  z-index: 1; /* 다른 모든 것 위에 */
+  left: 0;
+  top: 0;
+  width: 100%; /* 전체 너비 */
+  height: 100%; /* 전체 높이 */
+  overflow: auto; /* 필요 시 스크롤 */
+  background-color: rgb(0,0,0); /* 폴백 색상 */
+  background-color: rgba(0,0,0,0.4); /* 검은색 w/opacity */
+}
+
+/* 모달 컨텐츠 스타일 */
+.modal-noti-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 페이지 중앙에 위치 */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* 너비 */
+}
+
+/* 닫기 버튼 스타일 */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+</style>
+
+<div id="notificationModal" class="modal-noti">
+    <div class="modal-noti-content">
+        <span class="close">&times;</span>
+        <h2>알림</h2>
+        <div id="modal-notifications"></div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    // 모달 창 요소를 가져옴
+    var modal = document.getElementById("notificationModal");
+
+    // 닫기 버튼 요소를 가져옴
+    var span = document.getElementsByClassName("close")[0];
+
+    // 버튼 클릭 시 모달 창을 표시하는 함수
+    function fetchNotifications() {
+        console.log("fetchNotifications 함수가 호출되었습니다.");
+        // 서버로부터 알림 목록을 가져오는 AJAX 요청
+        fetch('/noti/list')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(notiListJson => {
+            console.log(notiListJson);
+            displayNotifications(JSON.stringify(notiListJson));
+            modal.style.display = "block"; // 모달 창 표시
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    }
+
+    // 닫기 버튼 클릭 시 모달 창을 숨김
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    // 모달 창 바깥 영역 클릭 시 모달 창을 숨김
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // 알림 데이터를 파싱하고 화면에 표시하는 함수
+    function displayNotifications(notiListJson) {
+        console.log(notiListJson);
+
+        console.log("displayNotifications 함수가 호출되었습니다.");
+        var notiList = JSON.parse(notiListJson);
+
+        var notificationsContainer = document.getElementById('modal-notifications');
+        // 기존에 표시된 알림을 클리어
+        notificationsContainer.innerHTML = '';
+
+        notiList.forEach(function(noti) {
+            var notiElement = document.createElement('div');
+            var linkElement = document.createElement('a');
+            linkElement.href = noti.link; // 링크 설정
+            linkElement.textContent = noti.message; // 메시지 텍스트 설정
+            linkElement.addEventListener('click', function() {
+                sendRequest(noti);
+            });
+            linkElement.target = "_blank"; // 새 탭에서 링크 열기
+            notiElement.appendChild(linkElement);
+            notificationsContainer.appendChild(notiElement);
+        });
+    }
+    function sendRequest(noti) {
+        // 요청 본문에 JSON 형식으로 알림 ID를 포함
+        const requestBody = JSON.stringify({ id: noti.id });
+
+        fetch('/noti/update', {
+            method: 'POST', // 요청 메서드를 POST로 설정
+            headers: {
+                'Content-Type': 'application/json', // JSON 형식의 데이터를 전송하므로 Content-Type을 application/json으로 설정
+            },
+            body: requestBody, // JSON 형식의 요청 본문
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // 여기서는 서버가 JSON을 반환한다고 가정합니다. 실제 응답 형식에 맞춰 조정할 수 있습니다.
+        })
+        .then(data => {
+            console.log(data); // 서버로부터의 응답 처리
+            // 여기서 추가적인 작업을 수행할 수 있습니다. 예를 들어, 알림을 읽음 처리한 후 UI를 갱신할 수 있습니다.
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    }
+
+    /*]]>*/
+</script>
 
 <!-- 모달 -->
 <div class="modal" id="loginModal">
