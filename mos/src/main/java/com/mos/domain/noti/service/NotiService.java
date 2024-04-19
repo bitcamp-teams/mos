@@ -41,5 +41,4 @@ public class NotiService {
   public void updateRead(int id) {
     notiRepository.updateReadById(id);
   }
-
 }

@@ -182,17 +182,19 @@
             linkElement.href = noti.link; // 링크 설정
             linkElement.textContent = noti.message; // 메시지 텍스트 설정
             linkElement.addEventListener('click', function() {
-                sendRequest(noti);
+                sendReadRequest(noti);
             });
-            linkElement.target = "_blank"; // 새 탭에서 링크 열기
+<!--            linkElement.target = "_blank"; // 새 탭에서 링크 열기-->
             notiElement.appendChild(linkElement);
             notificationsContainer.appendChild(notiElement);
         });
     }
-    function sendRequest(noti) {
+    function sendReadRequest(noti) {
         // 요청 본문에 JSON 형식으로 알림 ID를 포함
+        console.log("클릭 이벤트 발생");
         const requestBody = JSON.stringify({ id: noti.id });
 
+        console.log(requestBody);
         fetch('/noti/update', {
             method: 'POST', // 요청 메서드를 POST로 설정
             headers: {
