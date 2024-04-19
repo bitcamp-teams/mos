@@ -104,6 +104,11 @@ public class StudyController {
     model.addAttribute("studyList", studyService.list());
   }
 
+  @GetMapping("main")
+  public void main(Model model) {
+    model.addAttribute("studyList", studyService.list());
+  }
+
 
   @GetMapping("test")
   @ResponseBody
