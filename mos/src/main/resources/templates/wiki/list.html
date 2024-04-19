@@ -1,18 +1,93 @@
 <link href="/css/wiki/indentation.css" rel="stylesheet">
 
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <div th:replace="header::header">머리말</div>
 
 <div class="page-margin">
-  <h1>위키 리스트 확인</h1>
-  <a href="javascript:history.back()">뒤로 가기</a>&nbsp;
-  <a data-th-href="@{/wiki/form(studyNo=${studyNo})}" href="/wiki/form.html">작성하기</a>
-  <ul>
-    <li th:class="'indent-' + ${wiki.layer}" th:each="wiki : ${wikis}">
-      <a href="wiki/viewWiki"
-         th:href="@{/wiki/viewWiki(wikiNo=*{wiki.wikiNo})}">
-        <span th:text="${wiki.title}">리스트</span></a>
-    </li>
-  </ul>
+  <div>
+    <h1>위키 리스트 확인</h1>
+    <a href="javascript:history.back()">뒤로 가기</a>&nbsp;
+    <a data-th-href="@{/wiki/form(studyNo=${studyNo})}" href="/wiki/form.html">작성하기</a>
 
+    <div>
+      <button id="editBtn">수정</button>
+      <button id="cancelBtn" disabled>취소</button>
+      <button id="saveBtn" disabled>저장</button>
+    </div>
+
+    <div id="itemsContainer">
+      <div th:class="'indent-' + ${wiki.layer} + ' border'" th:each="wiki : ${wikis}" th:data-id="${wiki.wikiNo}" >
+        <a href="wiki/viewWiki" th:href="@{/wiki/viewWiki(wikiNo=${wiki.wikiNo})}">
+          <span th:text="${wiki.title}">리스트</span>
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
 <div th:replace="footer::footer">꼬리말</div>
+
+<script>
+  const itemsContainer = document.getElementById('itemsContainer');
+  const editBtn = document.getElementById('editBtn');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const saveBtn = document.getElementById('saveBtn');
+  let sortable;
+  let originalOrder;
+
+  editBtn.addEventListener('click', () => {
+    originalOrder = Array.from(itemsContainer.children).map(child => child.dataset.id);
+    sortable = new Sortable(itemsContainer, {
+      animation: 150,
+      ghostClass: 'ghost',
+      onUpdate: function (evt) {
+        saveBtn.disabled = false;
+        cancelBtn.disabled = false;
+      }
+    });
+    editBtn.disabled = true;
+    cancelBtn.disabled = false;
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    restoreOriginalOrder(originalOrder);
+    sortable.destroy();
+    editBtn.disabled = false;
+    cancelBtn.disabled = true;
+    saveBtn.disabled = true;
+  });
+
+  saveBtn.addEventListener('click', () => {
+    const updatedOrder = Array.from(itemsContainer.children).map(child => child.dataset.id);
+    // AJAX 요청 또는 WebSocket을 통해 서버로 전송
+    saveChanges(updatedOrder);
+    sortable.destroy();
+    editBtn.disabled = false;
+    cancelBtn.disabled = true;
+    saveBtn.disabled = true;
+  });
+
+  function saveChanges(updatedOrder) {
+    // AJAX 요청 또는 WebSocket을 통해 서버로 전송
+    fetch('/api/wiki/update-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedOrder)
+    })
+    .then(response => {
+      // 서버 응답 처리
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
+
+  function restoreOriginalOrder(originalOrder) {
+    const children = Array.from(itemsContainer.children);
+    originalOrder.forEach((id, index) => {
+      const child = children.find(c => c.dataset.id === id);
+      itemsContainer.appendChild(child);
+    });
+  }
+</script>

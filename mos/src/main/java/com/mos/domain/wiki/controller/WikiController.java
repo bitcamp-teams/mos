@@ -65,6 +65,19 @@ public class WikiController {
     model.addAttribute("wikiComments", wikiCommentDtoList);
   }
 
+  @GetMapping("view")
+  public void view(@RequestParam int studyNo, @RequestParam int wikiNo, Model model) throws Exception {
+    model.addAttribute("studyNo", studyNo);
+    model.addAttribute("wikis", wikiService.listByStudyNo(studyNo));
+
+    WikiDto wikiDto = wikiService.getByWikiNo(wikiNo);
+    if (wikiDto == null) {
+      throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
+    }
+    model.addAttribute("wiki", wikiDto);
+    model.addAttribute("wikiComments", commentService.getWikiComments(wikiNo));
+  }
+
   @PostMapping("updateWiki")
   public String update(@ModelAttribute WikiDto wikiDto, Model model) throws Exception {
     wikiService.updateWiki(wikiDto);
