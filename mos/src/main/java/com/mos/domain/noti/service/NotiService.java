@@ -2,6 +2,7 @@ package com.mos.domain.noti.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mos.domain.member.repository.MemberRepository;
 import com.mos.domain.noti.dto.NotiAddDto;
 import com.mos.domain.noti.dto.NotiDto;
 import com.mos.domain.noti.repository.NotiRepository;
@@ -20,8 +21,10 @@ public class NotiService {
     notiRepository.add(notiDto);
   }
 
+
+
   public String list(int id) {
-    List<NotiDto> list = notiRepository.findById(id);
+    List<NotiDto> list = notiRepository.findByRecipientId(id);
 
     Gson gson = new GsonBuilder()
         .setPrettyPrinting()
@@ -29,5 +32,13 @@ public class NotiService {
         .create();
 
     return gson.toJson(list);
+  }
+
+  public boolean existsById(int id) {
+    return notiRepository.existsById(id);
+  }
+
+  public void updateRead(int id) {
+    notiRepository.updateReadById(id);
   }
 }

@@ -10,5 +10,13 @@ public interface NotiRepository {
 
   void add(NotiAddDto notiDto);
 
-  List<NotiDto> findById(int id);
+  List<NotiDto> findByRecipientId(int recipientId);
+
+  boolean existsById(int id);
+
+  NotiDto findById(int id);
+
+  void updateReadById(int id);
+
+  int findIdByEmail(String email);
 }

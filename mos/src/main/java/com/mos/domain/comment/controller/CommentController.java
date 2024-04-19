@@ -6,6 +6,7 @@ import com.mos.domain.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,11 +25,12 @@ public class CommentController {
   //조회를 위한 컨트롤러 없음. SSR 로 처리할 것이므로, Study/Wiki Controller 에서 CommentService 요청하도록 함.
 
   @PostMapping("study/add")
-  public String addStudyComment(StudyCommentDto studyCommentDto) throws Exception {
+  public ResponseEntity<StudyCommentDto> addStudyComment(StudyCommentDto studyCommentDto) throws Exception {
 
     commentService.addStudyComment(studyCommentDto);
 
-    return "redirect:/study/view?studyNo=" + studyCommentDto.getStudyNo();
+    return ResponseEntity.ok(studyCommentDto);
+//    return "redirect:/study/view?studyNo=" + studyCommentDto.getStudyNo();
   }
 
   @GetMapping("study/delete")
@@ -40,7 +42,7 @@ public class CommentController {
   //TODO 댓글 변경기능 추가할 것 (ajax)
   @PostMapping("study/update")
   public String updateStudyComment(@ModelAttribute StudyCommentDto studyCommentDto) throws Exception {
-  //  commentService.updateStudyComment(studyCommentDto);
+    //  //  commentService.updateStudyComment(studyCommentDto);
     return "";
   }
 

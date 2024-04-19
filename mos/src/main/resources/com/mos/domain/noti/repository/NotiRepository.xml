@@ -6,7 +6,7 @@
 <mapper namespace="com.mos.domain.noti.repository.NotiRepository">
   
   <resultMap id="NotiMap" type="NotiDto">
-    <id column="noti_no" property="no"/>
+    <id column="noti_no" property="id"/>
     <result column="member_no" property="recipientId"/>
     <result column="message" property="message"/>
     <result column="created_date" property="createDate"/>
@@ -21,10 +21,26 @@
     WHERE member_no = #{recipientId};
   </insert>
 
-  <select id="findById" resultMap="NotiMap">
-    SELECT member_no, message, link
+  <select id="findByRecipientId" resultMap="NotiMap">
+    SELECT noti_no, member_no, message, link
     FROM notification n
     where n.member_no = #{recipientId} AND read_or_not = 'N'
     order by created_date
   </select>
+
+  <select id="existsById" resultType="boolean">
+    SELECT
+      CASE
+        WHEN COUNT(*) > 0 THEN 'true'  <!-- 이메일이 이미 존재하는 경우 -->
+        ELSE 'false' <!-- 이메일이 존재하지 않는 경우 -->
+      END AS email_exists
+    FROM
+      notification
+    WHERE
+      noti_no = #{id};
+  </select>
+  
+  <update id="updateReadById">
+    UPDATE notification SET read_or_not = 'Y' WHERE noti_no = #{id}
+  </update>
 </mapper>
