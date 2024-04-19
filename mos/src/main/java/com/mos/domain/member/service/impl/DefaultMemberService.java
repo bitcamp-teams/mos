@@ -10,10 +10,12 @@ import com.mos.domain.study.repository.StudyRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
 public class DefaultMemberService implements MemberService {
+
 
   private final MemberRepository memberRepository;
   private final StudyRepository studyRepository;
@@ -27,9 +29,9 @@ public class DefaultMemberService implements MemberService {
   public MemberDto getName(String username) {
     return memberRepository.findByUsername(username);
   }
+
     @Override
     public MemberDto getNo(int no) {
-
         return memberRepository.findByNo(no);
     }
 
@@ -67,9 +69,13 @@ public class DefaultMemberService implements MemberService {
     return myStudy;
   }
 
+  @Transactional
+  @Override
+  public int update(MemberDto member) {
+    return memberRepository.update(member);
+  }
 
-
-    @Override
+  @Override
     public boolean existsByUserName(String username) {
       return memberRepository.existsByUserName(username);
     }

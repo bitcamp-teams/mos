@@ -118,6 +118,19 @@
   </select>
 
 
+  <update id="update" parameterType="MemberDto">
+    update member set
+    username=#{userName},
+    photo=#{photo},
+    biography=#{biography},
+    belong=#{belong},
+    career=#{career},
+    job_group=#{jobGroup},
+    social_link=#{socialLink}
+    where
+    member_no = #{memberNo}
+  </update>
+
 
 
 

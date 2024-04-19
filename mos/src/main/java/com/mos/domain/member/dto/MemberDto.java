@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class MemberDto {
 
+  private static final long serialVersionUID = 100L;
+
   private int memberNo;
   private String email;
   private String userName;

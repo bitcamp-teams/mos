@@ -16,6 +16,10 @@
     margin-left: 250px;
 }
 
+.container-profile {
+    margin-left: 250px;
+}
+
 /* sidenav 링크 스타일 */
 #sidenav a {
     padding: 10px 15px;
@@ -29,3 +33,17 @@
 #sidenav a:hover {
     background-color: #e9ecef; /* 호버 효과 추가 */
 }
+
+    #profile {
+      margin-top: 20px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      list-style: none;
+    }
+
+    #profile img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+    }

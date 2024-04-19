@@ -1,4 +1,4 @@
-//package com.mos.global.auth.service;
+//package com.mos.global.auth.storage;
 //
 //import org.apache.commons.logging.Log;
 //import org.apache.commons.logging.LogFactory;

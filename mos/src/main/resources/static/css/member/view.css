@@ -47,8 +47,14 @@
       display: flex;
       align-items: center;
       list-style: none;
-
     }
+
+    #profile img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+    }
+
     #profile-2 {
     padding-top: 40px;
     }
