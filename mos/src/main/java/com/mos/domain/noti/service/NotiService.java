@@ -50,8 +50,12 @@ public class NotiService {
     return notiRepository.existsById(id);
   }
 
-  @Transactional
   public void updateRead(int id) {
-    notiRepository.updateReadById(id);
+    try {
+      notiRepository.updateReadById(id);
+    } catch (Exception e) {
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      log.debug("NotiService.updateRead() 실패 = " + e);
+    }
   }
 }
