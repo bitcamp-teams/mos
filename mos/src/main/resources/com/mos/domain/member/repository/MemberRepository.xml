@@ -131,6 +131,13 @@
     member_no = #{memberNo}
   </update>
 
+  <update id="delete" parameterType="MemberDto">
+    update member set
+    email=
+    where
+    member_no=#{memberNo}
+  </update>
+
 
 
 

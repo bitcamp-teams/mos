@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequiredArgsConstructor
 @Controller
@@ -72,7 +71,7 @@ public class MemberController implements InitializingBean {
     return "redirect:/";
   }
 
-    @GetMapping("view")
+    @GetMapping("dashboard")
     public void viewDashboard(int no, Model model) throws Exception {
         MemberDto member = memberService.getNo(no);
         if (member == null) {
@@ -106,7 +105,7 @@ public class MemberController implements InitializingBean {
         return "member/mystudy";
     }
 
-    @GetMapping("mystudy-view")
+    @GetMapping("viewMystudy")
     public void viewMyStudy(int studyNo, Model model, HttpSession session) throws Exception {
 
         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
@@ -138,7 +137,7 @@ public class MemberController implements InitializingBean {
         model.addAttribute("memberStudyView", editMyStudy);
     }
 
-    // 회원 정보 조회
+    // 회원 정보 조회 페이지
     @GetMapping("edit")
     public String editMemberForm(Model model, HttpSession session) {
         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
@@ -195,5 +194,20 @@ public class MemberController implements InitializingBean {
         memberService.update(member);
         return "redirect:/member/edit" ;
     }
+
+    // 회원 탈퇴 페이지 이동
+    @GetMapping("withdraw")
+    public String withdrawMember(Model model, HttpSession session) {
+        MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "auth/login";
+        }
+
+        MemberDto member = memberService.getNo(loginUser.getMemberNo());
+        model.addAttribute("member", member);
+        return "member/withdraw";
+    }
+
+
 
 }

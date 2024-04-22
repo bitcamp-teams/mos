@@ -32,7 +32,7 @@
     <div class="rounded">
       <a data-th-href="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}}"
          data-th-if="*{photo}">
-        <img class="rounded-circle" data-th-src="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}(type=f,w=160,h=160,ttype=jpg)}"></a><br>
+        <img class="rounded-circle" data-th-src="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}}"></a><br>
       <a data-th-unless="*{photo}" href='/img/user2-160x160.jpg'>
         <img class="rounded-circle" height='80px' src='/img/user2-160x160.jpg'></a><br>
       <input name='memberPhoto' type='file'>
