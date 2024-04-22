@@ -68,15 +68,19 @@ public class WikiController {
 
   @GetMapping("view")
   public void view(@RequestParam int wikiNo, Model model) throws Exception {
-    //스터디의 전체 위키 리스트를 만들기 위한 데이터를 가져와서 모델에 넣는다.
-    model.addAttribute("wikis", wikiService.listByStudyNo(wikiNo));
+    //해당 위키 컨텐츠를 먼저 가져온다.
+    WikiDto wikiDto = wikiService.getByWikiNo(wikiNo);
+    //소속된 스터디 번호도 wikiDto 안에 있다.
+    int studyNo = wikiDto.getStudyNo();
+
+    //스터디의 전체 위키 리스트를 만들기 위해, 소속 스터디 번호로 리스트를 만든다.
+    model.addAttribute("wikiList", wikiService.listByStudyNo(studyNo));
 
     //위키 본문을 만들기 위한 데이터를 서비스를 통해 가져와서 모델에 넣는다.
-    model.addAttribute("wiki", wikiService.getByWikiNo(wikiNo));
+    model.addAttribute("wikiDto", wikiDto);
+    log.debug(wikiDto);
 
-    //getByWikiNo에서 wikiDto에 studyNo를 넣어오므로 굳이 studyNo가 필요하지 않다!
-    //model.addAttribute("studyNo", studyNo);
-
+    //뷰를 반환한다.
   }
 
   @PostMapping("updateWiki")
