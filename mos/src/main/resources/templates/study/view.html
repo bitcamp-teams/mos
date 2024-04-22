@@ -8,7 +8,10 @@
     <h1 th:text="*{title}"></h1>
     <a data-th-href="@{edit(studyNo=*{studyNo})}" href="delete.html">[편집]</a>
     <a data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">[삭제]</a>
-    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>
+
+<!--    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>-->
+
+    <a data-th-href="@{/wiki/view(wikiNo=${firstWikiNo})}" href="/wiki/view.html">[이 스터디의 위키 보러가기]</a>
 
     <p> 스터디장 = <span th:text="*{memberNo}"> </span></p>
     <p> 진행방식 = <span th:text="*{method}"> </span></p>

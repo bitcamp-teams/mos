@@ -18,4 +18,6 @@ public interface WikiRepository {
   void deleteWiki(int wikiNo);
 
   void add(WikiDto wikiDto);
+
+  int getFirstWiki(int studyNo);
 }
