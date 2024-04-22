@@ -1,0 +1,49 @@
+<div th:replace="header::header">머리말</div>
+<div class="page-margin">
+<!--  <nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+<!--    <div class="container-fluid">-->
+<!--      &lt;!&ndash; 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) &ndash;&gt;-->
+<!--      <div class="navbar-nav d-flex flex-column">-->
+<!--        <a th:each="wiki : ${wikis}" th:href="@{/wiki/view(wikiNo=*{wiki.wikiNo})}" href="" value=""><div class="nav-link" href="" th:text="*{wiki.title}" onclick="return false;">Left Nav Item</div></a>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; 가운데 nav Wiki's Content &ndash;&gt;-->
+<!--      <div class="mx-auto">-->
+<!--        <a class="navbar-brand" href="#">Brand Logo</a>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; 오른쪽 nav : Wiki's ToC &ndash;&gt;-->
+<!--      <div class="navbar-nav d-flex flex-column">-->
+<!--        <a><div class="nav-link" href="#">Right Nav Item</div></a>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </nav>-->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <!-- 왼쪽 컨텐츠 리스트 -->
+        <ul>
+          <li>컨텐츠 1</li>
+          <li>컨텐츠 2</li>
+          <li>컨텐츠 3</li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <!-- 가운데 컨텐츠 -->
+        <h2>제목</h2>
+        <p>본문 내용...</p>
+      </div>
+      <div class="col-md-3">
+        <!-- 오른쪽 ToC -->
+        <h4>목차</h4>
+        <ol>
+          <li>섹션 1</li>
+          <li>섹션 2</li>
+          <li>섹션 3</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div th:replace="footer::footer">꼬리말</div>

@@ -24,24 +24,25 @@ public class WikiController {
 
   private static final Log log = LogFactory.getLog(Thread.currentThread().getClass());
   private final WikiService wikiService;
-    private final CommentService commentService;
+  private final CommentService commentService;
   private int wikiNo;
   private Model model;
 
   @GetMapping("form")
-    public void form(@RequestParam int studyNo, Model model) throws Exception {
+  public void form(@RequestParam int studyNo, Model model) throws Exception {
 
-      model.addAttribute("studyNo", studyNo);
-    }
+    model.addAttribute("studyNo", studyNo);
+  }
 
-    @PostMapping("add")
-    public String add(@ModelAttribute WikiDto wikiDto,
-                      @RequestParam("studyNo") int studyNo) {
+  @PostMapping("add")
+  public String add(
+      @ModelAttribute WikiDto wikiDto, @RequestParam("studyNo") int studyNo
+  ) {
 
-      wikiService.add(wikiDto);
+    wikiService.add(wikiDto);
 
-      return "redirect:/wiki/list?studyNo=" + studyNo;
-    }
+    return "redirect:/wiki/list?studyNo=" + studyNo;
+  }
 
   @GetMapping("editWiki")
   public void edit(@RequestParam int wikiNo, Model model) throws Exception {
@@ -53,23 +54,36 @@ public class WikiController {
   }
 
   @GetMapping("viewWiki")
-  public void view(@RequestParam int wikiNo, Model model) throws Exception {
+  public void viewWiki(@RequestParam int wikiNo, Model model) throws Exception {
     WikiDto wikiDto = wikiService.getByWikiNo(wikiNo);
     if (wikiDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
-//    log.debug(wikiDto.toString());
+    //    log.debug(wikiDto.toString());
     model.addAttribute("wiki", wikiDto);
 
     List<WikiCommentDto> wikiCommentDtoList = commentService.getWikiComments(wikiNo);
     model.addAttribute("wikiComments", wikiCommentDtoList);
   }
 
+  @GetMapping("view")
+  public void view(@RequestParam int wikiNo, Model model) throws Exception {
+    //스터디의 전체 위키 리스트를 만들기 위한 데이터를 가져와서 모델에 넣는다.
+    model.addAttribute("wikis", wikiService.listByStudyNo(wikiNo));
+
+    //위키 본문을 만들기 위한 데이터를 서비스를 통해 가져와서 모델에 넣는다.
+    model.addAttribute("wiki", wikiService.getByWikiNo(wikiNo));
+
+    //getByWikiNo에서 wikiDto에 studyNo를 넣어오므로 굳이 studyNo가 필요하지 않다!
+    //model.addAttribute("studyNo", studyNo);
+
+  }
+
   @PostMapping("updateWiki")
   public String update(@ModelAttribute WikiDto wikiDto, Model model) throws Exception {
     wikiService.updateWiki(wikiDto);
     model.addAttribute("wiki", wikiDto);
-    return "redirect:/wiki/viewWiki?wikiNo="+wikiDto.getWikiNo();
+    return "redirect:/wiki/viewWiki?wikiNo=" + wikiDto.getWikiNo();
   }
 
 
@@ -89,7 +103,7 @@ public class WikiController {
     //TODO 1. 작성자만 삭제 가능
     int studyNo = wikiService.getByWikiNo(wikiNo).getStudyNo();
     wikiService.deleteWiki(wikiNo);
-    return "redirect:/wiki/list?studyNo="+studyNo;
+    return "redirect:/wiki/list?studyNo=" + studyNo;
   }
 
 
