@@ -1,66 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>모두의스터디</title>
-  <link rel="stylesheet" href="/css/auth/signup.css">
-</head>
-<body>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>모두의스터디</title>-->
+<!--  <link rel="stylesheet" href="/css/auth/signup.css">-->
+<!--</head>-->
+<!--<body>-->
 
-<div data-th-replace="header::header">머리말</div>
+<!--<div data-th-replace="header::header">머리말</div>-->
 
-<div class="page-margin">
-  <div class="container content-margin" >
-    <form id="signupForm" action="/auth/signup" data-th-action="@{/auth/signup}" method="get">
-      <div class="title-margin">
-        <p class="title-font">%s님의 원활한 스터디 모집을 위해<br>선호하시는 지역을 선택해주세요!</p>
-      </div>
-      <div class="name-area">
-        <p>선호 지역을 설정하시면 근처 오프라인 스터디를 추천해드립니다!</p>
-        <p>설정하신 지역은 마이페이지에서 언제든 수정 가능합니다!</p>
-      </div>
-      <div class="button-margin">
-        <button class="button-size" type="button">다음</button>
-      </div>
-    </form>
-  </div>
-</div>
+<!--<div class="page-margin">-->
+<!--  <div class="container content-margin" >-->
+<!--    <form id="signupForm" action="/auth/signup" data-th-action="@{/auth/signup}" method="get">-->
+<!--      <div class="title-margin">-->
+<!--        <p class="title-font">%s님의 원활한 스터디 모집을 위해<br>선호하시는 지역을 선택해주세요!</p>-->
+<!--      </div>-->
+<!--      <div class="name-area">-->
+<!--        <p>선호 지역을 설정하시면 근처 오프라인 스터디를 추천해드립니다!</p>-->
+<!--        <p>설정하신 지역은 마이페이지에서 언제든 수정 가능합니다!</p>-->
+<!--      </div>-->
+<!--      <div class="button-margin">-->
+<!--        <button class="button-size" type="button">다음</button>-->
+<!--      </div>-->
+<!--    </form>-->
+<!--  </div>-->
+<!--</div>-->
 
-<script>
-  function checkUsername() {
-    var form = document.getElementById('signupForm');
-    var usernameInput = document.getElementById('usernameInput');
-    var username = usernameInput.value;
-    var messageDiv = document.getElementById('message');
+<!--<script>-->
+<!--  function checkUsername() {-->
+<!--    var form = document.getElementById('signupForm');-->
+<!--    var usernameInput = document.getElementById('usernameInput');-->
+<!--    var username = usernameInput.value;-->
+<!--    var messageDiv = document.getElementById('message');-->
 
-    // 사용자가 닉네임을 입력하지 않은 경우
-    if (username.trim() === '') {
-        messageDiv.textContent = '닉네임을 입력해주세요.';
-        messageDiv.classList.add('error');
-        messageDiv.classList.remove('success');
-        return;
-    }
+<!--    // 사용자가 닉네임을 입력하지 않은 경우-->
+<!--    if (username.trim() === '') {-->
+<!--        messageDiv.textContent = '닉네임을 입력해주세요.';-->
+<!--        messageDiv.classList.add('error');-->
+<!--        messageDiv.classList.remove('success');-->
+<!--        return;-->
+<!--    }-->
 
-    // 서버로 요청하여 username 검사
-    fetch('/auth/checkUsername?username=' + username)
-        .then(response => response.text())
-        .then(data => {
-            if (data === 'duplicate') {
-                messageDiv.textContent = '닉네임이 중복되었습니다.';
-                messageDiv.classList.add('error');
-                messageDiv.classList.remove('success');
-            } else {
-              messageDiv.textContent = '사용 가능한 닉네임입니다.';
-                messageDiv.classList.add('success');
-                messageDiv.classList.remove('error');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
-</script>
+<!--    // 서버로 요청하여 username 검사-->
+<!--    fetch('/auth/checkUsername?username=' + username)-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            if (data === 'duplicate') {-->
+<!--                messageDiv.textContent = '닉네임이 중복되었습니다.';-->
+<!--                messageDiv.classList.add('error');-->
+<!--                messageDiv.classList.remove('success');-->
+<!--            } else {-->
+<!--              messageDiv.textContent = '사용 가능한 닉네임입니다.';-->
+<!--                messageDiv.classList.add('success');-->
+<!--                messageDiv.classList.remove('error');-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error:', error);-->
+<!--        });-->
+<!--}-->
+<!--</script>-->
 
-<div data-th-replace="footer::footer">꼬리말</div>
-</body>
-</html>
+<!--<div data-th-replace="footer::footer">꼬리말</div>-->
+<!--</body>-->
+<!--</html>-->

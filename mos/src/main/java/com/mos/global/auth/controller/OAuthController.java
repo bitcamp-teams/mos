@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static com.mos.global.auth.handler.LoginApiProvider.*;
 
@@ -58,29 +59,26 @@ public class OAuthController {
 
   // 카카오
   @GetMapping("/auth/kakao/callback")
-  public String callback(@RequestParam String code, Model model, HttpSession session) throws Exception {
+  public String callback(@RequestParam String code, Model model, RedirectAttributes redirectAttributes, HttpSession session) throws Exception {
     LoginResponseHandler kakaoInfo =
         loginApiManager.getProvider("KAKAO").getUserInfo(webClient, code);
-    model.addAttribute("platform", KAKAO.name());
-    return url(session, kakaoInfo);
+    return url(session, redirectAttributes, kakaoInfo, KAKAO.name());
   }
 
   // 깃헙
   @GetMapping("login/oauth2/code/github")
-  public String githubLogin(@RequestParam String code, Model model, HttpSession session) {
+  public String githubLogin(@RequestParam String code, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
     LoginResponseHandler githubInfo =
         loginApiManager.getProvider("GITHUB").getUserInfo(webClient, code);
-    model.addAttribute("platform", GITHUB.name());
-    return url(session, githubInfo);
+    return url(session, redirectAttributes, githubInfo, GITHUB.name());
   }
 
   // 구글
   @GetMapping("login/oauth2/code/google")
-  public String googleOAuth(@RequestParam String code, Model model, HttpSession session) {
+  public String googleOAuth(@RequestParam String code, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
     LoginResponseHandler googleInfo =
         loginApiManager.getProvider("GOOGLE").getUserInfo(webClient, code);
-    model.addAttribute("platform", GOOGLE.name());
-    return url(session, googleInfo);
+    return url(session, redirectAttributes, googleInfo, GOOGLE.name());
   }
 
 
@@ -97,29 +95,13 @@ public class OAuthController {
   }
 
 
-//  @PostMapping("signup")
-//  public void signup(@RequestParam String username) {
-//    // 중복확인 완료한 후 가입을 진행하던 중
-//    // 그 시점에 같은 닉네임으로 가입을 완료한 사람이 있다면??
-//
-//    /*MemberDto member = memberService.getName(username);
-//
-//    if (memberService.getName(username) != null) {
-//      System.out.println("중복된 닉네임입니다.");
-//      return "auth/signup";
-//    }
-//
-//    System.out.println("사용가능한 닉네임입니다!!");
-//    return "auth/signup";*/
-//  }
-
   // 닉네임 중복확인
   @GetMapping("checkUsername")
   public ResponseEntity<String> checkUsername(@RequestParam String username) {
     MemberDto member = memberService.getName(username);
 
     if (member != null) {
-      // 이미 존재하는 닉네임인 경우
+      // 이미 존재하는 닉네임인 경우aewibahuwevyhllvcgu
       return ResponseEntity.ok("duplicate");
     } else {
       // 존재하지 않는 닉네임인 경우
@@ -127,15 +109,15 @@ public class OAuthController {
     }
   }
 
-  private String url(HttpSession session, LoginResponseHandler info) {
+  private String url(HttpSession session, RedirectAttributes redirectAttributes, LoginResponseHandler info, String platform) {
+    session.setAttribute("platform", platform);
     if (memberService.existsByEmail(info.getEmail())) {
-      // OAuth 이메일 이외에 다른 정보도 받을 경우 회원정보 업데이트 쿼리 필요함
       session.setAttribute("accessToken", info.getToken());
       session.setAttribute("loginUser", memberService.get(info.getEmail()));
-      return "redirect:/";
     } else {
       session.setAttribute("loginUser", MemberDto.builder().email(info.getEmail()).build());
+      redirectAttributes.addFlashAttribute("showModal", true);
     }
-    return "forward:/auth/form";
+    return "redirect:/";
   }
 }

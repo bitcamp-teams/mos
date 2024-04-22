@@ -1,5 +1,5 @@
 import codes from "./api/admin/code/codes.js";
-import {convertToObject} from "./util/objectConverter.js";
+import {convertToObject} from "./util/util.js";
 
 const index = {
     init() {

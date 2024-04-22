@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="/css/auth/styles.css">
     <!-- jQuery -->
     <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <!--    <script src="/plugins/jquery-ui/jquery-ui.min.js"></script>-->
     <!-- bootstrap 4 css   -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
           integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
@@ -65,17 +67,20 @@
         <a href="/study/form">모집 글 쓰기</a>
         <a href="/wiki/list">모두의 위키</a>
         <span data-th-if="${session.loginUser != null}" data-th-text="${session.loginUser.email}">로그인 이메일</span>
-        <span data-th-if="${session.loginUser != null}">[[${session.platform}]]</span>
-        <button data-th-if="${session.loginUser != null}" onclick="location.href='/auth/logout';">로그아웃</button>
+        <span data-th-if="${session.loginUser != null}">  [[${session.platform}]]</span>
+        <button data-th-if="${session.loginUser != null}" class="btn-open-modal btn btn-outline-danger"
+                onclick="location.href='/auth/logout';">로그아웃
+        </button>
         <!-- 로그인 버튼 클릭 시 모달 열기 -->
-        <button data-th-if="${session.loginUser == null}" class="btn-open-modal btn btn-outline-info" data-toggle="modal"
+        <button data-th-if="${session.loginUser == null}" class="btn-open-modal btn btn-outline-info"
+                data-toggle="modal"
                 data-target="#loginModal">로그인
         </button>
     </div>
 </header>
 <body>
 
-<!-- 모달 -->
+<!-- 로그인 모달 -->
 <div class="modal" id="loginModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" id="loginModalContent">
@@ -83,8 +88,94 @@
     </div>
 </div>
 
+<!-- 회원가입 모달 -->
+<div data-th-if="${showModal}" class="modal" tabindex="-1" role="dialog" id="signUpModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- 모달 창 내용 -->
+            <!-- 모달 헤더 -->
+            <div class="modal-header">
+                <h5 class="modal-title">회원가입</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- 모달 바디 -->
+            <div class="modal-body">
+                <!-- form start -->
+                <div id="prevImgDiv">
+                    <img id="prevImg" class="btn-prev" src="/img/chevron-left-solid.svg"
+                         alt="back-button">
+                </div>
+                <form class="form-horizontal" id="signupFrm">
+                    <div id="step1" class="signup-step">
+                        <div class="form-group row">
+                            <label for="email" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                       data-th-value="${session.loginUser.email}" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="platform" class="col-sm-2 col-form-label">로그인 플랫폼</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="platform" name="platform"
+                                       placeholder="platform"
+                                       data-th-value="${session.platform}" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-2 col-form-label">닉네임</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="닉네임">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="step2" class="signup-step" style="display:none;">
+                        <div class="form-group row">
+                            <label for="belong" class="col-sm-2 col-form-label">소속</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="belong" id="belong" placeholder="소속">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label"> 직군</label>
+                            <div class="col-sm-10">
+                                <select name="jobGroup" id="jobGroup" class="form-control">
+                                    <option selected="selected">orange</option>
+                                    <option>white</option>
+                                    <option selected="selected">purple</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label"> 경력</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="career" name="career">
+                                    <option selected="selected">orange</option>
+                                    <option>white</option>
+                                    <option selected="selected">purple</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <!--                <button type="button" class="btn-prev btn btn-warning">이전</button>-->
+                <button type="button" class="btn-next btn btn-info">다음</button>
+                <button type="submit" class="btn btn-info" style="display: none">가입!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="isLoginFrm">
+    <input type="hidden" id="showModal" data-th-value="${showModal}">
+    <input type="hidden" id="loginEmail" data-th-value="${session.loginUser}">
+</form>
+
+
 <!-- axios -->
 <script src="/plugins/axios/axios.min.js"></script>
 <!-- 별도의 JavaScript 파일 추가 -->
 <script type="module" src="/js/auth/modal.js"></script>
 
+</body>

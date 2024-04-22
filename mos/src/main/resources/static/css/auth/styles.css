@@ -1,23 +1,5 @@
-/*.choose_login {*/
-/*  background-color: #DBEAFE;*/
-/*  padding-top: 5%;*/
-/*  padding-bottom: 5%;*/
-/*  text-align: center;*/
-/*}*/
 
-/*.container {*/
-/*  display: flex;*/
-/*  justify-content: center;*/
-/*  align-items: center;*/
-/*  height: 300px;*/
-/*}*/
-
-/*.login-option {*/
-/*  text-align: center;*/
-/*  margin: 0 40px; !* 각 로그인 옵션 사이의 간격을 조정할 수 있습니다. *!*/
-/*}*/
-
-/* 모달 창 스타일 */
+/* ============ 로그인 모달 창 스타일 ============ */
 .modal {
     text-align: center;
     backdrop-filter: blur(5px);
@@ -66,4 +48,62 @@
 .login-option p {
     font-size: 1rem;
     font-weight: bold;
+}
+
+/* ============ 회원가입 모달 창 스타일 ============ */
+
+#signUpModal .modal-dialog {
+    max-width: 600px; /* 모달의 최대 너비를 설정합니다. */
+    margin: 30px auto; /* 모달을 화면 중앙에 위치시킵니다. */
+}
+
+#signUpModal .modal-content {
+    width: 672px;
+    border-radius: 10px; /* 모달의 모서리를 둥글게 합니다. */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* 모달에 그림자 효과를 줍니다. */
+}
+
+#signUpModal .modal-header {
+    /*background-color: #dbeafe; !* 모달 헤더의 배경색을 설정합니다. *!*/
+    border-bottom: 1px solid #e5e5e5; /* 모달 헤더의 하단 테두리를 설정합니다. */
+}
+
+#signUpModal .modal-title {
+    color: #333; /* 모달 제목의 글자색을 설정합니다. */
+    font-weight: bold; /* 모달 제목의 글자 굵기를 설정합니다. */
+}
+
+#signUpModal .modal-body {
+    display: flex;
+    flex-direction: column;
+}
+
+#signUpModal .modal-footer {
+    /*background-color: #f7f7f7; !* 모달 푸터의 배경색을 설정합니다. *!*/
+    border-top: 1px solid #e5e5e5; /* 모달 푸터의 상단 테두리를 설정합니다. */
+    text-align: right; /* 모달 푸터의 텍스트를 오른쪽 정렬합니다. */
+}
+
+#signUpModal .btn-prev, #signUpModal .btn-next {
+    margin-right: 10px; /* 버튼 사이의 간격을 설정합니다. */
+}
+
+#signUpModal .btn {
+    border-radius: 5px; /* 버튼의 모서리를 둥글게 합니다. */
+    padding: 10px 15px; /* 버튼의 패딩을 설정합니다. */
+    font-size: 14px; /* 버튼의 글자 크기를 설정합니다. */
+}
+
+#prevImg {
+    cursor: pointer;
+    width: 40px;
+    height: 35px;
+}
+
+#prevImgDiv {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
 }
