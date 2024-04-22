@@ -64,8 +64,14 @@
         <a href="/study/list">스터디 찾기</a>
         <a href="/study/form">모집 글 쓰기</a>
         <a href="/wiki/modoowikilist">모두의 위키</a>
-        <button onclick="fetchNotifications()">알림</button>
-        <div id="notifications"></div>
+        <button data-th-if="${session.loginUser != null}" onclick="fetchNotifications()">알림</button>
+        <div id="popupNotifications" class="popup-noti" style="display: none;">
+            <div class="popup-noti-content">
+                <span class="close">&times;</span>
+                <h2>알림</h2>
+                <div id="notifications"></div>
+            </div>
+        </div>
         <span data-th-if="${session.loginUser != null}" data-th-text="${session.loginUser.email}">로그인 이메일</span>
         <span data-th-if="${session.loginUser != null}">[[${session.platform}]]</span>
         <button data-th-if="${session.loginUser != null}" onclick="location.href='/auth/logout';">로그아웃</button>
@@ -78,62 +84,50 @@
 <body>
 
 <style>
-    /* 모달 창 스타일 */
-.modal-noti {
-  display: none; /* 기본적으로 숨김 */
-  position: fixed; /* 스크롤해도 위치 고정 */
-  z-index: 1; /* 다른 모든 것 위에 */
-  left: 0;
-  top: 0;
-  width: 100%; /* 전체 너비 */
-  height: 100%; /* 전체 높이 */
-  overflow: auto; /* 필요 시 스크롤 */
-  background-color: rgb(0,0,0); /* 폴백 색상 */
-  background-color: rgba(0,0,0,0.4); /* 검은색 w/opacity */
-}
+    /* 팝업창 스타일 */
+    .popup-noti {
+        position: absolute;
+        z-index: 1;
+        width: 300px;
+        background-color: #fefefe;
+        margin-top: 20px; /* 버튼과의 거리 */
+        border: 1px solid #888;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
 
-/* 모달 컨텐츠 스타일 */
-.modal-noti-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 페이지 중앙에 위치 */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* 너비 */
-}
+    .popup-noti-content {
+        padding: 20px;
+    }
 
-/* 닫기 버튼 스타일 */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
 
 </style>
 
-<div id="notificationModal" class="modal-noti">
-    <div class="modal-noti-content">
-        <span class="close">&times;</span>
-        <h2>알림</h2>
-        <div id="modal-notifications"></div>
-    </div>
-</div>
+
+
 
 <script th:inline="javascript">
-    // 모달 창 요소를 가져옴
-    var modal = document.getElementById("notificationModal");
+    // 팝업 창 요소를 가져옴
+    var popup = document.getElementById("popupNotifications");
 
     // 닫기 버튼 요소를 가져옴
     var span = document.getElementsByClassName("close")[0];
 
-    // 버튼 클릭 시 모달 창을 표시하는 함수
+
+
     function fetchNotifications() {
         console.log("fetchNotifications 함수가 호출되었습니다.");
         // 서버로부터 알림 목록을 가져오는 AJAX 요청
@@ -147,22 +141,17 @@
         .then(notiListJson => {
             console.log(notiListJson);
             displayNotifications(JSON.stringify(notiListJson));
-            modal.style.display = "block"; // 모달 창 표시
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
     }
 
-    // 닫기 버튼 클릭 시 모달 창을 숨김
     span.onclick = function() {
-        modal.style.display = "none";
+        popup.style.display = "none";
     }
-    // 모달 창 바깥 영역 클릭 시 모달 창을 숨김
     window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
+        popup.style.display = "none";
     }
 
     // 알림 데이터를 파싱하고 화면에 표시하는 함수
@@ -172,22 +161,27 @@
         console.log("displayNotifications 함수가 호출되었습니다.");
         var notiList = JSON.parse(notiListJson);
 
-        var notificationsContainer = document.getElementById('modal-notifications');
+        var notificationsContainer = document.getElementById('notifications');
         // 기존에 표시된 알림을 클리어
         notificationsContainer.innerHTML = '';
-
-        notiList.forEach(function(noti) {
-            var notiElement = document.createElement('div');
-            var linkElement = document.createElement('a');
-            linkElement.href = noti.link; // 링크 설정
-            linkElement.textContent = noti.message; // 메시지 텍스트 설정
-            linkElement.addEventListener('click', function() {
-                sendReadRequest(noti);
-            });
-<!--            linkElement.target = "_blank"; // 새 탭에서 링크 열기-->
-            notiElement.appendChild(linkElement);
-            notificationsContainer.appendChild(notiElement);
+        popup.style.display = "block";
+        if (notiList.length === 0) {
+        // 알림 데이터가 없을 경우 표시할 메시지
+        notificationsContainer.textContent = '알림이 없습니다.';
+        } else {
+            notiList.forEach(function(noti) {
+                var notiElement = document.createElement('div');
+                var linkElement = document.createElement('a');
+                linkElement.href = noti.link; // 링크 설정
+                linkElement.textContent = noti.message; // 메시지 텍스트 설정
+                linkElement.addEventListener('click', function() {
+                    sendReadRequest(noti);
+                });
+                // linkElement.target = "_blank"; // 새 탭에서 링크 열기를 원할 경우 활성화
+                notiElement.appendChild(linkElement);
+                notificationsContainer.appendChild(notiElement);
         });
+    }
     }
     function sendReadRequest(noti) {
         // 요청 본문에 JSON 형식으로 알림 ID를 포함
