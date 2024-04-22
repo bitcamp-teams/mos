@@ -16,4 +16,8 @@ public interface WikiService {
   void deleteWiki(int wikiNo);
 
   void add(WikiDto wikiDto);
+
+  //스터디의 첫번째 위키 보기
+  //작성된 위키 없는 경우 0을 반환
+  int getFirstWikiNo(int studyNo);
 }

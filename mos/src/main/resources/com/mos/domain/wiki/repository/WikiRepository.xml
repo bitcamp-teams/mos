@@ -70,5 +70,13 @@
     VALUES(#{wikiNo}, #{studyNo}, 1, #{title}, #{content});
   </insert>
 
+  <select id="getFirstWiki" parameterType="int" resultType="_int">
+    SELECT wiki_no
+    FROM curriculum
+    WHERE study_no = #{studyNo}
+    ORDER BY ordr ASC
+    LIMIT 1;
+  </select>
+
 
 </mapper>

@@ -5,7 +5,7 @@ import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.service.StudyService;
-
+import com.mos.domain.wiki.service.WikiService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -31,6 +31,7 @@ public class StudyController {
   private final StudyService studyService;
   // 스터디에 파일저장 / 이미지 옵티마이징 따로 없으므로 변수 추가 없음
   private final CommentService commentService;
+  private final WikiService wikiService;
 
   @GetMapping("form")
   public String form(Model model) throws Exception {
@@ -40,8 +41,9 @@ public class StudyController {
   }
 
   @PostMapping("add")
-  public String add(@ModelAttribute StudyDto studyDto,
-                    @RequestParam("tags") List<Integer> tagNums) {
+  public String add(
+      @ModelAttribute StudyDto studyDto, @RequestParam("tags") List<Integer> tagNums
+  ) {
 
     List<TagDto> tagList = new ArrayList<>();
 
@@ -57,14 +59,21 @@ public class StudyController {
 
   @GetMapping("view")
   public void view(@RequestParam int studyNo, Model model) throws Exception {
+
     StudyDto studyDto = studyService.getByStudyNo(studyNo);
     if (studyDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
+
     model.addAttribute("study", studyDto);
 
     List<StudyCommentDto> studyCommentDtoList = commentService.getStudyComments(studyNo);
+
     model.addAttribute("studyComments", studyCommentDtoList);
+
+    //첫번째 wikiNo도 모델에 담아준다.
+    model.addAttribute("firstWikiNo", wikiService.getFirstWikiNo(studyNo));
+
   }
 
   @GetMapping("edit")
@@ -83,7 +92,7 @@ public class StudyController {
     StudyDto result = studyService.getByStudyNo(studyDto.getStudyNo());
     model.addAttribute("study", result);
     // return "view?studyNo=" + studyDto.getStudyNo();
-    return "redirect:view?studyNo="+studyDto.getStudyNo();
+    return "redirect:view?studyNo=" + studyDto.getStudyNo();
   }
 
   @GetMapping("delete")
