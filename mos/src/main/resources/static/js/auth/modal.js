@@ -16,6 +16,10 @@ const index = {
             if (showModal) {
                 $('#signUpModal').modal('show')
             }
+            $('select').select2({
+                theme: 'bootstrap4',
+                allowClear: true
+            });
             _this.signUp();
         });
 
@@ -46,11 +50,12 @@ const index = {
             }
         })
 
-        if (currentStep === totalSteps) {
-            $('button[type=submit]').show();
-        }
+        // if (currentStep === totalSteps) {
+        //     $('.btn-next').hide();
+        //     $('button[type=submit]').show();
+        // }
 
-        $("#jobGroup").select2();
+
 
         $('.btn-submit').on('click', function () {
             var email = $('#email').val();

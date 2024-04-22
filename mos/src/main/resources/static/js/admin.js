@@ -7,8 +7,11 @@ const index = {
 
         _this.list();
 
-        $(document).on("click", "#modalOpenBtn", function () {
-            _this.modalOpen();
+
+        $(document).ready(function () {
+            $(document).on("click", "#modalOpenBtn", function () {
+                _this.modalOpen();
+            })
         })
 
         $('#addFrm').on("submit", function (e) {
@@ -107,6 +110,7 @@ const index = {
             });
             $('.js-example-data-array').select2({
                 theme: 'bootstrap4',
+                dropdownParent: $("#modal-lg"),
                 data: data
             })
         })

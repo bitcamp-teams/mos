@@ -58,7 +58,7 @@
 }
 
 #signUpModal .modal-content {
-    width: 672px;
+    min-width: 672px;
     border-radius: 10px; /* 모달의 모서리를 둥글게 합니다. */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* 모달에 그림자 효과를 줍니다. */
 }
