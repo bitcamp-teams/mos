@@ -23,4 +23,6 @@ public interface MemberService {
     List<MemberStudyDto> viewMyStudies(int no);
 
     int update(MemberDto member);
+
+    int withdraw(int no);
 }

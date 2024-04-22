@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequiredArgsConstructor
 @Controller
@@ -72,7 +71,7 @@ public class MemberController implements InitializingBean {
     return "redirect:/";
   }
 
-    @GetMapping("view")
+    @GetMapping("dashboard")
     public void viewDashboard(int no, Model model) throws Exception {
         MemberDto member = memberService.getNo(no);
         if (member == null) {
@@ -106,7 +105,7 @@ public class MemberController implements InitializingBean {
         return "member/mystudy";
     }
 
-    @GetMapping("mystudy-view")
+    @GetMapping("viewMystudy")
     public void viewMyStudy(int studyNo, Model model, HttpSession session) throws Exception {
 
         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
@@ -138,7 +137,7 @@ public class MemberController implements InitializingBean {
         model.addAttribute("memberStudyView", editMyStudy);
     }
 
-    // 회원 정보 조회
+    // 회원 정보 조회 페이지
     @GetMapping("edit")
     public String editMemberForm(Model model, HttpSession session) {
         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
@@ -195,5 +194,27 @@ public class MemberController implements InitializingBean {
         memberService.update(member);
         return "redirect:/member/edit" ;
     }
+
+
+    @PostMapping("/withdraw")
+    public String withdrawMember(HttpSession session) throws Exception {
+        MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+        if (loginUser != null) {
+
+            // 회원 탈퇴 처리
+            memberService.withdraw(loginUser.getMemberNo());
+
+            String filename = loginUser.getPhoto();
+
+            if (filename != null) {
+                storageService.delete(this.bucketName, this.uploadDir, loginUser.getPhoto());
+            }
+            // 세션 무효화 (로그아웃)
+            session.invalidate();
+        }
+        return "redirect:/";
+    }
+
+
 
 }

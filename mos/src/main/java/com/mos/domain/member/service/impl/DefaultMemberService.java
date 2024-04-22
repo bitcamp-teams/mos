@@ -75,6 +75,12 @@ public class DefaultMemberService implements MemberService {
     return memberRepository.update(member);
   }
 
+  @Transactional
+  @Override
+  public int withdraw(int no) {
+    return memberRepository.withdraw(no);
+  }
+
   @Override
     public boolean existsByUserName(String username) {
       return memberRepository.existsByUserName(username);

@@ -15,9 +15,11 @@
 <div data-th-replace="header :: header">머리말</div>
 
 <div id="sidenav" class="sidenav">
-  <a data-th-href="@{'/member/view?no=' + ${member.memberNo}}" href="">대시보드</a>
-  <a data-th-href="@{'/member/mystudy?no=' + ${member.memberNo}}" href="">My 스터디</a>
-  <a data-th-href="@{/member/edit}" href="">회원 정보 수정</a>
+  <a data-th-href="@{'/member/dashboard?no=' + ${member.memberNo}}" href="">대시보드</a>
+  <div data-th-if="${session.loginUser != null}">
+    <a data-th-href="@{'/member/mystudy?no=' + ${session.loginUser.memberNo}}" href="">My 스터디</a>
+    <a data-th-href="@{/member/edit}" href="">회원 정보 수정</a>
+  </div>
 </div>
 
 <div class="container-mystudy">
