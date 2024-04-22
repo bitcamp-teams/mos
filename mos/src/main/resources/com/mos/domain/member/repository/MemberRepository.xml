@@ -131,9 +131,12 @@
     member_no = #{memberNo}
   </update>
 
-  <update id="delete" parameterType="MemberDto">
+  <update id="withdraw" parameterType="int">
     update member set
-    email=
+    email=null,
+    username=null,
+    photo=null,
+    stat='탈퇴'
     where
     member_no=#{memberNo}
   </update>

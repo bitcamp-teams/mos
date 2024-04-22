@@ -16,7 +16,7 @@
 <div data-th-replace="header :: header">머리말</div>
 
 <div id="sidenav" class="sidenav">
-  <a data-th-href="@{${#session.getAttribute('loginUser') != null ? '/member/view?no=' + #session.getAttribute('loginUser').memberNo : '/auth/login'}}" href="">대시보드</a>
+  <a data-th-href="@{${#session.getAttribute('loginUser') != null ? '/member/dashboard?no=' + #session.getAttribute('loginUser').memberNo : '/auth/login'}}" href="">대시보드</a>
   <div data-th-if="${session.loginUser != null}">
   <a data-th-href="@{'/member/mystudy?no=' + ${session.loginUser.memberNo}}" href="">My 스터디</a>
   <a data-th-href="@{/member/edit}" href="">회원 정보 수정</a>
@@ -58,10 +58,39 @@
   </div>
   <div>
     <button type="submit">수정</button>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#withdrawalModal">탈퇴</button>
   </div>
-
-</div>
+  </div>
 </form>
+
+<!-- 모달 창 -->
+<div class="modal fade" id="withdrawalModal" tabindex="-1" aria-labelledby="withdrawalModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="withdrawalModalLabel">회원 탈퇴</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>정말로 회원 탈퇴를 진행하시겠습니까?</p>
+        <p>탈퇴 시, 계정과 관련된 모든 권한이 사라지며 복구할 수 없습니다.</p>
+        <p>직접 작성한 콘텐츠(위키, 게시물, 댓글 등)는 자동으로 삭제되지 않으며, 만일 삭제를 원하시면 탈퇴 이전에 삭제가 필요합니다.</p>
+        <p>탈퇴 후 연동된 소셜 계정 정보도 사라지며 소셜 로그인으로 기존 계정 이용이 불가능합니다.</p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <form action="withdraw" data-th-action="@{/member/withdraw}" data-th-object="${member}" method="post">
+          <button type="submit" class="btn btn-danger">탈퇴하기</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+
 
 </body>
 </html>

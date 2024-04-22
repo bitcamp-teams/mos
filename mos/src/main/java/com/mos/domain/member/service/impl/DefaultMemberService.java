@@ -77,8 +77,8 @@ public class DefaultMemberService implements MemberService {
 
   @Transactional
   @Override
-  public int withdraw(MemberDto member) {
-    return memberRepository.withdraw(member);
+  public int withdraw(int no) {
+    return memberRepository.withdraw(no);
   }
 
   @Override

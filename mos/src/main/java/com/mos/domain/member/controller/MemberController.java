@@ -195,17 +195,24 @@ public class MemberController implements InitializingBean {
         return "redirect:/member/edit" ;
     }
 
-    // 회원 탈퇴 페이지 이동
-    @GetMapping("withdraw")
-    public String withdrawMember(Model model, HttpSession session) {
-        MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            return "auth/login";
-        }
 
-        MemberDto member = memberService.getNo(loginUser.getMemberNo());
-        model.addAttribute("member", member);
-        return "member/withdraw";
+    @PostMapping("/withdraw")
+    public String withdrawMember(HttpSession session) throws Exception {
+        MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+        if (loginUser != null) {
+
+            // 회원 탈퇴 처리
+            memberService.withdraw(loginUser.getMemberNo());
+
+            String filename = loginUser.getPhoto();
+
+            if (filename != null) {
+                storageService.delete(this.bucketName, this.uploadDir, loginUser.getPhoto());
+            }
+            // 세션 무효화 (로그아웃)
+            session.invalidate();
+        }
+        return "redirect:/";
     }
 
 

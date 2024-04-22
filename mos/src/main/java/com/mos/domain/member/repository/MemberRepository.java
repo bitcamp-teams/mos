@@ -27,5 +27,5 @@ public interface MemberRepository {
   int update(MemberDto member);
 
   // 회원 탈퇴 기능 구현.
-  int withdraw(MemberDto member);
+  int withdraw(int no);
 }

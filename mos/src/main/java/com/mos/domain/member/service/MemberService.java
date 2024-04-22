@@ -24,5 +24,5 @@ public interface MemberService {
 
     int update(MemberDto member);
 
-    int withdraw(MemberDto member);
+    int withdraw(int no);
 }
