@@ -78,5 +78,22 @@
     LIMIT 1;
   </select>
 
+  <select id="listByWikiNo" parameterType="int" resultType="MemberDto" >
+    SELECT
+    wls.wiki_no, c.title, c.created_date
+    FROM
+    curriculum c
+    LEFT OUTER JOIN wiki_like_stat wls ON c.wiki_no = wls.wiki_no
+    LEFT OUTER JOIN member m ON wls.member_no = m.member_no
+    ORDER BY
+    create_date DESC;
+  </select>
+
+  <select id="listByWikiNo" parameterType="int" resultMap="wiki">
+    SELECT wiki_no, title, content, likes
+    FROM curriculum
+    ORDER BY wiki_no DESC;
+  </select>
+
 
 </mapper>

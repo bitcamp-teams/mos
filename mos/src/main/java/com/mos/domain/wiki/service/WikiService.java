@@ -20,4 +20,6 @@ public interface WikiService {
   //스터디의 첫번째 위키 보기
   //작성된 위키 없는 경우 0을 반환
   int getFirstWikiNo(int studyNo);
+
+//  List<WikiDto> listMyWikiNo();
 }
