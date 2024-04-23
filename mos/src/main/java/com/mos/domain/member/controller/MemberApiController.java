@@ -29,13 +29,13 @@ public class MemberApiController {
     return new Result<>(member);
   }
 
-  @GetMapping("findByUsername")
-  public Result<?> findByUsername(@RequestBody MemberDto memberDto) throws Exception {
+  @PostMapping("findByUsername")
+  public Result<?> findByUsername(@RequestBody @Valid MemberDto memberDto) throws Exception {
     MemberDto member = memberService.getName(memberDto.getUserName());
-    if (member == null) {
+    if (member != null) {
       return new Result<>().setResultCode("fail").setErrorMessage(ErrorCode.EXIST_DATA);
     }
-    return new Result<>(member);
+    return new Result<>(null);
   }
 
   @PostMapping("add")

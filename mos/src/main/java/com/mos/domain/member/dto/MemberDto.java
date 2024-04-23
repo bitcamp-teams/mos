@@ -1,21 +1,27 @@
 package com.mos.domain.member.dto;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.*;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-public class MemberDto {
+public class MemberDto implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 100L;
 
   private int memberNo;
   private String email;
+  @NotBlank @Size(min = 3)
   private String userName;
   private Date createdDate;
   private Date updatedDate;

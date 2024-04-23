@@ -1,5 +1,5 @@
 import codes from "./api/admin/code/codes.js";
-import {convertToObject} from "./util/objectConverter.js";
+import {convertToObject} from "./util/util.js";
 
 const index = {
     init() {
@@ -7,8 +7,11 @@ const index = {
 
         _this.list();
 
-        $(document).on("click", "#modalOpenBtn", function () {
-            _this.modalOpen();
+
+        $(document).ready(function () {
+            $(document).on("click", "#modalOpenBtn", function () {
+                _this.modalOpen();
+            })
         })
 
         $('#addFrm').on("submit", function (e) {
@@ -107,6 +110,7 @@ const index = {
             });
             $('.js-example-data-array').select2({
                 theme: 'bootstrap4',
+                dropdownParent: $("#modal-lg"),
                 data: data
             })
         })
