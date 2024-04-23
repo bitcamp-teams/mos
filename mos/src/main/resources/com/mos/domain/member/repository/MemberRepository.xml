@@ -72,7 +72,7 @@
     FROM
       member
     WHERE
-      username = #{username};
+      username = #{username}
   </select>
 
   <select id="findByNo" resultType="MemberDto" parameterType="int">

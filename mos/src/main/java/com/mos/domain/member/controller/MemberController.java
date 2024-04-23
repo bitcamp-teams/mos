@@ -74,14 +74,14 @@ public class MemberController implements InitializingBean {
     return "redirect:/";
   }
 
-  @GetMapping("dashboard")
-  public void viewDashboard(int no, Model model) throws Exception {
-    MemberDto member = memberService.getNo(no);
-    if (member == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
+    @GetMapping("dashboard")
+    public void viewDashboard(int no, Model model) throws Exception {
+        MemberDto member = memberService.getNo(no);
+        if (member == null) {
+            throw new Exception("회원 번호가 유효하지 않습니다.");
+        }
+        model.addAttribute("member", member);
     }
-    model.addAttribute("member", member);
-  }
 
   @GetMapping("mystudy")
   public String getMyStudy(Model model, HttpSession session) throws Exception {
@@ -217,5 +217,7 @@ public class MemberController implements InitializingBean {
     }
     return "redirect:/";
   }
+
+
 
 }
