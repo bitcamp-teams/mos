@@ -91,9 +91,22 @@ const index = {
 
         // axios 전송
         $('.btn-submit').on('click', function () {
-            let params = $('#signupFrm').serialize();
+            let params = JSON.stringify($('#signupFrm').serializeObject());
+            console.log(params)
             auth.signUp(params).then(res => {
-
+                Swal.fire({
+                    icon: 'success',
+                    title: '가입이 완료되었습니다!',
+                    text: ``
+                });
+                $('.close').click();
+                $('.modal-backdrop').remove();
+            }).catch(reason => {
+                Toast.fire({
+                    icon: 'error',
+                    title: '등록실패!.',
+                    text: `${reason}`
+                });
             })
         });
     },
@@ -149,23 +162,6 @@ const index = {
             $('button[type=submit]').hide();
         }
     }
-    // loginProcess(el) {
-    //     const id = $(el).closest('a').attr('id');
-    //     const form = $('#callBackUrlFrm');
-    //     const obj = form.find('input');
-    //     let url = '';
-    //
-    //     obj.each(function () {
-    //         if ($(this).attr('id') && id.includes($(this).attr('id'))) {
-    //             url = this.value;
-    //         }
-    //     });
-    //
-    //     // 각 플랫폼에 맞춰 로그인 진행
-    //     util[`${id}`](url)
-    //
-    //     // windowOpenHandler("loginPopup", url)
-    // },
 }
 
 index.init();

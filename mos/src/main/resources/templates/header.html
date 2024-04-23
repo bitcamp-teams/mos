@@ -62,6 +62,7 @@
     <!-- jquery-validation -->
     <script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script src="/plugins/serialize-object/serialize-object.min.js"></script>
     <style>
         .dropdown {
             display: inline-block;
@@ -263,16 +264,16 @@
                             <label class="col-sm-2 col-form-label">경력</label>
                             <div class="col-sm-10">
                                 <select id="career" name="career" class="form-control" data-placeholder="경력을 선택해주세요">
-                                    <option value="1">1 년차</option>
-                                    <option value="2">2년차</option>
-                                    <option value="3">3년차</option>
-                                    <option value="4">4년차</option>
-                                    <option value="5">5년 차</option>
-                                    <option value="6">6년 차</option>
-                                    <option value="7">7년 차</option>
-                                    <option value="8">8년 차</option>
-                                    <option value="9">9년 차</option>
-                                    <option value="10">10년 차 이상</option>
+                                    <option value='1'>1 년차</option>
+                                    <option value='2'>2년차</option>
+                                    <option value='3'>3년차</option>
+                                    <option value='4'>4년차</option>
+                                    <option value='5'>5년 차</option>
+                                    <option value='6'>6년 차</option>
+                                    <option value='7'>7년 차</option>
+                                    <option value='8'>8년 차</option>
+                                    <option value='9'>9년 차</option>
+                                    <option value='10'>10년 차 이상</option>
                                 </select>
                             </div>
                         </div>
@@ -292,7 +293,14 @@
     <input type="hidden" id="loginEmail" data-th-value="${session.loginUser}">
 </form>
 
-
+<!-- Editor -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<!-- Viewer -->
+<!--
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.js"></script>
+-->
+<!-- Editor's Plugin -->
+<script src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
 <!-- axios -->
 <script src="/plugins/axios/axios.min.js"></script>
 <!-- 별도의 JavaScript 파일 추가 -->
