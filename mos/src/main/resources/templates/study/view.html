@@ -27,8 +27,11 @@
     <div id="viewer">
       <strong>Viewer Here</strong>
     </div>
+    <div data-th-if="*{stat != '종료'}">
+      <form action="applyStudy" data-th-action="@{/study/{studyNo}/applyStudy(studyNo=*{studyNo})}" method="post">
     <button id="applyStudy">신청하기</button>
-
+      </form>
+    </div>
 
     <script>
       var content = document.querySelector('[introduction]').getAttribute('introduction');

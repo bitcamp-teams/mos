@@ -142,8 +142,8 @@ public class StudyController {
     StudyDto studyDto= studyService.getByStudyNo(studyNo);
 
     // 스터디 상태 확인
-    if (studyDto.getStat().equals("모집완료")) {
-      redirectAttributes.addFlashAttribute("message", "이미 모집이 완료된 스터디입니다.");
+    if (studyDto.getStat().equals("모집완료")|| studyDto.getStat().equals("종료")) {
+      redirectAttributes.addFlashAttribute("message", "이미 모집이 완료되었거나 종료된 스터디입니다.");
       return "redirect:list";
     }
 
