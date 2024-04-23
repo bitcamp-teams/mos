@@ -92,7 +92,6 @@ const index = {
         // axios 전송
         $('.btn-submit').on('click', function () {
             let params = JSON.stringify($('#signupFrm').serializeObject());
-            console.log(params)
             auth.signUp(params).then(res => {
                 Swal.fire({
                     icon: 'success',
