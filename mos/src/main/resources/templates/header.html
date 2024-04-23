@@ -53,8 +53,12 @@
     <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <script src="/plugins/sweetalert2/sweetalert2.min.js"></script>
     <!-- BS Stepper -->
     <link rel="stylesheet" href="/plugins/bs-stepper/css/bs-stepper.min.css">
+    <!-- jquery-validation -->
+    <script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
 
 </head>
 
@@ -89,7 +93,7 @@
 </div>
 
 <!-- 회원가입 모달 -->
-<div data-th-if="${showModal}" class="modal" role="dialog" id="signUpModal">
+<div data-th-if="${showModal}" class="modal" role="dialog" id="signUpModal" data-backdrop='static' data-keyboard='false'>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <!-- 모달 창 내용 -->
@@ -123,9 +127,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="name" class="col-sm-2 col-form-label">닉네임</label>
+                            <label for="userName" class="col-sm-2 col-form-label">닉네임</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="닉네임" required>
+                                <input type="text" class="form-control" id="userName" name="userName" placeholder="닉네임" required>
                             </div>
                         </div>
                     </div>

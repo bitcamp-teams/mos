@@ -5,6 +5,8 @@ import java.sql.Date;
 
 import lombok.*;
 
+import javax.validation.constraints.*;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -13,6 +15,7 @@ public class MemberDto implements Serializable {
 
   private int memberNo;
   private String email;
+  @NotBlank
   private String userName;
   private Date createdDate;
   private Date updatedDate;

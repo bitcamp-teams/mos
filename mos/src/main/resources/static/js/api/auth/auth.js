@@ -5,8 +5,12 @@ export default {
             responseType: 'document'
         })
     },
-    signUp: async url => {
-        return await axios.post('/member/add');
+    signUp: async params => {
+        return await axios.post('/api/v1/member/add', params);
+    },
+    findByEmail: async params => {
+        return await axios.post('/api/v1/member/findByUsername', params);
     }
+
 
 }
