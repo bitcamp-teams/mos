@@ -32,6 +32,7 @@ const index = {
         })
     },
     signUp() {
+        const _this = this;
         let currentStep = 1;
         const totalSteps = $('.signup-step').length;
         const Toast = Swal.mixin({
@@ -43,9 +44,9 @@ const index = {
 
         $('.btn-next').on('click', function () {
             if (currentStep < totalSteps) {
-                // 닉네임 중복확인
                 let nickname = $('#signUpModal #userName').val().trim();
                 if (nickname !== '') {
+                    // 닉네임 중복확인
                     auth.findByEmail({userName: nickname}).then(res => {
                         if (res.data.errorCode == null) {
                             $(`#step${currentStep}`).hide();
@@ -76,6 +77,7 @@ const index = {
                     });
                 }
             }
+            _this.updateSubmitButtonVisibility(currentStep, totalSteps)
         })
 
         $('.btn-prev').on('click', function () {
@@ -84,20 +86,15 @@ const index = {
                 currentStep--;
                 $(`#step${currentStep}`).show();
             }
+            _this.updateSubmitButtonVisibility(currentStep, totalSteps)
         })
 
-        // TODO : submit 버튼 보이기!
-        if (currentStep === totalSteps) {
-            $('.btn-next').hide();
-            $('button[type=submit]').show();
-        }
-
-
-        // TODO : axios 전송
+        // axios 전송
         $('.btn-submit').on('click', function () {
-            var email = $('#email').val();
-            var password = $('#password').val();
-            var username = $('#username').val();
+            let params = $('#signupFrm').serialize();
+            auth.signUp(params).then(res => {
+
+            })
         });
     },
     validation() {
@@ -141,6 +138,16 @@ const index = {
                 $(element).removeClass('is-invalid');
             }
         });
+    },
+    updateSubmitButtonVisibility(currentStep, totalSteps) {
+        console.log(currentStep, totalSteps)
+        if (currentStep === totalSteps) {
+            $('.btn-next').hide();
+            $('button[type=submit]').show();
+        } else {
+            $('.btn-next').show();
+            $('button[type=submit]').hide();
+        }
     }
     // loginProcess(el) {
     //     const id = $(el).closest('a').attr('id');

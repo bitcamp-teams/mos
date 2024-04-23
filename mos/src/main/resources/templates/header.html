@@ -159,11 +159,16 @@
                             <label class="col-sm-2 col-form-label">경력</label>
                             <div class="col-sm-10">
                                 <select id="career" name="career" class="form-control" data-placeholder="경력을 선택해주세요">
-                                    <option>1 년차 미만</option>
-                                    <option>1 ~ 3년차</option>
-                                    <option>4 ~ 6년차</option>
-                                    <option>7 ~ 9년차</option>
-                                    <option>10 년차 이상</option>
+                                    <option value="1">1 년차</option>
+                                    <option value="2">2년차</option>
+                                    <option value="3">3년차</option>
+                                    <option value="4">4년차</option>
+                                    <option value="5">5년 차</option>
+                                    <option value="6">6년 차</option>
+                                    <option value="7">7년 차</option>
+                                    <option value="8">8년 차</option>
+                                    <option value="9">9년 차</option>
+                                    <option value="10">10년 차 이상</option>
                                 </select>
                             </div>
                         </div>
@@ -171,12 +176,13 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-next btn btn-info">다음</button>
-                <button type="submit" class="btn btn-outline-primary" style="display: none">가입!</button>
+                <button type="button" class="btn-next btn btn-outline-info">다음</button>
+                <button type="submit" class="btn btn-submit btn-outline-primary" style="display: none">가입!</button>
             </div>
         </div>
     </div>
 </div>
+
 <form id="isLoginFrm">
     <input type="hidden" id="showModal" data-th-value="${showModal}">
     <input type="hidden" id="loginEmail" data-th-value="${session.loginUser}">

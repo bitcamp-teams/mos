@@ -1,7 +1,6 @@
 package com.mos.global.auth.controller;
 
 import com.mos.domain.member.dto.MemberDto;
-import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.service.MemberService;
 import com.mos.global.auth.LoginUser;
 import com.mos.global.auth.handler.LoginApiManager;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
