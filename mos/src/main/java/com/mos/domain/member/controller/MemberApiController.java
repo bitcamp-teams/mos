@@ -35,7 +35,7 @@ public class MemberApiController {
     if (member != null) {
       return new Result<>().setResultCode("fail").setErrorMessage(ErrorCode.EXIST_DATA);
     }
-    return new Result<>(member);
+    return new Result<>(null);
   }
 
   @PostMapping("add")

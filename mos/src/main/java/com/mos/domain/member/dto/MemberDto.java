@@ -15,7 +15,7 @@ public class MemberDto implements Serializable {
 
   private int memberNo;
   private String email;
-  @NotBlank
+  @NotBlank @Size(min = 3)
   private String userName;
   private Date createdDate;
   private Date updatedDate;

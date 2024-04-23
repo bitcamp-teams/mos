@@ -27,22 +27,21 @@ const index = {
     },
     modalOpen() {
         auth.modalHtml().then(async res => {
-            const htmlContent = await res.data.body.innerHTML;
+            const htmlContent = res.data.body.innerHTML;
             $('#loginModalContent').html(htmlContent);
         })
     },
     signUp() {
         let currentStep = 1;
         const totalSteps = $('.signup-step').length;
-
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
 
         $('.btn-next').on('click', function () {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
-            });
             if (currentStep < totalSteps) {
                 // 닉네임 중복확인
                 let nickname = $('#signUpModal #userName').val().trim();
@@ -69,6 +68,12 @@ const index = {
                             $('#userName').focus();
                         }
                     });
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: '닉네임을 입력해주세요',
+                        text: ``
+                    });
                 }
             }
         })
@@ -82,10 +87,10 @@ const index = {
         })
 
         // TODO : submit 버튼 보이기!
-        // if (currentStep === totalSteps) {
-        //     $('.btn-next').hide();
-        //     $('button[type=submit]').show();
-        // }
+        if (currentStep === totalSteps) {
+            $('.btn-next').hide();
+            $('button[type=submit]').show();
+        }
 
 
         // TODO : axios 전송
@@ -96,9 +101,19 @@ const index = {
         });
     },
     validation() {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
         $.validator.setDefaults({
             submitHandler: function () {
-                alert("정상적으로 가입되었습니다");
+                Toast.fire({
+                    icon: 'success',
+                    title: '정상적으로 등록되었습니다.',
+                    text: ``
+                });
             }
         });
         $('#signupFrm').validate({
