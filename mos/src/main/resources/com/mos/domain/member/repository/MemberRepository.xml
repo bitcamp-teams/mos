@@ -141,7 +141,4 @@
     member_no=#{memberNo}
   </update>
 
-
-
-
 </mapper>

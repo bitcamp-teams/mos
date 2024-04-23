@@ -5,6 +5,8 @@ import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 import java.util.List;
+
+import com.mos.domain.wiki.dto.WikiDto;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -28,4 +30,5 @@ public interface MemberRepository {
 
   // 회원 탈퇴 기능 구현.
   int withdraw(int no);
+
 }

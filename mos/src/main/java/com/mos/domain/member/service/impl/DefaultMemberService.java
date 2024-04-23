@@ -7,7 +7,10 @@ import com.mos.domain.member.repository.MemberRepository;
 import com.mos.domain.member.service.MemberService;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.repository.StudyRepository;
+
 import java.util.List;
+
+import com.mos.domain.wiki.dto.WikiDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,15 +33,15 @@ public class DefaultMemberService implements MemberService {
     return memberRepository.findByUsername(username);
   }
 
-    @Override
-    public MemberDto getNo(int no) {
-        return memberRepository.findByNo(no);
-    }
+  @Override
+  public MemberDto getNo(int no) {
+    return memberRepository.findByNo(no);
+  }
 
-    @Override
-    public MemberDto getUsername(String username) {
-        return memberRepository.findByUsername(username);
-    }
+  @Override
+  public MemberDto getUsername(String username) {
+    return memberRepository.findByUsername(username);
+  }
 
   @Override
   public List<MemberStudyDto> findMyStudies(int no) {
@@ -50,16 +53,17 @@ public class DefaultMemberService implements MemberService {
     List<MemberStudyDto> myStudy = memberRepository.findMyStudies(no);
     return myStudy;
   }
-    @Override
-    public int join(MemberJoinDto joinDto) {
+
+  @Override
+  public int join(MemberJoinDto joinDto) {
     System.out.println("joinDto = " + joinDto);
     return memberRepository.add(joinDto);
   }
 
-    @Override
-    public boolean existsByEmail(String email) {
-      return memberRepository.existsByEmail(email);
-    }
+  @Override
+  public boolean existsByEmail(String email) {
+    return memberRepository.existsByEmail(email);
+  }
 
   @Override
   public List<MemberStudyDto> viewMyStudies(int no) {
@@ -82,7 +86,8 @@ public class DefaultMemberService implements MemberService {
   }
 
   @Override
-    public boolean existsByUserName(String username) {
-      return memberRepository.existsByUserName(username);
-    }
+  public boolean existsByUserName(String username) {
+    return memberRepository.existsByUserName(username);
+  }
+
 }

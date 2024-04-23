@@ -18,6 +18,7 @@
   <th-block data-th-if="${#session.getAttribute('loginUser') != null}">
     <a data-th-href="@{'/member/mystudy?no=' + ${#session.getAttribute('loginUser').memberNo}}" href="">My 스터디</a>
     <a data-th-href="@{'/member/edit'}" href="">회원 정보 수정</a>
+    <a data-th-href="@{'/member/mywritelist}" href="">내가 쓴 글/댓글 보기</a>
   </th-block>
 </div>
 

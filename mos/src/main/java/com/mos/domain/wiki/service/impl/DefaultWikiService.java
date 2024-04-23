@@ -48,4 +48,9 @@ public class DefaultWikiService implements WikiService {
   public int getFirstWikiNo(int studyNo) {
     return wikiRepository.getFirstWiki(studyNo);
   }
+
+//  @Override
+//  public List<WikiDto> listMyWikiNo() {
+//    return WikiRepository.listMyWikiNo();
+//  }
 }

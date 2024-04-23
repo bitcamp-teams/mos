@@ -20,4 +20,6 @@ public interface WikiRepository {
   void add(WikiDto wikiDto);
 
   int getFirstWiki(int studyNo);
+
+//  List<WikiDto> listMyWikiNo();
 }
