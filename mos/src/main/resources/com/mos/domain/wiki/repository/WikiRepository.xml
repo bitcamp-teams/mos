@@ -32,12 +32,18 @@
     ORDER BY ordr, layer, layer_ordr;
   </select>
 
+  <select id="listByWikiNo" parameterType="int" resultMap="wiki">
+    SELECT wiki_no, title, content, likes
+    FROM curriculum
+    ORDER BY wiki_no DESC;
+  </select>
+
   <select id="getByWikiNo" parameterType="int" resultMap="wiki">
     SELECT
       wiki_no, study_no, title, curriculum.member_no, username, content_created_date, content_updated_date, content, likes
     FROM curriculum
     JOIN member ON curriculum.member_no = member.member_no
-    WHERE wiki_no =  #{wikiNo};
+    WHERE wiki_no = #{wikiNo};
   </select>
 
   <update id="updateWiki" parameterType="WikiDto">
@@ -58,5 +64,18 @@
       wiki_no=#{wikiNo}
   </delete>
 
+  <insert id="add" parameterType="WikiDto">
+    INSERT INTO
+      curriculum(wiki_no, study_no, member_no, title, content)
+    VALUES(#{wikiNo}, #{studyNo}, 1, #{title}, #{content});
+  </insert>
+
+  <select id="getFirstWiki" parameterType="int" resultType="_int">
+    SELECT wiki_no
+    FROM curriculum
+    WHERE study_no = #{studyNo}
+    ORDER BY ordr ASC
+    LIMIT 1;
+  </select>
 
 </mapper>

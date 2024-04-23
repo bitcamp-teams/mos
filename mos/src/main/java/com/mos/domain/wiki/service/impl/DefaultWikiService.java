@@ -20,6 +20,11 @@ public class DefaultWikiService implements WikiService {
   }
 
   @Override
+  public List<WikiDto> listByWikiNo() {
+    return wikiRepository.listByWikiNo();
+  }
+
+  @Override
   public WikiDto getByWikiNo(int wikiNo) {
     return wikiRepository.getByWikiNo(wikiNo);
   }
@@ -33,4 +38,19 @@ public class DefaultWikiService implements WikiService {
   public void deleteWiki(int wikiNo) {
     wikiRepository.deleteWiki(wikiNo);
   }
+
+  @Override
+  public void add(WikiDto wikiDto) {
+    wikiRepository.add(wikiDto);
+  }
+
+  @Override
+  public int getFirstWikiNo(int studyNo) {
+    return wikiRepository.getFirstWiki(studyNo);
+  }
+
+//  @Override
+//  public List<WikiDto> listMyWikiNo() {
+//    return WikiRepository.listMyWikiNo();
+//  }
 }

@@ -16,6 +16,28 @@
     <result column="photo" property="photo"/>
   </resultMap>
 
+  <resultMap id="MemberStudyMap" type="MemberStudyDto">
+    <id column="member_study_stat_no" property="no"/>
+    <result column="stat" property="stat"/>
+    <result column="apply_msg" property="applyMsg"/>
+
+    <association property="studyDto" javaType="StudyDto">
+      <id column="study_no" property="studyNo"/>
+      <result column="member_no" property="memberNo"/>
+      <result column="title" property="title"/>
+      <result column="start_date" property="startDate"/>
+      <result column="end_date" property="endDate"/>
+    </association>
+
+    <association property="memberDto" javaType="MemberDto">
+      <id column="member_no" property="memberNo"/>
+      <result column="photo" property="photo"/>
+      <result column="username" property="userName"/>
+    </association>
+
+  </resultMap>
+
+
   <select id="findByEmail" parameterType="MemberDto" resultType="MemberDto">
     select * from member where email=#{email};
   </select>
@@ -62,7 +84,61 @@
       member_no=#{memberNo}
   </select>
 
+  <select id="findMyStudies" resultMap="MemberStudyMap" parameterType="int">
+    select
+      s.study_no,
+      s.member_no,
+      s.title,
+      s.start_date,
+      s.end_date,
+      mss.member_study_stat_no,
+      mss.stat,
+      mss.apply_msg
+    from
+      member_study_stat mss
+      inner join study s on mss.study_no = s.study_no
+    where
+      mss.member_no=#{no}
+  </select>
+
+  <select id="viewMyStudies" resultMap="MemberStudyMap" parameterType="int">
+    select
+    s.study_no,
+    s.title,
+    m.member_no,
+    m.photo,
+    m.username,
+    mss.apply_msg
+    from
+    member_study_stat mss
+    inner join member m on mss.member_no = m.member_no
+    inner join study s on mss.study_no = s.study_no
+    where
+    mss.study_no = #{no}
+  </select>
 
 
+  <update id="update" parameterType="MemberDto">
+    update member set
+    username=#{userName},
+    photo=#{photo},
+    biography=#{biography},
+    belong=#{belong},
+    career=#{career},
+    job_group=#{jobGroup},
+    social_link=#{socialLink}
+    where
+    member_no = #{memberNo}
+  </update>
+
+  <update id="withdraw" parameterType="int">
+    update member set
+    email=null,
+    username=null,
+    photo=null,
+    stat='탈퇴'
+    where
+    member_no=#{memberNo}
+  </update>
 
 </mapper>

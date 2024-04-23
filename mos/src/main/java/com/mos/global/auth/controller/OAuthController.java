@@ -99,7 +99,7 @@ public class OAuthController {
     MemberDto member = memberService.getName(username);
 
     if (member != null) {
-      // 이미 존재하는 닉네임인 경우aewibahuwevyhllvcgu
+      // 이미 존재하는 닉네임인 경우
       return ResponseEntity.ok("duplicate");
     } else {
       // 존재하지 않는 닉네임인 경우

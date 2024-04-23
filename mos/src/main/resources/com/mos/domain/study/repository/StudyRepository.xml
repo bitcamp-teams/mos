@@ -101,10 +101,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--  </select>-->
 
   <insert id="add" parameterType="StudyDto" useGeneratedKeys="true" keyColumn="study_no" keyProperty="studyNo">
-    <!--  아직 유저 로그인을 구현/통합하지 않았으므로, 스터디장은 1번 유저를 대상으로 하도록 하드코딩하였음 -->
     INSERT INTO
       study(member_no, title, method, location, intake, recruitment_deadline, introduction, start_date, end_date)
-    VALUES(1, #{title}, #{method}, #{location}, #{intake}, #{recruitmentDeadline}, #{introduction}, #{startDate}, #{endDate});
+    VALUES(#{memberNo}, #{title}, #{method}, #{location}, #{intake}, #{recruitmentDeadline}, #{introduction}, #{startDate}, #{endDate});
   </insert>
 
   <update id="update" parameterType="StudyDto">
@@ -122,8 +121,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
   <delete id="delete" parameterType="int">
     DELETE
-    FROM
-      study
+      FROM
+        study
     WHERE
       study_no = #{studyNo};
   </delete>

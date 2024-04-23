@@ -2,10 +2,12 @@ package com.mos.domain.study.controller;
 
 import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.service.CommentService;
+import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.service.StudyService;
-
+import com.mos.domain.wiki.service.WikiService;
+import com.mos.global.auth.LoginUser;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -31,20 +33,29 @@ public class StudyController {
   private final StudyService studyService;
   // 스터디에 파일저장 / 이미지 옵티마이징 따로 없으므로 변수 추가 없음
   private final CommentService commentService;
+  private final WikiService wikiService;
 
   @GetMapping("form")
   public String form(Model model) throws Exception {
+
     List<TagDto> tagList = studyService.getAllTags();
     model.addAttribute("tagList", tagList);
     return "study/form";
   }
 
   @PostMapping("add")
-  public String add(@ModelAttribute StudyDto studyDto,
-                    @RequestParam("tags") List<Integer> tagNums) {
+  public String add(
+      @LoginUser MemberDto user, @ModelAttribute StudyDto studyDto, @RequestParam("tags") List<Integer> tagNums
+  ) {
+    try {
+      int memberNo = user.getMemberNo();
+      studyDto.setMemberNo(user.getMemberNo());
+    } catch (Exception e) {
+      log.debug("login is required");
+      e.printStackTrace();
+    }
 
     List<TagDto> tagList = new ArrayList<>();
-
     for (int no : tagNums) {
       TagDto tag = TagDto.builder().tagNo(no).build();
       tagList.add(tag);
@@ -56,15 +67,31 @@ public class StudyController {
   }
 
   @GetMapping("view")
-  public void view(@RequestParam int studyNo, Model model) throws Exception {
+  public void view(@LoginUser MemberDto user, @RequestParam int studyNo, Model model) throws Exception {
+
+    if (user != null) {
+      model.addAttribute("memberNo", user.getMemberNo());
+    }
+
     StudyDto studyDto = studyService.getByStudyNo(studyNo);
     if (studyDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
+
     model.addAttribute("study", studyDto);
 
     List<StudyCommentDto> studyCommentDtoList = commentService.getStudyComments(studyNo);
-    model.addAttribute("studyComment", studyCommentDtoList);
+
+    model.addAttribute("studyComments", studyCommentDtoList);
+
+    //첫번째 wikiNo도 모델에 담아준다.
+    try {
+      model.addAttribute("firstWikiNo", wikiService.getFirstWikiNo(studyNo));
+    } catch (Exception e) {
+      //아직 위키가 없는 상태임
+    }
+
+
   }
 
   @GetMapping("edit")
@@ -83,12 +110,12 @@ public class StudyController {
     StudyDto result = studyService.getByStudyNo(studyDto.getStudyNo());
     model.addAttribute("study", result);
     // return "view?studyNo=" + studyDto.getStudyNo();
-    return "/study/view";
+    return "redirect:view?studyNo=" + studyDto.getStudyNo();
   }
 
   @GetMapping("delete")
   public String delete(HttpSession session, int studyNo) throws Exception {
-    // TODO 스터디장만 삭제 권한 있고, 
+    // TODO 스터디장만 삭제 권한 있고,
     //  연결된 다른 참여회원이 존재할 경우 삭제 불가하며
     //  타인이 작성된 위키가 있는 경우는 삭제 불가
     studyService.deleteStudy(studyNo);
@@ -101,6 +128,11 @@ public class StudyController {
 
   @GetMapping("list")
   public void list(Model model) {
+    model.addAttribute("studyList", studyService.list());
+  }
+
+  @GetMapping("main")
+  public void main(Model model) {
     model.addAttribute("studyList", studyService.list());
   }
 

@@ -1,4 +1,4 @@
-//package com.mos.global.auth.service;
+//package com.mos.global.auth.storage;
 //
 //import com.google.gson.JsonObject;
 //import com.google.gson.JsonParser;
