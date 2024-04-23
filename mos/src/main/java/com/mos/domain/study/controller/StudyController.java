@@ -2,10 +2,12 @@ package com.mos.domain.study.controller;
 
 import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.service.CommentService;
+import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.service.StudyService;
 import com.mos.domain.wiki.service.WikiService;
+import com.mos.global.auth.LoginUser;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -35,6 +37,7 @@ public class StudyController {
 
   @GetMapping("form")
   public String form(Model model) throws Exception {
+
     List<TagDto> tagList = studyService.getAllTags();
     model.addAttribute("tagList", tagList);
     return "study/form";
@@ -42,11 +45,17 @@ public class StudyController {
 
   @PostMapping("add")
   public String add(
-      @ModelAttribute StudyDto studyDto, @RequestParam("tags") List<Integer> tagNums
+      @LoginUser MemberDto user, @ModelAttribute StudyDto studyDto, @RequestParam("tags") List<Integer> tagNums
   ) {
+    try {
+      int memberNo = user.getMemberNo();
+      studyDto.setMemberNo(user.getMemberNo());
+    } catch (Exception e) {
+      log.debug("login is required");
+      e.printStackTrace();
+    }
 
     List<TagDto> tagList = new ArrayList<>();
-
     for (int no : tagNums) {
       TagDto tag = TagDto.builder().tagNo(no).build();
       tagList.add(tag);
@@ -58,7 +67,11 @@ public class StudyController {
   }
 
   @GetMapping("view")
-  public void view(@RequestParam int studyNo, Model model) throws Exception {
+  public void view(@LoginUser MemberDto user, @RequestParam int studyNo, Model model) throws Exception {
+
+    if (user != null) {
+      model.addAttribute("memberNo", user.getMemberNo());
+    }
 
     StudyDto studyDto = studyService.getByStudyNo(studyNo);
     if (studyDto == null) {
@@ -72,7 +85,12 @@ public class StudyController {
     model.addAttribute("studyComments", studyCommentDtoList);
 
     //첫번째 wikiNo도 모델에 담아준다.
-    model.addAttribute("firstWikiNo", wikiService.getFirstWikiNo(studyNo));
+    try {
+      model.addAttribute("firstWikiNo", wikiService.getFirstWikiNo(studyNo));
+    } catch (Exception e) {
+      //아직 위키가 없는 상태임
+    }
+
 
   }
 
