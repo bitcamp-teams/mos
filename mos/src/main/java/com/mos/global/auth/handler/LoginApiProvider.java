@@ -3,6 +3,7 @@ package com.mos.global.auth.handler;
 import com.mos.global.auth.handler.request.GithubLoginRequestHandler;
 import com.mos.global.auth.handler.request.GoogleLoginRequestHandler;
 import com.mos.global.auth.handler.request.KakaoLoginRequestHandler;
+import com.mos.global.auth.handler.request.NaverLoginRequestHandler;
 import com.mos.global.auth.handler.response.LoginResponseHandler;
 import lombok.Getter;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -11,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public enum LoginApiProvider implements LoginRequestHandler {
   GOOGLE(new GoogleLoginRequestHandler()),
   GITHUB(new GithubLoginRequestHandler()),
+  NAVER(new NaverLoginRequestHandler()),
   KAKAO(new KakaoLoginRequestHandler());
 
   private final LoginRequestHandler strategy;
