@@ -20,15 +20,47 @@
             <span th:each="tag : ${study.tagList}">
         <span th:text="${tag.name}"></span>
     </span>
-        </p>
-        <p> 모집마감 = <span th:text="*{recruitmentDeadline}"> </span></p>
-        <p> 예상종료일 = <span th:text="*{endDate}"> </span></p>
-        <p> 소개
-        <div th:attr="introduction = ${study.introduction}"></div>
-        </p>
-        <div id="viewer">
-            <strong>Viewer Here</strong>
-        </div>
+    </p>
+    <p> 모집마감 = <span th:text="*{recruitmentDeadline}"> </span></p>
+    <p> 예상종료일 = <span th:text="*{endDate}"> </span></p>
+    <p> 소개 <div th:attr="introduction = ${study.introduction}"> </div></p>
+    <div id="viewer">
+      <strong>Viewer Here</strong>
+    </div>
+    <div data-th-if="*{stat != '종료'}">
+      <form action="applyStudy" data-th-action="@{/study/{studyNo}/applyStudy(studyNo=*{studyNo})}" method="post">
+    <button id="applyStudy">신청하기</button>
+      </form>
+    </div>
+
+    <!--스터디 신청 자바스크립트-->
+    <script>
+      $('#submitApplyBtn').click(function() {
+        var applyMsg = $('#applyMsg').val();
+        var studyNo = $('#studyNo').val();
+
+        // AJAX 요청을 통해 서버로 데이터 전송
+        $.ajax({
+          url: '/study/applyStudy', // 수정된 URL 입력
+          type: 'POST',
+          data: {
+            applyMsg: applyMsg,
+            studyNo: studyNo
+          },
+          success: function(response) {
+            // 성공적으로 처리된 경우
+            console.log(response);
+            $('#applyModal').modal('hide'); // 모달창 닫기
+            // 필요한 경우 추가 작업 수행
+          },
+          error: function(error) {
+            // 오류 발생 시 처리
+            console.error(error);
+          }
+        });
+      });
+    </script>
+
 
         <script>
             var content = document.querySelector('[introduction]').getAttribute('introduction');

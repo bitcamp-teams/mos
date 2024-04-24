@@ -72,7 +72,7 @@
     FROM
       member
     WHERE
-      username = #{username};
+      username = #{username}
   </select>
 
   <select id="findByNo" resultType="MemberDto" parameterType="int">
@@ -133,8 +133,6 @@
 
   <update id="withdraw" parameterType="int">
     update member set
-    email=null,
-    username=null,
     photo=null,
     stat='탈퇴'
     where
