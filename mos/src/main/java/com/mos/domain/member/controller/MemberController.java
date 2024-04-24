@@ -1,11 +1,16 @@
 package com.mos.domain.member.controller;
 
+import com.mos.domain.comment.dto.StudyCommentDto;
+import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.member.service.impl.DefaultMemberService;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.service.impl.DefaultStudyService;
+import com.mos.domain.wiki.dto.WikiDto;
+import com.mos.domain.wiki.service.WikiService;
+import com.mos.global.auth.LoginUser;
 import com.mos.global.storage.service.StorageService;
 
 import java.util.List;
