@@ -13,6 +13,7 @@ import java.io.Serializable;
 
 @Data
 public class MemberJoinDto implements Serializable {
+    private int memberNo;
     @Email @NotBlank
     private String email;
     @NotBlank

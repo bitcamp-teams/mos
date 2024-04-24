@@ -1,49 +1,49 @@
 <div data-th-replace="header::header">머리말</div>
-<div class="page-margin">
+<div class="page-margin wrapper-mos">
 
-  <h2 style="padding: 0.6em 0.5em 0.6em 0.5em; margin: 0.5em 0em; color: #000;
+    <h2 style="padding: 0.6em 0.5em 0.6em 0.5em; margin: 0.5em 0em; color: #000;
               border-bottom: 2px solid #e5e5e5; font-weight: bold;" data-ke-size="size23">스터디 모집하기!
-  </h2>
-  <p data-ke-size="size16"></p>
+    </h2>
+    <p data-ke-size="size16"></p>
 
-  <form id="wikiInfo" action="add" data-th-action="@{add}" method="post">
-    <input type="hidden" name="studyNo" th:value="${studyNo}">
-    <div>
-      위키 제목을 입력해주세요!<br> <input name="title" type="text">
-    </div>
-    <br>
-    <div>
-      <div id="editor"></div>
-      <input type="hidden" name="content" id="editor-content">
-    </div>
-    <br>
-    <div>
-      <button type="submit">등록</button>
-    </div>
-  </form>
-  <script>
-    const {Editor} = toastui;
-    const {codeSyntaxHighlight} = Editor.plugin;
+    <form id="wikiInfo" action="add" data-th-action="@{add}" method="post">
+        <input type="hidden" name="studyNo" th:value="${studyNo}">
+        <div>
+            위키 제목을 입력해주세요!<br> <input name="title" type="text">
+        </div>
+        <br>
+        <div>
+            <div id="editor"></div>
+            <input type="hidden" name="content" id="editor-content">
+        </div>
+        <br>
+        <div>
+            <button type="submit">등록</button>
+        </div>
+    </form>
+    <script>
+        const {Editor} = toastui;
+        const {codeSyntaxHighlight} = Editor.plugin;
 
-    let editor = new toastui.Editor({
-      el: document.querySelector('#editor'),
-      height: '70%',
-      initialEditType: 'markdown',
-      previewStyle: 'vertical',
-      plugins: [codeSyntaxHighlight],
-      placeholder: '스터디에 대해서 설명해주세요.',
-      useCommandShortcut: true,
-    });
+        let editor = new toastui.Editor({
+            el: document.querySelector('#editor'),
+            height: '70%',
+            initialEditType: 'markdown',
+            previewStyle: 'vertical',
+            plugins: [codeSyntaxHighlight],
+            placeholder: '스터디에 대해서 설명해주세요.',
+            useCommandShortcut: true,
+        });
 
-    const form = document.getElementById('wikiInfo');
-    const editorContent = document.getElementById('editor-content');
+        const form = document.getElementById('wikiInfo');
+        const editorContent = document.getElementById('editor-content');
 
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      const editorContent = editor.getMarkdown();
-      document.getElementById('editor-content').value = editorContent;
-      form.submit();
-    });
-  </script>
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const editorContent = editor.getMarkdown();
+            document.getElementById('editor-content').value = editorContent;
+            form.submit();
+        });
+    </script>
 </div>
 <div data-th-replace="footer::footer">꼬리말</div>

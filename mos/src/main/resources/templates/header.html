@@ -3,14 +3,17 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta>
     <title>모두의스터디</title>
     <!-- custom css   -->
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/auth/modal.css">
     <link rel="stylesheet" href="/css/auth/styles.css">
-    <link rel="stylesheet" href="/css/home/styles.css">
+    <link rel="stylesheet" href="/css/study/view.css">
     <link rel="stylesheet" href="/css/study/main.css">
+    <link rel="stylesheet" href="/css/home/styles.css">
+    <link rel="stylesheet" href="/css/member/view.css">
+    <link rel="stylesheet" href="/css/member/mypage.css">
     <!-- jQuery -->
     <script src="/plugins/jquery/jquery.min.js"></script>
     <!-- Select2 css -->
@@ -73,10 +76,10 @@
             display: none;
             position: absolute;
             overflow: auto;
+            z-index: 9999;
         }
 
         .dropdown:hover .dropdown-options {
-            display: block;
             display: grid;
             width: 180px;
             grid-auto-rows: min-content;
@@ -91,6 +94,8 @@
         /* 팝업창 스타일 */
         .popup-noti {
             position: absolute;
+            right: 99px;
+            top: 20px;
             z-index: 1;
             width: 300px;
             background-color: #fefefe;
@@ -120,9 +125,12 @@
 </head>
 
 <!--<header id="header">-->
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #DBEAFE;">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #DBEAFE;">
     <a class="navbar-brand" href="/"><img src='/img/logo_text.png'></a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse position-relative" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/study/main">스터디 모집 목록</a>
@@ -148,7 +156,9 @@
             </div>
         </div>
         <div class="dropdown mr-sm-2">
-          <img src="/img/icon2.png" alt="icon image">
+            <a href="javascript:void(0)" alt="icon image">
+                <img src="/img/icon2.png" alt="icon image">
+            </a>
             <div class="dropdown-options">
                 <a
                         data-th-href="@{${#session.getAttribute('loginUser') != null ? '/member/dashboard?no=' + #session.getAttribute('loginUser').memberNo : '/auth/login'}}"
@@ -214,7 +224,7 @@
                             <label for="email" class="col-sm-2 col-form-label">Email</label>
                             <div class="col-sm-10">
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                                       data-th-value="${session.loginUser.email}" readonly>
+                                       data-th-value="${loginEmail}" readonly>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -286,7 +296,7 @@
 
 <form id="isLoginFrm">
     <input type="hidden" id="showModal" data-th-value="${showModal}">
-    <input type="hidden" id="loginEmail" data-th-value="${session.loginUser}">
+    <input type="hidden" id="loginEmail" data-th-value="${loginEmail}">
 </form>
 
 <!-- Editor -->

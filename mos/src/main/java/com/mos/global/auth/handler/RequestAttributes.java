@@ -2,19 +2,14 @@ package com.mos.global.auth.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mos.global.auth.handler.LoginApiProvider;
-import com.mos.global.auth.handler.OAuthRequestParam;
 import com.mos.global.config.SpringContext;
 import lombok.Getter;
 import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Getter
@@ -54,7 +49,7 @@ public abstract class RequestAttributes {
   }
 
   private void getParam(LoginApiProvider provider, OAuthRequestParam value, MultiValueMap<String, String> enumMap) {
-    // 카카오, 깃헙, 구글에 따라 요청 파라미터 선별
+    // 카카오, 깃헙, 구글, 네이버에 따라 요청 파라미터 선별
     boolean check = value.name().startsWith(provider.name());
     if (check) {
       enumMap.add(value.getKey(), value.getParam());

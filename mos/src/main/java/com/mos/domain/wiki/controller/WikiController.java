@@ -2,8 +2,10 @@ package com.mos.domain.wiki.controller;
 
 import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.comment.service.CommentService;
+import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.wiki.dto.WikiDto;
 import com.mos.domain.wiki.service.WikiService;
+import com.mos.global.auth.LoginUser;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -87,7 +89,7 @@ public class WikiController {
   public String update(@ModelAttribute WikiDto wikiDto, Model model) throws Exception {
     wikiService.updateWiki(wikiDto);
     model.addAttribute("wiki", wikiDto);
-    return "redirect:/wiki/viewWiki?wikiNo=" + wikiDto.getWikiNo();
+    return "redirect:/wiki/view?wikiNo=" + wikiDto.getWikiNo();
   }
 
 
@@ -109,4 +111,5 @@ public class WikiController {
     wikiService.deleteWiki(wikiNo);
     return "redirect:/wiki/list?studyNo=" + studyNo;
   }
+
 }

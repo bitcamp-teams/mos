@@ -1,6 +1,5 @@
 package com.mos.global.auth.handler;
 
-import com.mos.global.auth.handler.OAuthRequestData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -23,7 +22,15 @@ public enum OAuthRequestParam {
   GOOGLE_AUTHORIZATION_CODE("grant_type", "authorization_code"),
   GOOGLE_CLIENT_ID("client_id", OAuthRequestData.GOOGLE_CLIENT_ID),
   GOOGLE_CLIENT_SECRET("client_secret", OAuthRequestData.GOOGLE_CLIENT_SECRET),
-  GOOGLE_REDIRECT_URI("redirect_uri", OAuthRequestData.GOOGLE_REDIRECT_URI);
+  GOOGLE_REDIRECT_URI("redirect_uri", OAuthRequestData.GOOGLE_REDIRECT_URI),
+
+  /* NAVER */
+  NAVER_AUTHORIZATION_CODE("grant_type", "authorization_code"),
+  NAVER_CLIENT_ID("client_id", OAuthRequestData.NAVER_CLIENT_ID),
+  NAVER_CLIENT_SECRET("client_secret", OAuthRequestData.NAVER_CLIENT_SECRET),
+  NAVER_REDIRECT_URI(null, OAuthRequestData.NAVER_REDIRECT_URI),
+  NAVER_AUTH_URI(null, OAuthRequestData.NAVER_AUTH_URI),
+  NAVER_API_URL(null, OAuthRequestData.NAVER_API_URL);
 
   private final String key;
   private final String param;

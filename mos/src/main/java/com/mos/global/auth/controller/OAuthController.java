@@ -23,6 +23,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static com.mos.global.auth.handler.LoginApiProvider.*;
+import static com.mos.global.auth.handler.OAuthRequestParam.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -40,24 +41,25 @@ public class OAuthController {
   public String login(Model model) {
     // 카카오
     model.addAttribute("kakaoUrl",
-        OAuthRequestParam.KAKAO_AUTH_URI.getParam() +
-        "/oauth/authorize?client_id=" + OAuthRequestParam.KAKAO_CLIENT_ID.getParam()
-        + "&redirect_uri=" + OAuthRequestParam.KAKAO_REDIRECT_URL.getParam()
-        + "&response_type=code");
+        KAKAO_AUTH_URI.getParam() + "/oauth/authorize?client_id=" + KAKAO_CLIENT_ID.getParam() + "&redirect_uri=" + KAKAO_REDIRECT_URL.getParam() + "&response_type=code");
     // 깃헙
-    model.addAttribute("clientId", OAuthRequestParam.GITHUB_CLIENT_ID.getParam());
+    model.addAttribute("clientId", GITHUB_CLIENT_ID.getParam());
     // 구글
     model.addAttribute("googleUrl",
-        "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + OAuthRequestParam.GOOGLE_CLIENT_ID.getParam()
-        + "&redirect_uri=" + OAuthRequestParam.GOOGLE_REDIRECT_URI.getParam()
-        + "&response_type=code&scope=email");
+        "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + GOOGLE_CLIENT_ID.getParam() + "&redirect_uri=" + GOOGLE_REDIRECT_URI.getParam() + "&response_type=code&scope=email");
+
+    // 네이버
+    model.addAttribute("naverUrl",
+        NAVER_AUTH_URI.getParam() + "?client_id=" + NAVER_CLIENT_ID.getParam() + "&redirect_uri=" + NAVER_REDIRECT_URI.getParam() + "&response_type=code&state=mos");
+
 
     return "auth/login";
   }
 
   // 카카오
   @GetMapping("/auth/kakao/callback")
-  public String callback(@RequestParam String code, Model model, RedirectAttributes redirectAttributes, HttpSession session) throws Exception {
+  public String kakaoLogin(@RequestParam String code, Model model,
+      RedirectAttributes redirectAttributes, HttpSession session) throws Exception {
     LoginResponseHandler kakaoInfo =
         loginApiManager.getProvider("KAKAO").getUserInfo(webClient, code);
     return url(session, redirectAttributes, kakaoInfo, KAKAO.name());
@@ -65,7 +67,8 @@ public class OAuthController {
 
   // 깃헙
   @GetMapping("login/oauth2/code/github")
-  public String githubLogin(@RequestParam String code, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+  public String githubLogin(@RequestParam String code, Model model,
+      RedirectAttributes redirectAttributes, HttpSession session) {
     LoginResponseHandler githubInfo =
         loginApiManager.getProvider("GITHUB").getUserInfo(webClient, code);
     return url(session, redirectAttributes, githubInfo, GITHUB.name());
@@ -73,10 +76,20 @@ public class OAuthController {
 
   // 구글
   @GetMapping("login/oauth2/code/google")
-  public String googleOAuth(@RequestParam String code, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+  public String googleLogin(@RequestParam String code, Model model,
+      RedirectAttributes redirectAttributes, HttpSession session) {
     LoginResponseHandler googleInfo =
         loginApiManager.getProvider("GOOGLE").getUserInfo(webClient, code);
     return url(session, redirectAttributes, googleInfo, GOOGLE.name());
+  }
+
+  // 네이버
+  @GetMapping("/auth/naver/callback")
+  public String naverLogin(@RequestParam String code, Model model,
+      RedirectAttributes redirectAttributes, HttpSession session) {
+    LoginResponseHandler naverInfo =
+        loginApiManager.getProvider("NAVER").getUserInfo(webClient, code);
+    return url(session, redirectAttributes, naverInfo, NAVER.name());
   }
 
 
@@ -107,13 +120,14 @@ public class OAuthController {
     }
   }
 
-  private String url(HttpSession session, RedirectAttributes redirectAttributes, LoginResponseHandler info, String platform) {
+  private String url(HttpSession session, RedirectAttributes redirectAttributes,
+      LoginResponseHandler info, String platform) {
     session.setAttribute("platform", platform);
     if (memberService.existsByEmail(info.getEmail())) {
       session.setAttribute("accessToken", info.getToken());
       session.setAttribute("loginUser", memberService.get(info.getEmail()));
     } else {
-      session.setAttribute("loginUser", MemberDto.builder().email(info.getEmail()).build());
+      redirectAttributes.addFlashAttribute("loginEmail", info.getEmail());
       redirectAttributes.addFlashAttribute("showModal", true);
     }
     return "redirect:/";

@@ -75,7 +75,7 @@
     select * from member where username=#{userName};
   </select>
 
-  <insert id="add" parameterType="MemberJoinDto">
+  <insert id="add" parameterType="MemberJoinDto" useGeneratedKeys="true" keyProperty="memberNo">
     insert into member(email, username, belong, career, job_group, platform, created_date, updated_date)
     values(#{email},#{name},#{belong},#{career},#{jobGroup},#{platform}, NOW(), NOW())
   </insert>
@@ -101,7 +101,7 @@
     FROM
       member
     WHERE
-      username = #{username};
+      username = #{username}
   </select>
 
   <select id="findByNo" resultType="MemberDto" parameterType="int">
@@ -162,8 +162,6 @@
 
   <update id="withdraw" parameterType="int">
     update member set
-    email=null,
-    username=null,
     photo=null,
     stat='탈퇴'
     where

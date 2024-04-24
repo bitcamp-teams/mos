@@ -1,46 +1,46 @@
 <div data-th-replace="header::header">머리말</div>
-<div class="page-margin">
-  <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="list.html">[편집 취소하고 리스트로 돌아가기]</a>
-  <div th:object="${wiki}">
-    <form id="wikiInfo" action="update" data-th-action="@{/wiki/updateWiki}" method="post">
-      <h1>제목: <input name="title" th:value="*{title}"></h1>
+<div class="page-margin wrapper-mos">
+    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="list.html">[편집 취소하고 리스트로 돌아가기]</a>
+    <div th:object="${wiki}">
+        <form id="wikiInfo" action="update" data-th-action="@{/wiki/updateWiki}" method="post">
+            <h1>제목: <input name="title" th:value="*{title}"></h1>
 
-      <!--POST 방식이라 Hidden Field 방식으로 wikiNo 전달함-->
-      <input type="hidden" name="wikiNo" th:value="*{wikiNo}">
-      <!--      <p> 내용 <input name="content" th:value="*{content}" type="text" value="내용"></p>-->
-      <input type="hidden" th:attr="content = ${wiki.content}" name="content" id="editor-content"
-             value="내용">
-      <div id="editor"></div>
-      <button type="submit">편집완료</button>
-    </form>
-  </div>
+            <!--POST 방식이라 Hidden Field 방식으로 wikiNo 전달함-->
+            <input type="hidden" name="wikiNo" th:value="*{wikiNo}">
+            <!--      <p> 내용 <input name="content" th:value="*{content}" type="text" value="내용"></p>-->
+            <input type="hidden" th:attr="content = ${wiki.content}" name="content" id="editor-content"
+                   value="내용">
+            <div id="editor"></div>
+            <button type="submit">편집완료</button>
+        </form>
+    </div>
 
-  <script>
-    var content = document.querySelector('[content]').getAttribute('content');
-    const {Editor} = toastui;
-    const {codeSyntaxHighlight} = Editor.plugin;
+    <script>
+        var content = document.querySelector('[content]').getAttribute('content');
+        const {Editor} = toastui;
+        const {codeSyntaxHighlight} = Editor.plugin;
 
-    let editor = new toastui.Editor({
-      el: document.querySelector('#editor'),
-      height: '70%',
-      initialEditType: 'markdown',
-      previewStyle: 'vertical',
-      plugins: [codeSyntaxHighlight],
-      placeholder: 'placeholder',
-      useCommandShortcut: true,
-      initialValue: content
-    });
+        let editor = new toastui.Editor({
+            el: document.querySelector('#editor'),
+            height: '70%',
+            initialEditType: 'markdown',
+            previewStyle: 'vertical',
+            plugins: [codeSyntaxHighlight],
+            placeholder: 'placeholder',
+            useCommandShortcut: true,
+            initialValue: content
+        });
 
-    const form = document.getElementById('wikiInfo');
-    // const editorContent = document.getElementById('editor-content');
+        const form = document.getElementById('wikiInfo');
+        // const editorContent = document.getElementById('editor-content');
 
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      const editorContent = editor.getMarkdown();
-      document.getElementById('editor-content').value = editorContent;
-      form.submit();
-    });
-  </script>
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const editorContent = editor.getMarkdown();
+            document.getElementById('editor-content').value = editorContent;
+            form.submit();
+        });
+    </script>
 
 </div>
 <div data-th-replace="footer::footer">꼬리말</div>
