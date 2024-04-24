@@ -11,6 +11,8 @@ public class RequestAuthCode extends RequestAttributes {
       authenticate(provider, "https://github.com/login/oauth/access_token", code);
     } else if (provider.equals(GOOGLE)) {
       authenticate(provider, "https://oauth2.googleapis.com/token", code);
+    } else if (provider.equals(NAVER)) {
+      authenticate(provider, OAuthRequestParam.NAVER_API_URL.getParam(), code);
     }
   }
 
