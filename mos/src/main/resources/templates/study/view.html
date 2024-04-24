@@ -27,37 +27,10 @@
     <div id="viewer">
       <strong>Viewer Here</strong>
     </div>
-    <div data-th-if="*{stat != '종료' && stat != '모집완료'}">
-      <button id="applyStudyBtn" data-toggle="modal" data-target="#applyModal">신청하기</button>
-    </div>
-
-    <!--신청하기 모달창-->
-
-    <!-- 모달창 -->
-    <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="applyModalLabel">스터디 신청</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="applyForm">
-              <input id="studyNo" name="studyNo" type="hidden" data-th-value="*{studyNo}" value="5">
-              <div class="form-group">
-                <label for="applyMsg">신청 메시지</label>
-                <textarea class="form-control" id="applyMsg" rows="3" placeholder="스터디장에게 보낼 메시지를 입력해주세요!"></textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-            <button type="button" class="btn btn-primary" id="submitApplyBtn">신청하기</button>
-          </div>
-        </div>
-      </div>
+    <div data-th-if="*{stat != '종료'}">
+      <form action="applyStudy" data-th-action="@{/study/{studyNo}/applyStudy(studyNo=*{studyNo})}" method="post">
+    <button id="applyStudy">신청하기</button>
+      </form>
     </div>
 
     <!--스터디 신청 자바스크립트-->
@@ -98,31 +71,31 @@
             });
         </script>
 
-        <!-- 알림 기능 -->
-        <form id="notificationForm" action="#" th:action="@{/noti/save}" method="post">
-            <div>
-                <input type="hidden" name="recipientId" th:value="${study.memberNo}">
-            </div>
-            <div>
-                <input type="hidden" name="message" th:value="${study.title + '글에 댓글이 달렸습니다!'}">
-            </div>
-            <div>
-                <input type="hidden" name="link" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">
-            </div>
-        </form>
-        <!--댓글추가 기능 시작-->
-        <form id="commentForm" th:action="@{/comment/study/add}" method="post">
-            <p>
-                <input type="hidden" name="studyNo" th:value="${study.studyNo}">
-                <!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
-                <!--      POST 방식으로 userNo를 넘기지 말 것-->
-                <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
-            </p>
-            <p>
-                <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
-            </p>
-            <button id="submitBtn" type="button">댓글 등록</button>
-        </form>
+    <!-- 알림 기능 -->
+    <form id="notificationForm" action="#" th:action="@{/noti/save}" method="post">
+      <div>
+        <input type="hidden" name="recipientId" th:value="${study.memberNo}">
+      </div>
+      <div>
+        <input type="hidden" name="message" th:value="${study.title + '글에 댓글이 달렸습니다!'}">
+      </div>
+      <div>
+        <input type="hidden" name="link" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">
+      </div>
+    </form>
+    <!--댓글추가 기능 시작-->
+    <form id="commentForm" th:action="@{/comment/study/add}" method="post">
+      <p>
+        <input type="hidden" name="studyNo" th:value="${study.studyNo}">
+        <!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
+        <!--      POST 방식으로 userNo를 넘기지 말 것-->
+        <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
+      </p>
+      <p>
+        <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
+      </p>
+      <button id="submitBtn" type="button">댓글 등록</button>
+    </form>
 
     <script>
       // JavaScript
