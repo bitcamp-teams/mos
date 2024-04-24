@@ -1,23 +1,23 @@
 <div data-th-replace="header::header">머리말</div>
-<div class="page-margin">
+<div class="page-margin wrapper-mos">
 
 
-  <div th:object="${study}">
+    <div th:object="${study}">
 
 
-    <h1 th:text="*{title}"></h1>
-    <a data-th-href="@{edit(studyNo=*{studyNo})}" href="delete.html">[편집]</a>
-    <a data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">[삭제]</a>
+        <h1 th:text="*{title}"></h1>
+        <a data-th-href="@{edit(studyNo=*{studyNo})}" href="delete.html">[편집]</a>
+        <a data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">[삭제]</a>
 
-<!--    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>-->
+        <!--    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>-->
 
-    <a data-th-href="@{/wiki/view(wikiNo=${firstWikiNo})}" href="/wiki/view.html">[이 스터디의 위키 보러가기]</a>
+        <a data-th-href="@{/wiki/view(wikiNo=${firstWikiNo})}" href="/wiki/view.html">[이 스터디의 위키 보러가기]</a>
 
-    <p> 스터디장 = <span th:text="*{memberNo}"> </span></p>
-    <p> 진행방식 = <span th:text="*{method}"> </span></p>
-    <p> 모집정원 = <span th:text="*{intake}"> </span></p>
-    <p> 기술스택 =
-      <span th:each="tag : ${study.tagList}">
+        <p> 스터디장 = <span th:text="*{memberNo}"> </span></p>
+        <p> 진행방식 = <span th:text="*{method}"> </span></p>
+        <p> 모집정원 = <span th:text="*{intake}"> </span></p>
+        <p> 기술스택 =
+            <span th:each="tag : ${study.tagList}">
         <span th:text="${tag.name}"></span>
     </span>
     </p>
@@ -71,151 +71,151 @@
             });
         </script>
 
-    <!-- 알림 기능 -->
-    <form id="notificationForm" action="#" th:action="@{/noti/save}" method="post">
-      <div>
-        <input type="hidden" name="recipientId" th:value="${study.memberNo}">
-      </div>
-      <div>
-        <input type="hidden" name="message" th:value="${study.title + '글에 댓글이 달렸습니다!'}">
-      </div>
-      <div>
-        <input type="hidden" name="link" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">
-      </div>
-    </form>
-    <!--댓글추가 기능 시작-->
-    <form id="commentForm" th:action="@{/comment/study/add}" method="post">
-      <p>
-        <input type="hidden" name="studyNo" th:value="${study.studyNo}">
-        <!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
-        <!--      POST 방식으로 userNo를 넘기지 말 것-->
-        <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
-      </p>
-      <p>
-        <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
-      </p>
-      <button id="submitBtn" type="button">댓글 등록</button>
-    </form>
+        <!-- 알림 기능 -->
+        <form id="notificationForm" action="#" th:action="@{/noti/save}" method="post">
+            <div>
+                <input type="hidden" name="recipientId" th:value="${study.memberNo}">
+            </div>
+            <div>
+                <input type="hidden" name="message" th:value="${study.title + '글에 댓글이 달렸습니다!'}">
+            </div>
+            <div>
+                <input type="hidden" name="link" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">
+            </div>
+        </form>
+        <!--댓글추가 기능 시작-->
+        <form id="commentForm" th:action="@{/comment/study/add}" method="post">
+            <p>
+                <input type="hidden" name="studyNo" th:value="${study.studyNo}">
+                <!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
+                <!--      POST 방식으로 userNo를 넘기지 말 것-->
+                <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
+            </p>
+            <p>
+                <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
+            </p>
+            <button id="submitBtn" type="button">댓글 등록</button>
+        </form>
+
+        <script>
+            // JavaScript
+            document.addEventListener('DOMContentLoaded', function () {
+                document.getElementById('submitBtn').addEventListener('click', function (e) {
+                    e.preventDefault(); // 기본 폼 제출 방지
+
+                    // 댓글 폼 데이터 수집
+                    var commentForm = document.getElementById('commentForm');
+                    var formData = new FormData(commentForm);
+
+                    // 댓글 데이터 서버에 전송
+                    fetch(commentForm.getAttribute('action'), {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('댓글 등록 실패');
+                            }
+                        })
+                        .then(data => {
+                            console.log('댓글 등록 성공:', data);
+
+                            // 알림 폼 데이터 수집 및 전송
+                            var notificationForm = document.getElementById('notificationForm');
+                            var notificationData = new FormData(notificationForm);
+
+                            return fetch(notificationForm.getAttribute('action'), {
+                                method: 'POST',
+                                body: notificationData
+                            });
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('알림 전송 실패');
+                            }
+                        })
+                        .then(data => {
+                            console.log('알림 전송 성공:', data);
+                            // 여기에 성공 시 처리 로직 추가
+                            window.location.reload(); // 페이지 새로고침
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                            // 에러 처리 로직
+                        });
+                });
+            });
+        </script>
+        <!--댓글추가 기능 끝-->
+        <!--댓글 리스트 기능 시작-->
+    </div>
+    <div th:if="${#lists.isEmpty(studyComments)}">
+        <p>아직 댓글이 없어요.</p>
+    </div>
+    <div th:each="comment : ${studyComments}" th:if="${comment.stat} != '삭제'"
+         style="border: 1px solid #000;">
+        <p>
+            <a th:href="@{/comment/study/delete(commentNo=${comment.commentNo}, studyNo=${comment.studyNo})}"
+               href="#">[삭제]</a>
+            <button
+                    th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'"
+                    th:text="'편집'"></button>
+        </p>
+        <p>
+            <span th:text="${comment.username}"/>
+            <span th:text="${comment.createdDate}"/>
+        </p>
+        <div class="comment-content" th:id="'comment-' + ${comment.commentNo}">
+            <span th:text="${comment.content}"></span>
+        </div>
+        <input type="text" class="comment-input" th:id="'comment-input-' + ${comment.commentNo}"
+               th:value="${comment.content}" style="display: none;">
+        <div class="button-group" style="display: none;" th:id="'button-group-' + ${comment.commentNo}">
+            <button class="save-btn" th:id="'save-btn-' + ${comment.commentNo}"
+                    th:onclick="'saveComment(' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'">
+                저장
+            </button>
+            <button class="cancel-btn" th:onclick="'cancelEdit(' + ${comment.commentNo} + ');'">취소
+            </button>
+        </div>
+    </div>
+    <!--댓글 리스트 기능 끝-->
 
     <script>
-      // JavaScript
-      document.addEventListener('DOMContentLoaded', function() {
-          document.getElementById('submitBtn').addEventListener('click', function(e) {
-              e.preventDefault(); // 기본 폼 제출 방지
+        function editComment(element, commentNo, studyNo) {
+            var commentContent = document.getElementById('comment-' + commentNo);
+            var commentInput = document.getElementById('comment-input-' + commentNo);
+            var buttonGroup = document.getElementById('button-group-' + commentNo);
 
-              // 댓글 폼 데이터 수집
-              var commentForm = document.getElementById('commentForm');
-              var formData = new FormData(commentForm);
+            commentContent.style.display = 'none';
+            commentInput.style.display = 'inline';
+            buttonGroup.style.display = 'inline';
+        }
 
-              // 댓글 데이터 서버에 전송
-              fetch(commentForm.getAttribute('action'), {
-                  method: 'POST',
-                  body: formData
-              })
-              .then(response => {
-                  if(response.ok) {
-                      return response.json();
-                  } else {
-                      throw new Error('댓글 등록 실패');
-                  }
-              })
-              .then(data => {
-                  console.log('댓글 등록 성공:', data);
+        function saveComment(commentNo, studyNo) {
+            var commentInput = document.getElementById('comment-input-' + commentNo);
+            var newContent = commentInput.value;
 
-                  // 알림 폼 데이터 수집 및 전송
-                  var notificationForm = document.getElementById('notificationForm');
-                  var notificationData = new FormData(notificationForm);
+            // TODO: 서버에 업데이트 요청 보내기
+            // ...
 
-                  return fetch(notificationForm.getAttribute('action'), {
-                      method: 'POST',
-                      body: notificationData
-                  });
-              })
-              .then(response => {
-                  if(response.ok) {
-                      return response.json();
-                  } else {
-                      throw new Error('알림 전송 실패');
-                  }
-              })
-              .then(data => {
-                  console.log('알림 전송 성공:', data);
-                  // 여기에 성공 시 처리 로직 추가
-                   window.location.reload(); // 페이지 새로고침
-              })
-              .catch((error) => {
-                  console.error('Error:', error);
-                  // 에러 처리 로직
-              });
-          });
-      });
+            location.reload(); // 페이지 새로고침
+        }
+
+        function cancelEdit(commentNo) {
+            var commentContent = document.getElementById('comment-' + commentNo);
+            var commentInput = document.getElementById('comment-input-' + commentNo);
+            var buttonGroup = document.getElementById('button-group-' + commentNo);
+
+            commentContent.style.display = 'inline';
+            commentInput.style.display = 'none';
+            buttonGroup.style.display = 'none';
+        }
     </script>
-    <!--댓글추가 기능 끝-->
-    <!--댓글 리스트 기능 시작-->
-  </div>
-  <div th:if="${#lists.isEmpty(studyComments)}">
-    <p>아직 댓글이 없어요.</p>
-  </div>
-  <div th:each="comment : ${studyComments}" th:if="${comment.stat} != '삭제'"
-       style="border: 1px solid #000;">
-    <p>
-      <a th:href="@{/comment/study/delete(commentNo=${comment.commentNo}, studyNo=${comment.studyNo})}"
-         href="#">[삭제]</a>
-      <button
-          th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'"
-          th:text="'편집'"></button>
-    </p>
-    <p>
-      <span th:text="${comment.username}"/>
-      <span th:text="${comment.createdDate}"/>
-    </p>
-    <div class="comment-content" th:id="'comment-' + ${comment.commentNo}">
-      <span th:text="${comment.content}"></span>
-    </div>
-    <input type="text" class="comment-input" th:id="'comment-input-' + ${comment.commentNo}"
-           th:value="${comment.content}" style="display: none;">
-    <div class="button-group" style="display: none;" th:id="'button-group-' + ${comment.commentNo}">
-      <button class="save-btn" th:id="'save-btn-' + ${comment.commentNo}"
-              th:onclick="'saveComment(' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'">
-        저장
-      </button>
-      <button class="cancel-btn" th:onclick="'cancelEdit(' + ${comment.commentNo} + ');'">취소
-      </button>
-    </div>
-  </div>
-  <!--댓글 리스트 기능 끝-->
-
-  <script>
-    function editComment(element, commentNo, studyNo) {
-      var commentContent = document.getElementById('comment-' + commentNo);
-      var commentInput = document.getElementById('comment-input-' + commentNo);
-      var buttonGroup = document.getElementById('button-group-' + commentNo);
-
-      commentContent.style.display = 'none';
-      commentInput.style.display = 'inline';
-      buttonGroup.style.display = 'inline';
-    }
-
-    function saveComment(commentNo, studyNo) {
-      var commentInput = document.getElementById('comment-input-' + commentNo);
-      var newContent = commentInput.value;
-
-      // TODO: 서버에 업데이트 요청 보내기
-      // ...
-
-      location.reload(); // 페이지 새로고침
-    }
-
-    function cancelEdit(commentNo) {
-      var commentContent = document.getElementById('comment-' + commentNo);
-      var commentInput = document.getElementById('comment-input-' + commentNo);
-      var buttonGroup = document.getElementById('button-group-' + commentNo);
-
-      commentContent.style.display = 'inline';
-      commentInput.style.display = 'none';
-      buttonGroup.style.display = 'none';
-    }
-  </script>
 
 
 </div>

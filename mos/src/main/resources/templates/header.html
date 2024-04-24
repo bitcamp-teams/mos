@@ -65,34 +65,35 @@
     <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
     <script src="/plugins/serialize-object/serialize-object.min.js"></script>
     <style>
-      .dropdown {
-        display: inline-block;
-        position: relative;
-      }
+        .dropdown {
+            display: inline-block;
+            position: relative;
+        }
 
-      .dropdown-options {
-        display: none;
-        position: absolute;
-        overflow: auto;
-      }
+        .dropdown-options {
+            display: none;
+            position: absolute;
+            overflow: auto;
+            z-index: 9999;
+        }
 
-      .dropdown:hover .dropdown-options {
-        display: block;
-        display: grid;
-        width: 180px;
-        grid-auto-rows: min-content;
-        gap: 8px;
-        padding: 10px;
-        border: 1px solid #000000;
-        border-bottom: 1px solid #000000;
-        border-radius: 5px;
-        margin-bottom: 10px;
-      }
-
+        .dropdown:hover .dropdown-options {
+            display: grid;
+            width: 180px;
+            grid-auto-rows: min-content;
+            gap: 8px;
+            padding: 10px;
+            border: 1px solid #000000;
+            border-bottom: 1px solid #000000;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
 
         /* 팝업창 스타일 */
         .popup-noti {
             position: absolute;
+            right: 99px;
+            top: 20px;
             z-index: 1;
             width: 300px;
             background-color: #fefefe;
@@ -127,7 +128,7 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse position-relative" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/study/main">스터디 모집 목록</a>
