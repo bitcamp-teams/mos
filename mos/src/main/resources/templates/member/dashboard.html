@@ -3,52 +3,60 @@
 <head>
   <meta charset='UTF-8'>
   <title>대시보드</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<link rel="stylesheet" href="/css/member/view.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/member/view.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link
+  href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+  rel="stylesheet">
 </head>
 <body>
 
 <div data-th-replace="header :: header">머리말</div>
 
-<div id="sidenav" class="sidenav" >
-  <a data-th-href="@{${#session.getAttribute('loginUser') != null ? '/member/dashboard?no=' + #session.getAttribute('loginUser').memberNo : '/auth/login'}}" href="">대시보드</a>
+<div id="sidenav" class="sidenav">
+  <a
+  data-th-href="@{${#session.getAttribute('loginUser') != null ? '/member/dashboard?no=' + #session.getAttribute('loginUser').memberNo : '/auth/login'}}"
+  href="">대시보드</a>
   <th-block data-th-if="${#session.getAttribute('loginUser') != null}">
     <a data-th-href="@{'/member/mystudy?no=' + ${#session.getAttribute('loginUser').memberNo}}" href="">My 스터디</a>
     <a data-th-href="@{'/member/edit'}" href="">회원 정보 수정</a>
-    <a data-th-href="@{'/member/mywritelist}" href="">내가 쓴 글/댓글 보기</a>
+    <a data-th-href="@{'/member/myWriteCommentList'}" href="">내가 쓴 글/댓글 보기</a>
   </th-block>
 </div>
 
-  <div id="dashboard" data-th-object="${member}">
+<div id="dashboard" data-th-object="${member}">
   <div id="profile">
     <div class="rounded">
       <a data-th-href="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}}"
          data-th-if="*{photo}">
-        <img class="rounded-circle" data-th-src="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}}"></a><br>
+        <img class="rounded-circle"
+             data-th-src="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}}"></a><br>
       <a data-th-unless="*{photo}" href='/img/user2-160x160.jpg'>
         <img class="rounded-circle" height='80px' src='/img/user2-160x160.jpg'></a><br>
-  </div>
+    </div>
     <div id="profile-2">
-   <div class="txt">
-     <div>Email:</div> <p data-th-text='*{email}'> user1@test.com</p>
-  </div>
-  <div class="txt">
-    <div>닉네임:</div> <p data-th-text='*{userName}'> 홍길동 </p>
-  </div>
+      <div class="txt">
+        <div>Email:</div>
+        <p data-th-text='*{email}'> user1@test.com</p>
+      </div>
+      <div class="txt">
+        <div>닉네임:</div>
+        <p data-th-text='*{userName}'> 홍길동 </p>
+      </div>
     </div>
   </div>
-    <p>자기소개</p>
-    <div class="bio">
-      <p data-th-text='*{biography}'>개발자 3년차입니다.</p>
+  <p>자기소개</p>
+  <div class="bio">
+    <p data-th-text='*{biography}'>개발자 3년차입니다.</p>
   </div>
-<!--  <div>-->
-<!--    <button>변경</button>-->
-<!--    <a data-th-href="@{delete(no=*{no})}" href="delete.html">[삭제]</a>-->
-<!--  </div>-->
-  </div>
+  <!--  <div>-->
+  <!--    <button>변경</button>-->
+  <!--    <a data-th-href="@{delete(no=*{no})}" href="delete.html">[삭제]</a>-->
+  <!--  </div>-->
+</div>
 <!--</form>-->
 
 

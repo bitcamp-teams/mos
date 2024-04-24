@@ -21,5 +21,4 @@ public interface WikiService {
   //작성된 위키 없는 경우 0을 반환
   int getFirstWikiNo(int studyNo);
 
-//  List<WikiDto> listMyWikiNo();
 }

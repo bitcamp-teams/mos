@@ -19,7 +19,7 @@
   <div data-th-if="${session.loginUser != null}">
     <a data-th-href="@{'/member/mystudy?no=' + ${session.loginUser.memberNo}}" href="">My 스터디</a>
     <a data-th-href="@{/member/edit}" href="">회원 정보 수정</a>
-    <a data-th-href="@{/member/mywritelist}" href="">내가 쓴 글/댓글 보기</a>
+    <a data-th-href="@{'/member/myWriteCommentList'}" href="">내가 쓴 글/댓글 보기</a>
   </div>
 </div>
 
@@ -39,7 +39,7 @@
       <!-- 스터디 제목 -->
       <td data-th-text="${memberStudy.studyDto != null ? memberStudy.studyDto.title : ''}"></td>
       <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.startDate, 'yyyy-MM-dd') : ''}"></td>
-      <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.endDate, 'yyyy-MM-dd') : ''}"></td>
+      <td data-th-text="${memberStudy.studyDto != null ? #dates.format(member4Study.studyDto.endDate, 'yyyy-MM-dd') : ''}"></td>
       <td>
         <a data-th-href="@{'/member/viewMystudy?studyNo=' + ${memberStudy.studyDto.studyNo}}">
         <button type="button" data-th-text="${memberStudy.stat}" class="btn btn-primary"></button>

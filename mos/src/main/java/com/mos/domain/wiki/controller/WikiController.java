@@ -109,10 +109,4 @@ public class WikiController {
     wikiService.deleteWiki(wikiNo);
     return "redirect:/wiki/list?studyNo=" + studyNo;
   }
-
-//  @GetMapping("list")
-//  public void list(Model model) {
-////    model.addAttribute("studyNo", studyNo);
-//    model.addAttribute("wiki", WikiService.listMyWikiNo());
-//  }
 }

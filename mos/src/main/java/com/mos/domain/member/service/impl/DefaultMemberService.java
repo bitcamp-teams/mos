@@ -1,5 +1,7 @@
 package com.mos.domain.member.service.impl;
 
+import com.mos.domain.comment.dto.StudyCommentDto;
+import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.member.dto.MemberJoinDto;
@@ -90,4 +92,24 @@ public class DefaultMemberService implements MemberService {
     return memberRepository.existsByUserName(username);
   }
 
+  @Override
+  public List<WikiDto> findMyWiki(int memberNo) {
+
+    List<WikiDto> myWiki = memberRepository.findMyWiki(memberNo);
+    return myWiki;
+  }
+
+  @Override
+  public List<StudyCommentDto> findMyStudyComment(int memberNo) {
+
+    List<StudyCommentDto> mystudyComment = memberRepository.findMyStudyComment(memberNo);
+    return mystudyComment;
+  }
+
+  @Override
+  public List<WikiCommentDto> findMyWikiComment(int memberNo) {
+
+    List<WikiCommentDto> mywikiComment = memberRepository.findMyWikiComment(memberNo);
+    return mywikiComment;
+  }
 }

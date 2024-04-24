@@ -16,6 +16,15 @@
     <result column="photo" property="photo"/>
   </resultMap>
 
+  <resultMap id="wiki" type="WikiDto">
+    <id column="wiki_no" property="wikiNo"/>
+    <result column="study_no" property="studyNo"/>
+    <result column="title" property="title"/>
+    <result column="member_no" property="memberNo"/>
+    <result column="created_date" property="createdDate"/>
+    <result column="content" property="content"/>
+  </resultMap>
+
   <resultMap id="MemberStudyMap" type="MemberStudyDto">
     <id column="member_study_stat_no" property="no"/>
     <result column="stat" property="stat"/>
@@ -35,6 +44,26 @@
       <result column="username" property="userName"/>
     </association>
 
+  </resultMap>
+
+  <resultMap id="studyComment" type="StudyCommentDto">
+    <id column="comment_no" property="commentNo"/>
+    <result column="parent_comment_no" property="parentCommentNo"/>
+    <result column="study_no" property="studyNo"/>
+    <result column="member_no" property="memberNo"/>
+    <result column="created_date" property="createdDate"/>
+    <result column="content" property="content"/>
+    <result column="layer" property="layer"/>
+  </resultMap>
+
+  <resultMap id="wikiComment" type="WikiCommentDto">
+    <id column="comment_no" property="commentNo"/>
+    <result column="parent_comment_no" property="parentCommentNo"/>
+    <result column="wiki_no" property="wikiNo"/>
+    <result column="member_no" property="memberNo"/>
+    <result column="created_date" property="createdDate"/>
+    <result column="content" property="content"/>
+    <result column="layer" property="layer"/>
   </resultMap>
 
 
@@ -140,5 +169,29 @@
     where
     member_no=#{memberNo}
   </update>
+
+  <!--내가 쓴 위키 글 목록 조회-->
+  <select id="findMyWiki" resultMap="wiki" parameterType="int">
+    SELECT wiki_no, member_no, title, created_date
+    FROM curriculum
+    WHERE member_no = #{memberNo}
+    ORDER BY created_date DESC;
+  </select>
+
+  <!--내가 쓴 스터디 댓글 목록 조회-->
+  <select id="findMyStudyComment" resultMap="studyComment" parameterType="int">
+    SELECT comment_no, study_no, member_no, content, created_date
+    FROM study_comment
+    WHERE member_no = #{memberNo}
+    ORDER BY created_date DESC;
+  </select>
+
+  <!--내가 쓴 위키 댓글 목록 조회-->
+  <select id="findMyWikiComment" resultMap="wikiComment" parameterType="int">
+    SELECT comment_no, member_no, content, created_date
+    FROM wiki_comment
+    WHERE member_no = #{memberNo}
+    ORDER BY created_date DESC;
+  </select>
 
 </mapper>
