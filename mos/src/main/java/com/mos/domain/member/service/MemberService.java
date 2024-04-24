@@ -1,5 +1,7 @@
 package com.mos.domain.member.service;
 
+import com.mos.domain.comment.dto.StudyCommentDto;
+import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 
@@ -32,5 +34,11 @@ public interface MemberService {
   int update(MemberDto member);
 
   int withdraw(int no);
+
+  List<WikiDto> findMyWiki(int no);
+
+  List<StudyCommentDto> findMyStudyComment(int no);
+
+  List<WikiCommentDto> findMyWikiComment(int no);
 
 }

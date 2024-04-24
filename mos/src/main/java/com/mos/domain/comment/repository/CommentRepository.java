@@ -3,6 +3,8 @@ package com.mos.domain.comment.repository;
 import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.dto.WikiCommentDto;
 import java.util.List;
+
+import com.mos.domain.wiki.dto.WikiDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

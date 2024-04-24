@@ -35,6 +35,7 @@ public class MemberController implements InitializingBean {
   private final DefaultMemberService memberService;
   private final DefaultStudyService studyService;
   private final StorageService storageService;
+  private final WikiService wikiService;
   private String uploadDir;
 
   @Value("${ncp.ss.bucketname}")
@@ -219,5 +220,45 @@ public class MemberController implements InitializingBean {
   }
 
 
+
+  @GetMapping("myWriteCommentList")
+  public String getMyWiki(@LoginUser MemberDto loginUser, Model model, HttpSession session) throws Exception {
+
+//    user = (MemberDto) session.getAttribute("loginUser");
+
+    int memberNo = loginUser.getMemberNo();
+
+    MemberDto member = memberService.getNo(memberNo);
+//    System.out.println("member = " + member);
+    if (member == null) {
+      throw new Exception("회원 번호가 유효하지 않습니다.");
+    }
+    model.addAttribute("member", member);
+
+    // 회원 번호를 이용하여 회원의 위키 목록을 조회
+    List<WikiDto> myWiki = memberService.findMyWiki(memberNo);
+//    System.out.println("myWiki = " + myWiki);
+    if (myWiki == null) {
+      throw new Exception("회원 번호가 유효하지 않습니다.");
+    }
+
+    // 회원 번호를 이용하여 회원의 스터디 댓글 목록을 조회
+    List<StudyCommentDto> myStudyComment = memberService.findMyStudyComment(memberNo);
+    if (myStudyComment == null) {
+      throw new Exception("회원 번호가 유효하지 않습니다.");
+    }
+
+    // 회원 번호를 이용하여 회원의 스터디 댓글 목록을 조회
+    List<WikiCommentDto> myWikiComment = memberService.findMyWikiComment(memberNo);
+    if (myWikiComment == null) {
+      throw new Exception("회원 번호가 유효하지 않습니다.");
+    }
+
+    model.addAttribute("memberWikiList", myWiki);
+    model.addAttribute("memberStudyCommentList", myStudyComment);
+    model.addAttribute("memberWikiCommentList", myWikiComment);
+
+    return "member/myWriteCommentList";
+  }
 
 }
