@@ -53,14 +53,10 @@ public class DefaultStudyService implements StudyService {
     return tagRepository.findAll();
   }
 
+  @Transactional
   @Override
   public boolean applyStudy(MemberStudyDto memberStudyDto) {
-    try {
       studyRepository.applyStudy(memberStudyDto);
       return true;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return false;
-    }
   }
 }

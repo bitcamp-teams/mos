@@ -129,39 +129,49 @@ public class StudyController {
     return "redirect:list";
   }
 
-  @PostMapping("/{studyNo}/applyStudy")
-  public String applyStudy(
+  @PostMapping("/applyStudy")
+  @ResponseBody
+  public Object applyStudy(
       @LoginUser MemberDto loginUser,
-      @PathVariable int studyNo,
+      @RequestParam int studyNo,
+      @RequestParam String applyMsg,
       RedirectAttributes redirectAttributes) {
 
     if (loginUser == null) {
       return "auth/login";
     }
+
     // 스터디 정보 가져오기
-    StudyDto studyDto= studyService.getByStudyNo(studyNo);
+    StudyDto studyDto = studyService.getByStudyNo(studyNo);
+
+    // 스터디가 존재하지 않는 경우 처리
+    if (studyDto == null) {
+      redirectAttributes.addFlashAttribute("message", "해당 스터디를 찾을 수 없습니다.");
+      return "study/list";
+    }
 
     // 스터디 상태 확인
-    if (studyDto.getStat().equals("모집완료")|| studyDto.getStat().equals("종료")) {
+    String stat = studyDto.getStat();
+    if (stat == null || stat.equals("모집완료") || stat.equals("종료")) {
       redirectAttributes.addFlashAttribute("message", "이미 모집이 완료되었거나 종료된 스터디입니다.");
-      return "redirect:list";
+      return "study/list";
     }
 
     // MemberStudyDto 객체 생성 및 값 설정
     MemberStudyDto memberStudyDto = new MemberStudyDto();
     memberStudyDto.setMemberDto(loginUser);
     memberStudyDto.setStudyDto(studyDto);
+    memberStudyDto.setApplyMsg(applyMsg); // applyMsg 설정
 
-    // 스터디 신청 로직 실행
-    boolean applied = studyService.applyStudy(memberStudyDto);
-
-    if (applied) {
+    try {
+      studyService.applyStudy(memberStudyDto);
       redirectAttributes.addFlashAttribute("message", "스터디 신청이 완료되었습니다.");
-    } else {
+    } catch (Exception e) {
       redirectAttributes.addFlashAttribute("message", "스터디 신청에 실패했습니다.");
+      // 에러 로깅 또는 처리
     }
 
-    return "redirect:view?studyNo=" + studyNo;
+    return "success";
   }
 
 
