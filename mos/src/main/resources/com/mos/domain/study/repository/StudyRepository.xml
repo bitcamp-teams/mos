@@ -29,6 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result column="intake" property="intake"/>
     <result column="recruitment_deadline" property="recruitmentDeadline"/>
     <result column="end_date" property="endDate"/>
+    <result column="stat" property="stat"/>
     <result column="start_date" property="startDate"/>
     <result column="introduction" property="introduction"/>
     <result column="location" property="location"/>
@@ -91,6 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       s.recruitment_deadline,
       s.start_date,
       s.end_date,
+      s.stat,
       t.tag_no,
       t.name
     FROM
@@ -151,7 +153,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  <insert id="applyStudy" parameterType="MemberStudyDto">
   INSERT INTO
    member_study_stat(member_no, study_no, stat, apply_msg)
-  VALUES(#{memberNo}, #{studyNo}, '신청 후 대기', #{applyMsg})
+  VALUES(#{memberDto.memberNo}, #{studyDto.studyNo}, '신청 후 대기', #{applyMsg})
  </insert>
 
 
