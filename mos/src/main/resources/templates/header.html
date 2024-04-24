@@ -141,15 +141,16 @@
             </li>
         </ul>
         <button class="btn btn-navbar bg-blue mr-sm-2" data-th-if="${session.loginUser != null}"
-                onclick="fetchNotifications()">알림
-        </button>
+                onclick="showPopup()">알림</button>
         <div id="popupNotifications" class="popup-noti mr-sm-2" style="display: none;">
             <div class="popup-noti-content">
-                <span class="close">&times;</span>
+                <span class="close" onclick="closePopup()">&times;</span>
                 <h2>알림</h2>
                 <div id="notifications"></div>
+                <div id="pageButtons"></div> <!-- 페이징 버튼을 위한 공간 추가 -->
             </div>
         </div>
+
         <div class="dropdown mr-sm-2">
             <a href="javascript:void(0)" alt="icon image">
                 <img src="/img/icon2.png" alt="icon image">
@@ -316,46 +317,73 @@
     // 닫기 버튼 요소를 가져옴
     var span = document.getElementsByClassName("close")[0];
 
+    // 전역 변수로 현재 페이지와 총 페이지 수를 관리
+    let currentPage = 0;
+    let totalPages = 0;
 
-    function fetchNotifications() {
-        console.log("fetchNotifications 함수가 호출되었습니다.");
-        // 서버로부터 알림 목록을 가져오는 AJAX 요청
-        fetch('/noti/list')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(notiListJson => {
-                console.log(notiListJson);
-                displayNotifications(JSON.stringify(notiListJson));
-            })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-            });
+    function showPopup() {
+        document.getElementById('popupNotifications').style.display = 'block';
+        fetchNotifications(); // 팝업이 열릴 때 초기 알림 내용 로딩
     }
+    function closePopup() {
+        document.getElementById('popupNotifications').style.display = 'none';
+    }
+
+
+ function fetchNotifications() {
+        // 초기 페이지 번호 설정
+        fetchNotificationsWithPage(currentPage);
+
+    }
+
+function fetchNotificationsWithPage(page) {
+    console.log("fetchNotifications 함수가 호출되었습니다. 페이지 번호:", page);
+    // 서버로부터 알림 목록을 가져오는 AJAX 요청, 페이지 번호 적용
+    fetch(`/noti/list?page=${page}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(notiListJson => {
+            console.log(notiListJson);
+            totalPages = notiListJson.list.totalPages; // 총 페이지 수 업데이트
+            currentPage++; // 현재 페이지 업데이트
+            displayNotifications(notiListJson);
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+        var popupContent = document.querySelector('.popup-noti-content');
+    popupContent.onscroll = function() {
+        // 팝업에서 스크롤 위치 체크 및 추가 데이터 로딩
+        if (popupContent.offsetHeight + popupContent.scrollTop >= popupContent.scrollHeight) {
+            // 추가 알림 내용 로딩 로직 구현
+        }
+    };
+}
 
     span.onclick = function () {
         popup.style.display = "none";
     }
     window.onclick = function (event) {
-        popup.style.display = "none";
+        if (event.target == popup) {
+            popup.style.display = "none";
+        }
     }
 
-    // 알림 데이터를 파싱하고 화면에 표시하는 함수
+    // 알림 목록과 함께 페이징 정보를 화면에 표시하는 함수
     function displayNotifications(notiListJson) {
-        console.log(notiListJson);
-
         console.log("displayNotifications 함수가 호출되었습니다.");
-        var notiList = JSON.parse(notiListJson);
+        var notiList = notiListJson.list.content; // JSON.parse를 호출한 결과에서 content에 접근
+        var totalPages = notiListJson.list.totalPages; // 총 페이지 수
 
         var notificationsContainer = document.getElementById('notifications');
-        // 기존에 표시된 알림을 클리어
-        notificationsContainer.innerHTML = '';
+        notificationsContainer.innerHTML = ''; // 기존에 표시된 알림을 클리어
         popup.style.display = "block";
+
         if (notiList.length === 0) {
-            // 알림 데이터가 없을 경우 표시할 메시지
             notificationsContainer.textContent = '알림이 없습니다.';
         } else {
             notiList.forEach(function (noti) {
@@ -366,40 +394,53 @@
                 linkElement.addEventListener('click', function () {
                     sendReadRequest(noti);
                 });
-                // linkElement.target = "_blank"; // 새 탭에서 링크 열기를 원할 경우 활성화
                 notiElement.appendChild(linkElement);
                 notificationsContainer.appendChild(notiElement);
             });
         }
     }
 
+
     function sendReadRequest(noti) {
-        // 요청 본문에 JSON 형식으로 알림 ID를 포함
         console.log("클릭 이벤트 발생");
         const requestBody = JSON.stringify({id: noti.id});
 
         console.log(requestBody);
-        fetch('/noti/update', {
-            method: 'POST', // 요청 메서드를 POST로 설정
+       fetch('/noti/update', {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json', // JSON 형식의 데이터를 전송하므로 Content-Type을 application/json으로 설정
+                'Content-Type': 'application/json',
             },
-            body: requestBody, // JSON 형식의 요청 본문
+            body: requestBody,
         })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json(); // 여기서는 서버가 JSON을 반환한다고 가정합니다. 실제 응답 형식에 맞춰 조정할 수 있습니다.
+                return response.json();
             })
             .then(data => {
-                console.log(data); // 서버로부터의 응답 처리
-                // 여기서 추가적인 작업을 수행할 수 있습니다. 예를 들어, 알림을 읽음 처리한 후 UI를 갱신할 수 있습니다.
+                console.log(data);
+                // 서버로부터의 응답 처리
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
             });
     }
+ var popupContent = document.querySelector(".popup-noti-content");
 
-    /*]]>*/
+popupContent.onscroll = function() {
+        // 팝업 내부에서 끝에 도달했는지 확인
+        if (popupContent.offsetHeight + popupContent.scrollTop >= popupContent.scrollHeight) {
+            // 현재 페이지가 총 페이지 수보다 작은 경우에만 데이터 추가 로드
+            if (currentPage < totalPages) {
+                fetchNotificationsWithPage(currentPage);
+            }
+        }
+    };
+
+// 알림 버튼 클릭 이벤트 핸들러 등록
+notiButton.addEventListener('click', function() {
+    fetchNotifications(); // fetchNotifications 함수 호출
+});
 </script>
