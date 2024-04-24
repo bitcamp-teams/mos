@@ -77,7 +77,6 @@
         }
 
         .dropdown:hover .dropdown-options {
-            display: block;
             display: grid;
             width: 180px;
             grid-auto-rows: min-content;
@@ -92,6 +91,8 @@
         /* 팝업창 스타일 */
         .popup-noti {
             position: absolute;
+            right: 99px;
+            top: 20px;
             z-index: 1;
             width: 300px;
             background-color: #fefefe;
@@ -126,7 +127,7 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse position-relative" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/study/main">스터디 모집 목록</a>
