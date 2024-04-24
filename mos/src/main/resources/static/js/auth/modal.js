@@ -93,13 +93,20 @@ const index = {
         $('.btn-submit').on('click', function () {
             let params = JSON.stringify($('#signupFrm').serializeObject());
             auth.signUp(params).then(res => {
-                Swal.fire({
-                    icon: 'success',
-                    title: '가입이 완료되었습니다!',
-                    text: ``
-                });
-                $('.close').click();
-                $('.modal-backdrop').remove();
+                let resultData = res.data.resultData;
+                if (resultData > 0) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '가입이 완료되었습니다!',
+                        text: ''
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                    $('.close').click();
+                    $('.modal-backdrop').remove();
+                }
             }).catch(reason => {
                 Toast.fire({
                     icon: 'error',

@@ -113,7 +113,7 @@ public class OAuthController {
       session.setAttribute("accessToken", info.getToken());
       session.setAttribute("loginUser", memberService.get(info.getEmail()));
     } else {
-      session.setAttribute("loginUser", MemberDto.builder().email(info.getEmail()).build());
+      redirectAttributes.addFlashAttribute("loginEmail", info.getEmail());
       redirectAttributes.addFlashAttribute("showModal", true);
     }
     return "redirect:/";
