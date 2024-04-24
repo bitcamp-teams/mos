@@ -46,7 +46,7 @@
     select * from member where username=#{userName};
   </select>
 
-  <insert id="add" parameterType="MemberJoinDto">
+  <insert id="add" parameterType="MemberJoinDto" useGeneratedKeys="true" keyProperty="memberNo">
     insert into member(email, username, belong, career, job_group, platform, created_date, updated_date)
     values(#{email},#{name},#{belong},#{career},#{jobGroup},#{platform}, NOW(), NOW())
   </insert>

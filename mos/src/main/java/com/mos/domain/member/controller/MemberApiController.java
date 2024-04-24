@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
@@ -29,24 +30,33 @@ public class MemberApiController {
     return new Result<>(member);
   }
 
-  @GetMapping("findByUsername")
-  public Result<?> findByUsername(@RequestBody MemberDto memberDto) throws Exception {
+  @PostMapping("findByUsername")
+  public Result<?> findByUsername(@RequestBody @Valid MemberDto memberDto) throws Exception {
     MemberDto member = memberService.getName(memberDto.getUserName());
-    if (member == null) {
+    if (member != null) {
       return new Result<>().setResultCode("fail").setErrorMessage(ErrorCode.EXIST_DATA);
     }
-    return new Result<>(member);
+    return new Result<>(null);
   }
 
   @PostMapping("add")
-  public Result<?> add(@RequestBody @Valid MemberJoinDto joinDto) {
-    int result;
+  public Result<?> add(@RequestBody @Valid MemberJoinDto joinDto, HttpSession session) {
+    int resultCnt;
     try {
-      result = memberService.join(joinDto);
+      resultCnt = memberService.join(joinDto);
     } catch (Exception e) {
       return new Result<>().setResultCode("fail").setErrorMessage(e.getMessage());
     }
-    return new Result<>(result);
+    MemberDto loginUser = MemberDto.builder()
+        .email(joinDto.getEmail())
+        .memberNo(joinDto.getMemberNo())
+        .belong(joinDto.getBelong())
+        .userName(joinDto.getName())
+        .career(joinDto.getCareer())
+        .jobGroup(joinDto.getJobGroup())
+        .platform(joinDto.getPlatform()).build();
+    session.setAttribute("loginUser", loginUser);
+    return new Result<>(resultCnt);
   }
 
   @GetMapping("view")
