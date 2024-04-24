@@ -97,6 +97,44 @@ public class OAuthRequestData {
     GOOGLE_REDIRECT_URI = googleRedirectUri;
   }
 
+
+  /*
+   * NAVER
+   *     naver.clientId
+   *     naver.clientSecret
+   *     naver.redirect-uri
+   * */
+  public static String NAVER_CLIENT_ID;
+  public static String NAVER_CLIENT_SECRET;
+  public static String NAVER_REDIRECT_URI;
+  public static String NAVER_AUTH_URI;
+  public static String NAVER_API_URL;
+
+  @Value("${naver.clientId}")
+  public void setNaverClientId(String naverClientId) {
+    NAVER_CLIENT_ID = naverClientId;
+  }
+
+  @Value("${naver.clientSecret}")
+  public void setNaverClientSecret(String naverClientSecret) {
+    NAVER_CLIENT_SECRET = naverClientSecret;
+  }
+
+  @Value("${naver.redirect-uri}")
+  public void setNaverRedirectUri(String naverRedirectUri) {
+    NAVER_REDIRECT_URI = naverRedirectUri;
+  }
+
+  @Value("${naver.auth.uri}")
+  public void setNaverAuthUri(String naverAuthUri) {
+    NAVER_AUTH_URI = naverAuthUri;
+  }
+
+  @Value("${naver.api.url}")
+  public void setNaverApiUrl(String naverApiUrl) {
+    NAVER_API_URL = naverApiUrl;
+  }
+
   @Override
   public String toString() {
     return new GsonBuilder().create().toJson(this);
