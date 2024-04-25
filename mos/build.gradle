@@ -51,7 +51,8 @@ dependencies {
 
     //Pageable 사용을 위한 라이브러리
     implementation 'org.springframework.data:spring-data-commons'
-
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('bootBuildImage') {
