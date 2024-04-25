@@ -11,20 +11,24 @@
         </div>
     </div>
 
-    <div class="container-mystudy"> <!-- 부트스트랩 컨테이너 추가 -->
-        <table class="table"> <!-- 부트스트랩 테이블 클래스 추가 -->
+    <div class="container-mystudy">  <!-- 부트스트랩 컨테이너 추가 -->
+        <table class="table">  <!-- 부트스트랩 테이블 클래스 추가 -->
             <thead>
             <tr>
+                <th></th>
                 <th>Title</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th></th>
-                <!-- 다른 필요한 열들도 추가할 수 있습니다 -->
+                 <!-- 다른 필요한 열들도 추가할 수 있습니다 -->
             </tr>
             </thead>
             <tbody>
-            <tr data-th-each="memberStudy : ${memberStudyList}">
-                <!-- 스터디 제목 -->
+            <tr id="myTr" data-th-each="memberStudy : ${memberStudyList}" data-th-data-no="${memberStudy.studyDto.studyNo}">
+                <td>
+                    <i class="fas fa-star favorite-icon" onclick="toggleFavorite(this)"></i>
+                </td>
+<!--                 스터디 제목-->
                 <td data-th-text="${memberStudy.studyDto != null ? memberStudy.studyDto.title : ''}"></td>
                 <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.startDate, 'yyyy-MM-dd') : ''}"></td>
                 <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.endDate, 'yyyy-MM-dd') : ''}"></td>
@@ -36,11 +40,48 @@
             </tr>
             </tbody>
         </table>
-    </div> <!-- 부트스트랩 컨테이너 닫기 -->
+</div>  <!--    부트스트랩 컨테이너 닫기 -->
 
-    <!--<div data-th-replace="member/mystudy-view :: modal(${memberStudyList})"></div>-->
+    <script data-th-inline="javascript">
+        // function refreshPage() {
+        //     location.reload();
+        // }
 
-    <!-- 부트스트랩 자바스크립트 추가 -->
+        function toggleFavorite(icon) {
+            // 아이콘의 부모 요소인 td를 찾아서 해당 요소에 filled 클래스를 토글하여 색이 채워지도록 함
+            var td = icon.parentNode;
+            td.classList.toggle('filled');
+
+            // 즐겨찾기 상태를 서버에 업데이트하는 로직
+            var memberNo = [[${session.loginUser.memberNo}]]; // 회원 번호
+            var myTr = document.getElementById("myTr");
+            var studyNo = myTr.getAttribute("data-no");
+
+            console.log("스터디버노: " + studyNo);
+            // AJAX 요청을 보내기 위한 XMLHttpRequest 객체 생성
+            var xhr = new XMLHttpRequest();
+
+            // POST 요청을 보낼 URL 설정
+            var url = '/member/addFavorites';
+
+            // 요청을 설정
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            // 요청 본문 데이터 설정
+            var data = JSON.stringify({
+                memberNo: memberNo,
+                studyNo: studyNo
+            });
+
+            // 요청을 보냄
+            xhr.send(data);
+
+            // refreshPage();
+        }
+    </script>
+
+     부트스트랩 자바스크립트 추가 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous">

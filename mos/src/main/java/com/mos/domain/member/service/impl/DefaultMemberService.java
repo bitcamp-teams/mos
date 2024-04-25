@@ -53,7 +53,15 @@ public class DefaultMemberService implements MemberService {
     }
 
     List<MemberStudyDto> myStudy = memberRepository.findMyStudies(no);
+    if (myStudy == null) {
+      throw new IllegalStateException("회원의 스터디 목록을 가져오는 데 실패했습니다.");
+    }
     return myStudy;
+  }
+
+  @Override
+  public List<MemberStudyDto> addFavorites(MemberStudyDto memberStudyDto) {
+    return memberRepository.addFavorites(memberStudyDto);
   }
 
   @Override

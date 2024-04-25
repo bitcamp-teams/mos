@@ -25,6 +25,9 @@ public interface MemberRepository {
   // 회원이 참여한 스터디 목록 조회
   List<MemberStudyDto> findMyStudies(int no);
 
+  // 스터디 즐겨찾기 추가
+  List<MemberStudyDto> addFavorites(MemberStudyDto memberStudyDto);
+
   // 회원이 참여한 스터디 상세보기
   List<MemberStudyDto> viewMyStudies(int no);
 

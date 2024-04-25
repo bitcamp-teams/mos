@@ -28,6 +28,7 @@ public interface MemberService {
 
   List<MemberStudyDto> findMyStudies(int no);
 
+  List<MemberStudyDto> addFavorites(MemberStudyDto memberStudyDto);
 
   List<MemberStudyDto> viewMyStudies(int no);
 
@@ -40,5 +41,6 @@ public interface MemberService {
   List<StudyCommentDto> findMyStudyComment(int no);
 
   List<WikiCommentDto> findMyWikiComment(int no);
+
 
 }

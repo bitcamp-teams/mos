@@ -127,7 +127,7 @@
       member_study_stat mss
       inner join study s on mss.study_no = s.study_no
     where
-      mss.member_no=#{no}
+      mss.member_no=#{memberDto.memberNo}
   </select>
 
   <select id="viewMyStudies" resultMap="MemberStudyMap" parameterType="int">
@@ -191,5 +191,12 @@
     WHERE member_no = #{memberNo}
     ORDER BY created_date DESC;
   </select>
+
+  <!-- 스터디 즐겨찾기 추가-->
+  <update id="addFavorites" parameterType="MemberStudyDto">
+    UPDATE member_study_stat
+    SET favorites = 1
+    WHERE member_no = #{memberDto.memberNo} AND study_no = #{studyDto.studyNo}
+  </update>
 
 </mapper>

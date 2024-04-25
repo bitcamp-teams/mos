@@ -51,3 +51,12 @@
       height: 160px;
       object-fit: cover;
     }
+/* 별표 아이콘에 대한 스타일 */
+.fa-star {
+  color: black; /* 기본 색상 */
+}
+
+/* 색이 채워진 별표 아이콘에 대한 스타일 */
+.filled .fa-star {
+  color: gold; /* 색이 채워진 상태의 색상 */
+}

@@ -27,8 +27,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
@@ -88,29 +90,17 @@ public class MemberController implements InitializingBean {
         }
         model.addAttribute("member", member);
     }
+// 참여한 스터디목록 페이지
+@GetMapping("mystudy")
+public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
+  int memberNo = loginUser.getMemberNo();
 
-  @GetMapping("mystudy")
-  public String getMyStudy  (@LoginUser MemberDto loginUser, Model model) throws Exception {
+  List<MemberStudyDto> myStudies = memberService.findMyStudies(memberNo);
 
-    // 로그인한 회원의 번호 가져오기
-    int memberNo = loginUser.getMemberNo();
-
-    MemberDto member = memberService.getNo(memberNo);
-    if (member == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
-    }
-    model.addAttribute("member", member);
-
-    // 회원 번호를 이용하여 회원의 스터디 목록을 조회
-    List<MemberStudyDto> myStudy = memberService.findMyStudies(memberNo);
-    if (myStudy == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
-    }
-
-    model.addAttribute("memberStudyList", myStudy);
-    return "member/mystudy";
-  }
-
+  model.addAttribute("memberStudyList", myStudies);
+  return "member/mystudy";
+}
+  // 스터디 상세보기 페이지
   @GetMapping("viewMystudy")
   public void viewMyStudy(int studyNo, Model model, @LoginUser MemberDto loginUser) throws Exception {
 
@@ -260,5 +250,10 @@ public class MemberController implements InitializingBean {
 
     return "member/myWriteCommentList";
   }
+
+//  @PostMapping("/addFavorites")
+//  public List<MemberStudyDto> addFavorites(@RequestBody MemberStudyDto memberStudyDto) {
+//    return memberService.addFavorites(memberStudyDto);
+//  }
 
 }
