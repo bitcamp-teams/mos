@@ -3,6 +3,7 @@ package com.mos.domain.noti.controller;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.noti.dto.NotiAddDto;
 import com.mos.domain.noti.dto.NotiDto;
+import com.mos.domain.noti.dto.NotiListDto;
 import com.mos.domain.noti.dto.NotiUpdateDto;
 import com.mos.domain.noti.service.NotiService;
 import java.util.HashMap;
@@ -34,30 +35,23 @@ public class NotiController {
   private final NotiService notiService;
 
   @PostMapping("/noti/save")
-  public ResponseEntity<NotiAddDto> save(@ModelAttribute NotiAddDto notiDto) {
+  public ResponseEntity<NotiAddDto> save(NotiAddDto notiDto) {
     log.debug("notiDto = " + notiDto);
     notiService.add(notiDto);
     return ResponseEntity.ok(notiDto);
   }
 
   @GetMapping("/noti/list")
-  public ResponseEntity<?> list(@RequestParam Map<String, Object> paramMap, HttpSession session, @PageableDefault Pageable page) {
+  public ResponseEntity<?> list(NotiListDto notiListDto, HttpSession session, @PageableDefault Pageable page) {
     MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
-    int no = loginUser.getMemberNo();
-
-    log.debug("no = " + no);
-    paramMap.put("recipientId", no);
-    System.out.println("paramMap = " + paramMap);
-    Page<Map<String, Object>> list = notiService.list(paramMap, page);
+    notiListDto.setRecipientId(loginUser.getMemberNo());
+    Page<NotiListDto> list = notiService.list(notiListDto.getRecipientId(), page);
     log.debug("list = " + list);
-    Map<String, Object> resultMap = new HashMap<>();
-    resultMap.put("list", list);
-    resultMap.put("size", page.getPageSize());
-    return ResponseEntity.ok(resultMap);
+    return ResponseEntity.ok().body(list);
   }
 
   @PostMapping("/noti/update")
-  public ResponseEntity<?> read(@RequestBody NotiUpdateDto updateDto) {
+  public ResponseEntity<?> updateRead(@RequestBody NotiUpdateDto updateDto) {
     int id = updateDto.getId();
     if (!notiService.existsById(id)) {
       return ResponseEntity.badRequest().build();
