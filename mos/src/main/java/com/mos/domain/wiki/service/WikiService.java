@@ -1,5 +1,6 @@
 package com.mos.domain.wiki.service;
 
+import com.mos.domain.wiki.dto.JstreeWikiDto;
 import com.mos.domain.wiki.dto.WikiDto;
 import java.util.List;
 
@@ -20,5 +21,8 @@ public interface WikiService {
   //스터디의 첫번째 위키 보기
   //작성된 위키 없는 경우 0을 반환
   int getFirstWikiNo(int studyNo);
+
+  List<JstreeWikiDto> getWikiTitleTree(int studyNo);
+
 
 }

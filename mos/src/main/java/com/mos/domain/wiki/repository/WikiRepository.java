@@ -1,5 +1,6 @@
 package com.mos.domain.wiki.repository;
 
+import com.mos.domain.wiki.dto.JstreeWikiDto;
 import com.mos.domain.wiki.dto.WikiDto;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,4 +22,5 @@ public interface WikiRepository {
 
   int getFirstWiki(int studyNo);
 
+  List<JstreeWikiDto> findByStudyNo(int studyNo);
 }

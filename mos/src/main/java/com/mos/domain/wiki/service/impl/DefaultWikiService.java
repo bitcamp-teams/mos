@@ -1,5 +1,6 @@
 package com.mos.domain.wiki.service.impl;
 
+import com.mos.domain.wiki.dto.JstreeWikiDto;
 import com.mos.domain.wiki.dto.WikiDto;
 import com.mos.domain.wiki.repository.WikiRepository;
 import com.mos.domain.wiki.service.WikiService;
@@ -49,4 +50,8 @@ public class DefaultWikiService implements WikiService {
     return wikiRepository.getFirstWiki(studyNo);
   }
 
+  @Override
+  public List<JstreeWikiDto> getWikiTitleTree(int studyNo) {
+    return wikiRepository.findByStudyNo(studyNo);
+  }
 }

@@ -3,6 +3,7 @@ package com.mos.domain.wiki.controller;
 import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.member.dto.MemberDto;
+import com.mos.domain.wiki.dto.JstreeWikiDto;
 import com.mos.domain.wiki.dto.WikiDto;
 import com.mos.domain.wiki.service.WikiService;
 import com.mos.global.auth.LoginUser;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 @RequiredArgsConstructor
@@ -111,5 +114,18 @@ public class WikiController {
     wikiService.deleteWiki(wikiNo);
     return "redirect:/wiki/list?studyNo=" + studyNo;
   }
+
+  @RequestMapping("jstreeTest")
+  public void jstreeTest(@LoginUser MemberDto loginUser, Model model) throws Exception {
+    model.addAttribute("wikis", wikiService.listByStudyNo(1));
+  }
+
+  @GetMapping("listTitle")
+  @ResponseBody
+  public List<JstreeWikiDto> listTitle(@RequestParam int studyNo) {
+    return  wikiService.getWikiTitleTree(studyNo);
+  }
+
+
 
 }

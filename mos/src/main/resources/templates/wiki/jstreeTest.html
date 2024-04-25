@@ -1,0 +1,50 @@
+<div th:replace="header::header">머리말</div>
+<div class="page-margin wrapper-mos">
+  <!-- jstree -->
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/jstree.min.js"
+      integrity="sha512-ekwRoEshEqHU64D4luhOv/WNmhml94P8X5LnZd9FNOiOfSKgkY12cDFz3ZC6Ws+7wjMPQ4bPf94d+zZ3cOjlig=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>
+
+  <div id="wikiTree">
+  </div>
+  <button>demo button</button>
+
+  <script>
+
+    var listTitle;
+    $.ajax({
+      url: "/wiki/listTitle?studyNo=1",
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        listTitle = data;
+        //최상단의 parent 값은 항상 # 이어야 하므로 0인 경우 처리(wiki_no!=0)
+        listTitle.forEach(function(item) {
+          if (item.parent === 0) {
+            item.parent = '#';
+          }
+        });
+        console.log(listTitle);
+        $('#wikiTree').jstree({
+          "plugins": ["wholerow", "checkbox", "dnd"],
+          'core': {
+            "themes": {
+              "variant": "large",
+            },
+            "check_callback" : true,
+            'data': listTitle
+          }
+        });
+      }
+    })
+
+
+    $.jstree.defaults.core.themes.variant = "large";
+
+  </script>
+
+</div>
+<div th:replace="footer::footer">꼬리말</div>
