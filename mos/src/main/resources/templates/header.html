@@ -190,21 +190,6 @@
             </button>
         </div>
     </div>
-    <div>
-      <span class="mr-sm-2" data-th-if="${session.loginUser != null}"
-            data-th-text="${session.loginUser.email}">로그인 이메일</span>
-      <span class="mr-sm-2"
-            data-th-if="${session.loginUser != null}">  [[${session.platform}]]</span>
-      <button data-th-if="${session.loginUser != null}" class="btn btn-outline-danger"
-              onclick="location.href='/auth/logout';">로그아웃
-      </button>
-      <!-- 로그인 버튼 클릭 시 모달 열기 -->
-      <button data-th-if="${session.loginUser == null}" class="btn-open-modal btn btn-outline-info"
-              data-toggle="modal"
-              data-target="#loginModal">로그인
-      </button>
-    </div>
-  </div>
 </nav>
 <!--</header>-->
 
