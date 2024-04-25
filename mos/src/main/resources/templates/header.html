@@ -93,7 +93,7 @@ gi<!DOCTYPE html>
     }
 
     /* 팝업창 스타일 */
-    .popup-noti {
+    .popup-notify {
         position: absolute;
         right: 99px;
         top: 20px;
@@ -107,7 +107,7 @@ gi<!DOCTYPE html>
         overflow-y: auto; /* 세로 스크롤바 설정. 내용이 최대 높이를 초과할 경우 자동으로 스크롤바가 생성됨 */
     }
 
-    .popup-noti-content {
+    .popup-notify-content {
         padding: 20px;
     }
 
@@ -151,8 +151,8 @@ gi<!DOCTYPE html>
         <button class="btn btn-navbar bg-blue mr-sm-2" data-th-if="${session.loginUser != null}"
             onclick="showPopup()">알림
         </button>
-        <div id="popupNotifications" class="popup-noti mr-sm-2" style="display: none;">
-          <div class="popup-noti-content">
+        <div id="popupNotifications" class="popup-notify mr-sm-2" style="display: none;">
+          <div class="popup-notify-content">
             <span class="close" onclick="closePopup()">&times;</span>
             <h2>알림</h2>
             <div id="notifications"></div>
@@ -364,18 +364,18 @@ function fetchNotifications() {
 
 function fetchNotificationsWithPage(page, append = false) {
     console.log("fetchNotifications 함수가 호출되었습니다. 페이지 번호:", page);
-    fetch(`/noti/list?page=${page}`)
+    fetch(`/notify/list?page=${page}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             return response.json();
         })
-        .then(notiListJson => {
-            console.log(notiListJson);
-            totalPages = notiListJson.totalPages; // 총 페이지 수 업데이트
+        .then(notifyListJson => {
+            console.log(notifyListJson);
+            totalPages = notifyListJson.totalPages; // 총 페이지 수 업데이트
             currentPage++; // 현재 페이지 업데이트
-            displayNotifications(notiListJson, append); // append 인자를 전달
+            displayNotifications(notifyListJson, append); // append 인자를 전달
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
@@ -393,10 +393,10 @@ function fetchNotificationsWithPage(page, append = false) {
   }
 
   // 알림 목록과 함께 페이징 정보를 화면에 표시하는 함수
-  function displayNotifications(notiListJson, append = false) {
+  function displayNotifications(notifyListJson, append = false) {
     console.log("displayNotifications 함수가 호출되었습니다.");
-    var notiList = notiListJson.content; // JSON.parse를 호출한 결과에서 content에 접근
-    var totalPages = notiListJson.totalPages; // 총 페이지 수
+    var notifyList = notifyListJson.content; // JSON.parse를 호출한 결과에서 content에 접근
+    var totalPages = notifyListJson.totalPages; // 총 페이지 수
 
     var notificationsContainer = document.getElementById('notifications');
     if (!append) {
@@ -404,32 +404,32 @@ function fetchNotificationsWithPage(page, append = false) {
     }
     popup.style.display = "block";
 
-    if (notiList.length === 0) {
+    if (notifyList.length === 0) {
         if (!append) {
             notificationsContainer.textContent = '알림이 없습니다.';
         }
     } else {
-        notiList.forEach(function (noti) {
-            var notiElement = document.createElement('div');
+        notifyList.forEach(function (notify) {
+            var notifyElement = document.createElement('div');
             var linkElement = document.createElement('a');
-            linkElement.href = noti.link; // 링크 설정
-            linkElement.textContent = noti.message; // 메시지 텍스트 설정
+            linkElement.href = notify.link; // 링크 설정
+            linkElement.textContent = notify.message; // 메시지 텍스트 설정
             linkElement.addEventListener('click', function () {
-                sendReadRequest(noti);
+                sendReadRequest(notify);
             });
-            notiElement.appendChild(linkElement);
-            notificationsContainer.appendChild(notiElement);
+            notifyElement.appendChild(linkElement);
+            notificationsContainer.appendChild(notifyElement);
         });
     }
 }
 
 
-  function sendReadRequest(noti) {
+  function sendReadRequest(notify) {
       console.log("클릭 이벤트 발생");
-      const requestBody = JSON.stringify({id: noti.id});
+      const requestBody = JSON.stringify({id: notify.id});
 
       console.log(requestBody);
-     fetch('/noti/update', {
+     fetch('/notify/update', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -451,7 +451,7 @@ function fetchNotificationsWithPage(page, append = false) {
           });
   }
 
-      var popupContent = document.querySelector(".popup-noti");
+      var popupContent = document.querySelector(".popup-notify");
 
       popupContent.onscroll = function() {
       // 팝업 내부에서 끝에 도달했는지 확인
@@ -465,7 +465,7 @@ function fetchNotificationsWithPage(page, append = false) {
 
 
       // 알림 버튼 클릭 이벤트 핸들러 등록
-      notiButton.addEventListener('click', function() {
+      notifyButton.addEventListener('click', function() {
           fetchNotifications(); // fetchNotifications 함수 호출
       });
 </script>
