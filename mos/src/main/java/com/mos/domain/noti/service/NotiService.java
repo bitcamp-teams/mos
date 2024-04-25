@@ -7,9 +7,13 @@ import com.mos.domain.noti.dto.NotiAddDto;
 import com.mos.domain.noti.dto.NotiDto;
 import com.mos.domain.noti.repository.NotiRepository;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -34,15 +38,13 @@ public class NotiService {
 
 
   @Transactional(readOnly = true)
-  public String list(int id) {
-    List<NotiDto> list = notiRepository.findByRecipientId(id);
-
-    Gson gson = new GsonBuilder()
-        .setPrettyPrinting()
-        .disableHtmlEscaping()
-        .create();
-    log.debug("list = " + gson);
-    return gson.toJson(list);
+  public Page<Map<String, Object>> list(Map<String, Object> paramMap, Pageable page) {
+    paramMap.put("offset", page.getOffset());
+    paramMap.put("pageSize", page.getPageSize());
+    List<Map<String, Object>> list = notiRepository.getNotiList(paramMap);
+    int count = notiRepository.notiCount((Integer) paramMap.get("recipientId"));
+    System.out.println("list = " + list);
+    return new PageImpl<>(list, page, count);
   }
 
   @Transactional(readOnly = true)

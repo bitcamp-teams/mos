@@ -1,13 +1,11 @@
 package com.mos.domain.noti.dto;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
-public class NotiDto {
-
+@Getter
+public class NotiListDto {
   private int id;
   private int recipientId;
   private String message;
   private String link;
-  private boolean read;
 }
