@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+gi<!DOCTYPE html>
 <html lang='en' data-th-fragment="header" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -373,7 +373,7 @@ function fetchNotificationsWithPage(page, append = false) {
         })
         .then(notiListJson => {
             console.log(notiListJson);
-            totalPages = notiListJson.list.totalPages; // 총 페이지 수 업데이트
+            totalPages = notiListJson.totalPages; // 총 페이지 수 업데이트
             currentPage++; // 현재 페이지 업데이트
             displayNotifications(notiListJson, append); // append 인자를 전달
         })
@@ -395,8 +395,8 @@ function fetchNotificationsWithPage(page, append = false) {
   // 알림 목록과 함께 페이징 정보를 화면에 표시하는 함수
   function displayNotifications(notiListJson, append = false) {
     console.log("displayNotifications 함수가 호출되었습니다.");
-    var notiList = notiListJson.list.content; // JSON.parse를 호출한 결과에서 content에 접근
-    var totalPages = notiListJson.list.totalPages; // 총 페이지 수
+    var notiList = notiListJson.content; // JSON.parse를 호출한 결과에서 content에 접근
+    var totalPages = notiListJson.totalPages; // 총 페이지 수
 
     var notificationsContainer = document.getElementById('notifications');
     if (!append) {
