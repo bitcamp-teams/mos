@@ -90,10 +90,7 @@ public class MemberController implements InitializingBean {
     }
 
   @GetMapping("mystudy")
-  public String getMyStudy(Model model, HttpSession session) throws Exception {
-
-    // 세션에서 로그인한 회원 정보 가져오기
-    MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+  public String getMyStudy  (@LoginUser MemberDto loginUser, Model model) throws Exception {
 
     // 로그인한 회원의 번호 가져오기
     int memberNo = loginUser.getMemberNo();
@@ -115,9 +112,8 @@ public class MemberController implements InitializingBean {
   }
 
   @GetMapping("viewMystudy")
-  public void viewMyStudy(int studyNo, Model model, HttpSession session) throws Exception {
+  public void viewMyStudy(int studyNo, Model model, @LoginUser MemberDto loginUser) throws Exception {
 
-    MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
 
     int memberNo = loginUser.getMemberNo();
 
@@ -148,8 +144,8 @@ public class MemberController implements InitializingBean {
 
   // 회원 정보 조회 페이지
   @GetMapping("edit")
-  public String editMemberForm(Model model, HttpSession session) {
-    MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+  public String editMemberForm(Model model, @LoginUser MemberDto loginUser) {
+
     if (loginUser == null) {
       return "auth/login";
     }
@@ -163,19 +159,19 @@ public class MemberController implements InitializingBean {
   // 회원 정보 수정
   @PostMapping("update")
   public String updateMember(@Valid MemberDto member,
-                             MultipartFile memberPhoto,
-                             BindingResult bindingResult,
-                             HttpSession session) throws Exception {
+      MultipartFile memberPhoto,
+      BindingResult bindingResult,
+      @LoginUser MemberDto loginUser) throws Exception {
 
-    MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
     if (loginUser == null) {
       return "auth/login";
     }
+
     String newUserName = member.getUserName();
     String originalUserName = loginUser.getUserName();
 
     // 새로운 유저네임이 비어있으면 기존 유저네임으로 설정
-    if (newUserName == null || newUserName.isEmpty()) {
+    if (newUserName == null || newUserName.trim().isEmpty()) {
       member.setUserName(originalUserName);
     }
 
@@ -196,7 +192,6 @@ public class MemberController implements InitializingBean {
     } else {
       member.setPhoto(loginUser.getPhoto());
     }
-
 
     member.setMemberNo(loginUser.getMemberNo());
 
