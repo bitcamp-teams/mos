@@ -3,9 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mos.domain.noti.repository.NotiRepository">
+<mapper namespace="com.mos.domain.notify.repository.NotifyRepository">
   
-  <resultMap id="NotiMap" type="NotiDto">
+  <resultMap id="NotifyMap" type="NotifyDto">
     <id column="noti_no" property="id"/>
     <result column="member_no" property="recipientId"/>
     <result column="message" property="message"/>
@@ -14,28 +14,29 @@
     <result column="read_or_not" property="read"/>
   </resultMap>
 
-  <resultMap id="NotiListMap" type="NotiListDto">
+  <resultMap id="NotifyListMap" type="NotifyListDto">
     <id column="noti_no" property="id"/>
     <result column="member_no" property="recipientId"/>
     <result column="message" property="message"/>
     <result column="link" property="link"/>
   </resultMap>
 
-  <insert id="add" parameterType="NotiAddDto">
+  <insert id="add" parameterType="NotifyAddDto">
     INSERT INTO notification(member_no, message, link)
     SELECT member_no, #{message}, #{link}
     FROM member
     WHERE member_no = #{recipientId};
   </insert>
 
-  <select id="getNotiList" resultMap="NotiListMap">
+  <select id="getNotifyList" resultMap="NotifyListMap">
     SELECT noti_no, member_no, message, link
     FROM notification n
     where n.member_no = #{recipientId} AND read_or_not = 'N'
     order by created_date
     LIMIT #{offset}, #{pageSize}
   </select>
-  <select id="notiCount" resultType="int">
+
+  <select id="notifyCount" resultType="int">
     SELECT COUNT(*)
     FROM notification
     WHERE member_no = #{no}
