@@ -29,6 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result column="intake" property="intake"/>
     <result column="recruitment_deadline" property="recruitmentDeadline"/>
     <result column="end_date" property="endDate"/>
+    <result column="stat" property="stat"/>
     <result column="start_date" property="startDate"/>
     <result column="introduction" property="introduction"/>
     <result column="location" property="location"/>
@@ -38,6 +39,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       <result column="name" property="name"/>
       <result column="path" property="path"/>
     </collection>
+  </resultMap>
+
+  <resultMap id="MemberStudyMap" type="MemberStudyDto">
+    <id column="member_study_stat_no" property="no"/>
+    <result column="stat" property="stat"/>
+    <result column="apply_msg" property="applyMsg"/>
+
+    <association property="studyDto" javaType="StudyDto">
+      <id column="study_no" property="studyNo"/>
+      <result column="member_no" property="memberNo"/>
+      <result column="title" property="title"/>
+      <result column="start_date" property="startDate"/>
+      <result column="end_date" property="endDate"/>
+    </association>
+
+    <association property="memberDto" javaType="MemberDto">
+      <id column="member_no" property="memberNo"/>
+      <result column="photo" property="photo"/>
+      <result column="username" property="userName"/>
+    </association>
+
   </resultMap>
 
   <select id="findAll" resultMap="studyList">
@@ -70,6 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       s.recruitment_deadline,
       s.start_date,
       s.end_date,
+      s.stat,
       t.tag_no,
       t.name
     FROM
@@ -126,5 +149,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     WHERE
       study_no = #{studyNo};
   </delete>
+
+ <insert id="applyStudy" parameterType="MemberStudyDto">
+  INSERT INTO
+   member_study_stat(member_no, study_no, stat, apply_msg)
+  VALUES(#{memberDto.memberNo}, #{studyDto.studyNo}, '신청 후 대기', #{applyMsg})
+ </insert>
+
 
 </mapper>

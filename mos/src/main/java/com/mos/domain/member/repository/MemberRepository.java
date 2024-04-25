@@ -1,6 +1,8 @@
 package com.mos.domain.member.repository;
 
 
+import com.mos.domain.comment.dto.StudyCommentDto;
+import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.dto.MemberStudyDto;
@@ -20,10 +22,10 @@ public interface MemberRepository {
   boolean existsByEmail(String email);
   boolean existsByUserName(String username);
 
-    // 회원이 참여한 스터디 목록 조회
-    List<MemberStudyDto> findMyStudies(int no);
+  // 회원이 참여한 스터디 목록 조회
+  List<MemberStudyDto> findMyStudies(int no);
 
-    // 회원이 참여한 스터디 상세보기
+  // 회원이 참여한 스터디 상세보기
   List<MemberStudyDto> viewMyStudies(int no);
 
   int update(MemberDto member);
@@ -31,4 +33,12 @@ public interface MemberRepository {
   // 회원 탈퇴 기능 구현.
   int withdraw(int no);
 
+  // 회원이 쓴 위키글
+  List<WikiDto> findMyWiki(int no);
+
+  // 회원이 쓴 스터디 댓글
+  List<StudyCommentDto> findMyStudyComment(int no);
+
+  // 회원이 쓴 위키 댓글
+  List<WikiCommentDto> findMyWikiComment(int no);
 }

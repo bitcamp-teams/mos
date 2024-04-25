@@ -1,0 +1,4 @@
+textarea#applyMsg::placeholder {
+  color: #aaa; /* 회색 톤 */
+  font-style: italic; /* 기울임꼴 */
+}

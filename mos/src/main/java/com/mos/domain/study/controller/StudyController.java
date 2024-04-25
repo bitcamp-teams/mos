@@ -3,6 +3,7 @@ package com.mos.domain.study.controller;
 import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.member.dto.MemberDto;
+import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.service.StudyService;
@@ -18,10 +19,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -125,6 +128,52 @@ public class StudyController {
 
     return "redirect:list";
   }
+
+  @PostMapping("/applyStudy")
+  @ResponseBody
+  public Object applyStudy(
+      @LoginUser MemberDto loginUser,
+      @RequestParam int studyNo,
+      @RequestParam String applyMsg,
+      RedirectAttributes redirectAttributes) {
+
+    if (loginUser == null) {
+      return "auth/login";
+    }
+
+    // 스터디 정보 가져오기
+    StudyDto studyDto = studyService.getByStudyNo(studyNo);
+
+    // 스터디가 존재하지 않는 경우 처리
+    if (studyDto == null) {
+      redirectAttributes.addFlashAttribute("message", "해당 스터디를 찾을 수 없습니다.");
+      return "study/list";
+    }
+
+    // 스터디 상태 확인
+    String stat = studyDto.getStat();
+    if (stat == null || stat.equals("모집완료") || stat.equals("종료")) {
+      redirectAttributes.addFlashAttribute("message", "이미 모집이 완료되었거나 종료된 스터디입니다.");
+      return "study/list";
+    }
+
+    // MemberStudyDto 객체 생성 및 값 설정
+    MemberStudyDto memberStudyDto = new MemberStudyDto();
+    memberStudyDto.setMemberDto(loginUser);
+    memberStudyDto.setStudyDto(studyDto);
+    memberStudyDto.setApplyMsg(applyMsg); // applyMsg 설정
+
+    try {
+      studyService.applyStudy(memberStudyDto);
+      redirectAttributes.addFlashAttribute("message", "스터디 신청이 완료되었습니다.");
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("message", "스터디 신청에 실패했습니다.");
+      // 에러 로깅 또는 처리
+    }
+
+    return "success";
+  }
+
 
   @GetMapping("list")
   public void list(Model model) {

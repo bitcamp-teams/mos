@@ -1,5 +1,6 @@
 package com.mos.domain.study.service;
 
+import com.mos.domain.member.dto.MemberStudyDto;
 import java.util.List;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.dto.TagDto;
@@ -17,4 +18,7 @@ public interface StudyService {
   int update(StudyDto studyDto);
 
   List<TagDto> getAllTags();
+
+  boolean applyStudy(MemberStudyDto memberStudyDto);
+
 }

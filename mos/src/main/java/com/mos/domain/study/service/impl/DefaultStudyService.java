@@ -1,5 +1,6 @@
 package com.mos.domain.study.service.impl;
 
+import com.mos.domain.member.dto.MemberStudyDto;
 import java.util.List;
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.repository.TagRepository;
@@ -50,5 +51,12 @@ public class DefaultStudyService implements StudyService {
   @Override
   public List<TagDto> getAllTags() {
     return tagRepository.findAll();
+  }
+
+  @Transactional
+  @Override
+  public boolean applyStudy(MemberStudyDto memberStudyDto) {
+      studyRepository.applyStudy(memberStudyDto);
+      return true;
   }
 }

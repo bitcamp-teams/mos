@@ -21,5 +21,4 @@ public interface WikiRepository {
 
   int getFirstWiki(int studyNo);
 
-//  List<WikiDto> listMyWikiNo();
 }
