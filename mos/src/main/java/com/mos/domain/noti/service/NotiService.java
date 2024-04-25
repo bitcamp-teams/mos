@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.mos.domain.member.repository.MemberRepository;
 import com.mos.domain.noti.dto.NotiAddDto;
 import com.mos.domain.noti.dto.NotiDto;
+import com.mos.domain.noti.dto.NotiListDto;
 import com.mos.domain.noti.repository.NotiRepository;
 import java.util.List;
 import java.util.Map;
@@ -38,12 +39,9 @@ public class NotiService {
 
 
   @Transactional(readOnly = true)
-  public Page<Map<String, Object>> list(Map<String, Object> paramMap, Pageable page) {
-    paramMap.put("offset", page.getOffset());
-    paramMap.put("pageSize", page.getPageSize());
-    List<Map<String, Object>> list = notiRepository.getNotiList(paramMap);
-    int count = notiRepository.notiCount((Integer) paramMap.get("recipientId"));
-    System.out.println("list = " + list);
+  public Page<NotiListDto> list(int recipientId, Pageable page) {
+    List<NotiListDto> list = notiRepository.getNotiList(recipientId, page.getOffset(), page.getPageSize());
+    int count = notiRepository.notiCount(recipientId);
     return new PageImpl<>(list, page, count);
   }
 
