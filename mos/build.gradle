@@ -53,6 +53,10 @@ dependencies {
     implementation 'org.springframework.data:spring-data-commons'
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // redis session
+    implementation 'org.springframework.session:spring-session-data-redis'
+
+
 }
 
 tasks.named('bootBuildImage') {
