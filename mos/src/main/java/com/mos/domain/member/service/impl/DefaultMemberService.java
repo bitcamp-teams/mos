@@ -57,6 +57,7 @@ public class DefaultMemberService implements MemberService {
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public int join(MemberJoinDto joinDto) {
     System.out.println("joinDto = " + joinDto);
     return memberRepository.add(joinDto);

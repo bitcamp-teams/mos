@@ -41,9 +41,8 @@ public class MemberApiController {
 
   @PostMapping("add")
   public Result<?> add(@RequestBody @Valid MemberJoinDto joinDto, HttpSession session) {
-    int resultCnt;
     try {
-      resultCnt = memberService.join(joinDto);
+      memberService.join(joinDto);
     } catch (Exception e) {
       return new Result<>().setResultCode("fail").setErrorMessage(e.getMessage());
     }
@@ -56,7 +55,7 @@ public class MemberApiController {
         .jobGroup(joinDto.getJobGroup())
         .platform(joinDto.getPlatform()).build();
     session.setAttribute("loginUser", loginUser);
-    return new Result<>(resultCnt);
+    return new Result<>(loginUser);
   }
 
   @GetMapping("view")

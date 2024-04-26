@@ -94,7 +94,7 @@ const index = {
             let params = JSON.stringify($('#signupFrm').serializeObject());
             auth.signUp(params).then(res => {
                 let resultData = res.data.resultData;
-                if (resultData > 0) {
+                if (resultData.memberNo != null) {
                     Swal.fire({
                         icon: 'success',
                         title: '가입이 완료되었습니다!',
@@ -167,7 +167,7 @@ const index = {
             $('.btn-next').show();
             $('button[type=submit]').hide();
         }
-    }
+    },
 }
 
 index.init();
