@@ -149,6 +149,7 @@
                 <a class="nav-link" href="/wiki/modoowikilist">모두의 위키</a>
             </li>
         </ul>
+        <span class="navbar-text ml-auto mr-2">현재 접속자 수: <span th:text="${activeSessions}">0</span></span>
         <button class="btn btn-navbar bg-blue mr-sm-2" data-th-if="${session.loginUser != null}"
                 onclick="showPopup()">알림
         </button>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mos.global.auth.repository.MosSessionRepository">
+
+  <select id="countAll">
+    SELECT COUNT(DISTINCT CASE WHEN PRINCIPAL_NAME IS NULL THEN SESSION_ID ELSE PRINCIPAL_NAME END) AS active_users
+    FROM SPRING_SESSION
+    WHERE LAST_ACCESS_TIME > UNIX_TIMESTAMP() * 1000 - 1800000;
+  </select>
+
+
+
+</mapper>
