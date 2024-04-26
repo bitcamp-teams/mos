@@ -6,6 +6,7 @@ import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.dto.MemberStudyDto;
+import com.mos.domain.member.dto.UpdateFavoritesDto;
 import java.util.List;
 
 import com.mos.domain.wiki.dto.WikiDto;
@@ -26,7 +27,7 @@ public interface MemberRepository {
   List<MemberStudyDto> findMyStudies(int no);
 
   // 스터디 즐겨찾기 추가
-  List<MemberStudyDto> addFavorites(MemberStudyDto memberStudyDto);
+  void addFavorites(UpdateFavoritesDto memberStudyDto);
 
   // 회원이 참여한 스터디 상세보기
   List<MemberStudyDto> viewMyStudies(int no);

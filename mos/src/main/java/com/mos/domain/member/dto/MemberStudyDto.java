@@ -19,7 +19,7 @@ public class MemberStudyDto {
 
     private String stat;
 
-    private String favorites;
+    private boolean favorites;
 
     private String applyMsg;
 

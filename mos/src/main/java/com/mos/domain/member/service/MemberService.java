@@ -5,6 +5,7 @@ import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 
+import com.mos.domain.member.dto.UpdateFavoritesDto;
 import java.util.List;
 
 import com.mos.domain.member.dto.MemberJoinDto;
@@ -28,7 +29,7 @@ public interface MemberService {
 
   List<MemberStudyDto> findMyStudies(int no);
 
-  List<MemberStudyDto> addFavorites(MemberStudyDto memberStudyDto);
+  void addFavorites(UpdateFavoritesDto updateFavoritesDto);
 
   List<MemberStudyDto> viewMyStudies(int no);
 

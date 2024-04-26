@@ -5,6 +5,7 @@ import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.dto.MemberStudyDto;
+import com.mos.domain.member.dto.UpdateFavoritesDto;
 import com.mos.domain.member.service.impl.DefaultMemberService;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.service.impl.DefaultStudyService;
@@ -22,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -90,6 +92,7 @@ public class MemberController implements InitializingBean {
         }
         model.addAttribute("member", member);
     }
+
 // 참여한 스터디목록 페이지
 @GetMapping("mystudy")
 public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
@@ -251,9 +254,12 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
     return "member/myWriteCommentList";
   }
 
-//  @PostMapping("/addFavorites")
-//  public List<MemberStudyDto> addFavorites(@RequestBody MemberStudyDto memberStudyDto) {
-//    return memberService.addFavorites(memberStudyDto);
-//  }
+
+  @PostMapping("/addFavorites")
+  public ResponseEntity<?> addFavorites(@RequestBody UpdateFavoritesDto updateFavoritesDto) {
+    System.out.println("updateFavoritesDto = " + updateFavoritesDto);
+     memberService.addFavorites(updateFavoritesDto);
+     return ResponseEntity.ok().build();
+  }
 
 }

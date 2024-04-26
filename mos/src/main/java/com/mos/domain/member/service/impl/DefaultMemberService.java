@@ -5,6 +5,7 @@ import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.member.dto.MemberJoinDto;
+import com.mos.domain.member.dto.UpdateFavoritesDto;
 import com.mos.domain.member.repository.MemberRepository;
 import com.mos.domain.member.service.MemberService;
 import com.mos.domain.study.dto.StudyDto;
@@ -60,8 +61,8 @@ public class DefaultMemberService implements MemberService {
   }
 
   @Override
-  public List<MemberStudyDto> addFavorites(MemberStudyDto memberStudyDto) {
-    return memberRepository.addFavorites(memberStudyDto);
+  public void addFavorites(UpdateFavoritesDto updateFavoritesDto) {
+    memberRepository.addFavorites(updateFavoritesDto);
   }
 
   @Override
