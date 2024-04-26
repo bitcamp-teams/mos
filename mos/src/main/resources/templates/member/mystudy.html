@@ -24,7 +24,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr id="myTr" data-th-each="memberStudy : ${memberStudyList}" data-th-data-no="${memberStudy.studyDto.studyNo}">
+            <tr id="myTr" data-th-each="memberStudy : ${memberStudyList}" data-th-attr="data-studyNo=${memberStudy.studyDto.studyNo}" >
                 <td>
                     <i class="fas fa-star favorite-icon" onclick="toggleFavorite(this)"></i>
                 </td>
@@ -46,7 +46,6 @@
         // function refreshPage() {
         //     location.reload();
         // }
-
         function toggleFavorite(icon) {
             // 아이콘의 부모 요소인 td를 찾아서 해당 요소에 filled 클래스를 토글하여 색이 채워지도록 함
             var td = icon.parentNode;
@@ -54,10 +53,11 @@
 
             // 즐겨찾기 상태를 서버에 업데이트하는 로직
             var memberNo = [[${session.loginUser.memberNo}]]; // 회원 번호
-            var myTr = document.getElementById("myTr");
-            var studyNo = myTr.getAttribute("data-no");
+            var tr = td.parentNode; // 아이콘의 부모 tr 요소
+            var studyNo = tr.getAttribute("data-studyNo"); // tr 요소에서 data-studyNo 속성 값 가져오기
+            console.log("스터디번호: " + studyNo);
 
-            console.log("스터디버노: " + studyNo);
+
             // AJAX 요청을 보내기 위한 XMLHttpRequest 객체 생성
             var xhr = new XMLHttpRequest();
 
