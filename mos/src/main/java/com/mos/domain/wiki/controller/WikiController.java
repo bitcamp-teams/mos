@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -115,17 +116,28 @@ public class WikiController {
     return "redirect:/wiki/list?studyNo=" + studyNo;
   }
 
-  @RequestMapping("jstreeTest")
-  public void jstreeTest(@LoginUser MemberDto loginUser, Model model) throws Exception {
-    model.addAttribute("wikis", wikiService.listByStudyNo(1));
+  @GetMapping("jstreeTest")
+  public void jstreeTest(@LoginUser MemberDto loginUser, Model model, @RequestParam int studyNo) throws Exception {
+    model.addAttribute("wikis", wikiService.listByStudyNo(studyNo));
   }
 
   @GetMapping("listTitle")
   @ResponseBody
   public List<JstreeWikiDto> listTitle(@RequestParam int studyNo) {
-    return  wikiService.getWikiTitleTree(studyNo);
+    return wikiService.getWikiTitleTree(studyNo);
   }
 
+  //AJAX 요청을 받을 컨트롤러
+  @PostMapping("updateListOrder")
+    public Boolean updateListOrder (@RequestBody List<JstreeWikiDto> wikiDtoList) {
+
+    //TODO: 권한 검사 추가 필요
+    //POST 로 받은 RequestBody로 service객체에 parent_wiki_no 컬럼의 업데이트를 요청한다.
+
+    //업데이트한 결과를 JSON으로 리턴하지 않아도 된다. 이미 화면은 변경되어 있기 때문이다.
+    //우선 성공, 실패 여부만 반환해보도록 하자.
+    return true;
+  }
 
 
 }
