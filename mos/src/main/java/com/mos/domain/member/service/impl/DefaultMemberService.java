@@ -60,12 +60,14 @@ public class DefaultMemberService implements MemberService {
     return myStudy;
   }
 
+  @Transactional
   @Override
   public void addFavorites(UpdateFavoritesDto updateFavoritesDto) {
     memberRepository.addFavorites(updateFavoritesDto);
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public int join(MemberJoinDto joinDto) {
     System.out.println("joinDto = " + joinDto);
     return memberRepository.add(joinDto);

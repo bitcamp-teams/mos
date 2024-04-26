@@ -25,8 +25,8 @@
             </thead>
             <tbody>
             <tr id="myTr" data-th-each="memberStudy : ${memberStudyList}" data-th-attr="data-studyNo=${memberStudy.studyDto.studyNo}, data-isFavorite=${memberStudy.favorites}" >
-                <td>
-                    <i class="fas fa-star favorite-icon" th:classappend="${memberStudy.favorites} ? 'filled' : null" onclick="toggleFavorite(this)"></i>
+                <td th:classappend="${memberStudy.favorites} ? 'filled' : ''" id="favoriteTd" onclick="toggleFavorite(this)">
+                    <i class="fas fa-star favorite-icon" ></i>
                 </td>
 <!--                 스터디 제목-->
                 <td data-th-text="${memberStudy.studyDto != null ? memberStudy.studyDto.title : ''}"></td>
@@ -43,12 +43,10 @@
 </div>  <!--    부트스트랩 컨테이너 닫기 -->
 
     <script data-th-inline="javascript">
-        // function refreshPage() {
-        //     location.reload();
-        // }
+
         function toggleFavorite(icon) {
             // 아이콘의 부모 요소인 td를 찾아서 해당 요소에 filled 클래스를 토글하여 색이 채워지도록 함
-            var td = icon.parentNode;
+            var td = icon;
             var isFavorite = td.classList.toggle('filled');
 
             // 즐겨찾기 상태를 서버에 업데이트하는 로직
@@ -64,21 +62,17 @@
                 contentType: 'application/json',
                 data: JSON.stringify({ memberNo: memberNo, studyNo: studyNo, favorites: isFavorite }),
                 success: function(response) {
-                    console.log('즐겨찾기 상태 업데이트 성공');
-                    tr.setAttribute("data-isFavorite", isFavorite);
-                    if (isFavorite) {
-                        td.classList.add('filled');
-                    } else {
-                        td.classList.remove('filled');
+                    if (response) {
+                        console.log('즐겨찾기 상태 업데이트 성공');
+                        $('#favoriteTd').addClass('filled');
                     }
                 },
                 error: function(error) {
                     console.error('즐겨찾기 상태 업데이트 실패:', error);
-                    // td.className = originalClassName;
                 }
             });
 
-           // refreshPage();
+
         }
     </script>
 

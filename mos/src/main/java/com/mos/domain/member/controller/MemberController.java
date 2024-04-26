@@ -102,6 +102,7 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
   System.out.println("myStudies = " + myStudies);
 
   model.addAttribute("memberStudyList", myStudies);
+
   return "member/mystudy";
 }
   // 스터디 상세보기 페이지
@@ -257,7 +258,7 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
 
 
   @PostMapping("/addFavorites")
-  public ResponseEntity<?> addFavorites(@RequestBody UpdateFavoritesDto updateFavoritesDto) {
+  public ResponseEntity<?> addFavorites(@RequestBody UpdateFavoritesDto updateFavoritesDto, Model model) {
     System.out.println("updateFavoritesDto = " + updateFavoritesDto);
      memberService.addFavorites(updateFavoritesDto);
      return ResponseEntity.ok().build();

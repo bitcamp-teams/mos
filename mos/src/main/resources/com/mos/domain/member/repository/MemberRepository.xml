@@ -114,6 +114,7 @@
       member_no=#{memberNo}
   </select>
 
+  <!--마이 스터디 조회-->
   <select id="findMyStudies" resultMap="MemberStudyMap" parameterType="int">
     select
       s.study_no,
@@ -130,8 +131,10 @@
       inner join study s on mss.study_no = s.study_no
     where
       mss.member_no=#{memberDto.memberNo}
+    order by mss.favorites desc
   </select>
 
+  <!--마이스터디 상세보기-->
   <select id="viewMyStudies" resultMap="MemberStudyMap" parameterType="int">
     select
     s.study_no,
