@@ -99,6 +99,7 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
   int memberNo = loginUser.getMemberNo();
 
   List<MemberStudyDto> myStudies = memberService.findMyStudies(memberNo);
+  System.out.println("myStudies = " + myStudies);
 
   model.addAttribute("memberStudyList", myStudies);
   return "member/mystudy";

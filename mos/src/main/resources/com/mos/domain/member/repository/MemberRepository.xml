@@ -29,6 +29,7 @@
     <id column="member_study_stat_no" property="no"/>
     <result column="stat" property="stat"/>
     <result column="apply_msg" property="applyMsg"/>
+    <result column="favorites" property="favorites"/>
 
     <association property="studyDto" javaType="StudyDto">
       <id column="study_no" property="studyNo"/>

@@ -24,9 +24,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr id="myTr" data-th-each="memberStudy : ${memberStudyList}" data-th-attr="data-studyNo=${memberStudy.studyDto.studyNo}" >
+            <tr id="myTr" data-th-each="memberStudy : ${memberStudyList}" data-th-attr="data-studyNo=${memberStudy.studyDto.studyNo}, data-isFavorite=${memberStudy.favorites}" >
                 <td>
-                    <i class="fas fa-star favorite-icon" onclick="toggleFavorite(this)"></i>
+                    <i class="fas fa-star favorite-icon" th:classappend="${memberStudy.favorites} ? 'filled' : null" onclick="toggleFavorite(this)"></i>
                 </td>
 <!--                 스터디 제목-->
                 <td data-th-text="${memberStudy.studyDto != null ? memberStudy.studyDto.title : ''}"></td>
@@ -49,27 +49,32 @@
         function toggleFavorite(icon) {
             // 아이콘의 부모 요소인 td를 찾아서 해당 요소에 filled 클래스를 토글하여 색이 채워지도록 함
             var td = icon.parentNode;
-            td.classList.toggle('filled');
+            var isFavorite = td.classList.toggle('filled');
 
             // 즐겨찾기 상태를 서버에 업데이트하는 로직
             var memberNo = [[${session.loginUser.memberNo}]]; // 회원 번호
             var tr = td.parentNode; // 아이콘의 부모 tr 요소
             var studyNo = tr.getAttribute("data-studyNo"); // tr 요소에서 data-studyNo 속성 값 가져오기
+
             console.log("스터디번호: " + studyNo);
 
             $.ajax({
                 url: '/member/addFavorites',
                 type:'POST',
                 contentType: 'application/json',
-
-                data: JSON.stringify({ memberNo: memberNo, studyNo: studyNo, favorites: td.classList.contains('filled') }),
+                data: JSON.stringify({ memberNo: memberNo, studyNo: studyNo, favorites: isFavorite }),
                 success: function(response) {
                     console.log('즐겨찾기 상태 업데이트 성공');
-                    // td.classList.toggle('filled');
+                    tr.setAttribute("data-isFavorite", isFavorite);
+                    if (isFavorite) {
+                        td.classList.add('filled');
+                    } else {
+                        td.classList.remove('filled');
+                    }
                 },
                 error: function(error) {
                     console.error('즐겨찾기 상태 업데이트 실패:', error);
-                    td.className = originalClassName;
+                    // td.className = originalClassName;
                 }
             });
 
