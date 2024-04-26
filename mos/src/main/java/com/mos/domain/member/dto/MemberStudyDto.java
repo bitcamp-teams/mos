@@ -17,7 +17,7 @@ public class MemberStudyDto {
 
     private StudyDto studyDto;
 
-    private String stat;
+    private String status;
 
     private String favorites;
 

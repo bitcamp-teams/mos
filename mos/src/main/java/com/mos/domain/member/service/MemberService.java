@@ -5,6 +5,7 @@ import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 
+import com.mos.domain.member.dto.MyStudiesDto;
 import java.util.List;
 
 import com.mos.domain.member.dto.MemberJoinDto;
@@ -41,4 +42,5 @@ public interface MemberService {
 
   List<WikiCommentDto> findMyWikiComment(int no);
 
+  List<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo);
 }

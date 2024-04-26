@@ -6,6 +6,8 @@ import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.dto.MemberStudyDto;
+import com.mos.domain.member.dto.MyStudiesDto;
+import com.mos.domain.member.dto.MyStudiesUpdateDto;
 import java.util.List;
 
 import com.mos.domain.wiki.dto.WikiDto;
@@ -41,4 +43,8 @@ public interface MemberRepository {
 
   // 회원이 쓴 위키 댓글
   List<WikiCommentDto> findMyWikiComment(int no);
+
+  List<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo);
+
+  void updateStatus(MyStudiesUpdateDto updateDto);
 }
