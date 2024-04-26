@@ -5,6 +5,7 @@ import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.dto.MemberStudyDto;
+import com.mos.domain.member.dto.UpdateFavoritesDto;
 import com.mos.domain.member.service.impl.DefaultMemberService;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.service.impl.DefaultStudyService;
@@ -22,13 +23,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
@@ -89,28 +93,19 @@ public class MemberController implements InitializingBean {
         model.addAttribute("member", member);
     }
 
-  @GetMapping("mystudy")
-  public String getMyStudy  (@LoginUser MemberDto loginUser, Model model) throws Exception {
+// 참여한 스터디목록 페이지
+@GetMapping("mystudy")
+public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
+  int memberNo = loginUser.getMemberNo();
 
-    // 로그인한 회원의 번호 가져오기
-    int memberNo = loginUser.getMemberNo();
+  List<MemberStudyDto> myStudies = memberService.findMyStudies(memberNo);
+  System.out.println("myStudies = " + myStudies);
 
-    MemberDto member = memberService.getNo(memberNo);
-    if (member == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
-    }
-    model.addAttribute("member", member);
+  model.addAttribute("memberStudyList", myStudies);
 
-    // 회원 번호를 이용하여 회원의 스터디 목록을 조회
-    List<MemberStudyDto> myStudy = memberService.findMyStudies(memberNo);
-    if (myStudy == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
-    }
-
-    model.addAttribute("memberStudyList", myStudy);
-    return "member/mystudy";
-  }
-
+  return "member/mystudy";
+}
+  // 스터디 상세보기 페이지
   @GetMapping("viewMystudy")
   public void viewMyStudy(int studyNo, Model model, @LoginUser MemberDto loginUser) throws Exception {
 
@@ -259,6 +254,14 @@ public class MemberController implements InitializingBean {
     model.addAttribute("memberWikiCommentList", myWikiComment);
 
     return "member/myWriteCommentList";
+  }
+
+
+  @PostMapping("/addFavorites")
+  public ResponseEntity<?> addFavorites(@RequestBody UpdateFavoritesDto updateFavoritesDto, Model model) {
+    System.out.println("updateFavoritesDto = " + updateFavoritesDto);
+     memberService.addFavorites(updateFavoritesDto);
+     return ResponseEntity.ok().build();
   }
 
 }

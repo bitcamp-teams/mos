@@ -1,6 +1,5 @@
 const memberNo = $('#isLoginFrm #memberNoInput').val();
 $(document).ready(function () {
-    debugger
     if (memberNo !== '') {
         const eventSource = new EventSource('/subscribe/' + memberNo);
         eventSource.addEventListener("sse", event => {
