@@ -87,13 +87,13 @@
       m.username
     FROM member_study_stat mss
     JOIN member m ON mss.member_no = m.member_no
-    WHERE mss.study_no = #{studyNo} AND mss.member_no != #{memberNo};
+    WHERE mss.study_no = #{studyNo} AND mss.member_no != #{memberNo} AND mss.stat = 'S03-104';
   </select>
 
   <update id="updateStatus" parameterType="MyStudiesUpdateDto">
     UPDATE member_study_stat
-    SET stat = #{statusCode}
-    WHERE member_study_stat.member_study_stat_no = #{statusId};
+    SET stat = #{message}
+    WHERE member_study_stat.member_study_stat_no = #{id};
   </update>
 
   <select id="findByEmail" parameterType="MemberDto" resultType="MemberDto">

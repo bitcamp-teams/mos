@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class MyStudiesUpdateDto {
 
-  int statusId;
-  String statusCode;
+  int id;
+  String message;
 
 }

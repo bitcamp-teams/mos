@@ -364,7 +364,7 @@ function fetchNotifications() {
 
 function fetchNotificationsWithPage(page, append = false) {
     console.log("fetchNotifications 함수가 호출되었습니다. 페이지 번호:", page);
-    fetch(`/notify/list?page=${page}`)
+    fetch(`/notify?page=${page}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
