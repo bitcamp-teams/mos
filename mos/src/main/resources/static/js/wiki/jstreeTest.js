@@ -1,15 +1,12 @@
+//RESTful
 const url = new URL(window.location.href)
 const urlParams = url.searchParams;
-var listTitle;
-
-const getListUrl = "/wiki/listTitle?studyNo=" + urlParams.get('studyNo');
-//TODO: mapping
-const updateListOrderUrl = "/wiki/updateListOrder?studyNo=" + urlParams.get(
-    'studyNo');
-var updateListTextUrl;
-var updateContentUrl;
-var deleteWikiUrl;
-var addWikiUrl;
+const getListUrl = "/api/wiki?studyNo=" + urlParams.get('studyNo');
+const updateListOrderUrl = "/api/wiki";
+var updateListTextUrl = "/api/wiki";
+var updateContentUrl = "/api/wiki";
+var deleteWikiUrl = "/api/wiki";
+var addWikiUrl = "/api/wiki";
 
 var tree = $('#wikiTree');
 tree.jstree({
@@ -29,66 +26,92 @@ tree.jstree({
   },
   plugins: ['wholerow', 'state', 'dnd', 'types', 'contextmenu', 'unique']
   //순서 저장하는 기능을 'sort' 플러그인으로 구현 가능할지도..
+})
+//여기서부터 차례로 이벤트 리스너를 등록한다.
+//클릭으로 인한 선택 등, select 대상이 변경되었을 때 발생하는 이벤트
+.on('changed.jstree', function (e, data) {
+  console.log(e, data);
+})
+//이동이 완료되었을 때 move_node 이벤트가 발생한다.
+//potion, old_position을 반환하므로 순서를 DB에 저장할 수 있다.
+.on('move_node.jstree', function (e, data) {
+  console.log(e, data);
+})
+//rename_node는 노드의 이름을 변경했을 때(text 변경 시) 발생하는 이벤트다.
+.on('rename_node.jstree', function (e, data) {
+  console.log(e, data);
+})
+//새로 노드를 만들었을 때, create_node 이벤트가 발생한다.
+.on('create_node.jstree', function (e, data) {
+  console.log(e, data);
+  $.post('/api/wiki', function (data) {
+
+  })
+
 });
 
-$('#addNode').on('click', function(e) {
-  fetch(addWikiUrl, {
-    method: 'POST',
-  })
-})
+//#addNode btn에 대해, 선택된 node와 같은 depth에 node를 추가하고,
+//해당 노드의 정보를 가지고 DB에 추가를 요청한다.
+$('#add').on('click', function (e, data) {
+  console.log(e, data);
+  var selectedNodeIds = $('#wikiTree').jstree('get_selected', true);
+  var singleSelectedNodeId = selectedNodeIds[0];
+  console.log(singleSelectedNodeId);
+  $.ajax({
+        method: 'post',
+        url: '/api/wiki',
+        contentType: 'application/json',
+        data: JSON.stringify(
+            {"studyNo": 1, "parent": 63, "text": "새로운 아이템 추가!", "position": "3"}),
+        success: function (res) {
+          //성공적으로 응답을 받았을 때
+          console.log(res);
+          console.log('success');
+        },
+        //에러 처리가 필요하면 여기서
+        error: function (res) {
+          console.log(res);
+        }
+      }
+  );
+});
 
-function addWiki () {
-  //비동기로 위키를 추가 시킨 다음에 wikiNo를 리턴받자.
-  //이건 동기적으로 실행되어야 하므로,
-  //then 으로 계속 메서드 체이닝 해야 한다.
+$('#patch').on('click', function (e, data) {
+  console.log('내가 버튼을 눌렀다!');
+  console.log(e, data);
+  $.ajax({
+        method: 'patch',
+        url: '/api/wiki',
+        data: {id: "1", parent: "#"},
+        success: function (res) {
+          //성공적으로 응답을 받았을 때
+          console.log(res);
+          console.log('success');
+        },
+        //에러 처리가 필요하면 여기서
+        error: function (res) {
+          console.log(res);
+        }
+      }
+  );
+});
 
-  //비동기 위키 추가. 선택한 노드와 동일 위치에 만들어준다. (parentNo 결정가능)
-  //then. 받은 winkNo로 jstree에 노드 추가해준다.
-
-
-
-}
-
-
-
-
-
-
-
-
-
-//
-// //Configuration for jstree
-// getList(getListUrl);
-//
-// //get list json data
-// function getList(url) {
-//   return fetch(url, {
-//     method: 'GET',
-//     headers: {'Content-Type': 'application/json'}
-//   }).then(function (res) {
-//     if (!res.ok) {
-//       throw new Error('fetch failed!');
-//     }
-//     return res.json();
-//   })
-//   .then(data => {
-//     data.forEach(item => {
-//       if (item.parent == 0) {
-//         //make it root
-//         item.parent = '#';
-//       }
-//     })
-//     console.log(data)
-//     return data;
-//   })
-// }
-//
-// //
-// function parseParentId(json) {
-//
-// }
-//
-// //make jstree
-
-
+$('#delete').on('click', function (e, data) {
+  console.log('내가 버튼을 눌렀다!');
+  console.log(e, data);
+  $.ajax({
+        method: 'delete',
+        url: '/api/wiki',
+        data: {id: "1", parent: "#"},
+        success: function (res) {
+          //성공적으로 응답을 받았을 때
+          console.log(res);
+          console.log('success');
+        },
+        //에러 처리가 필요하면 여기서
+        error: function (res) {
+          console.log(res);
+        }
+      }
+  );
+});

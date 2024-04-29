@@ -5,46 +5,20 @@
 
 <mapper namespace="com.mos.domain.wiki.repository.WikiRepository">
 
-  <resultMap id="wikis" type="WikiDto">
-    <id column="wiki_no" property="wikiNo"/>
-    <result column="title" property="title"/>
-    <result column="ordr" property="order"/>
-    <result column="layer" property="layer"/>
-    <result column="layer_ordr" property="layerOrder"/>
-  </resultMap>
-
-  <resultMap id="wiki" type="WikiDto">
-    <id column="wiki_no" property="wikiNo"/>
-    <result column="study_no" property="studyNo"/>
-    <result column="title" property="title"/>
-    <result column="member_no" property="memberNo"/>
-    <result column="content_created_date" property="contentCreatedDate"/>
-    <result column="content_updated_date" property="contentUpdatedDate"/>
-    <result column="content" property="content"/>
-    <result column="likes" property="likes"/>
-  </resultMap>
-
-  <resultMap id="wikiTitleList" type="JstreeWikiDto">
-    <id column="wiki_no" property="wikiNo"/>
-    <result column="title" property="title"/>
-    <result column="parent_wiki_no" property="parentWikiNo"/>
-  </resultMap>
-
-
-  <select id="listByStudyNo" parameterType="int" resultMap="wikis">
+  <select id="listByStudyNo" parameterType="int" resultType="WikiDto">
     SELECT wiki_no, title, ordr, layer, layer_ordr
     FROM curriculum
     WHERE study_no = #{studyNo}
     ORDER BY ordr, layer, layer_ordr;
   </select>
 
-  <select id="listByWikiNo" parameterType="int" resultMap="wiki">
+  <select id="listByWikiNo" parameterType="int" resultType="WikiDto">
     SELECT wiki_no, title, content, likes
     FROM curriculum
     ORDER BY wiki_no DESC;
   </select>
 
-  <select id="getByWikiNo" parameterType="int" resultMap="wiki">
+  <select id="getByWikiNo" parameterType="int" resultType="WikiDto">
     SELECT
       wiki_no, study_no, title, curriculum.member_no, username, content_created_date, content_updated_date, content, likes
     FROM curriculum
@@ -84,24 +58,6 @@
     LIMIT 1;
   </select>
 
-  <select id="findByStudyNo" parameterType="int" resultMap="wikiTitleList">
-    WITH RECURSIVE get_wiki_title_tree AS
-    (SELECT wiki_no, title, parent_wiki_no, ordr, 1 AS LEVEL
-    FROM wiki
-    WHERE parent_wiki_no IS NULL
 
-    UNION ALL
-
-    SELECT w.wiki_no,
-    w.title,
-    w.parent_wiki_no,
-    w.ordr,
-    c.LEVEL + 1
-    FROM get_wiki_title_tree c
-    INNER JOIN wiki w ON w.parent_wiki_no = c.wiki_no)
-
-    SELECT wiki_no, parent_wiki_no, title, ordr
-    FROM get_wiki_title_tree
-  </select>
 
 </mapper>

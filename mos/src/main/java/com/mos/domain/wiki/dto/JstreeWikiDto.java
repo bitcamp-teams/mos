@@ -16,14 +16,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JstreeWikiDto {
-  @JsonProperty(value="id")
-  int wikiNo;
 
-  @JsonProperty(value="parent")
-      @JsonSerialize(using = ParentWikiNoSerializer.class)
-  int parentWikiNo;
+  // jstree에서 각 노드를 구별하는 키를 id라고 한다.
+  @JsonProperty(value = "id")
+  private int wikiNo;
 
-  @JsonProperty(value="text")
-  String title;
+  // jstree에서 부모 노드의 키를 parent라고 한다.
+  // 최상위 노드의 아이디는 '#' 으로 정의되어 있다.
+  // 이를 만족시키기 위해 따로 시리얼라이저를 정의했다. MyBatis에서 null을 0으로 반환하는데, 이 경우는 json으로 직렬화할 때 0은 #으로 값을 넣도록 한 것이다.
+  @JsonProperty(value = "parent")
+  @JsonSerialize(using = ParentWikiNoSerializer.class)
+  private int parentWikiNo;
+
+  // jstree에서 node에 표시되는 각 텍스트는 text라는 이름을 갖는다.
+  @JsonProperty(value = "text")
+  private String title;
+
+  //jstree에서 순서를 position이라는 이름을 쓴다.
+  @JsonProperty(value = "position")
+  private int ordr;
+
+  private int memberNo;
+  private int studyNo;
 
 }
