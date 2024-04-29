@@ -11,27 +11,31 @@
         </div>
     </div>
 
-    <div class="container-mystudy"> <!-- 부트스트랩 컨테이너 추가 -->
-        <table class="table"> <!-- 부트스트랩 테이블 클래스 추가 -->
+    <div class="container-mystudy">  <!-- 부트스트랩 컨테이너 추가 -->
+        <table class="table">  <!-- 부트스트랩 테이블 클래스 추가 -->
             <thead>
             <tr>
+                <th></th>
                 <th>Title</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th></th>
-                <!-- 다른 필요한 열들도 추가할 수 있습니다 -->
+                 <!-- 다른 필요한 열들도 추가할 수 있습니다 -->
             </tr>
             </thead>
             <tbody>
-            <tr data-th-each="memberStudy : ${memberStudyList}">
-                <!-- 스터디 제목 -->
+            <tr id="myTr" data-th-each="memberStudy : ${memberStudyList}" data-th-attr="data-studyNo=${memberStudy.studyDto.studyNo}, data-isFavorite=${memberStudy.favorites}" >
+                <td th:classappend="${memberStudy.favorites} ? 'filled' : ''" id="favoriteTd" onclick="toggleFavorite(this)">
+                    <i class="fas fa-star favorite-icon" ></i>
+                </td>
+<!--                 스터디 제목-->
                 <td data-th-text="${memberStudy.studyDto != null ? memberStudy.studyDto.title : ''}"></td>
                 <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.startDate, 'yyyy-MM-dd') : ''}"></td>
                 <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.endDate, 'yyyy-MM-dd') : ''}"></td>
                 <td>
                     <form id="studyWithdraw" data-th-if="${memberStudy.status == 'S03-102'}" data-th-action="@{/member/updateStatus}" method="post">
                         <input type="hidden" name="no" data-th-value="${memberStudy.no}">
-                        <input type="hidden" name="status" data-th-value="${memberStudy.status}">
+                        <input type="hidden" name="withDrawStatus" data-th-value="S03-106">
                         <button type="submit" class="btn btn-warning" data-th-text="스터디원"></button>
                     </form>
                     <form id="studyStatus" data-th-if="${memberStudy.status == 'S03-101'}" data-th-action="@{/member/studyManagement}" method="get">
@@ -43,7 +47,7 @@
             </tr>
             </tbody>
         </table>
-    </div> <!-- 부트스트랩 컨테이너 닫기 -->
+</div>  <!--    부트스트랩 컨테이너 닫기 -->
 
     <!-- 결과를 표시할 모달 -->
     <!-- Bootstrap 모달 -->
@@ -76,7 +80,7 @@
 
                 var formDataJson = {
                     id: $('input[name="no"]').val(),
-                    message: $('input[name="status"]').val()
+                    message: $('input[name="withDrawStatus"]').val()
                 };
 
                 if (confirmResult) {
@@ -181,8 +185,41 @@
 
 
     <!--<div data-th-replace="member/mystudy-view :: modal(${memberStudyList})"></div>-->
+    <script data-th-inline="javascript">
 
-    <!-- 부트스트랩 자바스크립트 추가 -->
+        function toggleFavorite(icon) {
+            // 아이콘의 부모 요소인 td를 찾아서 해당 요소에 filled 클래스를 토글하여 색이 채워지도록 함
+            var td = icon;
+            var isFavorite = td.classList.toggle('filled');
+
+            // 즐겨찾기 상태를 서버에 업데이트하는 로직
+            var memberNo = [[${session.loginUser.memberNo}]]; // 회원 번호
+            var tr = td.parentNode; // 아이콘의 부모 tr 요소
+            var studyNo = tr.getAttribute("data-studyNo"); // tr 요소에서 data-studyNo 속성 값 가져오기
+
+            console.log("스터디번호: " + studyNo);
+
+            $.ajax({
+                url: '/member/addFavorites',
+                type:'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ memberNo: memberNo, studyNo: studyNo, favorites: isFavorite }),
+                success: function(response) {
+                    if (response) {
+                        console.log('즐겨찾기 상태 업데이트 성공');
+                        $('#favoriteTd').addClass('filled');
+                    }
+                },
+                error: function(error) {
+                    console.error('즐겨찾기 상태 업데이트 실패:', error);
+                }
+            });
+
+
+        }
+    </script>
+
+     부트스트랩 자바스크립트 추가 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous">

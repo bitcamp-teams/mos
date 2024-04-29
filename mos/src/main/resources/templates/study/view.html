@@ -27,39 +27,67 @@
     <div id="viewer">
       <strong>Viewer Here</strong>
     </div>
-    <div data-th-if="*{stat != '종료'}">
-      <form action="applyStudy" data-th-action="@{/study/{studyNo}/applyStudy(studyNo=*{studyNo})}" method="post">
-    <button id="applyStudy">신청하기</button>
-      </form>
-    </div>
 
-    <!--스터디 신청 자바스크립트-->
-    <script>
-      $('#submitApplyBtn').click(function() {
-        var applyMsg = $('#applyMsg').val();
-        var studyNo = $('#studyNo').val();
+        <div data-th-if="*{stat != '종료' && stat != '모집완료'}">
+            <button id="applyStudyBtn" data-toggle="modal" data-target="#applyModal">신청하기</button>
+        </div>
 
-        // AJAX 요청을 통해 서버로 데이터 전송
-        $.ajax({
-          url: '/study/applyStudy', // 수정된 URL 입력
-          type: 'POST',
-          data: {
-            applyMsg: applyMsg,
-            studyNo: studyNo
-          },
-          success: function(response) {
-            // 성공적으로 처리된 경우
-            console.log(response);
-            $('#applyModal').modal('hide'); // 모달창 닫기
-            // 필요한 경우 추가 작업 수행
-          },
-          error: function(error) {
-            // 오류 발생 시 처리
-            console.error(error);
-          }
-        });
-      });
-    </script>
+        <!--신청하기 모달창-->
+
+        <!-- 모달창 -->
+        <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="applyModalLabel">스터디 신청</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="applyForm">
+                            <input id="studyNo" name="studyNo" type="hidden" data-th-value="*{studyNo}" value="5">
+                            <div class="form-group">
+                                <label for="applyMsg">신청 메시지</label>
+                                <textarea class="form-control" id="applyMsg" rows="3" placeholder="스터디장에게 보낼 메시지를 입력해주세요!"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary" id="submitApplyBtn">신청하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--스터디 신청 자바스크립트-->
+        <script>
+            $('#submitApplyBtn').click(function() {
+                var applyMsg = $('#applyMsg').val();
+                var studyNo = $('#studyNo').val();
+
+                // AJAX 요청을 통해 서버로 데이터 전송
+                $.ajax({
+                    url: '/study/applyStudy', // 수정된 URL 입력
+                    type: 'POST',
+                    data: {
+                        applyMsg: applyMsg,
+                        studyNo: studyNo
+                    },
+                    success: function(response) {
+                        // 성공적으로 처리된 경우
+                        console.log(response);
+                        $('#applyModal').modal('hide'); // 모달창 닫기
+                        // 필요한 경우 추가 작업 수행
+                    },
+                    error: function(error) {
+                        // 오류 발생 시 처리
+                        console.error(error);
+                    }
+                });
+            });
+        </script>
 
 
         <script>
@@ -153,6 +181,7 @@
         <!--댓글추가 기능 끝-->
         <!--댓글 리스트 기능 시작-->
     </div>
+
     <div th:if="${#lists.isEmpty(studyComments)}">
         <p>아직 댓글이 없어요.</p>
     </div>

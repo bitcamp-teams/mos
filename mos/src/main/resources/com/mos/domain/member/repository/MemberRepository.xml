@@ -29,6 +29,7 @@
     <id column="member_study_stat_no" property="no"/>
     <result column="stat" property="status"/>
     <result column="apply_msg" property="applyMsg"/>
+    <result column="favorites" property="favorites"/>
 
     <association property="studyDto" javaType="StudyDto">
       <id column="study_no" property="studyNo"/>
@@ -142,6 +143,7 @@
       member_no=#{memberNo}
   </select>
 
+  <!--마이 스터디 조회-->
   <select id="findMyStudies" resultMap="MemberStudyMap" parameterType="int">
     select
       s.study_no,
@@ -151,14 +153,17 @@
       s.end_date,
       mss.member_study_stat_no,
       mss.stat,
+      mss.favorites,
       mss.apply_msg
     from
       member_study_stat mss
       inner join study s on mss.study_no = s.study_no
     where
-      mss.member_no=#{no}
+      mss.member_no=#{memberDto.memberNo} AND mss.stat != 'S03-106'
+    order by mss.favorites desc
   </select>
 
+  <!--마이스터디 상세보기-->
   <select id="viewMyStudies" resultMap="MemberStudyMap" parameterType="int">
     select
     s.study_no,
@@ -220,5 +225,12 @@
     WHERE member_no = #{memberNo}
     ORDER BY created_date DESC;
   </select>
+
+  <!-- 스터디 즐겨찾기 추가-->
+  <update id="addFavorites" parameterType="UpdateFavoritesDto">
+    UPDATE member_study_stat
+    SET favorites = #{favorites}
+    WHERE member_no = #{memberNo} AND study_no = #{studyNo}
+  </update>
 
 </mapper>
