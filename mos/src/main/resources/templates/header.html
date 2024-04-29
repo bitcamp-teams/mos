@@ -128,6 +128,7 @@
 </head>
 
 
+<body>
 <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #DBEAFE;">
     <a class="navbar-brand" href="/"><img src='/img/logo_text.png'></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -186,7 +187,7 @@
                     onclick="location.href='/auth/logout';">로그아웃
             </button>
             <!-- 로그인 버튼 클릭 시 모달 열기 -->
-            <button data-th-if="${session.loginUser == null}" class="btn-open-modal btn btn-outline-info"
+            <button data-th-if="${session.loginUser == null}" id="openLoginModal" class="btn-open-modal btn btn-outline-info"
                     data-toggle="modal"
                     data-target="#loginModal">로그인
             </button>
@@ -195,11 +196,10 @@
 </nav>
 <!--</header>-->
 
-<body>
 
 
 <!-- 로그인 모달 -->
-<div class="modal" id="loginModal">
+<div class="modal fade" id="loginModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" id="loginModalContent">
         </div>
