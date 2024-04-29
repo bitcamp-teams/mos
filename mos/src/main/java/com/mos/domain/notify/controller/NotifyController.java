@@ -15,24 +15,30 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/notify")
 public class NotifyController {
 
   private static final Log log = LogFactory.getLog(NotifyController.class);
   private final NotifyService notifyService;
 
-  @PostMapping("/notify/save")
+  @PostMapping("save")
   public ResponseEntity<NotifyAddDto> save(NotifyAddDto notifyDto) {
     log.debug("notifyDto = " + notifyDto);
     notifyService.save(notifyDto);
     return ResponseEntity.ok(notifyDto);
   }
 
-  @GetMapping("/notify/list")
+  @GetMapping("list")
   public ResponseEntity<?> list(NotifyListDto notifyListDto, HttpSession session, @PageableDefault Pageable page) {
     MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
     notifyListDto.setRecipientId(loginUser.getMemberNo());
@@ -41,7 +47,7 @@ public class NotifyController {
     return ResponseEntity.ok().body(list);
   }
 
-  @PostMapping("/notify/update")
+  @PostMapping("update")
   public ResponseEntity<?> updateRead(@RequestBody NotifyUpdateDto updateDto) {
     int id = updateDto.getId();
     if (!notifyService.existsById(id)) {

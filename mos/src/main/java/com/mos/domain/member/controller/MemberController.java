@@ -5,6 +5,8 @@ import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.dto.MemberStudyDto;
+import com.mos.domain.member.dto.MyStudiesDto;
+import com.mos.domain.member.dto.MyStudiesUpdateDto;
 import com.mos.domain.member.dto.UpdateFavoritesDto;
 import com.mos.domain.member.service.impl.DefaultMemberService;
 import com.mos.domain.study.dto.StudyDto;
@@ -102,40 +104,26 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
   System.out.println("myStudies = " + myStudies);
 
   model.addAttribute("memberStudyList", myStudies);
-
   return "member/mystudy";
 }
-  // 스터디 상세보기 페이지
-  @GetMapping("viewMystudy")
-  public void viewMyStudy(int studyNo, Model model, @LoginUser MemberDto loginUser) throws Exception {
-
-
+  /**
+   * 스터디장일 경우 가입 신청, 멤버 관리를 위한 컨트롤러
+   * @param studyNo 스터디 번호
+   * @param loginUser 로그인 유저 정보
+   * @return 해당 스터디 멤버 리스트
+   */
+  @GetMapping("studyManagement")
+  public ResponseEntity<List<MyStudiesDto>> viewMyStudy(int studyNo, @LoginUser MemberDto loginUser) {
     int memberNo = loginUser.getMemberNo();
-
-    MemberDto member = memberService.getNo(memberNo);
-    if (member == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
-    }
-    model.addAttribute("member", member);
-
-    List<MemberStudyDto> myStudy = memberService.findMyStudies(memberNo);
-    if (myStudy == null || myStudy.isEmpty()) {
-      throw new Exception("회원이 참여하고 있는 스터디가 없습니다.");
-    }
-
-    StudyDto studyDto = studyService.getByStudyNo(studyNo);
-    studyNo = studyDto.getStudyNo();
-
-    model.addAttribute("study", studyDto);
-
-    // 스터디 번호를 이용하여 회원의 스터디 상세보기 조회
-    List<MemberStudyDto> editMyStudy = memberService.viewMyStudies(studyNo);
-    if (myStudy == null) {
-      throw new Exception("스터디 번호가 유효하지 않습니다.");
-    }
-
-    model.addAttribute("memberStudyView", editMyStudy);
+    return ResponseEntity.ok().body(memberService.findListByStudyNo(studyNo, memberNo));
   }
+
+  @PostMapping("updateStatus")
+  public ResponseEntity<?> updateStatus(@RequestBody MyStudiesUpdateDto updateDto) {
+    memberService.updateStatus(updateDto);
+    return ResponseEntity.ok().build();
+  }
+
 
   // 회원 정보 조회 페이지
   @GetMapping("edit")

@@ -5,6 +5,8 @@ import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.member.dto.MemberJoinDto;
+import com.mos.domain.member.dto.MyStudiesDto;
+import com.mos.domain.member.dto.MyStudiesUpdateDto;
 import com.mos.domain.member.dto.UpdateFavoritesDto;
 import com.mos.domain.member.repository.MemberRepository;
 import com.mos.domain.member.service.MemberService;
@@ -61,6 +63,11 @@ public class DefaultMemberService implements MemberService {
   }
 
   @Transactional
+  @Override
+  public List<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo) {
+    return memberRepository.findListByStudyNo(studyNo, memberNo);
+  }
+
   @Override
   public void addFavorites(UpdateFavoritesDto updateFavoritesDto) {
     memberRepository.addFavorites(updateFavoritesDto);
@@ -122,5 +129,9 @@ public class DefaultMemberService implements MemberService {
 
     List<WikiCommentDto> mywikiComment = memberRepository.findMyWikiComment(memberNo);
     return mywikiComment;
+  }
+
+  public void updateStatus(MyStudiesUpdateDto updateDto) {
+    memberRepository.updateStatus(updateDto);
   }
 }
