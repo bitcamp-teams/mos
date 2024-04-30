@@ -4,6 +4,9 @@ import com.mos.domain.member.dto.MemberStudyDto;
 import java.util.List;
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.repository.TagRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.repository.StudyRepository;
@@ -44,9 +47,12 @@ public class DefaultStudyService implements StudyService {
   }
 
   @Override
-  public List<StudyDto> list() {
-    return studyRepository.findAll();
+  public Page<StudyDto> list(Pageable pageable) {
+    List<StudyDto> studyList = studyRepository.findAll(pageable.getOffset(), pageable.getPageSize());
+    int count = studyRepository.studyCount();
+    return new PageImpl<>(studyList, pageable, count);
   }
+
 
   @Override
   public List<TagDto> getAllTags() {

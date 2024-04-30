@@ -77,7 +77,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
       LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
     ORDER BY
-      study_no DESC;
+      study_no DESC
+    LIMIT #{offset}, #{pageSize};
+  </select>
+
+  <select id="studyCount" resultType="int">
+    SELECT COUNT(*)
+    FROM study
   </select>
 
   <select id="getByStudyNo" resultMap="studyDetail">

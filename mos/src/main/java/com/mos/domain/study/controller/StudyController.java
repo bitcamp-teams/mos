@@ -9,12 +9,17 @@ import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.service.StudyService;
 import com.mos.domain.wiki.service.WikiService;
 import com.mos.global.auth.LoginUser;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -175,15 +180,21 @@ public class StudyController {
   }
 
 
-  @GetMapping("list")
-  public void list(Model model) {
-    model.addAttribute("studyList", studyService.list());
+  @GetMapping("api/v1/list")
+  public ResponseEntity<?> list(@PageableDefault(size = 20) Pageable pageable) {
+    Page<StudyDto> studyList = studyService.list(pageable);
+    return ResponseEntity.ok().body(studyList);
   }
 
-  @GetMapping("main")
-  public void main(Model model) {
-    model.addAttribute("studyList", studyService.list());
+  @GetMapping("list")
+  public String list() {
+    return "study/list";
   }
+
+//  @GetMapping("main")
+//  public void main(Model model) {
+//    model.addAttribute("studyList", studyService.list());
+//  }
 
 
   @GetMapping("test")

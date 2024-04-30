@@ -4,10 +4,12 @@ import com.mos.domain.member.dto.MemberStudyDto;
 import java.util.List;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.dto.TagDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface StudyService {
 
-  List<StudyDto> list();
+  Page<StudyDto> list(Pageable pageable);
 
   void add(StudyDto studyDto);
 
