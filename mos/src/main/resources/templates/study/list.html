@@ -22,6 +22,7 @@
             <span class="sr-only">Loading...</span>
         </div>
     </div>
+    <div id="sentinel"></div>
 
     <script data-th-inline="javascript">
         let page = 0;
@@ -29,20 +30,22 @@
         let loading = false; // 로딩 중 여부를 나타내는 변수
 
         function loadStudies() {
-            console.log("loadStudies()호출됨!!!!!!")
-            loading = true;
-            $.ajax({
-                url: '/study/api/v1/list',
+            // 로딩 중이 아니고 마지막 페이지가 아닐 때만 실행
+            if (!loading && !isLastPage) {
+                console.log("loadStudies()호출됨!!!!!!");
+                loading = true;
+                $.ajax({
+                    url: '/study/api/v1/list',
                     data: {
-                    page: page
-                },
-                success: function(data) {
-                    if (data.last) {
-                        isLastPage = true;
-                    }
-                    const studyList = data.content;
-                    const tbody = $('#studyTable tbody');
-                    studyList.forEach(function(study) {
+                        page: page
+                    },
+                    success: function(data) {
+                        if (data.last) {
+                            isLastPage = true;
+                        }
+                        const studyList = data.content;
+                        const tbody = $('#studyTable tbody');
+                        studyList.forEach(function(study) {
                             const row = $('<tr></tr>');
 
                             row.append('<td>' + study.studyNo + '</td>');
@@ -53,36 +56,42 @@
                             row.append('<td>' + study.recruitmentDeadline + '</td>');
                             row.append('<td>' + study.tags + '</td>');
 
-                            // const tagList = $('<td></td>');
-                            // study.tagList.forEach(function (tag) {
-                            //     tagList.append('<span>' + tag.name + '</span>');
-                            // });
-                            // row.append(tagList);
-
                             tbody.append(row);
+                        });
 
-                    });
+                        page++;
 
-                    page++;
-
-                    if (data.last) {
-                        $(document).off('scroll'); // 마지막 페이지이면 스크롤 이벤트 해제
+                        if (data.last) {
+                            isLastPage = true;
+                            $(document).off('scroll'); // 마지막 페이지이면 스크롤 이벤트 해제
+                        } else {
+                            // 스크롤 위치가 문서 끝에 가까워 추가 로딩이 필요한지 검사
+                            checkScrollPosition();
+                        }
+                    },
+                    complete: function() {
+                        loading = false; // 로딩 완료
                     }
-                },
-                complete: function() {
-                    loading = false; // 로딩 완료
-                }
-            });
-        }
-        let count = 0;
-        $(document).scroll(function() {
-            if (!loading && $(document).scrollTop() + $(window).height() >= $(document).height()) {
-                loading = true; // 로딩 시작
-                loadStudies();
+                });
             }
+        }
+
+        function checkScrollPosition() {
+            const scrollBottom = $(document).scrollTop() + $(window).height();
+            if (scrollBottom >= $(document).height() * 0.9) {
+                loadStudies(); // 스크롤 위치가 문서의 90%에 도달하면 loadStudies 함수 호출
+            }
+        }
+
+        let debounceTimer;
+
+        $(document).scroll(function() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(checkScrollPosition, 400); // 400ms 디바운스 시간
         });
 
-        loadStudies();
+
+        loadStudies(); // 초기 데이터 로딩
     </script>
 
 
