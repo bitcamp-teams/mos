@@ -5,6 +5,8 @@ import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.member.dto.MemberJoinDto;
+import com.mos.domain.member.dto.MyStudiesDto;
+import com.mos.domain.member.dto.MyStudiesUpdateDto;
 import com.mos.domain.member.dto.UpdateFavoritesDto;
 import com.mos.domain.member.repository.MemberRepository;
 import com.mos.domain.member.service.MemberService;
@@ -15,6 +17,10 @@ import java.util.List;
 
 import com.mos.domain.wiki.dto.WikiDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +66,14 @@ public class DefaultMemberService implements MemberService {
     return myStudy;
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
+  @Override
+  public Page<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo, Pageable page) {
+    List<MyStudiesDto> list = memberRepository.findListByStudyNo(studyNo, memberNo, page.getOffset(), page.getPageSize());
+    int count = memberRepository.acceptCount(studyNo, memberNo);
+    return new PageImpl<>(list, page, count);
+  }
+
   @Override
   public void addFavorites(UpdateFavoritesDto updateFavoritesDto) {
     memberRepository.addFavorites(updateFavoritesDto);
@@ -122,5 +135,9 @@ public class DefaultMemberService implements MemberService {
 
     List<WikiCommentDto> mywikiComment = memberRepository.findMyWikiComment(memberNo);
     return mywikiComment;
+  }
+
+  public void updateStatus(MyStudiesUpdateDto updateDto) {
+    memberRepository.updateStatus(updateDto);
   }
 }

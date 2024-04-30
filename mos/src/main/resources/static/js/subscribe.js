@@ -1,39 +1,30 @@
+// 로그인 상태일 때만 호출됨
 const memberNo = $('#isLoginFrm #memberNoInput').val();
 $(document).ready(function () {
     if (memberNo !== '') {
-        const eventSource = new EventSource('/subscribe/' + memberNo);
+        const eventSource = new EventSource('/api/v1/subscribe/' + memberNo);
         eventSource.addEventListener("sse", event => {
             console.log(event.data);
 
             const data = JSON.parse(event.data);
-            (async () => {
-                const showNotification = () => {
-                    const notification = new Notification('알림', {
-                        body: data.content
-                    });
 
-                    setTimeout(() => {
-                        notification.close();
-                    }, 10 * 1000);
-
-                    notification.addEventListener('click', () => {
-                        window.open(data.url, '_blank');
-                    })
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
+            })
 
-                let granted = false;
+            Toast.fire({
+                icon: 'success',
+                title: `${data.message}`
+            })
 
-                if (Notification.permission === 'granted') {
-                    granted = true;
-                } else if (Notification.permission !== 'denied') {
-                    let permission = await Notification.requestPermission();
-                    granted = permission === 'granted';
-                }
-
-                if (granted) {
-                    showNotification();
-                }
-            })();
         });
     }
 });

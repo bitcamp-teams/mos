@@ -100,24 +100,25 @@
         </script>
 
         <!-- 알림 기능 -->
-        <form id="notificationForm" action="#" th:action="@{/notify/save}" method="post">
-            <div>
-                <input type="hidden" name="recipientId" th:value="${study.memberNo}">
-            </div>
-            <div>
-                <input type="hidden" name="message" th:value="${study.title + '글에 댓글이 달렸습니다!'}">
-            </div>
-            <div>
-                <input type="hidden" name="link" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">
-            </div>
-        </form>
+<!--        <form id="notificationForm" action="#" th:action="@{/notify/save}" method="post">-->
+<!--            <div>-->
+<!--                <input type="hidden" name="recipientId" th:value="${study.memberNo}">-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <input type="hidden" name="message" th:value="${study.title + '글에 댓글이 달렸습니다!'}">-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <input type="hidden" name="link" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">-->
+<!--            </div>-->
+<!--        </form>-->
         <!--댓글추가 기능 시작-->
         <form id="commentForm" th:action="@{/comment/study/add}" method="post">
             <p>
                 <input type="hidden" name="studyNo" th:value="${study.studyNo}">
-                <!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
-                <!--      POST 방식으로 userNo를 넘기지 말 것-->
-                <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
+                <input type="hidden" name="title" th:value="${study.title}">
+                <input type="hidden" name="memberNo" th:value="${session.loginUser.memberNo}">
+                <input type="hidden" name="notiReceiver" th:value="${study.memberNo}">
+                <input type="text" name="username" th:value="${session.loginUser.userName}" readonly >
             </p>
             <p>
                 <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
@@ -149,32 +150,8 @@
                         })
                         .then(data => {
                             console.log('댓글 등록 성공:', data);
-
-                            // 알림 폼 데이터 수집 및 전송
-                            var notificationForm = document.getElementById('notificationForm');
-                            var notificationData = new FormData(notificationForm);
-
-                            return fetch(notificationForm.getAttribute('action'), {
-                                method: 'POST',
-                                body: notificationData
-                            });
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                return response.json();
-                            } else {
-                                throw new Error('알림 전송 실패');
-                            }
-                        })
-                        .then(data => {
-                            console.log('알림 전송 성공:', data);
-                            // 여기에 성공 시 처리 로직 추가
                             window.location.reload(); // 페이지 새로고침
                         })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                            // 에러 처리 로직
-                        });
                 });
             });
         </script>
