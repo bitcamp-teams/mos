@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.mos.domain.wiki.dto.WikiDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.domain.Pageable;
 
 @Mapper
 public interface MemberRepository {
@@ -48,7 +49,9 @@ public interface MemberRepository {
   // 회원이 쓴 위키 댓글
   List<WikiCommentDto> findMyWikiComment(int no);
 
-  List<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo);
+  List<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo, long offset, int pageSize);
+
+  int acceptCount(int studyNo, int memberNo);
 
   void updateStatus(MyStudiesUpdateDto updateDto);
 }

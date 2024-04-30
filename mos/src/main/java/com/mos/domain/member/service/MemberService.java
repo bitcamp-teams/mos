@@ -11,6 +11,8 @@ import java.util.List;
 
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.wiki.dto.WikiDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface MemberService {
 
@@ -44,6 +46,6 @@ public interface MemberService {
 
   List<WikiCommentDto> findMyWikiComment(int no);
 
-  List<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo);
+  Page<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo, Pageable page);
 
 }
