@@ -7,14 +7,18 @@ const index = {
     init() {
         const _this = this;
 
-        $(document).on("click", ".btn-open-modal", async () => {
+        $(document).on("click", "#openLoginModal", () => {
             _this.modalOpen();
         })
 
         $(document).ready(function () {
+            let $loginModal = $('#loginModal');
+            // 모달이 열릴 때 애니메이션 효과
+            _this.modalAnimation($loginModal);
+
             let showModal = $('#isLoginFrm #showModal').val();
             if (showModal) {
-                $('#signUpModal').modal('show')
+                $('#signUpModal').modal('show');
             }
             $('select').select2({
                 theme: 'bootstrap4',
@@ -26,7 +30,7 @@ const index = {
 
     },
     modalOpen() {
-        auth.modalHtml().then(async res => {
+        auth.modalHtml().then(res => {
             const htmlContent = res.data.body.innerHTML;
             $('#loginModalContent').html(htmlContent);
         })
@@ -94,7 +98,7 @@ const index = {
             let params = JSON.stringify($('#signupFrm').serializeObject());
             auth.signUp(params).then(res => {
                 let resultData = res.data.resultData;
-                if (resultData > 0) {
+                if (resultData.memberNo != null) {
                     Swal.fire({
                         icon: 'success',
                         title: '가입이 완료되었습니다!',
@@ -167,7 +171,19 @@ const index = {
             $('.btn-next').show();
             $('button[type=submit]').hide();
         }
-    }
+    },
+    modalAnimation(modal) {
+        modal.on('show.bs.modal', function (e) {
+            const modal = $(this);
+            modal.find('.modal-dialog').css('transform', 'translateY(-100%)');
+        });
+
+        // 모달이 완전히 열린 후 애니메이션을 정상 위치로
+        modal.on('shown.bs.modal', function (e) {
+            const modal = $(this);
+            modal.find('.modal-dialog').css('transform', '');
+        });
+    },
 }
 
 index.init();

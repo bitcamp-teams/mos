@@ -27,39 +27,67 @@
     <div id="viewer">
       <strong>Viewer Here</strong>
     </div>
-    <div data-th-if="*{stat != '종료'}">
-      <form action="applyStudy" data-th-action="@{/study/{studyNo}/applyStudy(studyNo=*{studyNo})}" method="post">
-    <button id="applyStudy">신청하기</button>
-      </form>
-    </div>
 
-    <!--스터디 신청 자바스크립트-->
-    <script>
-      $('#submitApplyBtn').click(function() {
-        var applyMsg = $('#applyMsg').val();
-        var studyNo = $('#studyNo').val();
+        <div data-th-if="*{stat != '종료' && stat != '모집완료'}">
+            <button id="applyStudyBtn" data-toggle="modal" data-target="#applyModal">신청하기</button>
+        </div>
 
-        // AJAX 요청을 통해 서버로 데이터 전송
-        $.ajax({
-          url: '/study/applyStudy', // 수정된 URL 입력
-          type: 'POST',
-          data: {
-            applyMsg: applyMsg,
-            studyNo: studyNo
-          },
-          success: function(response) {
-            // 성공적으로 처리된 경우
-            console.log(response);
-            $('#applyModal').modal('hide'); // 모달창 닫기
-            // 필요한 경우 추가 작업 수행
-          },
-          error: function(error) {
-            // 오류 발생 시 처리
-            console.error(error);
-          }
-        });
-      });
-    </script>
+        <!--신청하기 모달창-->
+
+        <!-- 모달창 -->
+        <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="applyModalLabel">스터디 신청</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="applyForm">
+                            <input id="studyNo" name="studyNo" type="hidden" data-th-value="*{studyNo}" value="5">
+                            <div class="form-group">
+                                <label for="applyMsg">신청 메시지</label>
+                                <textarea class="form-control" id="applyMsg" rows="3" placeholder="스터디장에게 보낼 메시지를 입력해주세요!"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary" id="submitApplyBtn">신청하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--스터디 신청 자바스크립트-->
+        <script>
+            $('#submitApplyBtn').click(function() {
+                var applyMsg = $('#applyMsg').val();
+                var studyNo = $('#studyNo').val();
+
+                // AJAX 요청을 통해 서버로 데이터 전송
+                $.ajax({
+                    url: '/study/applyStudy', // 수정된 URL 입력
+                    type: 'POST',
+                    data: {
+                        applyMsg: applyMsg,
+                        studyNo: studyNo
+                    },
+                    success: function(response) {
+                        // 성공적으로 처리된 경우
+                        console.log(response);
+                        $('#applyModal').modal('hide'); // 모달창 닫기
+                        // 필요한 경우 추가 작업 수행
+                    },
+                    error: function(error) {
+                        // 오류 발생 시 처리
+                        console.error(error);
+                    }
+                });
+            });
+        </script>
 
 
         <script>
@@ -72,7 +100,7 @@
         </script>
 
         <!-- 알림 기능 -->
-        <form id="notificationForm" action="#" th:action="@{/noti/save}" method="post">
+        <form id="notificationForm" action="#" th:action="@{/notify/save}" method="post">
             <div>
                 <input type="hidden" name="recipientId" th:value="${study.memberNo}">
             </div>
@@ -87,9 +115,10 @@
         <form id="commentForm" th:action="@{/comment/study/add}" method="post">
             <p>
                 <input type="hidden" name="studyNo" th:value="${study.studyNo}">
-                <!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
-                <!--      POST 방식으로 userNo를 넘기지 말 것-->
-                <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
+                <input type="hidden" name="title" th:value="${study.title}">
+                <input type="hidden" name="memberNo" th:value="${session.loginUser.memberNo}">
+                <input type="hidden" name="notiReceiver" th:value="${study.memberNo}">
+                <input type="text" name="username" th:value="${session.loginUser.userName}" readonly >
             </p>
             <p>
                 <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
@@ -121,38 +150,15 @@
                         })
                         .then(data => {
                             console.log('댓글 등록 성공:', data);
-
-                            // 알림 폼 데이터 수집 및 전송
-                            var notificationForm = document.getElementById('notificationForm');
-                            var notificationData = new FormData(notificationForm);
-
-                            return fetch(notificationForm.getAttribute('action'), {
-                                method: 'POST',
-                                body: notificationData
-                            });
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                return response.json();
-                            } else {
-                                throw new Error('알림 전송 실패');
-                            }
-                        })
-                        .then(data => {
-                            console.log('알림 전송 성공:', data);
-                            // 여기에 성공 시 처리 로직 추가
                             window.location.reload(); // 페이지 새로고침
                         })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                            // 에러 처리 로직
-                        });
                 });
             });
         </script>
         <!--댓글추가 기능 끝-->
         <!--댓글 리스트 기능 시작-->
     </div>
+
     <div th:if="${#lists.isEmpty(studyComments)}">
         <p>아직 댓글이 없어요.</p>
     </div>

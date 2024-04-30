@@ -28,7 +28,6 @@ public class CommentController {
   public ResponseEntity<StudyCommentDto> addStudyComment(StudyCommentDto studyCommentDto) throws Exception {
 
     commentService.addStudyComment(studyCommentDto);
-
     return ResponseEntity.ok(studyCommentDto);
 //    return "redirect:/study/view?studyNo=" + studyCommentDto.getStudyNo();
   }

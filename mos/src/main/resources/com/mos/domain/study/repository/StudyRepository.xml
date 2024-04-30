@@ -150,6 +150,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       study_no = #{studyNo};
   </delete>
 
+  <!-- 스터디 신청기능-->
  <insert id="applyStudy" parameterType="MemberStudyDto">
   INSERT INTO
    member_study_stat(member_no, study_no, stat, apply_msg)

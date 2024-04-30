@@ -1,9 +1,11 @@
-package com.mos.domain.noti.dto;
+package com.mos.domain.notify.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class NotiDto {
+@Builder
+public class NotifyDto {
 
   private int id;
   private int recipientId;
