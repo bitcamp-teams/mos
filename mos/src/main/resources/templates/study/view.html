@@ -116,9 +116,9 @@
             <p>
                 <input type="hidden" name="studyNo" th:value="${study.studyNo}">
                 <input type="hidden" name="title" th:value="${study.title}">
-                <input type="hidden" name="memberNo" th:value="${session.loginUser.memberNo}">
+                <input type="hidden" name="memberNo" th:value="${session.loginUser?.memberNo}">
                 <input type="hidden" name="notiReceiver" th:value="${study.memberNo}">
-                <input type="text" name="username" th:value="${session.loginUser.userName}" readonly >
+                <input type="text" name="username" th:value="${session.loginUser?.userName}" readonly >
             </p>
             <p>
                 <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
