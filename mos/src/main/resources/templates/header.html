@@ -187,7 +187,8 @@
                     onclick="location.href='/auth/logout';">로그아웃
             </button>
             <!-- 로그인 버튼 클릭 시 모달 열기 -->
-            <button data-th-if="${session.loginUser == null}" id="openLoginModal" class="btn-open-modal btn btn-outline-info"
+            <button data-th-if="${session.loginUser == null}" id="openLoginModal"
+                    class="btn-open-modal btn btn-outline-info"
                     data-toggle="modal"
                     data-target="#loginModal">로그인
             </button>
@@ -195,7 +196,6 @@
     </div>
 </nav>
 <!--</header>-->
-
 
 
 <!-- 로그인 모달 -->
@@ -304,8 +304,9 @@
 </div>
 
 <form id="isLoginFrm">
-  <input type="hidden" id="showModal" data-th-value="${showModal}">
-  <input type="hidden" id="loginEmail" data-th-value="${loginEmail}">
+    <input type="hidden" id="showModal" data-th-value="${showModal}">
+    <input type="hidden" id="loginEmail" data-th-value="${loginEmail}">
+    <input type="hidden" id="memberNoInput" data-th-value="${session.loginUser?.memberNo}">
 </form>
 
 <!-- Editor -->
