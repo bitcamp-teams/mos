@@ -5,40 +5,20 @@
 
 <mapper namespace="com.mos.domain.wiki.repository.WikiRepository">
 
-  <resultMap id="wikis" type="WikiDto">
-    <id column="wiki_no" property="wikiNo"/>
-    <result column="title" property="title"/>
-    <result column="ordr" property="order"/>
-    <result column="layer" property="layer"/>
-    <result column="layer_ordr" property="layerOrder"/>
-  </resultMap>
-
-  <resultMap id="wiki" type="WikiDto">
-    <id column="wiki_no" property="wikiNo"/>
-    <result column="study_no" property="studyNo"/>
-    <result column="title" property="title"/>
-    <result column="member_no" property="memberNo"/>
-    <result column="content_created_date" property="contentCreatedDate"/>
-    <result column="content_updated_date" property="contentUpdatedDate"/>
-    <result column="content" property="content"/>
-    <result column="likes" property="likes"/>
-  </resultMap>
-
-
-  <select id="listByStudyNo" parameterType="int" resultMap="wikis">
+  <select id="listByStudyNo" parameterType="int" resultType="WikiDto">
     SELECT wiki_no, title, ordr, layer, layer_ordr
     FROM curriculum
     WHERE study_no = #{studyNo}
     ORDER BY ordr, layer, layer_ordr;
   </select>
 
-  <select id="listByWikiNo" parameterType="int" resultMap="wiki">
+  <select id="listByWikiNo" parameterType="int" resultType="WikiDto">
     SELECT wiki_no, title, content, likes
     FROM curriculum
     ORDER BY wiki_no DESC;
   </select>
 
-  <select id="getByWikiNo" parameterType="int" resultMap="wiki">
+  <select id="getByWikiNo" parameterType="int" resultType="WikiDto">
     SELECT
       wiki_no, study_no, title, curriculum.member_no, username, content_created_date, content_updated_date, content, likes
     FROM curriculum
@@ -77,5 +57,7 @@
     ORDER BY ordr ASC
     LIMIT 1;
   </select>
+
+
 
 </mapper>

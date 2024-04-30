@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mos.domain.wiki.repository.WikiApiRepository">
+
+  <select id="findByStudyNo" parameterType="int" resultType="JstreeWikiDto">
+		WITH RECURSIVE get_wiki_title_tree AS
+		(SELECT wiki_no, title, parent_wiki_no, ordr, 1 AS LEVEL
+		FROM wiki
+		WHERE
+			parent_wiki_no IS NULL
+			AND
+			study_no = #{studyNo}
+		
+		UNION ALL
+		
+		SELECT w.wiki_no,
+		w.title,
+		w.parent_wiki_no,
+		w.ordr,
+		c.LEVEL + 1
+		FROM get_wiki_title_tree c
+		INNER JOIN wiki w ON w.parent_wiki_no = c.wiki_no)
+		
+		SELECT wiki_no, parent_wiki_no, title, ordr
+		FROM get_wiki_title_tree
+	</select>
+
+	<insert id="saveNode" parameterType="JstreeWikiDto"
+          useGeneratedKeys="true" keyProperty="wikiNo">
+		INSERT INTO wiki(parent_wiki_no, study_no, title, ordr, member_no)
+		VALUES (
+			<choose>
+				<when test="parentWikiNo == 0">NULL,</when>
+				<otherwise>#{parentWikiNo},</otherwise>
+			</choose>
+			#{studyNo}, #{title}, #{ordr}, #{memberNo});
+	</insert>
+
+	<select id="findByWikiNo" parameterType="int" resultType="JstreeWikiDto">
+		SELECT wiki_no, parent_wiki_no, title, ordr
+		FROM wiki
+		WHERE wiki_no = #{wikiNo};
+	</select>
+
+	<update id="updateByWikiNo" parameterType="JstreeWikiDto">
+		UPDATE wiki
+		SET
+			parent_wiki_no =
+				<choose>
+					<when test="parentWikiNo == 0">NULL,</when>
+					<otherwise>#{parentWikiNo},</otherwise>
+				</choose>
+			title = #{title},
+			ordr = #{ordr}
+		WHERE wiki_no = #{wikiNo}
+	</update>
+
+	<delete id="deleteWikiByWikiNo" parameterType="int">
+		WITH RECURSIVE descendants AS (
+			SELECT wiki_no
+			FROM wiki
+			WHERE wiki_no = #{wikiNo}
+
+			UNION ALL
+
+			SELECT w.wiki_no
+			FROM wiki w
+			JOIN descendants d ON w.parent_wiki_no = d.wiki_no
+			)
+		DELETE FROM wiki
+		WHERE wiki_no IN (SELECT wiki_no FROM descendants);
+	</delete>
+
+
+</mapper>

@@ -1,15 +1,18 @@
 package com.mos.domain.wiki.repository;
 
-import com.mos.domain.wiki.dto.WikiDto;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+
+import com.mos.domain.wiki.dto.WikiDto;
 
 @Mapper
 public interface WikiRepository {
 
-  List<WikiDto> listByStudyNo(int studyNo);
-
+  // 모두의 위키 mooduwiki에서 사용함
   List<WikiDto> listByWikiNo();
+
+  List<WikiDto> listByStudyNo(int studyNo);
 
   WikiDto getByWikiNo(int wikiNo);
 
