@@ -166,7 +166,7 @@
       member_study_stat mss
       inner join study s on mss.study_no = s.study_no
     where
-      mss.member_no=#{memberDto.memberNo} AND mss.stat != 'S03-106'
+      mss.member_no=#{memberDto.memberNo}
     order by mss.favorites desc
   </select>
 
