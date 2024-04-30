@@ -13,19 +13,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WikiDto {
 
-  int wikiNo;
-  int studyNo;
-  String title;
-  String content;
-  int order;
-  int layer;
-  int layerOrder;
-  int likes; //반정규화
-  Date createdDate;
-  Date updatedDate;
-  Date contentCreatedDate;
-  Date contentUpdatedDate;
-  String stat;
-  int memberNo;
-  String username;
+  private int wikiNo;
+  private Integer parent_wiki_no;
+  private int studyNo;
+  private String title;
+  private String content;
+  private int ordr;
+  private int layer;
+  private int layerOrder;
+  private int likes; //반정규화
+  private Date createdDate;
+  private Date updatedDate;
+  private Date contentCreatedDate;
+  private Date contentUpdatedDate;
+  private String stat;
+  private int memberNo;
+  private String username;
 }
