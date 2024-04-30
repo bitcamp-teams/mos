@@ -39,6 +39,7 @@ tree.jstree({
 //potion, old_position을 반환하므로 순서를 DB에 저장할 수 있다.
 .on('move_node.jstree', function (e, data) {
   console.log(e, data);
+  patchSingleNode(data);
 })
 //rename_node는 노드의 이름을 변경했을 때(text 변경 시) 발생하는 이벤트다.
 .on('rename_node.jstree', function (e, data) {

@@ -53,7 +53,11 @@
 	<update id="updateByWikiNo" parameterType="com.mos.domain.wiki.dto.JstreeWikiDto">
 		UPDATE wiki
 		SET
-			parent_wiki_no = #{parentWikiNo},
+			parent_wiki_no =
+				<choose>
+					<when test="parentWikiNo == 0">NULL,</when>
+					<otherwise>#{parentWikiNo},</otherwise>
+				</choose>
 			title = #{title},
 			ordr = #{ordr}
 		WHERE wiki_no = #{wikiNo}
