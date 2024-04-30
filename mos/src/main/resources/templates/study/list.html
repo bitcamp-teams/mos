@@ -25,54 +25,66 @@
 
     <script data-th-inline="javascript">
         let page = 0;
-        const size = 20;
+        let isLastPage = false;
+        let loading = false; // 로딩 중 여부를 나타내는 변수
 
         function loadStudies() {
+            console.log("loadStudies()호출됨!!!!!!")
+            loading = true;
             $.ajax({
                 url: '/study/api/v1/list',
-                data: {
-                    page: page,
-                    size: size
+                    data: {
+                    page: page
                 },
                 success: function(data) {
+                    if (data.last) {
+                        isLastPage = true;
+                    }
                     const studyList = data.content;
                     const tbody = $('#studyTable tbody');
                     studyList.forEach(function(study) {
-                        const row = $('<tr></tr>');
+                            const row = $('<tr></tr>');
 
-                        row.append('<td>' + study.studyNo + '</td>');
-                        row.append('<td>' + study.title + '</td>');
-                        row.append('<td>' + study.memberNo + '</td>');
-                        row.append('<td>' + study.intake + '</td>');
-                        row.append('<td>' + study.method + '</td>');
-                        row.append('<td>' + study.recruitmentDeadline + '</td>');
+                            row.append('<td>' + study.studyNo + '</td>');
+                            row.append('<td>' + study.title + '</td>');
+                            row.append('<td>' + study.memberNo + '</td>');
+                            row.append('<td>' + study.intake + '</td>');
+                            row.append('<td>' + study.method + '</td>');
+                            row.append('<td>' + study.recruitmentDeadline + '</td>');
+                            row.append('<td>' + study.tags + '</td>');
 
-                        const tagList = $('<td></td>');
-                        study.tagList.forEach(function(tag) {
-                            tagList.append('<span>' + tag.name + '</span>');
-                        });
-                        row.append(tagList);
+                            // const tagList = $('<td></td>');
+                            // study.tagList.forEach(function (tag) {
+                            //     tagList.append('<span>' + tag.name + '</span>');
+                            // });
+                            // row.append(tagList);
 
-                        tbody.append(row);
+                            tbody.append(row);
+
                     });
 
                     page++;
 
                     if (data.last) {
-                        $(window).off('scroll'); // 마지막 페이지이면 스크롤 이벤트 해제
+                        $(document).off('scroll'); // 마지막 페이지이면 스크롤 이벤트 해제
                     }
+                },
+                complete: function() {
+                    loading = false; // 로딩 완료
                 }
             });
         }
-
-        $(window).scroll(function() {
-            if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+        let count = 0;
+        $(document).scroll(function() {
+            if (!loading && $(document).scrollTop() + $(window).height() >= $(document).height()) {
+                loading = true; // 로딩 시작
                 loadStudies();
             }
         });
 
-        loadStudies(); // 초기 데이터 로드
+        loadStudies();
     </script>
+
+
 </div>
 <div data-th-replace="footer::footer">꼬리말</div>
-

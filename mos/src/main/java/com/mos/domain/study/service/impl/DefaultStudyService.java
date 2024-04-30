@@ -4,6 +4,7 @@ import com.mos.domain.member.dto.MemberStudyDto;
 import java.util.List;
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.repository.TagRepository;
+import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -48,10 +49,11 @@ public class DefaultStudyService implements StudyService {
 
   @Override
   public Page<StudyDto> list(Pageable pageable) {
-    List<StudyDto> studyList = studyRepository.findAll(pageable.getOffset(), pageable.getPageSize());
-    int count = studyRepository.studyCount();
-    return new PageImpl<>(studyList, pageable, count);
+    List<StudyDto> studyList = studyRepository.findAll(pageable);
+    long totalCount = studyRepository.countAll(); // 전체 데이터 개수 구하기
+    return new PageImpl<>(studyList, pageable, totalCount);
   }
+
 
 
   @Override

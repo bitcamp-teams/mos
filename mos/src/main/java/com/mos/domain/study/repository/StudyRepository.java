@@ -13,14 +13,14 @@ public interface StudyRepository {
 
   void add(StudyDto studyDto);
 
-  List<StudyDto> findAll(long offset, int pageSize);
+  List<StudyDto> findAll(Pageable pageable);
+  long countAll(); //
 
   StudyDto getByStudyNo(int studyNo);
 
   void delete(int studyNo);
 
   int update(StudyDto studyDto);
-  int studyCount();
 
   boolean applyStudy(MemberStudyDto memberStudyDto);
 

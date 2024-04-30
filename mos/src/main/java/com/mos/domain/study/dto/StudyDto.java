@@ -28,5 +28,6 @@ public class StudyDto {
   private Date createdDate;
   private Date updatedDate;
   private int siggNo;
+  private String tags;
   private List<TagDto> tagList;
 }

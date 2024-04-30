@@ -13,12 +13,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result column="intake" property="intake"/>
     <result column="method" property="method"/>
     <result column="recruitment_deadline" property="recruitmentDeadline"/>
-
-    <collection property="tagList" ofType="TagDto">
-      <id column="tag_no" property="tagNo"/>
-      <result column="name" property="name"/>
-      <result column="path" property="path"/>
-    </collection>
+    <result column="created_date" property="createdDate"/>
+    <result column="tags" property="tags"/>
+<!--    <collection property="tagList" ofType="TagDto">-->
+<!--      <id column="tag_no" property="tagNo"/>-->
+<!--      <result column="name" property="name"/>-->
+<!--      <result column="path" property="path"/>-->
+<!--    </collection>-->
   </resultMap>
 
   <resultMap id="studyDetail" type="studyDto">
@@ -70,20 +71,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       s.intake,
       s.method,
       s.recruitment_deadline,
-      t.tag_no,
-      t.name
+      s.created_date,
+      GROUP_CONCAT(DISTINCT t.name) AS tags
     FROM
       study s
       LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
-      LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
+      LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
+    GROUP BY
+      s.study_no
     ORDER BY
-      study_no DESC
+      created_date DESC
     LIMIT #{offset}, #{pageSize};
   </select>
 
-  <select id="studyCount" resultType="int">
-    SELECT COUNT(*)
-    FROM study
+  <select id="countAll" resultType="long">
+    SELECT COUNT(*) FROM study
   </select>
 
   <select id="getByStudyNo" resultMap="studyDetail">
