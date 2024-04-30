@@ -100,17 +100,17 @@
         </script>
 
         <!-- 알림 기능 -->
-        <form id="notificationForm" action="#" th:action="@{/notify/save}" method="post">
-            <div>
-                <input type="hidden" name="recipientId" th:value="${study.memberNo}">
-            </div>
-            <div>
-                <input type="hidden" name="message" th:value="${study.title + '글에 댓글이 달렸습니다!'}">
-            </div>
-            <div>
-                <input type="hidden" name="link" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">
-            </div>
-        </form>
+<!--        <form id="notificationForm" action="#" th:action="@{/notify/save}" method="post">-->
+<!--            <div>-->
+<!--                <input type="hidden" name="recipientId" th:value="${study.memberNo}">-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <input type="hidden" name="message" th:value="${study.title + '글에 댓글이 달렸습니다!'}">-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <input type="hidden" name="link" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">-->
+<!--            </div>-->
+<!--        </form>-->
         <!--댓글추가 기능 시작-->
         <form id="commentForm" th:action="@{/comment/study/add}" method="post">
             <p>
