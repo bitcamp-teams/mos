@@ -38,4 +38,9 @@ public class DefaultWikiApiService implements WikiApiService {
   public void patchWikiByWikiNo(JstreeWikiDto jstreeWikiDto) {
     wikiApiRepository.updateByWikiNo(jstreeWikiDto);
   }
+
+  @Override
+  public void deleteWikiByWikiNo(int wikiNo) {
+    wikiApiRepository.deleteWikiByWikiNo(wikiNo);
+  }
 }

@@ -30,6 +30,10 @@ tree.jstree({
   plugins: ['wholerow', 'state', 'dnd', 'types', 'contextmenu', 'unique']
   //순서 저장하는 기능을 'sort' 플러그인으로 구현 가능할지도..
 })
+.on('delete_node.jstree', function (e, data) {
+  console.log(e, data);
+  deleteSingleNode(data);
+})
 //여기서부터 차례로 이벤트 리스너를 등록한다.
 //클릭으로 인한 선택 등, select 대상이 변경되었을 때 발생하는 이벤트
 .on('changed.jstree', function (e, data) {
@@ -64,7 +68,7 @@ function patchSingleNode(data) {
         "position": data.node.position
       })
   $.ajax({
-        method: 'PUT',
+        method: 'PATCH',
         url: patchUrl,
         contentType: 'application/json',
         data: node,
@@ -114,4 +118,48 @@ function saveSingleNode(data) {
         }
       }
   );
+}
+
+function deleteSingleNode(data) {
+  let node = JSON.stringify(
+      //지워졌을 때 같은 depth인 position 도 앞으로 다 땡겨야 한다..
+      {
+        "studyNo": studyNo,
+        "id": data.node.id,
+        //최상단 노드 # 인 경우 0으로 직렬화함
+        "parent": data.node.parent === '#' ? 0 : data.node.parent,
+        "text": data.node.text,
+        "position": data.node.position
+      })
+  var confirm = false;
+
+  if (data.node.children.length !== 0) {
+    question = data.node.text + " 노드는 " + data.node.children.length
+        + "개의 자식이 있습니다.\n정말 삭제하시겠습니까?\n이 작업은 복구가 불가능합니다."
+    confirm = window.confirm(question);
+  } else {
+    question = data.node.text + " 노드를 정말 삭제하시겠습니까?\n이 작업은 복구가 불가능합니다."
+    confirm = window.confirm(question);
+  }
+  if (confirm) {
+    $.ajax({
+          method: 'DELETE',
+          url: patchUrl,
+          contentType: 'application/json',
+          data: node,
+          success: function (res) {
+            // 변경은 DB 정합성이 유지된다.
+          },
+          error: function (res) {
+            // 문제가 발생한 경우에만 데이터 동기가 깨진 것이므로 트리를 다시 그린다.
+            window.alert('오류가 발생했습니다. 데이터를 저장하지 못했습니다.')
+            console.log(res);
+            tree.jstree('refresh');
+          }
+        }
+    );
+  } else {
+    tree.jstree('refresh');
+  }
+
 }

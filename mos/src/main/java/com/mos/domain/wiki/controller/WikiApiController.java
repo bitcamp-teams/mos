@@ -51,17 +51,20 @@ public class WikiApiController {
     return wikiApiService.getNodeByWikiNo(wikiNo);
   }
 
+  //TODO: 권한 검증
   //일부 항목 업데이트(수정)
-  @PutMapping("")
+  @PatchMapping("")
   public void updateWiki(@LoginUser MemberDto loginUser, @RequestBody JstreeWikiDto jstreeWikiDto) {
     //한개의 위키 데이터를 가져와서, wiki_no 기준으로 맞는 것을 patch 한다. (parent_wiki_no, title, ordr만 변경됨)
     wikiApiService.patchWikiByWikiNo(jstreeWikiDto);
   }
 
+  //TODO: 권한 검증
+  //DANGER! 항목 삭제 (Recursive)
   @DeleteMapping("")
-  public String deleteWiki() {
+  public void deleteWiki(@LoginUser MemberDto loginUser, @RequestBody JstreeWikiDto jstreeWikiDto) {
     log.debug("api/wiki: delete");
-    return "deleteWiki Called";
+    wikiApiService.deleteWikiByWikiNo(jstreeWikiDto.getWikiNo());
   }
 
 }

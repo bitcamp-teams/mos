@@ -3,14 +3,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mos.domain.wiki.repository.WikiApiRepository">
 
-	<resultMap id="Node" type="com.mos.domain.wiki.dto.JstreeWikiDto">
-		<id column="wiki_no" property="wikiNo"/>
-		<result column="parent_wiki_no" property="parentWikiNo"/>
-		<result column="title" property="title"/>
-		<result column="ordr" property="ordr"/>
-	</resultMap>
-
-  <select id="findByStudyNo" parameterType="int" resultMap="Node">
+  <select id="findByStudyNo" parameterType="int" resultType="JstreeWikiDto">
 		WITH RECURSIVE get_wiki_title_tree AS
 		(SELECT wiki_no, title, parent_wiki_no, ordr, 1 AS LEVEL
 		FROM wiki
@@ -33,7 +26,7 @@
 		FROM get_wiki_title_tree
 	</select>
 
-	<insert id="saveNode" parameterType="com.mos.domain.wiki.dto.JstreeWikiDto"
+	<insert id="saveNode" parameterType="JstreeWikiDto"
           useGeneratedKeys="true" keyProperty="wikiNo">
 		INSERT INTO wiki(parent_wiki_no, study_no, title, ordr, member_no)
 		VALUES (
@@ -44,13 +37,13 @@
 			#{studyNo}, #{title}, #{ordr}, #{memberNo});
 	</insert>
 
-	<select id="findByWikiNo" parameterType="int" resultType="com.mos.domain.wiki.dto.JstreeWikiDto">
+	<select id="findByWikiNo" parameterType="int" resultType="JstreeWikiDto">
 		SELECT wiki_no, parent_wiki_no, title, ordr
 		FROM wiki
 		WHERE wiki_no = #{wikiNo};
 	</select>
 
-	<update id="updateByWikiNo" parameterType="com.mos.domain.wiki.dto.JstreeWikiDto">
+	<update id="updateByWikiNo" parameterType="JstreeWikiDto">
 		UPDATE wiki
 		SET
 			parent_wiki_no =
@@ -62,6 +55,22 @@
 			ordr = #{ordr}
 		WHERE wiki_no = #{wikiNo}
 	</update>
+
+	<delete id="deleteWikiByWikiNo" parameterType="int">
+		WITH RECURSIVE descendants AS (
+			SELECT wiki_no
+			FROM wiki
+			WHERE wiki_no = #{wikiNo}
+
+			UNION ALL
+
+			SELECT w.wiki_no
+			FROM wiki w
+			JOIN descendants d ON w.parent_wiki_no = d.wiki_no
+			)
+		DELETE FROM wiki
+		WHERE wiki_no IN (SELECT wiki_no FROM descendants);
+	</delete>
 
 
 </mapper>

@@ -16,4 +16,5 @@ public interface WikiApiService {
 
   void patchWikiByWikiNo(JstreeWikiDto jstreeWikiDto);
 
+  void deleteWikiByWikiNo(int wikiNo);
 }

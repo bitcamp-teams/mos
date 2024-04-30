@@ -18,4 +18,6 @@ public interface WikiApiRepository {
   JstreeWikiDto findByWikiNo(int wikiNo);
 
   void updateByWikiNo(JstreeWikiDto jstreeWikiDto);
+
+  void deleteWikiByWikiNo(int wikiNo);
 }
