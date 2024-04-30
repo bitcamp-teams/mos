@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/notify")
 public class NotifyController {
 
   private static final Log log = LogFactory.getLog(NotifyController.class);
   private final NotifyService notifyService;
 
 
-  @GetMapping("/notify/list")
+  @GetMapping("list")
   public ResponseEntity<?> list(NotifyListDto notifyListDto, HttpSession session, @PageableDefault Pageable page) {
     MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
     notifyListDto.setRecipientId(loginUser.getMemberNo());
@@ -31,7 +32,7 @@ public class NotifyController {
     return ResponseEntity.ok().body(list);
   }
 
-  @PostMapping("/notify/update")
+  @PostMapping("update")
   public ResponseEntity<?> updateRead(@RequestBody NotifyUpdateDto updateDto) {
     int id = updateDto.getId();
     if (!notifyService.existsById(id)) {

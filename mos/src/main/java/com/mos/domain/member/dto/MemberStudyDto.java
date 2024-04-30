@@ -17,9 +17,9 @@ public class MemberStudyDto {
 
     private StudyDto studyDto;
 
-    private String stat;
+    private String status;
 
-    private String favorites;
+    private boolean favorites;
 
     private String applyMsg;
 

@@ -27,8 +27,9 @@
 
   <resultMap id="MemberStudyMap" type="MemberStudyDto">
     <id column="member_study_stat_no" property="no"/>
-    <result column="stat" property="stat"/>
+    <result column="stat" property="status"/>
     <result column="apply_msg" property="applyMsg"/>
+    <result column="favorites" property="favorites"/>
 
     <association property="studyDto" javaType="StudyDto">
       <id column="study_no" property="studyNo"/>
@@ -44,6 +45,16 @@
       <result column="username" property="userName"/>
     </association>
 
+  </resultMap>
+
+  <resultMap id="MyStudiesMap" type="MyStudiesDto">
+    <id column="member_study_stat_no" property="id"/>
+    <result column="apply_msg" property="message"/>
+    <result column="member_no" property="memberNo"/>
+    <result column="study_no" property="studyNo"/>
+    <result column="stat" property="status"/>
+    <result column="photo" property="memberPhoto"/>
+    <result column="username" property="memberName"/>
   </resultMap>
 
   <resultMap id="studyComment" type="StudyCommentDto">
@@ -66,6 +77,25 @@
     <result column="layer" property="layer"/>
   </resultMap>
 
+  <select id="findListByStudyNo" resultMap="MyStudiesMap">
+    SELECT
+      mss.member_study_stat_no,
+      mss.member_no,
+      mss.study_no,
+      mss.stat,
+      mss.apply_msg,
+      m.photo,
+      m.username
+    FROM member_study_stat mss
+    JOIN member m ON mss.member_no = m.member_no
+    WHERE mss.study_no = #{studyNo} AND mss.member_no != #{memberNo} AND mss.stat = 'S03-104';
+  </select>
+
+  <update id="updateStatus" parameterType="MyStudiesUpdateDto">
+    UPDATE member_study_stat
+    SET stat = #{message}
+    WHERE member_study_stat.member_study_stat_no = #{id};
+  </update>
 
   <select id="findByEmail" parameterType="MemberDto" resultType="MemberDto">
     select * from member where email=#{email};
@@ -113,6 +143,7 @@
       member_no=#{memberNo}
   </select>
 
+  <!--마이 스터디 조회-->
   <select id="findMyStudies" resultMap="MemberStudyMap" parameterType="int">
     select
       s.study_no,
@@ -122,14 +153,17 @@
       s.end_date,
       mss.member_study_stat_no,
       mss.stat,
+      mss.favorites,
       mss.apply_msg
     from
       member_study_stat mss
       inner join study s on mss.study_no = s.study_no
     where
-      mss.member_no=#{no}
+      mss.member_no=#{memberDto.memberNo} AND mss.stat != 'S03-106'
+    order by mss.favorites desc
   </select>
 
+  <!--마이스터디 상세보기-->
   <select id="viewMyStudies" resultMap="MemberStudyMap" parameterType="int">
     select
     s.study_no,
@@ -191,5 +225,12 @@
     WHERE member_no = #{memberNo}
     ORDER BY created_date DESC;
   </select>
+
+  <!-- 스터디 즐겨찾기 추가-->
+  <update id="addFavorites" parameterType="UpdateFavoritesDto">
+    UPDATE member_study_stat
+    SET favorites = #{favorites}
+    WHERE member_no = #{memberNo} AND study_no = #{studyNo}
+  </update>
 
 </mapper>
