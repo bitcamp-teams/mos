@@ -25,6 +25,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -113,9 +116,12 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
    * @return 해당 스터디 멤버 리스트
    */
   @GetMapping("studyManagement")
-  public ResponseEntity<List<MyStudiesDto>> viewMyStudy(int studyNo, @LoginUser MemberDto loginUser) {
+  public ResponseEntity<Page<MyStudiesDto>> studyManagement(
+      int studyNo,
+      @LoginUser MemberDto loginUser,
+      @PageableDefault(size = 5) Pageable page) {
     int memberNo = loginUser.getMemberNo();
-    return ResponseEntity.ok().body(memberService.findListByStudyNo(studyNo, memberNo));
+    return ResponseEntity.ok().body(memberService.findListByStudyNo(studyNo, memberNo, page));
   }
 
   @PostMapping("updateStatus")

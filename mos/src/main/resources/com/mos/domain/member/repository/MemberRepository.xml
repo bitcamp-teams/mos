@@ -88,7 +88,14 @@
       m.username
     FROM member_study_stat mss
     JOIN member m ON mss.member_no = m.member_no
-    WHERE mss.study_no = #{studyNo} AND mss.member_no != #{memberNo} AND mss.stat = 'S03-104';
+    WHERE mss.study_no = #{studyNo} AND mss.member_no != #{memberNo} AND mss.stat = 'S03-104'
+    LIMIT #{offset}, #{pageSize};
+  </select>
+
+  <select id="acceptCount">
+    SELECT count(*)
+    FROM member_study_stat
+    WHERE study_no = #{studyNo} AND member_no != #{memberNo} AND stat = 'S03-104';
   </select>
 
   <update id="updateStatus" parameterType="MyStudiesUpdateDto">

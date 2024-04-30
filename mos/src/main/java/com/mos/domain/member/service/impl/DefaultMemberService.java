@@ -17,6 +17,10 @@ import java.util.List;
 
 import com.mos.domain.wiki.dto.WikiDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,10 +66,12 @@ public class DefaultMemberService implements MemberService {
     return myStudy;
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
-  public List<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo) {
-    return memberRepository.findListByStudyNo(studyNo, memberNo);
+  public Page<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo, Pageable page) {
+    List<MyStudiesDto> list = memberRepository.findListByStudyNo(studyNo, memberNo, page.getOffset(), page.getPageSize());
+    int count = memberRepository.acceptCount(studyNo, memberNo);
+    return new PageImpl<>(list, page, count);
   }
 
   @Override
