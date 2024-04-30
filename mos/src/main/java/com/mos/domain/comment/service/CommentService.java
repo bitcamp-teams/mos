@@ -2,11 +2,8 @@ package com.mos.domain.comment.service;
 
 import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.dto.WikiCommentDto;
-import java.beans.Transient;
 import java.util.List;
 
-import com.mos.domain.wiki.dto.WikiDto;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface CommentService {

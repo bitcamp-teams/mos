@@ -4,25 +4,31 @@ import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.comment.repository.CommentRepository;
 import com.mos.domain.comment.service.CommentService;
-import com.mos.domain.study.repository.StudyRepository;
 import java.util.List;
+
+import com.mos.global.notification.event.CommentAndAuthorIdEvent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DefaultCommentService implements CommentService {
 
   private final CommentRepository commentRepository;
+  private final ApplicationEventPublisher applicationEventPublisher;
 
   @Override
+  @Transactional(readOnly = true)
   public List<StudyCommentDto> getStudyComments(int studyNo) {
     return commentRepository.findAllStudyComments(studyNo);
   }
 
   @Override
   public void addStudyComment(StudyCommentDto studyCommentDto) {
+    publishEvent(studyCommentDto);
     commentRepository.addStudyComment(studyCommentDto);
   }
 
@@ -32,6 +38,7 @@ public class DefaultCommentService implements CommentService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<WikiCommentDto> getWikiComments(int wikiNo) {
     return commentRepository.findAllWikiComments(wikiNo);
   }
@@ -44,5 +51,11 @@ public class DefaultCommentService implements CommentService {
   @Override
   public void deleteWikiComment(int commentNo) {
     commentRepository.deleteWikiComment(commentNo);
+  }
+
+  private void publishEvent(StudyCommentDto studyCommentDto) {
+    CommentAndAuthorIdEvent commentAndAuthorIdEvent =
+        new CommentAndAuthorIdEvent(studyCommentDto);
+    applicationEventPublisher.publishEvent(commentAndAuthorIdEvent);
   }
 }

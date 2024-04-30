@@ -1,9 +1,10 @@
 package com.mos.domain.notify.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
+@AllArgsConstructor
 public class NotifyAddDto {
   private String message;
   private int recipientId;

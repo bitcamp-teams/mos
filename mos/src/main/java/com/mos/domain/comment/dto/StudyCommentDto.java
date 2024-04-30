@@ -15,6 +15,8 @@ public class StudyCommentDto {
   int parentCommentNo;
   int studyNo;
   int memberNo;
+  int notiReceiver;
+  String title;
   String username;
   String content;
   int layer;

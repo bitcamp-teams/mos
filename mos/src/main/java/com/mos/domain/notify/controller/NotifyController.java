@@ -1,11 +1,9 @@
 package com.mos.domain.notify.controller;
 
 import com.mos.domain.member.dto.MemberDto;
-import com.mos.domain.notify.dto.NotifyAddDto;
 import com.mos.domain.notify.dto.NotifyListDto;
 import com.mos.domain.notify.dto.NotifyUpdateDto;
 import com.mos.domain.notify.service.NotifyService;
-import com.mos.domain.notify.service.NotifyServiceImpl;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
@@ -13,15 +11,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,12 +22,6 @@ public class NotifyController {
   private static final Log log = LogFactory.getLog(NotifyController.class);
   private final NotifyService notifyService;
 
-  @PostMapping("save")
-  public ResponseEntity<NotifyAddDto> save(NotifyAddDto notifyDto) {
-    log.debug("notifyDto = " + notifyDto);
-    notifyService.save(notifyDto);
-    return ResponseEntity.ok(notifyDto);
-  }
 
   @GetMapping("list")
   public ResponseEntity<?> list(NotifyListDto notifyListDto, HttpSession session, @PageableDefault Pageable page) {
