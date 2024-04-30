@@ -1,34 +1,69 @@
 <div data-th-replace="header::header">머리말</div>
-<div class="container page-margin wrapper-mos">
-    <h1>스터디 모집 목록</h1>
-    <table class="table table-striped table-hover">
-        <thead>
-        <tr>
-            <th>번호</th>
-            <th>진행방법</th>
-            <th>모집글 제목</th>
-            <th>태그</th>
-            <th>스터디장</th>
-            <th>정원</th>
-            <th>마감일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr data-th-each="study : ${studyList}" data-th-object="${study}">
-            <td data-th-text="*{studyNo}">100</td>
-            <td data-th-text="*{method}">북스터디</td>
-            <td><a data-th-href="@{view(studyNo=*{studyNo})}" data-th-text="*{title}">OO스터디 모집합니다.</a></td>
-            <td>
-                <div data-th-each="tag : ${study.tagList}" data-th-object="${tag}">
-                    <a data-th-text="*{name}">Java</a>
-                </div>
-            </td>
-            <td data-th-text="*{memberNo}">10</td>
-            <td data-th-text="*{intake}">5</td>
-            <td data-th-text="*{recruitmentDeadline}">2024-03-27</td>
-        </tr>
-        </tbody>
-    </table>
+<meta charset='UTF-8'>
+<div class="page-margin wrapper-mos">
+  <h1>스터디 모집 목록</h1>
+
+  <style>
+    #searchForm {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    #searchForm > div {
+      margin-left: 10px; /* 각 요소 사이의 간격 조정 */
+    }
+
+    #type {
+      width: 160px;
+    }
+  </style>
+
+  <form action="/study/search" method="get" id="searchForm">
+    <div>
+      <label for="type"></label>
+      <select name="type" id="type">
+        <option value="">검색 유형 선택</option>
+        <option value="title">제목</option>
+        <option value="introduction">모집글 내용</option>
+        <option value="tag">기술스택</option>
+      </select>
+    </div>
+    <div>
+      <label for="keyword"></label>
+      <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요.">
+    </div>
+    <button type="submit">검색</button>
+  </form>
+
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>번호</th>
+      <th>진행방법</th>
+      <th>모집글 제목</th>
+      <th>태그</th>
+      <th>스터디장</th>
+      <th>정원</th>
+      <th>마감일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-th-each="study : ${studyList}" data-th-object="${study}">
+      <td data-th-text="*{studyNo}">100</td>
+      <td data-th-text="*{method}">북스터디</td>
+      <td><a data-th-href="@{view(studyNo=*{studyNo})}" data-th-text="*{title}">OO스터디 모집합니다.</a></td>
+      <td>
+        <div data-th-each="tag : ${study.tagList}" data-th-object="${tag}">
+          <a data-th-text="*{name}">Java</a>
+        </div>
+      </td>
+      <td data-th-text="*{memberNo}">10</td>
+      <td data-th-text="*{intake}">5</td>
+      <td data-th-text="*{recruitmentDeadline}">2024-03-27</td>
+    </tr>
+    </tbody>
+  </table>
 
 </div>
 <div data-th-replace="footer::footer">꼬리말</div>

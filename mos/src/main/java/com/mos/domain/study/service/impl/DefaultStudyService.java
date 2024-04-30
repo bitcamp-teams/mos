@@ -59,4 +59,18 @@ public class DefaultStudyService implements StudyService {
       studyRepository.applyStudy(memberStudyDto);
       return true;
   }
+
+  @Override
+  public List<StudyDto> searchByTypeAndKeyword(String type, String keyword) {
+    if ("title".equals(type)) {
+      return studyRepository.searchByTitle(keyword);
+    } else if ("introduction".equals(type)) {
+      return studyRepository.searchByIntroduction(keyword);
+    } else if ("tag".equals(type)) {
+      return studyRepository.searchByTag(keyword);
+    } else {
+      throw new IllegalArgumentException("유효하지 않은 검색 유형입니다.");
+    }
+  }
+
 }
