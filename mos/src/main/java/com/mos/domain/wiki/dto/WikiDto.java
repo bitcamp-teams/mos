@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class WikiDto {
 
   private int wikiNo;
+  private Integer parent_wiki_no;
   private int studyNo;
   private String title;
   private String content;

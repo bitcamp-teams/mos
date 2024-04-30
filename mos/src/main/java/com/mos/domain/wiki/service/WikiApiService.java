@@ -13,4 +13,7 @@ public interface WikiApiService {
   int addNode(JstreeWikiDto jstreeWikiDto);
 
   JstreeWikiDto getNodeByWikiNo(int wikiNo);
+
+  void patchWikiByWikiNo(JstreeWikiDto jstreeWikiDto);
+
 }

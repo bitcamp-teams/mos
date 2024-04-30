@@ -16,4 +16,6 @@ public interface WikiApiRepository {
   int saveNode(JstreeWikiDto jstreeWikiDto);
 
   JstreeWikiDto findByWikiNo(int wikiNo);
+
+  void updateByWikiNo(JstreeWikiDto jstreeWikiDto);
 }

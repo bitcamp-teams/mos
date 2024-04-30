@@ -9,6 +9,8 @@ public class ParentWikiNoSerializer extends JsonSerializer<Integer> {
 
   @Override
   public void serialize(Integer value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-    gen.writeString(value==0?"#" : String.valueOf(value));
+    gen.writeString(value == 0 ? "#" : String.valueOf(value));
   }
+
+
 }

@@ -23,7 +23,7 @@ public class JstreeWikiDto {
 
   // jstree에서 부모 노드의 키를 parent라고 한다.
   // 최상위 노드의 아이디는 '#' 으로 정의되어 있다.
-  // 이를 만족시키기 위해 따로 시리얼라이저를 정의했다. MyBatis에서 null을 0으로 반환하는데, 이 경우는 json으로 직렬화할 때 0은 #으로 값을 넣도록 한 것이다.
+  // 이를 만족시키기 위해 따로 시리얼라이저를 정의했다.
   @JsonProperty(value = "parent")
   @JsonSerialize(using = ParentWikiNoSerializer.class)
   private int parentWikiNo;

@@ -33,4 +33,9 @@ public class DefaultWikiApiService implements WikiApiService {
   public JstreeWikiDto getNodeByWikiNo(int wikiNo) {
     return wikiApiRepository.findByWikiNo(wikiNo);
   }
+
+  @Override
+  public void patchWikiByWikiNo(JstreeWikiDto jstreeWikiDto) {
+    wikiApiRepository.updateByWikiNo(jstreeWikiDto);
+  }
 }

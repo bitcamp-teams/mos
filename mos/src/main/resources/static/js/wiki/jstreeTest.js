@@ -1,8 +1,11 @@
 //RESTful
 const url = new URL(window.location.href)
 const urlParams = url.searchParams;
-const getListUrl = "/api/wiki?studyNo=" + urlParams.get('studyNo');
+const studyNo = urlParams.get('studyNo');
+const getListUrl = "/api/wiki?studyNo=" + studyNo;
 const updateListOrderUrl = "/api/wiki";
+const patchUrl = "/api/wiki"
+var count = 1;
 var updateListTextUrl = "/api/wiki";
 var updateContentUrl = "/api/wiki";
 var deleteWikiUrl = "/api/wiki";
@@ -40,78 +43,74 @@ tree.jstree({
 //rename_node는 노드의 이름을 변경했을 때(text 변경 시) 발생하는 이벤트다.
 .on('rename_node.jstree', function (e, data) {
   console.log(e, data);
+  patchSingleNode(data);
 })
 //새로 노드를 만들었을 때, create_node 이벤트가 발생한다.
 .on('create_node.jstree', function (e, data) {
   console.log(e, data);
-  $.post('/api/wiki', function (data) {
-
-  })
-
+  saveSingleNode(data);
 });
 
-//#addNode btn에 대해, 선택된 node와 같은 depth에 node를 추가하고,
-//해당 노드의 정보를 가지고 DB에 추가를 요청한다.
-$('#add').on('click', function (e, data) {
-  console.log(e, data);
-  var selectedNodeIds = $('#wikiTree').jstree('get_selected', true);
-  var singleSelectedNodeId = selectedNodeIds[0];
-  console.log(singleSelectedNodeId);
+function patchSingleNode(data) {
+  let node = JSON.stringify(
+      {
+
+        "studyNo": studyNo,
+        "id": data.node.id,
+        //최상단 노드 # 인 경우 0으로 직렬화함
+        "parent": data.node.parent === '#' ? 0 : data.node.parent,
+        "text": data.node.text,
+        "position": data.node.position
+      })
+  $.ajax({
+        method: 'PUT',
+        url: patchUrl,
+        contentType: 'application/json',
+        data: node,
+        success: function (res) {
+          // 변경은 DB 정합성이 유지된다.
+        },
+        error: function (res) {
+          // 문제가 발생한 경우에만 데이터 동기가 깨진 것이므로 트리를 다시 그린다.
+          window.alert('오류가 발생했습니다. 데이터를 저장하지 못했습니다.')
+          console.log(res);
+          tree.jstree('refresh');
+        }
+      }
+  );
+}
+
+//최상단인 경우에는 wiki_no(id)를 받아와야 하므로 별도의 함수를 만들어야 함
+
+function saveSingleNode(data) {
+  let selectedNodeIds = $('#wikiTree').jstree('get_selected', true);
+  let singleSelectedNodeId = selectedNodeIds[0];
+  let node = JSON.stringify(
+      {
+        "studyNo": studyNo,
+        //최상단 노드 # 인 경우 0으로 직렬화함
+        "parent": singleSelectedNodeId.id === '#' ? 0
+            : singleSelectedNodeId.id,
+        "text": data.node.text,
+        // "position":
+        "position": data.node.position
+      })
+  console.log('saved node', singleSelectedNodeId);
   $.ajax({
         method: 'post',
         url: '/api/wiki',
         contentType: 'application/json',
-        data: JSON.stringify(
-            {"studyNo": 1, "parent": 63, "text": "새로운 아이템 추가!", "position": "3"}),
+        data: node,
         success: function (res) {
-          //성공적으로 응답을 받았을 때
-          console.log(res);
-          console.log('success');
+          //db에서 autoincrement된 id를 받아온다.
+          tree.jstree('refresh');
         },
-        //에러 처리가 필요하면 여기서
         error: function (res) {
+          // 문제가 발생한 경우에만 데이터 동기가 깨진 것이므로 트리를 다시 그린다.
+          window.alert('오류가 발생했습니다. 데이터를 저장하지 못했습니다.')
           console.log(res);
+          tree.jstree('refresh');
         }
       }
   );
-});
-
-$('#patch').on('click', function (e, data) {
-  console.log('내가 버튼을 눌렀다!');
-  console.log(e, data);
-  $.ajax({
-        method: 'patch',
-        url: '/api/wiki',
-        data: {id: "1", parent: "#"},
-        success: function (res) {
-          //성공적으로 응답을 받았을 때
-          console.log(res);
-          console.log('success');
-        },
-        //에러 처리가 필요하면 여기서
-        error: function (res) {
-          console.log(res);
-        }
-      }
-  );
-});
-
-$('#delete').on('click', function (e, data) {
-  console.log('내가 버튼을 눌렀다!');
-  console.log(e, data);
-  $.ajax({
-        method: 'delete',
-        url: '/api/wiki',
-        data: {id: "1", parent: "#"},
-        success: function (res) {
-          //성공적으로 응답을 받았을 때
-          console.log(res);
-          console.log('success');
-        },
-        //에러 처리가 필요하면 여기서
-        error: function (res) {
-          console.log(res);
-        }
-      }
-  );
-});
+}
