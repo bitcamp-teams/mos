@@ -27,8 +27,17 @@ tree.jstree({
       dataType: "json"
     }
   },
-  plugins: ['wholerow', 'state', 'dnd', 'types', 'contextmenu', 'unique']
+  plugins: ['wholerow', 'state', 'dnd', 'types', 'contextmenu', 'unique'],
   //순서 저장하는 기능을 'sort' 플러그인으로 구현 가능할지도..
+
+  //우클릭 컨텍스트 메뉴에서 Edit(cut, copy) 기능은 표시 X
+  contextmenu: {
+    'items': function (node) {
+      var items = $.jstree.defaults.contextmenu.items();
+      items.ccp = false;
+      return items;
+    }
+  },
 })
 .on('delete_node.jstree', function (e, data) {
   console.log(e, data);
