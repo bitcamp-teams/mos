@@ -20,4 +20,9 @@ public interface StudyRepository {
 
   boolean applyStudy(MemberStudyDto memberStudyDto);
 
+  List<StudyDto> searchByTitle(String keyword);
+
+  List<StudyDto> searchByIntroduction(String keyword);
+
+  List<StudyDto> searchByTag(String keyword);
 }

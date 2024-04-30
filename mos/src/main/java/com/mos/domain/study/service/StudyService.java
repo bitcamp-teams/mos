@@ -21,4 +21,5 @@ public interface StudyService {
 
   boolean applyStudy(MemberStudyDto memberStudyDto);
 
+  List<StudyDto> searchByTypeAndKeyword(String type, String keyword);
 }
