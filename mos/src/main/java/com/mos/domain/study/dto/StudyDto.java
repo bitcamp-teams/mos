@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import org.springframework.data.relational.core.mapping.Column;
 
 @Data
 @Builder
@@ -30,4 +32,6 @@ public class StudyDto {
   private int siggNo;
   private String tags;
   private List<TagDto> tagList;
+  private int hitCount;
+
 }

@@ -22,6 +22,8 @@ public interface StudyRepository {
 
   int update(StudyDto studyDto);
 
+  void updateHitCount(int studyNo);
+
   boolean applyStudy(MemberStudyDto memberStudyDto);
 
   List<StudyDto> searchByTitle(String keyword);

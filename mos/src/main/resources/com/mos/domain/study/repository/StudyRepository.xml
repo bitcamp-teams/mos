@@ -15,6 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result column="recruitment_deadline" property="recruitmentDeadline"/>
     <result column="created_date" property="createdDate"/>
     <result column="tags" property="tags"/>
+    <result column="hit_count" property="hitCount"/>
 <!--    <collection property="tagList" ofType="TagDto">-->
 <!--      <id column="tag_no" property="tagNo"/>-->
 <!--      <result column="name" property="name"/>-->
@@ -34,6 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result column="start_date" property="startDate"/>
     <result column="introduction" property="introduction"/>
     <result column="location" property="location"/>
+    <result column="hit_count" property="hitCount"/>
 
     <collection property="tagList" ofType="TagDto">
       <id column="tag_no" property="tagNo"/>
@@ -72,6 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       s.method,
       s.recruitment_deadline,
       s.created_date,
+      s.hit_count,
       GROUP_CONCAT(DISTINCT t.name) AS tags
     FROM
       study s
@@ -101,6 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       s.start_date,
       s.end_date,
       s.stat,
+      s.hit_count,
       t.tag_no,
       t.name
     FROM
@@ -139,6 +143,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     WHERE
       study_no = #{studyNo};
   </delete>
+
+  <!-- 조회수 증가 -->
+  <update id="updateHitCount" parameterType="int">
+    UPDATE
+      study
+    SET
+      hit_count = hit_count + 1
+    WHERE
+      study_no=#{studyNo}
+  </update>
 
   <!-- 스터디 신청기능-->
  <insert id="applyStudy" parameterType="MemberStudyDto">
