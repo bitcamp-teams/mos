@@ -207,22 +207,6 @@ public class StudyController {
     return "This is a test";
   }
 
-//  @GetMapping("search")
-//  public String search(Model model,
-//                       @RequestParam(value="title") String title,
-//                       @RequestParam(value="introduction") String introduction,
-//                       @RequestParam(required = false, defaultValue = "1")int num)throws Exception {
-//
-//    if (title != null  && introduction !=null) {
-//      search(model,title,introduction,num);
-//      log.debug("studyService = {}", studyService.toString());
-//    } else {
-//      model.addAttribute("studyList", studyService.list());
-//      log.debug("studyService = {}", studyService.toString());
-//    }
-//    return "study/list";
-//  }
-
   @GetMapping("/search")
   public String search(Model model,
                        @RequestParam(value="type") String type,
