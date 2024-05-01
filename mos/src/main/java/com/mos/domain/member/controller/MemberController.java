@@ -252,8 +252,7 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
 
 
   @PostMapping("/addFavorites")
-  public ResponseEntity<?> addFavorites(@RequestBody UpdateFavoritesDto updateFavoritesDto, Model model) {
-    System.out.println("updateFavoritesDto = " + updateFavoritesDto);
+  public ResponseEntity<?> addFavorites(@RequestBody UpdateFavoritesDto updateFavoritesDto) {
      memberService.addFavorites(updateFavoritesDto);
      return ResponseEntity.ok().build();
   }

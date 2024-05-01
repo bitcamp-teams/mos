@@ -52,6 +52,9 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
+#sentinel {
+  height: 1px; /* 작은 높이 값을 설정하여 요소가 화면에 표시되도록 합니다. */
+
 .searchForm {
   width: 300px;
 }
@@ -61,4 +64,5 @@
     overflow: hidden; /* 넘치는 내용 숨김 */
     text-overflow: ellipsis; /* 넘치는 내용에 '...' 추가 */
     white-space: nowrap; /* 줄 바꿈 방지 */
+
 }

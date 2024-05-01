@@ -1,9 +1,9 @@
 <div data-th-replace="header::header">머리말</div>
-<meta charset='UTF-8'>
-<div class="page-margin wrapper-mos">
-  <h1>스터디 모집 목록</h1>
 
-  <style>
+<div class="container page-margin wrapper-mos">
+    <h1>스터디 모집 목록</h1>
+  
+   <style>
     #searchForm {
       display: flex;
       justify-content: flex-end;
@@ -36,34 +36,102 @@
     <button type="submit">검색</button>
   </form>
 
-  <table class="table table-striped table-hover">
-    <thead>
-    <tr>
-      <th>번호</th>
-      <th>진행방법</th>
-      <th>모집글 제목</th>
-      <th>태그</th>
-      <th>스터디장</th>
-      <th>정원</th>
-      <th>마감일</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr data-th-each="study : ${studyList}" data-th-object="${study}">
-      <td data-th-text="*{studyNo}">100</td>
-      <td data-th-text="*{method}">북스터디</td>
-      <td><a data-th-href="@{view(studyNo=*{studyNo})}" data-th-text="*{title}">OO스터디 모집합니다.</a></td>
-      <td>
-        <div data-th-each="tag : ${study.tagList}" data-th-object="${tag}">
-          <a data-th-text="*{name}">Java</a>
+  
+    <table id="studyTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>스터디장</th>
+            <th>정원</th>
+            <th>방법</th>
+            <th>마감일</th>
+            <th>태그</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 여기에 JavaScript로 데이터를 삽입할 예정 -->
+        </tbody>
+    </table>
+    <div class="text-center">
+        <div id="loader" class="spinner-border text-primary" role="status" style="display: none;">
+            <span class="sr-only">Loading...</span>
         </div>
-      </td>
-      <td data-th-text="*{memberNo}">10</td>
-      <td data-th-text="*{intake}">5</td>
-      <td data-th-text="*{recruitmentDeadline}">2024-03-27</td>
-    </tr>
-    </tbody>
-  </table>
+    </div>
+    <div id="sentinel"></div>
+
+    <script data-th-inline="javascript">
+        let page = 0;
+        let isLastPage = false;
+        let loading = false; // 로딩 중 여부를 나타내는 변수
+
+        function loadStudies() {
+            // 로딩 중이 아니고 마지막 페이지가 아닐 때만 실행
+            if (!loading && !isLastPage) {
+                console.log("loadStudies()호출됨!!!!!!");
+                loading = true;
+                $.ajax({
+                    url: '/study/api/v1/list',
+                    data: {
+                        page: page
+                    },
+                    success: function(data) {
+                        if (data.last) {
+                            isLastPage = true;
+                        }
+                        const studyList = data.content;
+                        const tbody = $('#studyTable tbody');
+                        studyList.forEach(function(study) {
+                            const row = $('<tr></tr>');
+
+                            row.append('<td>' + study.studyNo + '</td>');
+                            row.append('<td>' + study.title + '</td>');
+                            row.append('<td>' + study.memberNo + '</td>');
+                            row.append('<td>' + study.intake + '</td>');
+                            row.append('<td>' + study.method + '</td>');
+                            row.append('<td>' + study.recruitmentDeadline + '</td>');
+                            row.append('<td>' + study.tags + '</td>');
+
+                            tbody.append(row);
+                        });
+
+                        page++;
+
+                        if (data.last) {
+                            isLastPage = true;
+                            $(document).off('scroll'); // 마지막 페이지이면 스크롤 이벤트 해제
+                        } else {
+                            // 스크롤 위치가 문서 끝에 가까워 추가 로딩이 필요한지 검사
+                            checkScrollPosition();
+                        }
+                    },
+                    complete: function() {
+                        loading = false; // 로딩 완료
+                    }
+                });
+            }
+        }
+
+        function checkScrollPosition() {
+            const scrollBottom = $(document).scrollTop() + $(window).height();
+            if (scrollBottom >= $(document).height() * 0.9) {
+                loadStudies(); // 스크롤 위치가 문서의 90%에 도달하면 loadStudies 함수 호출
+            }
+        }
+
+        let debounceTimer;
+
+        $(document).scroll(function() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(checkScrollPosition, 400); // 400ms 디바운스 시간
+        });
+
+
+        loadStudies(); // 초기 데이터 로딩
+    </script>
+
+
+
 
 </div>
 <div data-th-replace="footer::footer">꼬리말</div>
