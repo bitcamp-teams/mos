@@ -5,6 +5,9 @@ import java.util.List;
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.repository.TagRepository;
 import java.util.stream.Collectors;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +48,14 @@ public class DefaultStudyService implements StudyService {
   @Override
   public int update(StudyDto studyDto) {
     return studyRepository.update(studyDto);
+  }
+
+  // 조회수 카운트
+  @Transactional
+  @Override
+  public StudyDto updateHitCount(int studyNo) {
+    studyRepository.updateHitCount(studyNo);
+    return studyRepository.getByStudyNo(studyNo);
   }
 
   @Override

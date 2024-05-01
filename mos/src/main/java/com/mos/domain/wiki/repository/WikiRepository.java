@@ -1,5 +1,6 @@
 package com.mos.domain.wiki.repository;
 
+import com.mos.domain.study.dto.StudyDto;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -23,5 +24,8 @@ public interface WikiRepository {
   void add(WikiDto wikiDto);
 
   int getFirstWiki(int studyNo);
+
+  void updateHitCount(int wikiNo);
+
 
 }

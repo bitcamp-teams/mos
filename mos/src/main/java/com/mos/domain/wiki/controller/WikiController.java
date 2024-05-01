@@ -61,12 +61,15 @@ public class WikiController {
   @GetMapping("viewWiki")
   public void viewWiki(@RequestParam int wikiNo, Model model) throws Exception {
     WikiDto wikiDto = wikiService.getByWikiNo(wikiNo);
+    wikiService.updateHitCount(wikiNo);
+
     if (wikiDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
     // log.debug(wikiDto.toString());
-    model.addAttribute("wiki", wikiDto);
 
+    model.addAttribute("wiki", wikiDto);
+    System.out.println(wikiDto);
     List<WikiCommentDto> wikiCommentDtoList = commentService.getWikiComments(wikiNo);
     model.addAttribute("wikiComments", wikiCommentDtoList);
   }

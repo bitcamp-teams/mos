@@ -12,6 +12,8 @@ import com.mos.global.auth.LoginUser;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
@@ -84,10 +86,10 @@ public class StudyController {
     }
 
     StudyDto studyDto = studyService.getByStudyNo(studyNo);
+    studyService.updateHitCount(studyNo);
     if (studyDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
-
     model.addAttribute("study", studyDto);
 
     List<StudyCommentDto> studyCommentDtoList = commentService.getStudyComments(studyNo);
