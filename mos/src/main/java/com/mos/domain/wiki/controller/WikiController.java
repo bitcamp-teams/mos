@@ -110,7 +110,7 @@ public class WikiController {
   public String getWikiByStudyNo(@PathVariable int studyNo) {
     int wikiNo = wikiService.findWikiNoByStudyNo(studyNo);
     System.out.println("wikiNo = " + wikiNo);
-    return "redirect:/wiki/view?wikiNo=" + wikiNo;
+    return "redirect:/wiki/viewWiki?wikiNo=" + wikiNo;
   }
 
   @GetMapping("delete")
