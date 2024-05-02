@@ -27,5 +27,5 @@ public interface WikiRepository {
 
   void updateHitCount(int wikiNo);
 
-
+  int findWikiNoByStudyNo(int studyNo);
 }

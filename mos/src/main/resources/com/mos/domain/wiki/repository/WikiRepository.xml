@@ -68,6 +68,11 @@
     LIMIT 1;
   </select>
 
+  <select id="findWikiNoByStudyNo" resultType="int">
+    SELECT wiki_no
+    FROM curriculum
+    WHERE study_no = #{studyNo}
+  </select>
 
 
 </mapper>

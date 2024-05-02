@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -118,9 +119,16 @@ public class WikiController {
   }
 
   @GetMapping("jstreeTest")
-  public void jstreeTest(@LoginUser MemberDto loginUser, Model model, @RequestParam int studyNo) throws Exception {
+  public void jstreeTest(@LoginUser MemberDto loginUser, Model model, @RequestParam int studyNo)
+      throws Exception {
     //여긴 template만 매핑해주고,
     //나머지 요청/응답은 REST API 컨트롤러(WikiApiController)를 통해서 한다.
   }
 
+  @GetMapping("view/{studyNo}")
+  public String getWikiByStudyNo(@PathVariable int studyNo) {
+    int wikiNo = wikiService.findWikiNoByStudyNo(studyNo);
+    System.out.println("wikiNo = " + wikiNo);
+    return "redirect:/wiki/view?wikiNo=" + wikiNo;
+  }
 }

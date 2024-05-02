@@ -2,6 +2,7 @@ package com.mos.global.notification.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mos.domain.comment.dto.StudyCommentDto;
+import com.mos.domain.notify.dto.NotificationDto;
 import com.mos.domain.notify.dto.NotifyDto;
 import com.mos.global.notification.dto.NotificationsResponseDto;
 import com.mos.global.notification.event.CommentAndAuthorIdEvent;
@@ -33,7 +34,7 @@ public class NotificationService {
   private final RedisMessageListenerContainer redisMessageListenerContainer;
   private final NotificationRepository notificationRepository;
   private final ObjectMapper objectMapper;
-  private static final long DEFAULT_TIMEOUT = 10L * 1000 * 60;
+  private static final long DEFAULT_TIMEOUT = 30L * 1000 * 60;
   private static final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
 
@@ -122,13 +123,13 @@ public class NotificationService {
 
   @Transactional(readOnly = true)
   public NotificationsResponseDto findAllByMemberIdAndUnread(int memberNo) {
-    List<NotifyDto> notifyList = notificationRepository.findAllByMemberIdAndUnread(memberNo);
+    List<NotificationDto> notifyList = notificationRepository.findAllByMemberIdAndUnread(memberNo);
     int unreadCount = notifyList.size();
     return NotificationsResponseDto.of(notifyList, unreadCount);
   }
 
   public void readNotification(int id) {
-    NotifyDto notifyDto = notificationRepository.findById(id);
+    NotificationDto notifyDto = notificationRepository.findById(id);
     if (notifyDto != null) {
       notificationRepository.updateReadById(id);
     }

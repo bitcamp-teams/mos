@@ -13,17 +13,17 @@
     WHERE member_no = #{recipientId};
   </insert>
 
-  <select id="findAllByMemberIdAndUnread" resultType="NotifyDto">
+  <select id="findAllByMemberIdAndUnread" parameterType="NotifyDto" resultType="NotificationDto">
     SELECT noti_no, member_no, message, link
     FROM notification n
     where n.member_no = #{recipientId} AND read_or_not = 'N'
     order by created_date
   </select>
 
-  <select id="findById" parameterType="int" resultType="NotifyDto">
+  <select id="findById" parameterType="int" resultType="NotificationDto">
     SELECT noti_no, member_no, message, link
     FROM notification
-    where noti_no = #{id}
+    where noti_no = #{no}
   </select>
 
 

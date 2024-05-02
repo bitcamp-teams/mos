@@ -50,8 +50,6 @@
 <!--    <link rel="stylesheet" href="/plugins/jqvmap/jqvmap.min.css">-->
     <!-- Theme style -->
     <link rel="stylesheet" href="/css/adminlte.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
 <!--    <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">-->
     <!-- DataTables -->
@@ -61,8 +59,6 @@
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <script src="/plugins/sweetalert2/sweetalert2.min.js"></script>
-    <!-- BS Stepper -->
-    <link rel="stylesheet" href="/plugins/bs-stepper/css/bs-stepper.min.css">
     <!-- jquery-validation -->
     <script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
@@ -87,28 +83,8 @@
             gap: 8px;
             padding: 10px;
             border: 1px solid #000000;
-            border-bottom: 1px solid #000000;
             border-radius: 5px;
             margin-bottom: 10px;
-        }
-
-        /* 팝업창 스타일 */
-        .popup-notify {
-            position: absolute;
-            right: 99px;
-            top: 20px;
-            z-index: 1;
-            width: 300px;
-            background-color: #fefefe;
-            margin-top: 20px; /* 버튼과의 거리 */
-            border: 1px solid #888;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            max-height: 250px; /* 팝업의 최대 높이 설정 */
-            overflow-y: auto; /* 세로 스크롤바 설정. 내용이 최대 높이를 초과할 경우 자동으로 스크롤바가 생성됨 */
-        }
-
-        .popup-notify-content {
-            padding: 20px;
         }
 
         .close {
@@ -150,28 +126,36 @@
                 <a class="nav-link" href="/wiki/modoowikilist">모두의 위키</a>
             </li>
         </ul>
-        <span class="navbar-text ml-auto mr-2">현재 접속자 수: <span th:text="${activeSessions}">0</span></span>
-        <button class="btn btn-navbar bg-blue mr-sm-2" data-th-if="${session.loginUser != null}"
-                onclick="showPopup()">알림
-        </button>
-        <div id="popupNotifications" class="popup-notify mr-sm-2" style="display: none;">
-            <div class="popup-notify-content">
-                <span class="close" onclick="closePopup()">&times;</span>
-                <h2>알림</h2>
-                <div id="notifications"></div>
-                <div id="pageButtons"></div> <!-- 페이징 버튼을 위한 공간 추가 -->
-            </div>
-        </div>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <span class="navbar-text ml-auto mr-2">현재 접속자 수 : <strong th:text="${session.activeSessions} + '명'">0 명</strong></span>
+            </li>
+            <li class="nav-item dropdown" data-th-if="${session.loginUser != null}">
+                <a id="notificationBtn" class="nav-link" data-toggle="dropdown" href="#">
+                    <span><i class="far fa-bell fa-2x"></i></span>
+                    <span class="badge badge-warning navbar-badge"
+                          style="display: none"></span>
+                </a>
+                <div id="popupNotifications" class="popup-notify dropdown-menu dropdown-menu-lg dropdown-menu-right"
+                     style="display: none">
+                    <span class="dropdown-item dropdown-header popup-header disabled">0</span>
+                    <div class="notifications"></div>
+                </div>
+            </li>
+        </ul>
+
+
         <div class="dropdown mr-sm-2">
-            <a href="javascript:void(0)" alt="icon image">
-                <img src="/img/icon2.png" alt="icon image" data-th-if="${session.loginUser != null}">
+            <a href="javascript:void(0)" alt="icon image" data-th-if="${session.loginUser != null}">
+                <img src="/img/icon2.png" alt="icon image">
             </a>
             <div class="dropdown-options">
                 <a
-                        data-th-href="@{${#session.getAttribute('loginUser') != null ? '/member/dashboard?no=' + #session.getAttribute('loginUser').memberNo : '/auth/login'}}"
+                        data-th-href="@{${session.loginUser != null ? '/member/dashboard?no=' + session.loginUser.memberNo : '/auth/login'}}"
                         href="">대시보드</a>
-                <th-block data-th-if="${#session.getAttribute('loginUser') != null}">
-                    <a data-th-href="@{'/member/mystudy?no=' + ${#session.getAttribute('loginUser').memberNo}}"
+                <th-block data-th-if="${session.loginUser != null}">
+                    <a data-th-href="@{'/member/mystudy?no=' + ${session.loginUser.memberNo}}"
                        href="">My
                         스터디</a>
                     <a data-th-href="@{'/member/edit'}" href="">회원 정보 수정</a>
@@ -323,155 +307,4 @@
 <!-- 별도의 JavaScript 파일 추가 -->
 <script type="module" src="/js/auth/modal.js"></script>
 <script type="module" src="/js/subscribe.js"></script>
-
-
-<script th:inline="javascript">
-    // 팝업 창 요소를 가져옴
-    var popup = document.getElementById("popupNotifications");
-
-    // 닫기 버튼 요소를 가져옴
-    var span = document.getElementsByClassName("close")[0];
-
-    // 전역 변수로 현재 페이지와 총 페이지 수를 관리
-    let currentPage = 0;
-    let totalPages = 0;
-
-    function showPopup() {
-        document.getElementById('popupNotifications').style.display = 'block';
-        fetchNotifications(); // 팝업이 열릴 때 초기 알림 내용 로딩
-    }
-
-    function closePopup() {
-        document.getElementById('popupNotifications').style.display = 'none';
-    }
-
-    window.addEventListener('click', (e) => {
-        if (!popup.contains(e.target)) { // 팝업의 자식 요소가 클릭 대상이 아닐 때
-            popup.style.display = 'none';
-        }
-    });
-
-
-    function fetchNotifications() {
-        // 초기 페이지 번호 설정
-        currentPage = 0;
-        totalPages = 0;
-        popup.scrollTop = 0;
-
-        // 목록이 표시되는 컨테이너의 내용을 초기화
-        var notificationsContainer = document.getElementById('notifications');
-        notificationsContainer.innerHTML = '';
-
-        // 새로운 데이터를 불러오기 위해 fetchNotificationsWithPage 함수를 호출
-        fetchNotificationsWithPage(currentPage);
-    }
-
-
-    function fetchNotificationsWithPage(page, append = false) {
-        console.log("fetchNotifications 함수가 호출되었습니다. 페이지 번호:", page);
-        fetch(`/notify/list?page=${page}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(notifyListJson => {
-                console.log(notifyListJson);
-                totalPages = notifyListJson.totalPages; // 총 페이지 수 업데이트
-                currentPage++; // 현재 페이지 업데이트
-                displayNotifications(notifyListJson, append); // append 인자를 전달
-            })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-            });
-    }
-
-
-    span.onclick = function () {
-        popup.style.display = "none";
-    }
-    window.onclick = function (event) {
-        if (event.target == popup) {
-            popup.style.display = "none";
-        }
-    }
-
-    // 알림 목록과 함께 페이징 정보를 화면에 표시하는 함수
-    function displayNotifications(notifyListJson, append = false) {
-        console.log("displayNotifications 함수가 호출되었습니다.");
-        var notifyList = notifyListJson.content; // JSON.parse를 호출한 결과에서 content에 접근
-        var totalPages = notifyListJson.totalPages; // 총 페이지 수
-
-        var notificationsContainer = document.getElementById('notifications');
-        if (!append) {
-            notificationsContainer.innerHTML = ''; // 기존에 표시된 알림을 클리어
-        }
-        popup.style.display = "block";
-
-        if (notifyList.length === 0) {
-            if (!append) {
-                notificationsContainer.textContent = '알림이 없습니다.';
-            }
-        } else {
-            notifyList.forEach(function (notify) {
-                var notifyElement = document.createElement('div');
-                var linkElement = document.createElement('a');
-                linkElement.href = notify.link; // 링크 설정
-                linkElement.textContent = notify.message; // 메시지 텍스트 설정
-                linkElement.addEventListener('click', function () {
-                    sendReadRequest(notify);
-                });
-                notifyElement.appendChild(linkElement);
-                notificationsContainer.appendChild(notifyElement);
-            });
-        }
-    }
-
-
-    function sendReadRequest(notify) {
-        console.log("클릭 이벤트 발생");
-        const requestBody = JSON.stringify({id: notify.id});
-
-        console.log(requestBody);
-        fetch('/notify/update', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: requestBody,
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                // 서버로부터의 응답 처리
-            })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-            });
-    }
-
-    var popupContent = document.querySelector(".popup-notify");
-
-    popupContent.onscroll = function () {
-        // 팝업 내부에서 끝에 도달했는지 확인
-        if (popupContent.offsetHeight + popupContent.scrollTop >= popupContent.scrollHeight) {
-            // 현재 페이지가 총 페이지 수보다 작은 경우에만 데이터 추가 로드
-            if (currentPage < totalPages) {
-                fetchNotificationsWithPage(currentPage, true); // 여기에 true를 추가합니다.
-            }
-        }
-    };
-
-
-    // 알림 버튼 클릭 이벤트 핸들러 등록
-    // notifyButton.addEventListener('click', function () {
-    //     fetchNotifications(); // fetchNotifications 함수 호출
-    // });
-</script>
-
+<script type="module" src="/js/notification/notification.js"></script>

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpSession;
+
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
@@ -26,10 +28,10 @@ public class IndexController {
   }
 
   @GetMapping("/")
-  public String index(Model model, @LoginUser MemberDto user) {
+  public String index(Model model, @LoginUser MemberDto user, HttpSession session) {
     model.addAttribute("loginUser", user);
     int activeSession = sessionService.findAllSession();
-    model.addAttribute("activeSessions", activeSession);
+    session.setAttribute("activeSessions", activeSession);
     return "index";
   }
 
