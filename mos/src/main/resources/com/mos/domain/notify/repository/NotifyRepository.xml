@@ -32,7 +32,7 @@
     SELECT noti_no, member_no, message, link
     FROM notification n
     where n.member_no = #{recipientId} AND read_or_not = 'N'
-    order by created_date
+    order by created_date desc
     LIMIT #{offset}, #{pageSize}
   </select>
 
