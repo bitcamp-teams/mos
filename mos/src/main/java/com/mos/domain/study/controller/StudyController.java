@@ -201,8 +201,6 @@ public class StudyController {
 //    model.addAttribute("studyList", studyService.list());
 //  }
 
-
-
   @GetMapping("test")
   @ResponseBody
   public String test() {
@@ -214,9 +212,14 @@ public class StudyController {
                        @RequestParam(value="type") String type,
                        @RequestParam(value="keyword") String keyword) {
     try {
-      List<StudyDto> studyList = studyService.searchByTypeAndKeyword(type, keyword);
+      List<StudyDto> studyList;
+      if (type.isEmpty() && keyword.isEmpty()) {
+        studyList = studyService.listAll();
+      } else {
+        studyList = studyService.searchByTypeAndKeyword(type, keyword);
+      }
       model.addAttribute("studyList", studyList);
-      return "study/list";
+      return "study/search";
     } catch (Exception e) {
       log.error("Error occurred during study search", e);
       model.addAttribute("errorMessage", "검색 중 오류가 발생했습니다.");

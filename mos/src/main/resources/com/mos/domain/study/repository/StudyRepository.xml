@@ -161,6 +161,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   VALUES(#{memberDto.memberNo}, #{studyDto.studyNo}, '신청 후 대기', #{applyMsg})
  </insert>
 
+  <select id="listAll" resultMap="studyList">
+    SELECT
+    s.study_no,
+    s.member_no,
+    s.title,
+    s.intake,
+    s.method,
+    s.recruitment_deadline,
+    s.created_date,
+    s.hit_count,
+    GROUP_CONCAT(DISTINCT t.name) AS tags
+    FROM
+    study s
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
+    GROUP BY
+    s.study_no
+    ORDER BY
+    created_date DESC;
+  </select>
+
   <select id="searchByTitle" resultMap="studyDetail">
     SELECT
     s.study_no,
@@ -179,7 +200,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     ORDER BY s.study_no DESC;
   </select>
 
-  <!-- 모집글 내용으로 검색 -->
   <select id="searchByIntroduction" resultMap="studyDetail">
     SELECT
     s.study_no,
@@ -198,7 +218,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     ORDER BY s.study_no DESC;
   </select>
 
-  <!-- 기술스택으로 검색 -->
   <select id="searchByTag" resultMap="studyDetail">
     SELECT
     s.study_no,
