@@ -39,7 +39,7 @@
   <!-- 조회수 증가 -->
   <update id="updateHitCount" parameterType="int">
     UPDATE
-      curriculum
+      wiki
     SET
       hit_count = hit_count + 1
     WHERE
@@ -70,7 +70,7 @@
 
   <select id="findWikiNoByStudyNo" resultType="int">
     SELECT wiki_no
-    FROM curriculum
+    FROM wiki
     WHERE study_no = #{studyNo}
   </select>
 
