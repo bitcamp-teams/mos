@@ -29,7 +29,14 @@
                     <i class="fas fa-star favorite-icon" ></i>
                 </td>
 <!--                 스터디 제목-->
-                <td data-th-text="${memberStudy.studyDto != null ? memberStudy.studyDto.title : ''}"></td>
+                <td>
+                    <a data-th-if="${memberStudy.studyDto != null}"
+                       data-th-text="${memberStudy.studyDto.title}"
+                       data-th-href="@{'/wiki/view/' + ${memberStudy.studyDto.studyNo}}">
+                    </a>
+                    <span data-th-if="${memberStudy.studyDto == null}">제목 없음</span>
+                </td>
+
                 <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.startDate, 'yyyy-MM-dd') : ''}"></td>
                 <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.endDate, 'yyyy-MM-dd') : ''}"></td>
                 <td>

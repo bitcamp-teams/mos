@@ -24,4 +24,6 @@ public interface WikiService {
 
   // 조회수 증가
   WikiDto updateHitCount(int wikiNo);
+
+  int findWikiNoByStudyNo(int studyNo);
 }
