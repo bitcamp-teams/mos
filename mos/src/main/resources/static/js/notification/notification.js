@@ -151,7 +151,6 @@ const index = {
             });
     },
     formatDate(dateString) {
-        debugger
         const date = new Date(dateString);
         const now = new Date();
         const timeDiff = now.getTime() - date.getTime();
