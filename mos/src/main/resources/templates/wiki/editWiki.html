@@ -5,8 +5,10 @@
     <form id="wikiInfo" action="update" data-th-action="@{/wiki/updateWiki}" method="post">
       <h1>제목: <input name="title" th:value="*{title}"></h1>
 
-      <!--POST 방식이라 Hidden Field 방식으로 wikiNo 전달함-->
+      <!--POST 방식이라 Hidden Field 방식으로 전달함-->
       <input type="hidden" name="wikiNo" th:value="*{wikiNo}">
+      <input type="hidden" name="studyNo" th:value="*{studyNo}">
+
       <!--      <p> 내용 <input name="content" th:value="*{content}" type="text" value="내용"></p>-->
       <input type="hidden" th:attr="content = ${wiki.content}" name="content" id="editor-content"
              value="내용">

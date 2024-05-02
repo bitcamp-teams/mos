@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,7 +90,7 @@ public class WikiController {
   public String update(@ModelAttribute WikiDto wikiDto, Model model) throws Exception {
     wikiService.updateWiki(wikiDto);
     model.addAttribute("wiki", wikiDto);
-    return "redirect:/wiki/view?wikiNo=" + wikiDto.getWikiNo();
+    return "redirect:/wiki/view?studyNo=" + wikiDto.getStudyNo() + "&wikiNo=" + wikiDto.getWikiNo();
   }
 
   @GetMapping("list")
@@ -103,6 +104,13 @@ public class WikiController {
     Pageable pageable = PageRequest.of(page - 1, 20);
     System.out.println("wikiService.listByWikiNo(page) = " + wikiService.listByWikiNo(pageable));
     model.addAttribute("wiki", wikiService.listByWikiNo(pageable));
+  }
+
+  @GetMapping("view/{studyNo}")
+  public String getWikiByStudyNo(@PathVariable int studyNo) {
+    int wikiNo = wikiService.findWikiNoByStudyNo(studyNo);
+    System.out.println("wikiNo = " + wikiNo);
+    return "redirect:/wiki/viewWiki?wikiNo=" + wikiNo;
   }
 
   @GetMapping("delete")
