@@ -9,7 +9,6 @@
     <id column="noti_no" property="id"/>
     <result column="member_no" property="recipientId"/>
     <result column="message" property="message"/>
-    <result column="created_date" property="createDate"/>
     <result column="link" property="link"/>
     <result column="read_or_not" property="read"/>
   </resultMap>
@@ -18,6 +17,7 @@
     <id column="noti_no" property="id"/>
     <result column="member_no" property="recipientId"/>
     <result column="message" property="message"/>
+    <result column="created_date" property="createdDate"/>
     <result column="link" property="link"/>
   </resultMap>
 
@@ -29,7 +29,7 @@
   </insert>
 
   <select id="getNotifyList" resultMap="NotifyListMap">
-    SELECT noti_no, member_no, message, link
+    SELECT noti_no, member_no, message, link, created_date
     FROM notification n
     where n.member_no = #{recipientId} AND read_or_not = 'N'
     order by created_date

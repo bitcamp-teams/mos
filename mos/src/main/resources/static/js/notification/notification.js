@@ -55,7 +55,6 @@ const index = {
                 console.log(notifyListJson);
                 _this.totalPages = notifyListJson.totalPages; // 총 페이지 수 업데이트
                 _this.currentPage++; // 현재 페이지 업데이트
-                _this.startTime = new Date();
                 _this.displayNotifications(notifyListJson, append); // append 인자를 전달
             })
             .catch(error => {
@@ -96,9 +95,9 @@ const index = {
                 const $i = $('<i id="notiIcon" class="fas fa-solid fa-comment mr-2"></i>')
                     .html(`<span class="ml-3 font-weight-light">${item.message}</span>`)
 
-                // TODO : 경과시간 출력
-                const $time = $('<span class="float-right text-muted text-sm">0 분전</span>')
-
+                // 경과시간 출력
+                const $time = $('<span class="float-right text-muted text-sm"></span>')
+                $time.text(`${_this.formatDate(item.createdDate)}`)
                 let link = $a.append($i).append($time);
                 _this.notificationsContainer.append($divider).append(link);
             });
@@ -151,25 +150,26 @@ const index = {
                 console.error('There has been a problem with your fetch operation:', error);
             });
     },
-    updateTimeElapsed(startTime) {
-        const $timeSpan = $('span.float-right.text-muted.text-sm');
+    formatDate(dateString) {
+        debugger
+        const date = new Date(dateString);
+        const now = new Date();
+        const timeDiff = now.getTime() - date.getTime();
 
-        function update() {
-            const currentTime = new Date();
-            const elapsedTime = currentTime - startTime; // 경과 시간을 밀리초로 계산
-            const minutes = Math.floor(elapsedTime / 60000); // 분 단위로 변환
-            let seconds = Math.floor((elapsedTime % 60000) / 1000); // 초 단위로 변환
-
-            // 표시 형식을 맞추기 위해 10보다 작은 숫자 앞에 0을 추가
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-
-            // 경과 시간을 <span> 태그에 표시
-            $timeSpan.text(minutes + ' mins ' + seconds + ' secs');
-
-            // 1초마다 함수를 다시 호출하여 시간을 업데이트
-            setTimeout(update, 1000);
+        if (timeDiff < 60000) { // 1분 미만
+            return '방금 전';
+        } else if (timeDiff < 3600000) { // 1시간 미만
+            const minutes = Math.floor(timeDiff / 60000);
+            return `${minutes}분 전`;
+        } else if (timeDiff < 86400000) { // 24시간 미만
+            const hours = Math.floor(timeDiff / 3600000);
+            return `${hours}시간 전`;
+        } else { // 24시간 이상
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
-        update();
     }
 
 }
