@@ -1,5 +1,6 @@
 package com.mos.domain.wiki.repository;
 
+import com.mos.domain.wiki.dto.WikiDto;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -20,4 +21,6 @@ public interface WikiApiRepository {
   void updateByWikiNo(JstreeWikiDto jstreeWikiDto);
 
   void deleteWikiByWikiNo(int wikiNo);
+
+  WikiDto findWikiByWikiNo(int wikiNo);
 }

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,7 +45,8 @@ public class WikiController {
 
   @PostMapping("add")
   public String add(
-      @ModelAttribute WikiDto wikiDto, @RequestParam("studyNo") int studyNo) {
+      @ModelAttribute WikiDto wikiDto, @RequestParam("studyNo") int studyNo
+  ) {
 
     wikiService.add(wikiDto);
 
@@ -62,37 +62,27 @@ public class WikiController {
     model.addAttribute("wiki", wikiDto);
   }
 
+  //viewWiki is deprecated! use view.
   @GetMapping("viewWiki")
   public void viewWiki(@RequestParam int wikiNo, Model model) throws Exception {
     WikiDto wikiDto = wikiService.getByWikiNo(wikiNo);
-    wikiService.updateHitCount(wikiNo);
-
     if (wikiDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
     // log.debug(wikiDto.toString());
-
     model.addAttribute("wiki", wikiDto);
-    System.out.println(wikiDto);
+
     List<WikiCommentDto> wikiCommentDtoList = commentService.getWikiComments(wikiNo);
     model.addAttribute("wikiComments", wikiCommentDtoList);
   }
 
+  //studyNo에 따라 리스트를 가져오고, 거기서 비동기로 wikiNo에 따라 본문을 보여준다.
+  //만약 wikiNo가 있다면 그 위키를 보여준다. (없으면 그냥 리스트만 보여주자)
   @GetMapping("view")
-  public void view(@RequestParam int wikiNo, Model model) throws Exception {
-    // 해당 위키 컨텐츠를 먼저 가져온다.
-    WikiDto wikiDto = wikiService.getByWikiNo(wikiNo);
-    // 소속된 스터디 번호도 wikiDto 안에 있다.
-    int studyNo = wikiDto.getStudyNo();
-
-    // 스터디의 전체 위키 리스트를 만들기 위해, 소속 스터디 번호로 리스트를 만든다.
-    model.addAttribute("wikiList", wikiService.listByStudyNo(studyNo));
-
-    // 위키 본문을 만들기 위한 데이터를 서비스를 통해 가져와서 모델에 넣는다.
-    model.addAttribute("wikiDto", wikiDto);
-    log.debug(wikiDto);
-
-    // 뷰를 반환한다.
+  public void view(
+      @RequestParam(required = false, defaultValue = "0") int wikiNo, @RequestParam int studyNo, Model model
+  ) throws Exception {
+    // 뷰를 반환한다. async로 api 컨트롤러에 요청하여 동작하므로 service 객체를 사용하지 않음.
   }
 
   @PostMapping("updateWiki")
@@ -123,17 +113,4 @@ public class WikiController {
     return "redirect:/wiki/list?studyNo=" + studyNo;
   }
 
-  @GetMapping("jstreeTest")
-  public void jstreeTest(@LoginUser MemberDto loginUser, Model model, @RequestParam int studyNo)
-      throws Exception {
-    //여긴 template만 매핑해주고,
-    //나머지 요청/응답은 REST API 컨트롤러(WikiApiController)를 통해서 한다.
-  }
-
-  @GetMapping("view/{studyNo}")
-  public String getWikiByStudyNo(@PathVariable int studyNo) {
-    int wikiNo = wikiService.findWikiNoByStudyNo(studyNo);
-    System.out.println("wikiNo = " + wikiNo);
-    return "redirect:/wiki/view?wikiNo=" + wikiNo;
-  }
 }

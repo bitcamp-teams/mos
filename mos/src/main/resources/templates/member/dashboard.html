@@ -1,15 +1,6 @@
 <div data-th-replace="header :: header">머리말</div>
 <div class="wrapper-mos">
-    <div id="sidenav" class="sidenav">
-        <a data-th-href="@{${#session.getAttribute('loginUser') != null ? '/member/dashboard?no=' + #session.getAttribute('loginUser').memberNo : '/auth/login'}}"
-           href="">대시보드</a>
-        <th-block data-th-if="${#session.getAttribute('loginUser') != null}">
-            <a data-th-href="@{'/member/mystudy?no=' + ${#session.getAttribute('loginUser').memberNo}}" href="">My
-                스터디</a>
-            <a data-th-href="@{'/member/edit'}" href="">회원 정보 수정</a>
-            <a data-th-href="@{'/member/myWriteCommentList}" href="">내가 쓴 글/댓글 보기</a>
-        </th-block>
-    </div>
+    <div data-th-replace="mypage-sidenav :: sidenav">사이드네비</div>
     <div id="dashboard" data-th-object="${member}">
         <div id="profile">
             <div class="rounded">
