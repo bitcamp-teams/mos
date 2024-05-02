@@ -133,6 +133,10 @@ const index = {
             });
     },
     getUnreadNotiCount() {
+        if ($('#isLoginFrm #memberNoInput').val() === '') {
+            return
+        }
+
         const _this = this;
         fetch(`/api/v1/notifications`)
             .then(response => {
