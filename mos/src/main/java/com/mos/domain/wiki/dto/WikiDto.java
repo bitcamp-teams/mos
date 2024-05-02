@@ -29,4 +29,5 @@ public class WikiDto {
   private String stat;
   private int memberNo;
   private String username;
+  private int hitCount;
 }

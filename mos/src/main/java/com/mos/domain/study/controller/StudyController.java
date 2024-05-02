@@ -9,12 +9,21 @@ import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.service.StudyService;
 import com.mos.domain.wiki.service.WikiService;
 import com.mos.global.auth.LoginUser;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +41,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class StudyController {
 
   // 현재 스레드의 클래스를 파라미터로 받아서 로그 객체를 만든다.
-  private static final Log log = LogFactory.getLog(Thread.currentThread().getClass());
+  private static final Logger log = LoggerFactory.getLogger(Thread.currentThread().getClass());
   private final StudyService studyService;
   // 스터디에 파일저장 / 이미지 옵티마이징 따로 없으므로 변수 추가 없음
   private final CommentService commentService;
@@ -77,10 +86,10 @@ public class StudyController {
     }
 
     StudyDto studyDto = studyService.getByStudyNo(studyNo);
+    studyService.updateHitCount(studyNo);
     if (studyDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
-
     model.addAttribute("study", studyDto);
 
     List<StudyCommentDto> studyCommentDtoList = commentService.getStudyComments(studyNo);
@@ -175,21 +184,44 @@ public class StudyController {
   }
 
 
-  @GetMapping("list")
-  public void list(Model model) {
-    model.addAttribute("studyList", studyService.list());
+  @GetMapping("api/v1/list")
+  public ResponseEntity<?> list(@PageableDefault(size = 20) Pageable pageable) {
+    Page<StudyDto> studyList = studyService.list(pageable);
+    return ResponseEntity.ok().body(studyList);
   }
 
-  @GetMapping("main")
-  public void main(Model model) {
-    model.addAttribute("studyList", studyService.list());
+  @GetMapping("list")
+  public String list() {
+    return "study/list";
   }
+
+
+//  @GetMapping("main")
+//  public void main(Model model) {
+//    model.addAttribute("studyList", studyService.list());
+//  }
+
 
 
   @GetMapping("test")
   @ResponseBody
   public String test() {
     return "This is a test";
+  }
+
+  @GetMapping("/search")
+  public String search(Model model,
+                       @RequestParam(value="type") String type,
+                       @RequestParam(value="keyword") String keyword) {
+    try {
+      List<StudyDto> studyList = studyService.searchByTypeAndKeyword(type, keyword);
+      model.addAttribute("studyList", studyList);
+      return "study/list";
+    } catch (Exception e) {
+      log.error("Error occurred during study search", e);
+      model.addAttribute("errorMessage", "검색 중 오류가 발생했습니다.");
+      return "error-page";
+    }
   }
 
 }

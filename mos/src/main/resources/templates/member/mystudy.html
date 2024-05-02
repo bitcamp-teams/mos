@@ -33,15 +33,24 @@
                 <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.startDate, 'yyyy-MM-dd') : ''}"></td>
                 <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.endDate, 'yyyy-MM-dd') : ''}"></td>
                 <td>
-                    <form id="studyWithdraw" data-th-if="${memberStudy.status == 'S03-102'}" data-th-action="@{/member/updateStatus}" method="post">
-                        <input type="hidden" name="no" data-th-value="${memberStudy.no}">
-                        <input type="hidden" name="withDrawStatus" data-th-value="S03-106">
-                        <button type="submit" class="btn btn-warning" data-th-text="스터디원"></button>
+                    <form class="studyWithdraw" data-th-if="${memberStudy.status == 'S03-102'}">
+                        <input type="hidden" name="id" data-th-value="${memberStudy.no}">
+                        <input type="hidden" name="message" data-th-value="S03-106">
+                        <button type="submit" class="btn btn-Info" data-th-text="스터디원"></button>
                     </form>
-                    <form id="studyStatus" data-th-if="${memberStudy.status == 'S03-101'}" data-th-action="@{/member/studyManagement}" method="get">
+                    <form class="studyStatus" data-th-if="${memberStudy.status == 'S03-101'}">
                         <input type="hidden" name="studyNo" data-th-value="${memberStudy.studyDto.studyNo}">
                         <input type="hidden" name="status" data-th-value="${memberStudy.status}">
-                        <button type="submit" class="btn btn-success" data-th-text="스터디장"></button>
+                        <button type="submit" class="btn btn-Primary" data-th-text="스터디장"></button>
+                    </form>
+                    <form data-th-if="${memberStudy.status == 'S03-106'}">
+                        <button type="button" class="btn btn-Secondary">탈퇴완료</button>
+                    </form>
+                    <form data-th-if="${memberStudy.status == 'S03-104'}">
+                        <button type="button" class="btn btn-Success">신청완료</button>
+                    </form>
+                    <form data-th-if="${memberStudy.status == 'S03-105'}">
+                        <button type="button" class="btn btn-Danger">신청거절</button>
                     </form>
                 </td>
             </tr>
@@ -85,25 +94,29 @@
 
         $(document).ready(function() {
             // 폼 제출 이벤트를 가로채기
-            $('#studyWithdraw').submit(function(e) {
+            $(document).on('submit', '.studyWithdraw', function(e) {
                 e.preventDefault(); // 폼 기본 제출 방지
+                console.log('함수 호출 성공');
 
                 // '탈퇴하시겠습니까?' 확인 대화상자 표시
                 var confirmResult = confirm('탈퇴하시겠습니까?');
 
-                var formDataJson = {
-                    id: $('input[name="no"]').val(),
-                    message: $('input[name="withDrawStatus"]').val()
-                };
+                var currentForm = $(this).closest('form'); // 클릭된 버튼을 포함하는 가장 가까운 폼을 찾음
+                var actionUrl = '/member/updateStatus'; // 폼 액션 URL
+                console.log(actionUrl);
 
                 if (confirmResult) {
+                    var id = currentForm.find('[name="id"]').val();
+                    var message = currentForm.find('[name="message"]').val();
+                    console.log(id);
+                    console.log(message);
+
                     // 사용자가 '확인'을 클릭하면, AJAX를 통해 폼 데이터를 서버로 전송
-                    var actionUrl = $(this).attr('action'); // 폼 액션 URL
                     $.ajax({
                         url: actionUrl, // 서버 엔드포인트 URL
-                        type: 'POST', // HTTP 요청 메소드
+                        type: 'PATCH', // HTTP 요청 메소드
                         contentType: 'application/json',
-                        data: JSON.stringify(formDataJson), // 폼 데이터 직렬화
+                        data: JSON.stringify({id: id, message: message}), // 폼 데이터 직렬화
                         success: function(response) {
                             // 요청 성공 시 처리 로직
                             alert('탈퇴 처리가 완료되었습니다.');
@@ -119,29 +132,34 @@
 
   $(document).ready(function() {
     var page = 0; // 페이지 번호 초기화
+
     var isLoading = false; // 현재 로딩 중인지 여부를 추적하는 플래그
     var isLastPage = false; // 마지막 페이지인지 확인하는 플래그
 
-    $('#studyStatus').submit(function(e) {
+    $(document).on('submit', '.studyStatus', function(e) {
+        console.log('함수 호출 성공');
       e.preventDefault(); // 폼 기본 제출 방지
       page = 0; // 페이지 번호를 0으로 초기화
+     var currentForm = $(this).closest('form'); // 클릭된 버튼을 포함하는 가장 가까운 폼을 찾음
+        var studyNo = currentForm.find("input[name='studyNo']").val(); // 해당 폼의 studyNo를 가져옴
+      console.log(studyNo);
       isLastPage = false; // 마지막 페이지 플래그 초기화
       $('.modal-body').empty(); // 모달 내용 초기화
       $('.modal-content').scrollTop(0);
-      loadMembers(); // 멤버 로딩 함수 호출
+      loadMembers(studyNo); // 멤버 로딩 함수 호출
     });
 
-    function loadMembers() {
+    function loadMembers(studyNo) {
       if (isLoading || isLastPage) return; // 로딩 중이거나 마지막 페이지라면 요청하지 않음
 
-      isLoading = true; // 로딩 상태로 변경
-      var actionUrl = $('#studyStatus').attr('action'); // 폼 액션 URL
+             isLoading = true; // 로딩 상태로 변경
+             var actionUrl = '/member/studyManagement'; // 폼 액션 URL
+             console.log(actionUrl);
 
       // AJAX 요청
       $.ajax({
-        url: actionUrl + '?page=' + page, // 페이지 번호를 쿼리 파라미터로 추가
+        url: actionUrl + '?page=' + page + '&studyNo=' + studyNo, // 페이지 번호를 쿼리 파라미터로 추가
         type: 'get',
-        data: $('#studyStatus').serialize(), // 폼 데이터 직렬화
         success: function(response) {
           if (response.content.length === 0) {
             isLastPage = true; // 더 이상 로드할 페이지가 없음
@@ -163,7 +181,7 @@
                         function updateMemberStatus(message) {
                           $.ajax({
                             url: '/member/updateStatus', // 실제 서버 엔드포인트로 변경
-                            type: 'post',
+                            type: 'PATCH',
                             contentType: 'application/json',
                             data: JSON.stringify({id: item.id, message: message}), // 올바른 형태로 데이터 전송
                             success: function(response) {

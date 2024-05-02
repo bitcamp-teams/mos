@@ -13,12 +13,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result column="intake" property="intake"/>
     <result column="method" property="method"/>
     <result column="recruitment_deadline" property="recruitmentDeadline"/>
-
-    <collection property="tagList" ofType="TagDto">
-      <id column="tag_no" property="tagNo"/>
-      <result column="name" property="name"/>
-      <result column="path" property="path"/>
-    </collection>
+    <result column="created_date" property="createdDate"/>
+    <result column="tags" property="tags"/>
+    <result column="hit_count" property="hitCount"/>
+<!--    <collection property="tagList" ofType="TagDto">-->
+<!--      <id column="tag_no" property="tagNo"/>-->
+<!--      <result column="name" property="name"/>-->
+<!--      <result column="path" property="path"/>-->
+<!--    </collection>-->
   </resultMap>
 
   <resultMap id="studyDetail" type="studyDto">
@@ -33,6 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result column="start_date" property="startDate"/>
     <result column="introduction" property="introduction"/>
     <result column="location" property="location"/>
+    <result column="hit_count" property="hitCount"/>
 
     <collection property="tagList" ofType="TagDto">
       <id column="tag_no" property="tagNo"/>
@@ -70,14 +73,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       s.intake,
       s.method,
       s.recruitment_deadline,
-      t.tag_no,
-      t.name
+      s.created_date,
+      s.hit_count,
+      GROUP_CONCAT(DISTINCT t.name) AS tags
     FROM
       study s
       LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
-      LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
+      LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
+    GROUP BY
+      s.study_no
     ORDER BY
-      study_no DESC;
+      created_date DESC
+    LIMIT #{offset}, #{pageSize};
+  </select>
+
+  <select id="countAll" resultType="long">
+    SELECT COUNT(*) FROM study
   </select>
 
   <select id="getByStudyNo" resultMap="studyDetail">
@@ -93,6 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       s.start_date,
       s.end_date,
       s.stat,
+      s.hit_count,
       t.tag_no,
       t.name
     FROM
@@ -104,24 +116,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     ORDER BY
       study_no DESC;
   </select>
-
-<!--  <select id="getByStudyNo" resultMap="studyDetail">-->
-<!--    SELECT-->
-<!--      study_no,-->
-<!--      member_no,-->
-<!--      title,-->
-<!--      location,-->
-<!--      method,-->
-<!--      intake,-->
-<!--      recruitment_deadline,-->
-<!--      end_date,-->
-<!--      start_date,-->
-<!--      introduction-->
-<!--    FROM-->
-<!--      study-->
-<!--    WHERE-->
-<!--      study_no=#{studyNo};-->
-<!--  </select>-->
 
   <insert id="add" parameterType="StudyDto" useGeneratedKeys="true" keyColumn="study_no" keyProperty="studyNo">
     INSERT INTO
@@ -150,6 +144,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       study_no = #{studyNo};
   </delete>
 
+  <!-- 조회수 증가 -->
+  <update id="updateHitCount" parameterType="int">
+    UPDATE
+      study
+    SET
+      hit_count = hit_count + 1
+    WHERE
+      study_no=#{studyNo}
+  </update>
+
   <!-- 스터디 신청기능-->
  <insert id="applyStudy" parameterType="MemberStudyDto">
   INSERT INTO
@@ -157,5 +161,60 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   VALUES(#{memberDto.memberNo}, #{studyDto.studyNo}, '신청 후 대기', #{applyMsg})
  </insert>
 
+  <select id="searchByTitle" resultMap="studyDetail">
+    SELECT
+    s.study_no,
+    s.member_no,
+    s.title,
+    s.intake,
+    s.method,
+    s.recruitment_deadline,
+    t.tag_no,
+    t.name
+    FROM
+    study s
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
+    WHERE s.title LIKE CONCAT('%', #{keyword}, '%')
+    ORDER BY s.study_no DESC;
+  </select>
+
+  <!-- 모집글 내용으로 검색 -->
+  <select id="searchByIntroduction" resultMap="studyDetail">
+    SELECT
+    s.study_no,
+    s.member_no,
+    s.title,
+    s.intake,
+    s.method,
+    s.recruitment_deadline,
+    t.tag_no,
+    t.name
+    FROM
+    study s
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
+    WHERE s.introduction LIKE CONCAT('%', #{keyword}, '%')
+    ORDER BY s.study_no DESC;
+  </select>
+
+  <!-- 기술스택으로 검색 -->
+  <select id="searchByTag" resultMap="studyDetail">
+    SELECT
+    s.study_no,
+    s.member_no,
+    s.title,
+    s.intake,
+    s.method,
+    s.recruitment_deadline,
+    t.tag_no,
+    t.name
+    FROM
+    study s
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
+    WHERE t.name LIKE CONCAT('%', #{keyword}, '%')
+    ORDER BY s.study_no DESC;
+  </select>
 
 </mapper>

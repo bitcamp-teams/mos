@@ -4,6 +4,13 @@ import com.mos.domain.member.dto.MemberStudyDto;
 import java.util.List;
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.repository.TagRepository;
+import java.util.stream.Collectors;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.repository.StudyRepository;
@@ -43,10 +50,22 @@ public class DefaultStudyService implements StudyService {
     return studyRepository.update(studyDto);
   }
 
+  // 조회수 카운트
+  @Transactional
   @Override
-  public List<StudyDto> list() {
-    return studyRepository.findAll();
+  public StudyDto updateHitCount(int studyNo) {
+    studyRepository.updateHitCount(studyNo);
+    return studyRepository.getByStudyNo(studyNo);
   }
+
+  @Override
+  public Page<StudyDto> list(Pageable pageable) {
+    List<StudyDto> studyList = studyRepository.findAll(pageable);
+    long totalCount = studyRepository.countAll(); // 전체 데이터 개수 구하기
+    return new PageImpl<>(studyList, pageable, totalCount);
+  }
+
+
 
   @Override
   public List<TagDto> getAllTags() {
@@ -59,4 +78,18 @@ public class DefaultStudyService implements StudyService {
       studyRepository.applyStudy(memberStudyDto);
       return true;
   }
+
+  @Override
+  public List<StudyDto> searchByTypeAndKeyword(String type, String keyword) {
+    if ("title".equals(type)) {
+      return studyRepository.searchByTitle(keyword);
+    } else if ("introduction".equals(type)) {
+      return studyRepository.searchByIntroduction(keyword);
+    } else if ("tag".equals(type)) {
+      return studyRepository.searchByTag(keyword);
+    } else {
+      throw new IllegalArgumentException("유효하지 않은 검색 유형입니다.");
+    }
+  }
+
 }
