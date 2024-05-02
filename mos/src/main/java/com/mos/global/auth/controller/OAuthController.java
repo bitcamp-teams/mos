@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import com.mos.global.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.ResponseEntity;
@@ -26,17 +27,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import static com.mos.global.auth.handler.LoginApiProvider.*;
 import static com.mos.global.auth.handler.OAuthRequestParam.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 @CrossOrigin("*")
 @RequestMapping()
 public class OAuthController {
 
-  private static final Log log = LogFactory.getLog(OAuthController.class);
-
   private final MemberService memberService;
   private final LoginApiManager loginApiManager;
-  private final NotificationService notificationService;
   private final WebClient webClient;
 
   @GetMapping("/auth/login")
@@ -56,6 +55,25 @@ public class OAuthController {
 
 
     return "auth/login";
+  }
+
+  @GetMapping("/auth/login-template")
+  public String loginForm(Model model) {
+    // 카카오
+    model.addAttribute("kakaoUrl",
+        KAKAO_AUTH_URI.getParam() + "/oauth/authorize?client_id=" + KAKAO_CLIENT_ID.getParam() + "&redirect_uri=" + KAKAO_REDIRECT_URL.getParam() + "&response_type=code");
+    // 깃헙
+    model.addAttribute("clientId", GITHUB_CLIENT_ID.getParam());
+    // 구글
+    model.addAttribute("googleUrl",
+        "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + GOOGLE_CLIENT_ID.getParam() + "&redirect_uri=" + GOOGLE_REDIRECT_URI.getParam() + "&response_type=code&scope=email");
+
+    // 네이버
+    model.addAttribute("naverUrl",
+        NAVER_AUTH_URI.getParam() + "?client_id=" + NAVER_CLIENT_ID.getParam() + "&redirect_uri=" + NAVER_REDIRECT_URI.getParam() + "&response_type=code&state=mos");
+
+
+    return "auth/form";
   }
 
   // 카카오

@@ -1,31 +1,31 @@
-<div data-th-replace="header :: header">머리말</div>
+<div class="choose_login">
 
-<h1>과제 관리 시스템</h1>
+    <img src="/img/logo_text.png">
 
-<h2>회원</h2>
-
-<form action="/member/add" data-th-action="@{/member/add}" enctype='multipart/form-data' method='post'>
-  <div>
-    email: <input data-th-value='${user.email}' name='email' type='text' >
-  </div>
-  <div>
-    이름: <input name='name' type='text'>
-  </div>
-  <div>
-    belong: <input name='belong' type='text'>
-  </div>
-  <div>
-    career: <input name='career' type='text'>
-  </div>
-  <div>
-    jobGroup: <input name='jobGroup' type='text'>
-  </div>
-  <div>
-    platform: <input data-th-value='${platform}' name='platform' type='text' >
-  </div>
-  <div>
-    <button>등록</button>
-  </div>
-</form>
-
-<div data-th-replace="footer :: footer">꼬리말</div>
+    <div class="container" id="authmodal">
+        <div class="login-option">
+            <a data-th-href="@{'https://github.com/login/oauth/authorize?client_id=' + ${clientId} + '&scope=user:email'}">
+                <img src="/img/github_logo.png">
+                <p>Github 로그인</p>
+            </a>
+        </div>
+        <div class="login-option">
+            <a data-th-href="@{${kakaoUrl}}">
+                <img src="/img/kakao_logo.png">
+                <p>Kakao 로그인</p>
+            </a>
+        </div>
+        <div class="login-option">
+            <a data-th-href="@{${googleUrl}}">
+                <img src="/img/google_logo.png">
+                <p>Google 로그인</p>
+            </a>
+        </div>
+        <div class="login-option">
+            <a data-th-href="@{${naverUrl}}">
+                <img src="/img/naver_logo.png">
+                <p>Naver 로그인</p>
+            </a>
+        </div>
+    </div>
+</div>
