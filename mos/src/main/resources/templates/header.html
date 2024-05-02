@@ -129,7 +129,7 @@
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <span class="navbar-text ml-auto mr-2">현재 접속자 수 : <strong th:text="${session.activeSessions}">0</strong></span>
+                <span class="navbar-text ml-auto mr-2">현재 접속자 수 : <strong th:text="${session.activeSessions} + '명'">0 명</strong></span>
             </li>
             <li class="nav-item dropdown" data-th-if="${session.loginUser != null}">
                 <a id="notificationBtn" class="nav-link" data-toggle="dropdown" href="#">

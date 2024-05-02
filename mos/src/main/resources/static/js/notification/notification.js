@@ -4,6 +4,7 @@ const index = {
     totalPages: 0,
     unreadCount: 0,
     startTime: '',
+    newNoti: false,
     popup: $('#popupNotifications'),
     notificationsContainer: $('.notifications'),
     init() {
@@ -25,6 +26,7 @@ const index = {
 
         $('#notificationBtn').on('click', function (e) {
             e.preventDefault()
+            $(this).removeClass('notification-shake').addClass('notification-read');
             if ($('.dropdown-menu').is(":hidden")){
                 _this.fetchNotifications();
             }
@@ -96,7 +98,7 @@ const index = {
                     .html(`<span class="ml-3 font-weight-light">${item.message}</span>`)
 
                 // 경과시간 출력
-                const $time = $('<span class="float-right text-muted text-sm"></span>')
+                const $time = $('<span class="float-right text-muted text-sm ml-1"></span>')
                 $time.text(`${_this.formatDate(item.createdDate)}`)
                 let link = $a.append($i).append($time);
                 _this.notificationsContainer.append($divider).append(link);
@@ -144,6 +146,10 @@ const index = {
                 if (_this.unreadCount > 0) {
                     $('span.badge.badge-warning.navbar-badge').text(`${_this.unreadCount}`).show();
                     $('.popup-header').text(`${_this.unreadCount} Notifications`);
+                    _this.newNoti = true;
+                    if (_this.newNoti) {
+                        $('#notificationBtn').addClass('notification-shake');
+                    }
                 }
             })
             .catch(error => {
