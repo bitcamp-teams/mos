@@ -73,35 +73,28 @@ const index = {
 
         if (notifyList.length === 0) {
             if (!append) {
-                $('span.dropdown-header').text('알림이 없습니다.');
-                $('span.badge.badge-warning.navbar-badge').text(0).show();
+                $('span.dropdown-header').text('알림이 없습니다.').show();
+                $('span.badge.badge-warning.navbar-badge').hide();
             }
+            _this.popup.show()
         } else {
-            // 노티 갯수 표시
-            // if (!_this.exist) {
-            //     const $totalCnt = $('<span class="dropdown-item dropdown-header popup-header-sticky disabled"></span>').text(`${_this.unreadCount} Notifications`);
-            //     _this.notificationsContainer.prepend($totalCnt);
-            //     _this.exist = true;
-            // }
             $.each(notifyList, (index, item) => {
                 const $divider = $('<div class="dropdown-divider"></div>');
                 // 링크 설정
                 const $a = $('<a>', {
                     'class': 'dropdown-item d-flex',
                     'href': `${item.link}`
-                });
-                $a.on('click', () => {
+                }).on('click', () => {
                     _this.sendReadRequest(item);
+                }).hover(function () {
+                    $(this).css('color', 'blue');
+                }, function () {
+                    $(this).css('color', 'black');
                 });
 
                 // 메시지 텍스트 설정
                 const $i = $('<i id="notiIcon" class="fas fa-solid fa-comment mr-2"></i>')
                     .html(`<span class="ml-3 font-weight-light">${item.message}</span>`)
-                    .hover(function () {
-                        $(this).css('color', 'blue');
-                    }, function () {
-                        $(this).css('color', 'black');
-                    });
 
                 // TODO : 경과시간 출력
                 const $time = $('<span class="float-right text-muted text-sm">0 분전</span>')
@@ -149,8 +142,10 @@ const index = {
             })
             .then(res => {
                 _this.unreadCount = res.unreadCount
-                $('span.badge.badge-warning.navbar-badge').text(`${_this.unreadCount}`).show();
-                $('.popup-header').text(`${_this.unreadCount} Notifications`);
+                if (_this.unreadCount > 0) {
+                    $('span.badge.badge-warning.navbar-badge').text(`${_this.unreadCount}`).show();
+                    $('.popup-header').text(`${_this.unreadCount} Notifications`);
+                }
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
