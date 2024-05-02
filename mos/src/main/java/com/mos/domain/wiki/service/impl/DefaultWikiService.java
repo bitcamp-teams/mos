@@ -3,6 +3,9 @@ package com.mos.domain.wiki.service.impl;
 import com.mos.domain.study.repository.StudyRepository;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mos.domain.wiki.dto.WikiDto;
@@ -26,8 +29,10 @@ public class DefaultWikiService implements WikiService {
   }
 
   @Override
-  public List<WikiDto> listByWikiNo() {
-    return wikiRepository.listByWikiNo();
+  public Page<WikiDto> listByWikiNo(Pageable page) {
+    List<WikiDto> list = wikiRepository.listByWikiNo(page);
+    int count = wikiRepository.wikiCount();
+    return new PageImpl<>(list, page, count);
   }
 
   @Override
