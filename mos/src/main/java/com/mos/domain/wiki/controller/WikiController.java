@@ -76,7 +76,9 @@ public class WikiController {
   //studyNo에 따라 리스트를 가져오고, 거기서 비동기로 wikiNo에 따라 본문을 보여준다.
   //만약 wikiNo가 있다면 그 위키를 보여준다. (없으면 그냥 리스트만 보여주자)
   @GetMapping("view")
-  public void view(int wikiNo, @RequestParam int studyNo, Model model) throws Exception {
+  public void view(
+      @RequestParam(required = false, defaultValue = "0") int wikiNo, @RequestParam int studyNo, Model model
+  ) throws Exception {
     // 뷰를 반환한다. async로 api 컨트롤러에 요청하여 동작하므로 service 객체를 사용하지 않음.
   }
 
