@@ -26,6 +26,8 @@ public interface StudyRepository {
 
   boolean applyStudy(MemberStudyDto memberStudyDto);
 
+  List<StudyDto> listAll();
+
   List<StudyDto> searchByTitle(String keyword);
 
   List<StudyDto> searchByIntroduction(String keyword);
