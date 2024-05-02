@@ -1,6 +1,6 @@
 package com.mos.global.notification.dto;
 
-import com.mos.domain.notify.dto.NotifyDto;
+import com.mos.domain.notify.dto.NotificationDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotificationsResponseDto {
-  private List<NotifyDto> notifications;
+  private List<NotificationDto> notifications;
   private int unreadCount;
 
-  public static NotificationsResponseDto of(List<NotifyDto> notifications, int count) {
+  public static NotificationsResponseDto of(List<NotificationDto> notifications, int count) {
     return new NotificationsResponseDto(notifications, count);
   }
 }

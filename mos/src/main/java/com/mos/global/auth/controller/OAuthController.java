@@ -9,6 +9,7 @@ import com.mos.global.auth.handler.response.LoginResponseHandler;
 
 import javax.servlet.http.HttpSession;
 
+import com.mos.global.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,6 +36,7 @@ public class OAuthController {
 
   private final MemberService memberService;
   private final LoginApiManager loginApiManager;
+  private final NotificationService notificationService;
   private final WebClient webClient;
 
   @GetMapping("/auth/login")
