@@ -3,12 +3,14 @@ package com.mos.domain.wiki.service;
 import java.util.List;
 
 import com.mos.domain.wiki.dto.WikiDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface WikiService {
 
   List<WikiDto> listByStudyNo(int studyNo);
 
-  List<WikiDto> listByWikiNo();
+  Page<WikiDto> listByWikiNo(Pageable page);
 
   WikiDto getByWikiNo(int wikiNo);
 

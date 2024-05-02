@@ -12,10 +12,16 @@
     ORDER BY ordr;
   </select>
 
-  <select id="listByWikiNo" parameterType="int" resultType="WikiDto">
+  <select id="listByWikiNo" resultType="WikiDto">
     SELECT wiki_no, title, content, likes, hit_count
-    FROM wiki
-    ORDER BY wiki_no DESC;
+    FROM curriculum
+    ORDER BY wiki_no DESC
+    LIMIT #{offset}, #{pageSize};
+  </select>
+
+  <select id="wikiCount">
+    SELECT count(*)
+    FROM curriculum;
   </select>
 
   <select id="getByWikiNo" parameterType="int" resultType="WikiDto">

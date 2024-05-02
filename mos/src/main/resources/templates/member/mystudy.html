@@ -1,15 +1,7 @@
 <div data-th-replace="header :: header" xmlns:th="http://www.w3.org/1999/xhtml">머리말</div>
 
 <div class="wrapper-mos">
-    <div id="sidenav" class="sidenav">
-        <a data-th-href="@{${#session.getAttribute('loginUser') != null ? '/member/dashboard?no=' + #session.getAttribute('loginUser').memberNo : '/auth/login'}}"
-           href="">대시보드</a>
-        <div data-th-if="${session.loginUser != null}">
-            <a data-th-href="@{'/member/mystudy?no=' + ${session.loginUser.memberNo}}" href="">My 스터디</a>
-            <a data-th-href="@{/member/edit}" href="">회원 정보 수정</a>
-            <a data-th-href="@{/member/myWriteCommentList}" href="">내가 쓴 글/댓글 보기</a>
-        </div>
-    </div>
+    <div data-th-replace="mypage-sidenav :: sidenav">사이드네비</div>
 
     <div class="container-mystudy">  <!-- 부트스트랩 컨테이너 추가 -->
         <table class="table">  <!-- 부트스트랩 테이블 클래스 추가 -->
@@ -20,15 +12,17 @@
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th></th>
-                 <!-- 다른 필요한 열들도 추가할 수 있습니다 -->
+                <!-- 다른 필요한 열들도 추가할 수 있습니다 -->
             </tr>
             </thead>
             <tbody>
-            <tr id="myTr" data-th-each="memberStudy : ${memberStudyList}" data-th-attr="data-studyNo=${memberStudy.studyDto.studyNo}, data-isFavorite=${memberStudy.favorites}" >
-                <td th:classappend="${memberStudy.favorites} ? 'filled' : ''" id="favoriteTd" onclick="toggleFavorite(this)">
-                    <i class="fas fa-star favorite-icon" ></i>
+            <tr id="myTr" data-th-each="memberStudy : ${memberStudyList}"
+                data-th-attr="data-studyNo=${memberStudy.studyDto.studyNo}, data-isFavorite=${memberStudy.favorites}">
+                <td th:classappend="${memberStudy.favorites} ? 'filled' : ''" id="favoriteTd"
+                    onclick="toggleFavorite(this)">
+                    <i class="fas fa-star favorite-icon"></i>
                 </td>
-<!--                 스터디 제목-->
+                <!--                 스터디 제목-->
                 <td>
                     <a data-th-if="${memberStudy.studyDto != null}"
                        data-th-text="${memberStudy.studyDto.title}"
@@ -63,11 +57,12 @@
             </tr>
             </tbody>
         </table>
-</div>  <!--    부트스트랩 컨테이너 닫기 -->
+    </div>  <!--    부트스트랩 컨테이너 닫기 -->
 
     <!-- 결과를 표시할 모달 -->
     <!-- Bootstrap 모달 -->
-    <div class="modal fade" id="jsonResultModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade" id="jsonResultModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="max-height: 70%; overflow-y: auto;">
                 <div class="modal-header">
@@ -99,9 +94,9 @@
         }
 
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             // 폼 제출 이벤트를 가로채기
-            $(document).on('submit', '.studyWithdraw', function(e) {
+            $(document).on('submit', '.studyWithdraw', function (e) {
                 e.preventDefault(); // 폼 기본 제출 방지
                 console.log('함수 호출 성공');
 
@@ -124,11 +119,11 @@
                         type: 'PATCH', // HTTP 요청 메소드
                         contentType: 'application/json',
                         data: JSON.stringify({id: id, message: message}), // 폼 데이터 직렬화
-                        success: function(response) {
+                        success: function (response) {
                             // 요청 성공 시 처리 로직
                             alert('탈퇴 처리가 완료되었습니다.');
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             // 요청 실패 시 처리 로직
                             alert('오류가 발생했습니다. 다시 시도해주세요.');
                         }
@@ -137,114 +132,115 @@
             });
         });
 
-  $(document).ready(function() {
-    var page = 0; // 페이지 번호 초기화
+        $(document).ready(function () {
+            var page = 0; // 페이지 번호 초기화
 
-    var isLoading = false; // 현재 로딩 중인지 여부를 추적하는 플래그
-    var isLastPage = false; // 마지막 페이지인지 확인하는 플래그
+            var isLoading = false; // 현재 로딩 중인지 여부를 추적하는 플래그
+            var isLastPage = false; // 마지막 페이지인지 확인하는 플래그
 
-    $(document).on('submit', '.studyStatus', function(e) {
-        console.log('함수 호출 성공');
-      e.preventDefault(); // 폼 기본 제출 방지
-      page = 0; // 페이지 번호를 0으로 초기화
-     var currentForm = $(this).closest('form'); // 클릭된 버튼을 포함하는 가장 가까운 폼을 찾음
-        var studyNo = currentForm.find("input[name='studyNo']").val(); // 해당 폼의 studyNo를 가져옴
-      console.log(studyNo);
-      isLastPage = false; // 마지막 페이지 플래그 초기화
-      $('.modal-body').empty(); // 모달 내용 초기화
-      $('.modal-content').scrollTop(0);
-      loadMembers(studyNo); // 멤버 로딩 함수 호출
-    });
-
-    function loadMembers(studyNo) {
-      if (isLoading || isLastPage) return; // 로딩 중이거나 마지막 페이지라면 요청하지 않음
-
-             isLoading = true; // 로딩 상태로 변경
-             var actionUrl = '/member/studyManagement'; // 폼 액션 URL
-             console.log(actionUrl);
-
-      // AJAX 요청
-      $.ajax({
-        url: actionUrl + '?page=' + page + '&studyNo=' + studyNo, // 페이지 번호를 쿼리 파라미터로 추가
-        type: 'get',
-        success: function(response) {
-          if (response.content.length === 0) {
-            isLastPage = true; // 더 이상 로드할 페이지가 없음
-          } else {
-            page++; // 페이지 번호 증가
-            // JSON 결과를 바탕으로 내용 추가
-            $.each(response.content, function(index, item) {
-              var defaultPhotoUrl = '/img/user2-160x160.jpg'; // 기본 사진 URL
-              var photoUrl = item.photo ? item.photo : defaultPhotoUrl;
-              var photo = $('<img>').attr('src', photoUrl).css({ 'width': '100px', 'height': '100px'});
-              var container = $('<div>').css({'text-align': 'left', 'display': 'flex', 'flex-direction': 'column'});
-              var memberName = $('<div>').text(item.memberName).css({'font-weight': 'bold'});
-              var message = item.message ? $('<div>').text(item.message) : $('<div>').text("한 줄 소개가 없습니다.");
-              var messageContainer = container.append(memberName).append(message);
-              var contentWrapper = $('<div>').css({'display': 'flex', 'align-items': 'center'});
-              contentWrapper.append(photo).append(messageContainer);
-
-             // 버튼 클릭 시 공통으로 사용할 함수 정의
-                        function updateMemberStatus(message) {
-                          $.ajax({
-                            url: '/member/updateStatus', // 실제 서버 엔드포인트로 변경
-                            type: 'PATCH',
-                            contentType: 'application/json',
-                            data: JSON.stringify({id: item.id, message: message}), // 올바른 형태로 데이터 전송
-                            success: function(response) {
-                              console.log('Success:', response);
-                              location.reload(true);
-                            },
-                            error: function(xhr, status, error) {
-                              console.error('Error:', error);
-                            }
-                          });
-                        }
-
-                        // '승인' 버튼 생성 및 이벤트 핸들러 설정
-                        var acceptBtn = $('<button>')
-                          .addClass('btn btn-primary m-2')
-                          .text('승인')
-                          .click(function() {
-                            updateMemberStatus('S03-102');
-                          });
-
-                        // '거절' 버튼 생성 및 이벤트 핸들러 설정
-                        var refuseBtn = $('<button>')
-                          .addClass('btn btn-primary m-2')
-                          .text('거절')
-                          .click(function() {
-                            updateMemberStatus('S03-105');
-                          });
-
-                           contentWrapper.append(acceptBtn).append(refuseBtn);
-
-              $('.modal-body').append(contentWrapper); // 모달에 내용 추가
+            $(document).on('submit', '.studyStatus', function (e) {
+                console.log('함수 호출 성공');
+                e.preventDefault(); // 폼 기본 제출 방지
+                page = 0; // 페이지 번호를 0으로 초기화
+                var currentForm = $(this).closest('form'); // 클릭된 버튼을 포함하는 가장 가까운 폼을 찾음
+                var studyNo = currentForm.find("input[name='studyNo']").val(); // 해당 폼의 studyNo를 가져옴
+                console.log(studyNo);
+                isLastPage = false; // 마지막 페이지 플래그 초기화
+                $('.modal-body').empty(); // 모달 내용 초기화
+                $('.modal-content').scrollTop(0);
+                loadMembers(studyNo); // 멤버 로딩 함수 호출
             });
-            $('#jsonResultModal').modal('show'); // 모달 표시
-          }
-        },
-        complete: function() {
-          isLoading = false; // 로딩 상태 해제
-        }
-      });
-    }
 
-    // 스크롤 이벤트 처리
-    $('.modal-content').scroll(function() {
-    // 모달 내부에서 현재 스크롤 위치 + 모달 창의 높이가 모달 내용의 전체 높이보다 크거나 같을 때
-    if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight - 10) {
-        loadMembers(); // 추가 멤버 로드 함수 호출
-    }
-});
+            function loadMembers(studyNo) {
+                if (isLoading || isLastPage) return; // 로딩 중이거나 마지막 페이지라면 요청하지 않음
 
-    // 문서 준비가 완료되었을 때 최초 멤버 로드
-<!--    loadMembers();-->
-  });
+                isLoading = true; // 로딩 상태로 변경
+                var actionUrl = '/member/studyManagement'; // 폼 액션 URL
+                console.log(actionUrl);
+
+                // AJAX 요청
+                $.ajax({
+                    url: actionUrl + '?page=' + page + '&studyNo=' + studyNo, // 페이지 번호를 쿼리 파라미터로 추가
+                    type: 'get',
+                    success: function (response) {
+                        if (response.content.length === 0) {
+                            isLastPage = true; // 더 이상 로드할 페이지가 없음
+                        } else {
+                            page++; // 페이지 번호 증가
+                            // JSON 결과를 바탕으로 내용 추가
+                            $.each(response.content, function (index, item) {
+                                var defaultPhotoUrl = '/img/user2-160x160.jpg'; // 기본 사진 URL
+                                var photoUrl = item.photo ? item.photo : defaultPhotoUrl;
+                                var photo = $('<img>').attr('src', photoUrl).css({'width': '100px', 'height': '100px'});
+                                var container = $('<div>').css({
+                                    'text-align': 'left',
+                                    'display': 'flex',
+                                    'flex-direction': 'column'
+                                });
+                                var memberName = $('<div>').text(item.memberName).css({'font-weight': 'bold'});
+                                var message = item.message ? $('<div>').text(item.message) : $('<div>').text("한 줄 소개가 없습니다.");
+                                var messageContainer = container.append(memberName).append(message);
+                                var contentWrapper = $('<div>').css({'display': 'flex', 'align-items': 'center'});
+                                contentWrapper.append(photo).append(messageContainer);
+
+                                // 버튼 클릭 시 공통으로 사용할 함수 정의
+                                function updateMemberStatus(message) {
+                                    $.ajax({
+                                        url: '/member/updateStatus', // 실제 서버 엔드포인트로 변경
+                                        type: 'PATCH',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify({id: item.id, message: message}), // 올바른 형태로 데이터 전송
+                                        success: function (response) {
+                                            console.log('Success:', response);
+                                            location.reload(true);
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error('Error:', error);
+                                        }
+                                    });
+                                }
+
+                                // '승인' 버튼 생성 및 이벤트 핸들러 설정
+                                var acceptBtn = $('<button>')
+                                    .addClass('btn btn-primary m-2')
+                                    .text('승인')
+                                    .click(function () {
+                                        updateMemberStatus('S03-102');
+                                    });
+
+                                // '거절' 버튼 생성 및 이벤트 핸들러 설정
+                                var refuseBtn = $('<button>')
+                                    .addClass('btn btn-primary m-2')
+                                    .text('거절')
+                                    .click(function () {
+                                        updateMemberStatus('S03-105');
+                                    });
+
+                                contentWrapper.append(acceptBtn).append(refuseBtn);
+
+                                $('.modal-body').append(contentWrapper); // 모달에 내용 추가
+                            });
+                            $('#jsonResultModal').modal('show'); // 모달 표시
+                        }
+                    },
+                    complete: function () {
+                        isLoading = false; // 로딩 상태 해제
+                    }
+                });
+            }
+
+            // 스크롤 이벤트 처리
+            $('.modal-content').scroll(function () {
+                // 모달 내부에서 현재 스크롤 위치 + 모달 창의 높이가 모달 내용의 전체 높이보다 크거나 같을 때
+                if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight - 10) {
+                    loadMembers(); // 추가 멤버 로드 함수 호출
+                }
+            });
+
+            // 문서 준비가 완료되었을 때 최초 멤버 로드
+            <!--    loadMembers();-->
+        });
     </script>
-
-
-
 
 
     <!--<div data-th-replace="member/mystudy-view :: modal(${memberStudyList})"></div>-->
@@ -264,28 +260,22 @@
 
             $.ajax({
                 url: '/member/addFavorites',
-                type:'POST',
+                type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({ memberNo: memberNo, studyNo: studyNo, favorites: isFavorite }),
-                success: function(response) {
+                data: JSON.stringify({memberNo: memberNo, studyNo: studyNo, favorites: isFavorite}),
+                success: function (response) {
                     if (response) {
                         console.log('즐겨찾기 상태 업데이트 성공');
                         $('#favoriteTd').addClass('filled');
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error('즐겨찾기 상태 업데이트 실패:', error);
                 }
             });
 
 
         }
-    </script>
-
-     부트스트랩 자바스크립트 추가 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            crossorigin="anonymous">
     </script>
 
 

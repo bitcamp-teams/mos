@@ -7,6 +7,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -96,8 +99,10 @@ public class WikiController {
   }
 
   @GetMapping("modoowikilist")
-  public void modoowikilist(Model model) {
-    model.addAttribute("wiki", wikiService.listByWikiNo());
+  public void modoowikilist(Model model, int page) {
+    Pageable pageable = PageRequest.of(page - 1, 20);
+    System.out.println("wikiService.listByWikiNo(page) = " + wikiService.listByWikiNo(pageable));
+    model.addAttribute("wiki", wikiService.listByWikiNo(pageable));
   }
 
   @GetMapping("delete")
