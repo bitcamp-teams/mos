@@ -89,7 +89,7 @@ public class WikiController {
   public String update(@ModelAttribute WikiDto wikiDto, Model model) throws Exception {
     wikiService.updateWiki(wikiDto);
     model.addAttribute("wiki", wikiDto);
-    return "redirect:/wiki/view?wikiNo=" + wikiDto.getWikiNo();
+    return "redirect:/wiki/view?studyNo=" + wikiDto.getStudyNo() + "&wikiNo=" + wikiDto.getWikiNo();
   }
 
   @GetMapping("list")
