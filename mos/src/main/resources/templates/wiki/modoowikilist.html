@@ -1,6 +1,7 @@
-<div data-th-replace="header::header">머리말</div>
+<div data-th-replace="header::header" xmlns:th="http://www.w3.org/1999/xhtml">머리말</div>
 <div class="page-margin wrapper-mos">
     <h2>모두의 위키 목록</h2>
+
     <table class="table table-striped table-hover">
         <thead>
         <tr>
@@ -21,6 +22,15 @@
         </tr>
         </tbody>
     </table>
+    <div>
+        <ul class="pagination" style="justify-content: center;">
+            <!--                <li class="page-item"><a href="?page=${wiki.number - 1}" class="page-link">이전</a></li>-->
+            <li th:each="pageNum : ${#numbers.sequence(1, wiki.totalPages)}" class="page-item" th:classappend="${wiki.number == pageNum - 1} ? 'active' : ''">
+                <a th:href="@{'?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}"></a>
+            </li>
+            <!--                <li  class="page-item"><a th:href="?page=${wiki.number + 1}" class="page-link">다음</a></li>-->
+        </ul>
+    </div>
 </div>
 
 <script>

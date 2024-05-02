@@ -6,12 +6,13 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.mos.domain.wiki.dto.WikiDto;
+import org.springframework.data.domain.Pageable;
 
 @Mapper
 public interface WikiRepository {
 
   // 모두의 위키 mooduwiki에서 사용함
-  List<WikiDto> listByWikiNo();
+  List<WikiDto> listByWikiNo(Pageable page);
 
   List<WikiDto> listByStudyNo(int studyNo);
 
@@ -28,4 +29,6 @@ public interface WikiRepository {
   void updateHitCount(int wikiNo);
 
   int findWikiNoByStudyNo(int studyNo);
+
+  int wikiCount();
 }
