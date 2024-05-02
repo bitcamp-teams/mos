@@ -34,17 +34,23 @@
                 <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.endDate, 'yyyy-MM-dd') : ''}"></td>
                 <td>
                     <form class="studyWithdraw" data-th-if="${memberStudy.status == 'S03-102'}">
-                        <input type="hidden" name="no" data-th-value="${memberStudy.no}">
-                        <input type="hidden" name="withDrawStatus" data-th-value="S03-106">
-                        <button type="submit" class="btn btn-warning" data-th-text="스터디원"></button>
+                        <input type="hidden" name="id" data-th-value="${memberStudy.no}">
+                        <input type="hidden" name="message" data-th-value="S03-106">
+                        <button type="submit" class="btn btn-Info" data-th-text="스터디원"></button>
                     </form>
                     <form class="studyStatus" data-th-if="${memberStudy.status == 'S03-101'}">
                         <input type="hidden" name="studyNo" data-th-value="${memberStudy.studyDto.studyNo}">
                         <input type="hidden" name="status" data-th-value="${memberStudy.status}">
-                        <button type="submit" class="btn btn-success" data-th-text="스터디장"></button>
+                        <button type="submit" class="btn btn-Primary" data-th-text="스터디장"></button>
                     </form>
                     <form data-th-if="${memberStudy.status == 'S03-106'}">
-                        <button type="button" class="btn btn-warning">탈퇴완료</button>
+                        <button type="button" class="btn btn-Secondary">탈퇴완료</button>
+                    </form>
+                    <form data-th-if="${memberStudy.status == 'S03-104'}">
+                        <button type="button" class="btn btn-Success">신청완료</button>
+                    </form>
+                    <form data-th-if="${memberStudy.status == 'S03-105'}">
+                        <button type="button" class="btn btn-Danger">신청거절</button>
                     </form>
                 </td>
             </tr>
@@ -95,18 +101,22 @@
                 // '탈퇴하시겠습니까?' 확인 대화상자 표시
                 var confirmResult = confirm('탈퇴하시겠습니까?');
 
-                 var currentForm = $(this).closest('form'); // 클릭된 버튼을 포함하는 가장 가까운 폼을 찾음
-                 var actionUrl = '/member/updateStatus'; // 폼 액션 URL
-                  console.log(actionUrl);
+                var currentForm = $(this).closest('form'); // 클릭된 버튼을 포함하는 가장 가까운 폼을 찾음
+                var actionUrl = '/member/updateStatus'; // 폼 액션 URL
+                console.log(actionUrl);
 
                 if (confirmResult) {
+                    var id = currentForm.find('[name="id"]').val();
+                    var message = currentForm.find('[name="message"]').val();
+                    console.log(id);
+                    console.log(message);
+
                     // 사용자가 '확인'을 클릭하면, AJAX를 통해 폼 데이터를 서버로 전송
-<!--                    var actionUrl = $(this).attr('action'); // 폼 액션 URL-->
                     $.ajax({
                         url: actionUrl, // 서버 엔드포인트 URL
-                        type: 'POST', // HTTP 요청 메소드
+                        type: 'PATCH', // HTTP 요청 메소드
                         contentType: 'application/json',
-                        data: currentForm.serialize(), // 폼 데이터 직렬화
+                        data: JSON.stringify({id: id, message: message}), // 폼 데이터 직렬화
                         success: function(response) {
                             // 요청 성공 시 처리 로직
                             alert('탈퇴 처리가 완료되었습니다.');
@@ -171,7 +181,7 @@
                         function updateMemberStatus(message) {
                           $.ajax({
                             url: '/member/updateStatus', // 실제 서버 엔드포인트로 변경
-                            type: 'post',
+                            type: 'PATCH',
                             contentType: 'application/json',
                             data: JSON.stringify({id: item.id, message: message}), // 올바른 형태로 데이터 전송
                             success: function(response) {

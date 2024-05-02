@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -32,8 +33,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,9 +46,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/member")
+@Slf4j
 public class MemberController implements InitializingBean {
 
-  private final Log log = LogFactory.getLog(Thread.currentThread().getClass());
   private final DefaultMemberService memberService;
   private final DefaultStudyService studyService;
   private final StorageService storageService;
@@ -124,8 +127,9 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
     return ResponseEntity.ok().body(memberService.findListByStudyNo(studyNo, memberNo, page));
   }
 
-  @PostMapping("updateStatus")
+  @PatchMapping("updateStatus")
   public ResponseEntity<?> updateStatus(@RequestBody MyStudiesUpdateDto updateDto) {
+    log.debug("updateDto = {}", updateDto);
     memberService.updateStatus(updateDto);
     return ResponseEntity.ok().build();
   }
