@@ -1,5 +1,6 @@
 package com.mos.domain.wiki.service.impl;
 
+import com.mos.domain.wiki.dto.WikiDto;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -42,5 +43,10 @@ public class DefaultWikiApiService implements WikiApiService {
   @Override
   public void deleteWikiByWikiNo(int wikiNo) {
     wikiApiRepository.deleteWikiByWikiNo(wikiNo);
+  }
+
+  @Override
+  public WikiDto getWikiContent(int wikiNo) {
+    return wikiApiRepository.findWikiByWikiNo(wikiNo);
   }
 }

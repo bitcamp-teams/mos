@@ -1,5 +1,6 @@
 package com.mos.domain.wiki.service;
 
+import com.mos.domain.wiki.dto.WikiDto;
 import java.util.List;
 
 import com.mos.domain.wiki.dto.JstreeWikiDto;
@@ -17,4 +18,6 @@ public interface WikiApiService {
   void patchWikiByWikiNo(JstreeWikiDto jstreeWikiDto);
 
   void deleteWikiByWikiNo(int wikiNo);
+
+  WikiDto getWikiContent(int wikiNo);
 }

@@ -1,54 +1,53 @@
 <div th:replace="header::header">머리말</div>
 <div class="page-margin wrapper-mos">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
-            <div class="navbar-nav d-flex flex-column">
-                <a th:each="wiki : ${wikiList}" th:href="@{/wiki/view(wikiNo=${wiki.wikiNo})}" href="">
-                    <div class="nav-link" href="" th:text="${wiki.title}">Left Nav Item</div>
-                </a>
-            </div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
+      <button id="addRootNode">위키 추가</button>
+      <div id="wikiTree" class="navbar-nav d-flex flex-column">
+        <ul>
+          <li>
+            불러오는 중입니다.
+          </li>
+        </ul>
+      </div>
 
-            <!-- 가운데 nav Wiki's Content -->
-            <div>
-                <div th:object="${wikiDto}">
-                    <h1 th:text="*{title}"></h1>
-                    <a data-th-href="@{/wiki/editWiki(wikiNo=*{wikiNo})}" href="edit.html">[편집]</a>
-                    <a data-th-href="@{delete(wikiNo=*{wikiNo})}" href="delete.html">[삭제]</a>
+      <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
+      <div>
+        <div>
+          <h1 id="contentTitle"></h1>
+          <a id="contentEditLink" href="editWiki.html">[편집]</a>
+          <a id="contentDeleteLink" href="delete.html">[삭제]</a>
 
-
-                    <p> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span> </a></p>
-                    <p> 작성자 = <span th:text="*{username}">회원 이름</span></p>
-                    <p> 작성일 = <span th:text="*{contentCreatedDate}">작성일</span></p>
-                    <p> 마지막 편집일 = <span th:text="*{contentUpdatedDate}">마지막 편집일</span></p>
-                    <div th:attr="content = *{content}"></div>
-                    <div id="viewer">
-                        <strong>Viewer Here</strong>
-                    </div>
-
-
-                    <p> 좋아요 수 : <span th:text="*{likes}">좋아요 수</span></p>
-
-                </div>
-                <!--  toast ui editor-->
-                <script>
-                    var content = document.querySelector('[content]').getAttribute('content');
-                    const viewer = toastui.Editor.factory({
-                        el: document.querySelector('#viewer'),
-                        viewer: true,
-                        initialValue: content
-                    });
-                </script>
-            </div>
-
-            <!-- 오른쪽 nav : Wiki's ToC -->
-            <div class="navbar-nav d-flex flex-column">
-                <a>
-                    <div class="nav-link" href="#">Right Nav Item</div>
-                </a>
-            </div>
+          <div> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span>
+          </a></div>
+          <div> 작성자 = <span id="author">회원 이름</span></div>
+          <div> 작성일 = <span id="createdDate">작성일</span></div>
+          <div> 마지막 편집일 = <span id="updatedDate">마지막 편집일</span></div>
+          <!--          <div th:attr="content = *{content}"></div>-->
+          <div id="content"> 내용</div>
+          <div id="viewer">
+            <strong>Viewer Here</strong>
+          </div>
         </div>
-    </nav>
+        <p> 좋아요 수 : <span id="contentLikes">좋아요 수</span></p>
+        <!--  toast ui editor-->
+        <script>
+
+        </script>
+      </div>
+
+      <!-- 오른쪽 nav : Wiki's ToC -->
+      <div class="navbar-nav d-flex flex-column">
+        <a>
+          <div class="nav-link" href="#">Right Nav Item</div>
+        </a>
+      </div>
+    </div>
+  </nav>
 
 </div>
+<script src="/plugins/jstree/jstree.js"></script>
+<link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">
+<script src="/js/wiki/wikitree-edit.js"></script>
 <div th:replace="footer::footer">꼬리말</div>

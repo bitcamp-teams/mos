@@ -1,6 +1,7 @@
 package com.mos.domain.wiki.controller;
 
 import com.mos.domain.member.dto.MemberDto;
+import com.mos.domain.wiki.dto.WikiDto;
 import com.mos.global.auth.LoginUser;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +38,11 @@ public class WikiApiController {
     log.debug("api/wiki: list");
     // 제목 트리를 adjacency list 형태로 전부 가져옴 (JSON)
     return wikiApiService.getWikiTitleTree(studyNo);
+  }
+
+  @GetMapping("/{wiki_no}")
+  public WikiDto getWiki(@PathVariable("wiki_no") int wikiNo) {
+    return wikiApiService.getWikiContent(wikiNo);
   }
 
   // TODO: 권한 검증
@@ -66,5 +73,6 @@ public class WikiApiController {
     log.debug("api/wiki: delete");
     wikiApiService.deleteWikiByWikiNo(jstreeWikiDto.getWikiNo());
   }
+
 
 }

@@ -19,8 +19,8 @@ public class WikiDto {
   private String title;
   private String content;
   private int ordr;
-  private int layer;
-  private int layerOrder;
+  //  private int layer;
+  //  private int layerOrder;
   private int likes; //반정규화
   private Date createdDate;
   private Date updatedDate;

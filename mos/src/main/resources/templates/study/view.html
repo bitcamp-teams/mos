@@ -11,7 +11,12 @@
 
         <!--    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>-->
 
-        <a data-th-href="@{/wiki/view(wikiNo=${firstWikiNo})}" href="/wiki/view.html">[이 스터디의 위키 보러가기]</a>
+
+        <a th:if="${not #strings.isEmpty(firstWikiNo)}" th:href="@{/wiki/view(studyNo=${study.studyNo})}" href="/wiki/view.html">[이 스터디의 위키 보러가기]</a>
+        <p th:unless="${not #strings.isEmpty(firstWikiNo)}">이 스터디는 작성한 위키가 없습니다.
+            <a th:href="@{/wiki/view(studyNo=${study.studyNo}, wikiNo=0)}" href="/wiki/view.html">[작성하기]</a>
+        </p>
+
 
         <p> 스터디장 = <span th:text="*{memberNo}"> </span></p>
         <p> 진행방식 = <span th:text="*{method}"> </span></p>
