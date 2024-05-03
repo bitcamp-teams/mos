@@ -33,4 +33,6 @@ public interface StudyRepository {
   List<StudyDto> searchByIntroduction(String keyword);
 
   List<StudyDto> searchByTag(String keyword);
+
+  void updateLikeCount(int studyNo, int likeCount);
 }

@@ -33,13 +33,18 @@
       <strong>Viewer Here</strong>
     </div>
 
-        <div data-th-if="*{stat != '종료' && stat != '모집완료'}">
+        <!-- Like button -->
+        <p>
+            <i class="fas fa-heart" th:id="'like-icon-' + *{studyNo}" th:data-study-no="*{studyNo}" th:classappend="${isLiked == null or isLiked != 1} ? '' : 'liked'" onclick="toggleLike(this)"></i>
+            <span th:id="'like-count-' + *{studyNo}" data-th-text="*{likeCount}"></span>
+        </p>
+
+
+        <div data-th-if="*{stat != 'S01-103' && stat != 'S01-104'}">
             <button id="applyStudyBtn" data-toggle="modal" data-target="#applyModal">신청하기</button>
         </div>
 
-        <!--신청하기 모달창-->
-
-        <!-- 모달창 -->
+        <!-- 스터디 신청하기 모달창-->
         <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -95,6 +100,48 @@
         </script>
 
 
+        <!-- 좋아요 스크립트 -->
+        <script data-th-inline="javascript">
+            function toggleLike(icon) {
+                var memberNo = [[${(session.loginUser == null) ? 0 : session.loginUser.memberNo}]];
+                if (memberNo == 0) {
+                    alert("로그인을 해주세요.");;
+                    return;
+                }
+                var studyNo = parseInt(icon.getAttribute('data-study-no'));
+                var likeCount = document.getElementById('like-count-' + studyNo);
+
+                // AJAX 요청을 통해 서버로 데이터 전송
+                $.ajax({
+                    url: '/study/like/toggleLike',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify( {
+                        studyNo: studyNo,
+                        memberNo: memberNo
+                    }),
+                    success: function(response) {
+                        // 성공적으로 처리된 경우
+                        console.log(response);
+                        // 좋아요 상태를 토대로 UI 업데이트
+                        if (response.checked != 1) {
+                            // 좋아요가 눌리지 않은 상태였다면
+                            icon.classList.add('liked');
+                            likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                        } else {
+                            // 좋아요가 눌린 상태였다면
+                            icon.classList.remove('liked');
+                            likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                        }
+                    },
+                    error: function(error) {
+                        // 오류 발생 시 처리
+                        console.error(error);
+                    }
+                });
+            }
+        </script>
+
         <script>
             var content = document.querySelector('[introduction]').getAttribute('introduction');
             const viewer = toastui.Editor.factory({
@@ -104,18 +151,7 @@
             });
         </script>
 
-        <!-- 알림 기능 -->
-<!--        <form id="notificationForm" action="#" th:action="@{/notify/save}" method="post">-->
-<!--            <div>-->
-<!--                <input type="hidden" name="recipientId" th:value="${study.memberNo}">-->
-<!--            </div>-->
-<!--            <div>-->
-<!--                <input type="hidden" name="message" th:value="${study.title + '글에 댓글이 달렸습니다!'}">-->
-<!--            </div>-->
-<!--            <div>-->
-<!--                <input type="hidden" name="link" th:value="@{'/study/view?studyNo=' + ${study.studyNo}}">-->
-<!--            </div>-->
-<!--        </form>-->
+
         <!--댓글추가 기능 시작-->
         <form id="commentForm" th:action="@{/comment/study/add}" method="post">
             <p>
@@ -132,7 +168,6 @@
         </form>
 
         <script>
-            // JavaScript
             document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('submitBtn').addEventListener('click', function (e) {
                     e.preventDefault(); // 기본 폼 제출 방지

@@ -33,5 +33,7 @@ public class StudyDto {
   private String tags;
   private List<TagDto> tagList;
   private int hitCount;
+  private int likeCount;
+
 
 }
