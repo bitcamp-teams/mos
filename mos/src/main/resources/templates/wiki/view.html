@@ -1,8 +1,11 @@
 <div th:replace="header::header">머리말</div>
-<div class="page-margin wrapper-mos">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
+<div class="container wrapper-mos">
+
+  <div class="row flex-nowrap">
+    <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
+    <nav class="col">
+      <button>collapsible</button>
+      <br>
       <button id="addRootNode">위키 추가</button>
       <div id="wikiTree" class="navbar-nav d-flex flex-column">
         <ul>
@@ -11,41 +14,46 @@
           </li>
         </ul>
       </div>
+    </nav>
 
-      <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
+    <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
+    <div class="col-7">
       <div>
-        <div>
-          <h1 id="contentTitle"></h1>
-          <a id="contentEditLink" href="editWiki.html">[편집]</a>
-          <a id="contentDeleteLink" href="delete.html">[삭제]</a>
+        <h1 id="contentTitle"></h1>
+        <a id="contentEditLink" href="editWiki.html">[편집]</a>
+<!--        <a id="contentDeleteLink" href="delete.html">[삭제]</a>-->
 
-<!--          <div> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span>-->
-          </a></div>
-          <div> 작성자 = <span id="author">회원 이름</span></div>
-          <div> 작성일 = <span id="createdDate">작성일</span></div>
-          <div> 마지막 편집일 = <span id="updatedDate">마지막 편집일</span></div>
-          <!--          <div th:attr="content = *{content}"></div>-->
-          <div id="content"> 내용</div>
-          <div id="viewer">
-            <strong>Viewer Here</strong>
-          </div>
-        </div>
-        <p> 좋아요 수 : <span id="contentLikes">좋아요 수</span></p>
-        <!--  toast ui editor-->
-        <script>
-
-        </script>
-      </div>
-
-      <!-- 오른쪽 nav : Wiki's ToC -->
-      <div class="navbar-nav d-flex flex-column">
-        <a>
-          <div class="nav-link" href="#">Right Nav Item</div>
+        <!--          <div> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span>-->
         </a>
       </div>
+      <div> 작성자 = <span id="author">회원 이름</span></div>
+      <div> 작성일 = <span id="createdDate">작성일</span></div>
+      <div> 마지막 편집일 = <span id="updatedDate">마지막 편집일</span></div>
+      <!--          <div th:attr="content = *{content}"></div>-->
+      <div id="content"> 내용</div>
+      <div id="viewer">
+        <strong>Viewer Here</strong>
+      </div>
+      <p> 좋아요 수 : <span id="contentLikes">좋아요 수</span></p>
     </div>
-  </nav>
 
+    <!-- 오른쪽 nav : Wiki's ToC -->
+    <nav class="col">
+      <a>
+        <div class="nav-link" href="#">
+          <strong>목차</strong>
+          <ol>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+          </ol>
+        </div>
+      </a>
+    </nav>
+
+  </div>
 </div>
 <script src="/plugins/jstree/jstree.js"></script>
 <link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">
