@@ -88,6 +88,14 @@ $(function () {
       history.pushState(null, null,
           '/wiki/view?studyNo=' + nodeContent.studyNo + '&wikiNo='
           + nodeContent.wikiNo);
+      console.log(viewer)
+      return viewer;
+    })
+    .then(function (viewer) {
+      let $toastui = $('.toastui-editor-contents');
+      console.log($toastui[0])
+
+      tocGenerator($toastui[0]);
     })
   })
   .on('ready.jstree', function (e, data) {
@@ -233,3 +241,31 @@ function deleteSingleNode(data) {
 $('#addRootNode').on('click', function (e) {
   tree.jstree("create_node", '#');
 })
+
+// TOC
+function tocGenerator(html) {
+  console.log(html.toString())
+
+  // 목차를 생성할 div 요소 생성
+  const tocDiv = document.getElementById('toc');
+
+// 문서에서 h1~h6 요소 찾기
+  const headings = html.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+// 목차 생성
+  let toc = '<ul>';
+  headings.forEach((heading, index) => {
+    const level = parseInt(heading.tagName.charAt(1));
+    const text = heading.textContent.trim();
+    const id = `heading-${index}`;
+    heading.id = id;
+    toc += `${'  '.repeat(level - 1)}<li><a href="#${id}">${text}</a></li>\n`;
+  });
+  toc += '</ul>';
+
+// 목차 div에 추가
+  tocDiv.innerHTML = toc;
+
+// 문서에 목차 div 추가
+  document.body.insertBefore(tocDiv, $('#tocDiv'));
+}

@@ -1,4 +1,5 @@
 <div th:replace="header::header">머리말</div>
+
 <div class="container-fluid wrapper-mos">
 
   <div class="row flex-nowrap">
@@ -21,7 +22,7 @@
       <div>
         <h1 id="contentTitle"></h1>
         <a id="contentEditLink" href="editWiki.html">[편집]</a>
-<!--        <a id="contentDeleteLink" href="delete.html">[삭제]</a>-->
+        <!--        <a id="contentDeleteLink" href="delete.html">[삭제]</a>-->
 
         <!--          <div> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span>-->
         </a>
@@ -38,20 +39,11 @@
     </div>
 
     <!-- 오른쪽 nav : Wiki's ToC -->
-    <nav class="col">
-      <a>
-        <div class="nav-link" href="#">
-          <strong>목차</strong>
-          <ol>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-          </ol>
-        </div>
-      </a>
-    </nav>
+    <div class="col" id="tocDiv">
+      <nav id="toc" class="nav-link">
+
+      </nav>
+    </div>
 
   </div>
   <div class="row">
