@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.Header;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,6 +29,7 @@ import com.mos.domain.wiki.service.WikiService;
 import com.mos.global.auth.LoginUser;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -106,12 +109,18 @@ public class WikiController {
     model.addAttribute("wiki", wikiService.listByWikiNo(pageable));
   }
 
-  @GetMapping("view/{studyNo}")
-  public String getWikiByStudyNo(@PathVariable int studyNo) {
-    int wikiNo = wikiService.findWikiNoByStudyNo(studyNo);
-    System.out.println("wikiNo = " + wikiNo);
-    return "redirect:/wiki/viewWiki?wikiNo=" + wikiNo;
-  }
+//  @GetMapping("view/{studyNo}")
+//  public String getWikiByStudyNo(
+//      @PathVariable int studyNo,
+//      @RequestHeader("referer") String url,
+//      RedirectAttributes redirectAttributes) {
+//    Integer wikiNo = wikiService.findWikiNoByStudyNo(studyNo);
+//    if (wikiNo == null) {
+//      return "redirect:" + url;
+//    }
+//    redirectAttributes.addAttribute("wikiNo", wikiNo);
+//    return "redirect:/wiki/view";
+//  }
 
   @GetMapping("delete")
   public String delete(HttpSession session, @RequestParam int wikiNo) throws Exception {

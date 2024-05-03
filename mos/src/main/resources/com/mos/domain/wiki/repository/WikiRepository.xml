@@ -74,7 +74,7 @@
     LIMIT 1;
   </select>
 
-  <select id="findWikiNoByStudyNo" resultType="int">
+  <select id="findWikiNoByStudyNo" resultType="Integer">
     SELECT wiki_no
     FROM wiki
     WHERE study_no = #{studyNo}
