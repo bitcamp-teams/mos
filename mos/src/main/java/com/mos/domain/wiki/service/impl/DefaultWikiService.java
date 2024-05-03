@@ -68,7 +68,7 @@ public class DefaultWikiService implements WikiService {
   }
 
   @Override
-  public int findWikiNoByStudyNo(int studyNo) {
+  public Integer findWikiNoByStudyNo(int studyNo) {
     return wikiRepository.findWikiNoByStudyNo(studyNo);
   }
 }
