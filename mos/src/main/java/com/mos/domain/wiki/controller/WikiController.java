@@ -73,6 +73,7 @@ public class WikiController {
     if (wikiDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
+    wikiService.updateHitCount(wikiNo);
     // log.debug(wikiDto.toString());
     model.addAttribute("wiki", wikiDto);
 
