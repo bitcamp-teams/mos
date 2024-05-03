@@ -1,17 +1,13 @@
 package com.mos.domain.study.service.impl;
 
 import com.mos.domain.member.dto.MemberStudyDto;
-
 import java.util.List;
-
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.repository.TagRepository;
-
 import java.util.stream.Collectors;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -70,6 +66,7 @@ public class DefaultStudyService implements StudyService {
   }
 
 
+
   @Override
   public List<TagDto> getAllTags() {
     return tagRepository.findAll();
@@ -78,30 +75,9 @@ public class DefaultStudyService implements StudyService {
   @Transactional
   @Override
   public boolean applyStudy(MemberStudyDto memberStudyDto) {
-    studyRepository.applyStudy(memberStudyDto);
-    return true;
+      studyRepository.applyStudy(memberStudyDto);
+      return true;
   }
-
-//  @Override
-//  public List<StudyDto> searchByTypeAndKeyword(String type, String keyword) {
-//    if (type == null || keyword == null) {
-//      throw new IllegalArgumentException("검색 유형과 키워드는 필수 입력 항목입니다.");
-//    }
-//
-//    List<StudyDto> searchResult;
-//    if ("title".equals(type)) {
-//      searchResult = studyRepository.searchByTitle(keyword);
-//    } else if ("introduction".equals(type)) {
-//      searchResult = studyRepository.searchByIntroduction(keyword);
-//    } else if ("tag".equals(type)) {
-//      searchResult = studyRepository.searchByTag(keyword);
-//    } else {
-//      throw new IllegalArgumentException("유효하지 않은 검색 유형입니다.");
-//    }
-//
-//    return new PageImpl<>(searchResult);
-//  }
-
 
   @Override
   public List<StudyDto> listAll() {
@@ -123,4 +99,5 @@ public class DefaultStudyService implements StudyService {
     }
     return searchResult;
   }
+
 }
