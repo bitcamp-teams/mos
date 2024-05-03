@@ -30,7 +30,7 @@ public interface MemberService {
 
   int join(MemberJoinDto joinDto);
 
-  List<MemberStudyDto> findMyStudies(int no);
+  Page<MemberStudyDto> findMyStudies(int no, Pageable page);
 
   void addFavorites(UpdateFavoritesDto updateFavoritesDto);
 

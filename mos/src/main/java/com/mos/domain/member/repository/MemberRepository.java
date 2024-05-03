@@ -27,7 +27,9 @@ public interface MemberRepository {
   boolean existsByUserName(String username);
 
   // 회원이 참여한 스터디 목록 조회
-  List<MemberStudyDto> findMyStudies(int no);
+  List<MemberStudyDto> findMyStudies(int no, Pageable page);
+
+  int mystudiesCount(int memberNo);
 
   // 스터디 즐겨찾기 추가
   void addFavorites(UpdateFavoritesDto memberStudyDto);

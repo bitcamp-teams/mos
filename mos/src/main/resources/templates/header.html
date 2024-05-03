@@ -155,9 +155,8 @@
                         data-th-href="@{${session.loginUser != null ? '/member/dashboard?no=' + session.loginUser.memberNo : '/auth/login'}}"
                         href="">대시보드</a>
                 <th-block data-th-if="${session.loginUser != null}">
-                    <a data-th-href="@{'/member/mystudy?no=' + ${session.loginUser.memberNo}}"
-                       href="">My
-                        스터디</a>
+                    <a data-th-href="@{|/member/mystudy?no=${session.loginUser.memberNo}&page=1|}"
+                       href="">My스터디</a>
                     <a data-th-href="@{'/member/edit'}" href="">회원 정보 수정</a>
                     <a data-th-href="@{'/member/myWriteCommentList'}" href="">내가 쓴 글/댓글 보기</a>
 

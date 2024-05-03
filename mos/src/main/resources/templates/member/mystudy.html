@@ -57,6 +57,16 @@
             </tr>
             </tbody>
         </table>
+        <div>
+            <ul class="pagination" style="justify-content: center;">
+                <!--                <li class="page-item"><a href="?page=${wiki.number - 1}" class="page-link">이전</a></li>-->
+                <li th:each="pageNum : ${#numbers.sequence(1, memberStudyList.totalPages)}" class="page-item"
+                    th:classappend="${memberStudyList.number == pageNum - 1} ? 'active' : ''">
+                    <a th:href="@{'?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}"></a>
+                </li>
+                <!--                <li  class="page-item"><a th:href="?page=${wiki.number + 1}" class="page-link">다음</a></li>-->
+            </ul>
+        </div>
     </div>  <!--    부트스트랩 컨테이너 닫기 -->
 
     <!-- 결과를 표시할 모달 -->
