@@ -5,7 +5,9 @@ import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.study.dto.StudyDto;
+import com.mos.domain.study.dto.StudyLikeStatDto;
 import com.mos.domain.study.dto.TagDto;
+import com.mos.domain.study.service.StudyLikeService;
 import com.mos.domain.study.service.StudyService;
 import com.mos.domain.wiki.service.WikiService;
 import com.mos.global.auth.LoginUser;
@@ -47,6 +49,8 @@ public class StudyController {
   // 스터디에 파일저장 / 이미지 옵티마이징 따로 없으므로 변수 추가 없음
   private final CommentService commentService;
   private final WikiService wikiService;
+  private final StudyLikeService studyLikeService;
+
 
   @GetMapping("form")
   public String form(Model model) throws Exception {
@@ -84,6 +88,13 @@ public class StudyController {
 
     if (user != null) {
       model.addAttribute("memberNo", user.getMemberNo());
+      StudyLikeStatDto studyLikeStatDto = new StudyLikeStatDto();
+      studyLikeStatDto.setStudyNo(studyNo);
+      studyLikeStatDto.setMemberNo(user.getMemberNo());
+      model.addAttribute("isLiked", studyLikeService.checked(studyLikeStatDto));
+    } else {
+
+      model.addAttribute("isLiked", null);
     }
 
     StudyDto studyDto = studyService.getByStudyNo(studyNo);
@@ -95,6 +106,9 @@ public class StudyController {
 
     List<StudyCommentDto> studyCommentDtoList = commentService.getStudyComments(studyNo);
 
+
+
+
     model.addAttribute("studyComments", studyCommentDtoList);
 
     //첫번째 wikiNo도 모델에 담아준다.
@@ -103,7 +117,6 @@ public class StudyController {
     } catch (Exception e) {
       //아직 위키가 없는 상태임
     }
-
 
   }
 
@@ -227,5 +240,7 @@ public class StudyController {
       return "error-page";
     }
   }
+
+
 
 }

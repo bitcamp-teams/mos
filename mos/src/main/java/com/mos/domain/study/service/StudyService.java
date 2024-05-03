@@ -4,8 +4,6 @@ import com.mos.domain.member.dto.MemberStudyDto;
 import java.util.List;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.dto.TagDto;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -30,4 +28,7 @@ public interface StudyService {
   List<StudyDto> listAll();
 
   List<StudyDto> searchByTypeAndKeyword(String type, String keyword);
+
+  void updateLikeCount(int studyNo, int likeCount);
+
 }

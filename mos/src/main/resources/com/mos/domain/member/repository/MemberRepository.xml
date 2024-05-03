@@ -211,7 +211,7 @@
   <update id="withdraw" parameterType="int">
     update member set
     photo=null,
-    stat='탈퇴'
+    stat='M01-102'
     where
     member_no=#{memberNo}
   </update>

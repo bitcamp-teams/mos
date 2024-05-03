@@ -70,6 +70,7 @@
       <th>마감일</th>
       <th>태그</th>
       <th>조회수</th>
+      <th>좋아요</th>
     </tr>
     </thead>
     <tbody>
@@ -91,7 +92,6 @@
         function loadStudies() {
             // 로딩 중이 아니고 마지막 페이지가 아닐 때만 실행
             if (!loading && !isLastPage) {
-                console.log("loadStudies()호출됨!!!!!!");
                 loading = true;
                 $.ajax({
                     url: '/study/api/v1/list',
@@ -115,6 +115,8 @@
                             row.append('<td>' + study.recruitmentDeadline + '</td>');
                             row.append('<td>' + study.tags + '</td>');
                             row.append('<td>' + study.hitCount + '</td>');
+                            row.append('<td>' + study.likeCount + '</td>');
+
 
                             tbody.append(row);
                         });

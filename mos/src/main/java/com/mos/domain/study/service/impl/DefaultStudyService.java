@@ -100,4 +100,8 @@ public class DefaultStudyService implements StudyService {
     return searchResult;
   }
 
+  @Override
+  public void updateLikeCount(int studyNo, int likeCount) {
+    studyRepository.updateLikeCount(studyNo, likeCount);
+  }
 }

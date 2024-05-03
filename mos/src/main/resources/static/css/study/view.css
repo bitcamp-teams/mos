@@ -2,3 +2,11 @@ textarea#applyMsg::placeholder {
   color: #aaa; /* 회색 톤 */
   font-style: italic; /* 기울임꼴 */
 }
+
+.liked {
+  color: #ff69b4; /* pink color */
+}
+
+.fa-heart {
+  cursor: pointer; /* make the icon clickable */
+}
