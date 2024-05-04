@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="/css/study/view.css">
   <link rel="stylesheet" href="/css/study/main.css">
   <link rel="stylesheet" href="/css/wiki/view.css">
-  <link rel="stylesheet" href="/css/home/styles.css">
   <link rel="stylesheet" href="/css/member/view.css">
   <link rel="stylesheet" href="/css/member/mypage.css">
   <!-- jQuery -->
@@ -50,7 +49,7 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
-  <!--    <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">-->
+<!--      <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">-->
   <!-- iCheck -->
   <!--    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">-->
   <!-- JQVMap -->
@@ -141,8 +140,9 @@
             data-th-text="${session.loginUser.email}">로그인 이메일</span>
       <span class="mr-sm-2"
             data-th-if="${session.loginUser != null}">  [[${session.platform}]]</span>
-      <button data-th-if="${session.loginUser != null}" class="btn btn-outline-danger"
-              onclick="location.href='/auth/logout';">로그아웃
+      <button id="logoutBtn"
+              data-th-if="${session.loginUser != null}"
+              class="btn btn-outline-danger">로그아웃
       </button>
       <!-- 로그인 버튼 클릭 시 모달 열기 -->
       <button data-th-if="${session.loginUser == null}" id="openLoginModal"
@@ -279,6 +279,6 @@
 <!-- axios -->
 <script src="/plugins/axios/axios.min.js"></script>
 <!-- 별도의 JavaScript 파일 추가 -->
-<script type="module" src="/js/auth/modal.js"></script>
+<script type="module" src="/js/auth/login.js"></script>
 <script type="module" src="/js/subscribe.js"></script>
 <script type="module" src="/js/notification/notification.js"></script>

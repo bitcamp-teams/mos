@@ -20,8 +20,10 @@ public class NotificationController {
   private final NotificationService notificationService;
 
   @GetMapping(value = "/subscribe/{memberNo}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public SseEmitter subscribe(@PathVariable int memberNo) throws IOException {
-    return notificationService.subscribe(memberNo);
+  public SseEmitter subscribe(@PathVariable int memberNo,
+      @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "")
+      String lastEventId) throws IOException {
+    return notificationService.subscribe(memberNo, lastEventId);
   }
 
   @GetMapping("/notifications")

@@ -13,8 +13,8 @@ const index = {
 
         $(document).ready(function () {
             let $loginModal = $('#loginModal');
-            // 모달이 열릴 때 애니메이션 효과
-            _this.modalAnimation($loginModal);
+            // 모달 애니메이션 및 sse subscribe
+            _this.modalHandler($loginModal);
 
             let showModal = $('#isLoginFrm #showModal').val();
             if (showModal) {
@@ -27,6 +27,11 @@ const index = {
             _this.validation();
             _this.signUp();
         });
+
+        // sse 연결 종료
+        $(document).on('click', '#logoutBtn', _this.handleLogout.bind(_this));
+
+        window.addEventListener('unload', _this.handleUnload.bind(_this));
 
     },
     modalOpen() {
@@ -172,7 +177,7 @@ const index = {
             $('button[type=submit]').hide();
         }
     },
-    modalAnimation(modal) {
+    modalHandler(modal) {
         modal.on('show.bs.modal', function (e) {
             const modal = $(this);
             modal.find('.modal-dialog').css('transform', 'translateY(-100%)');
@@ -184,6 +189,27 @@ const index = {
             modal.find('.modal-dialog').css('transform', '');
         });
     },
+    handleLogout() {
+        this.logout()
+    },
+    // handleBeforeUnload() {
+    //     alert('handleBeforeUnload')
+    //     this.logout()
+    // },
+    handleUnload() {
+        this.logout()
+    },
+    logout() {
+        // sessionStorage의 'isSubscribed' 값 제거
+        localStorage.removeItem('isSubscribed');
+
+        // 로그아웃 처리
+        auth.logout().then(res => {
+            if (res.status === 200) {
+                location.href = '/'
+            }
+        });
+    }
 }
 
 index.init();
