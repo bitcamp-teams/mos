@@ -1,3 +1,17 @@
 /*
 /wiki/view 템플릿을 위한 css
 */
+#wikiTreeViewer {
+  max-height: 80vh;
+}
+
+#wikiTree, #toc {
+  position: fixed;
+  overflow: auto;
+  background-color: #f1f1f1;
+}
+
+#wikiViewer {
+  min-height: 80vh;
+
+}

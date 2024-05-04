@@ -1,8 +1,11 @@
 <div th:replace="header::header">머리말</div>
+<script src="/plugins/bootstrap-toc/bootstrap-toc.js"></script>
+<link rel="stylesheet" href="/plugins/bootstrap-toc/bootstrap-toc.css"/>
 
-<div class="container-fluid wrapper-mos">
+<!--<div class="container-fluid wrapper-mos">-->
+<div class="container-fluid">
 
-  <div class="row flex-nowrap">
+  <div id="wikiTreeViewer" class="row flex-nowrap">
     <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
     <nav class="col">
       <button>collapsible</button>
@@ -18,7 +21,7 @@
     </nav>
 
     <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
-    <div class="col-7">
+    <div id="wikiViewer" class="col-7">
       <div>
         <h1 id="contentTitle"></h1>
         <a id="contentEditLink" href="editWiki.html">[편집]</a>
@@ -40,13 +43,8 @@
 
     <!-- 오른쪽 nav : Wiki's ToC -->
     <div class="col" id="tocDiv">
-      <nav id="toc" class="nav-link">
-
-      </nav>
+      <nav id="toc" data-toggle="toc"></nav>
     </div>
-
-  </div>
-  <div class="row">
 
   </div>
 </div>

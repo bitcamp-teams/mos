@@ -1,3 +1,14 @@
+#header {
+  background-color: #DBEAFE;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+  width: 100%;
+  left: 0;
+}
+
 .dropdown {
   display: inline-block;
   position: relative;

@@ -95,7 +95,16 @@ $(function () {
       let $toastui = $('.toastui-editor-contents');
       console.log($toastui[0])
 
-      tocGenerator($toastui[0]);
+      // tocGenerator($toastui[0]);
+      $(function () {
+        var navSelector = "#toc";
+        var $myNav = $(navSelector);
+        $myNav.html("");
+        Toc.init($myNav);
+        $($toastui).scrollspy({
+          target: navSelector,
+        });
+      });
     })
   })
   .on('ready.jstree', function (e, data) {
