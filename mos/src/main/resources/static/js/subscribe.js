@@ -5,14 +5,15 @@ const index = {
     init() {
         const _this = this;
 
-        if (localStorage.getItem('isSubscribed') === 'Y') {
-            alert('eee')
-            return; // 이미 구독중이면 중복 요청 안함
-        }
+        $(function () {
+            if (localStorage.getItem('isSubscribed') === 'Y') {
+                return; // 이미 구독중이면 중복 요청 안함
+            }
 
-        if (_this.memberNo !== '' && localStorage.getItem('isSubscribed') !== 'Y') {
-            _this.subscribe();
-        }
+            if (_this.memberNo !== '' && localStorage.getItem('isSubscribed') !== 'Y') {
+                _this.subscribe();
+            }
+        });
 
     },
     subscribe() {
@@ -41,7 +42,7 @@ const index = {
                     title: `${data.message}`
                 })
             } catch (error) {
-
+                // sse 최초 연결시 더미데이터는 따로 처리하지 않음
             }
 
 

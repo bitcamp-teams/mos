@@ -11,16 +11,12 @@ import java.util.stream.Collectors;
 @Component
 public class EmitterRepository {
   public final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
-//  private final Map<String, Object> eventCache = new ConcurrentHashMap<>();
 
   public SseEmitter save(String id, SseEmitter sseEmitter) {
     emitters.put(id, sseEmitter);
     return sseEmitter;
   }
 
-//  public void saveEventCache(String id, Object event) {
-//    eventCache.put(id, event);
-//  }
 
   public Map<String, SseEmitter> findAllStartWithById(String id) {
     return emitters.entrySet().stream()
@@ -28,11 +24,6 @@ public class EmitterRepository {
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
-//  public Map<String, Object> findAllEventCacheStartWithId(String id) {
-//    return eventCache.entrySet().stream()
-//        .filter(entry -> entry.getKey().startsWith(id))
-//        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-//  }
 
   public Optional<SseEmitter> findById(String memberId) {
     return Optional.ofNullable(emitters.get(memberId));
@@ -52,14 +43,5 @@ public class EmitterRepository {
     emitters.remove(id);
   }
 
-//  public void deleteAllEventCacheStartWithId(String id) {
-//    eventCache.forEach(
-//        (key, data) -> {
-//          if (key.startsWith(id)) {
-//            eventCache.remove(key);
-//          }
-//        }
-//    );
-//  }
 
 }
