@@ -13,8 +13,8 @@ const index = {
 
         $(document).ready(function () {
             let $loginModal = $('#loginModal');
-            // 모달이 열릴 때 애니메이션 효과
-            _this.modalAnimation($loginModal);
+            // 모달 애니메이션 및 sse subscribe
+            _this.modalHandler($loginModal);
 
             let showModal = $('#isLoginFrm #showModal').val();
             if (showModal) {
@@ -172,7 +172,7 @@ const index = {
             $('button[type=submit]').hide();
         }
     },
-    modalAnimation(modal) {
+    modalHandler(modal) {
         modal.on('show.bs.modal', function (e) {
             const modal = $(this);
             modal.find('.modal-dialog').css('transform', 'translateY(-100%)');
@@ -184,6 +184,21 @@ const index = {
             modal.find('.modal-dialog').css('transform', '');
         });
     },
+    subscribe(options) {
+        alert(1111)
+        // 로그인 상태일 때만 호출됨
+        const memberNo = $('#isLoginFrm #memberNoInput').val();
+        if (memberNo !== '') {
+            const eventSource = new EventSource('/api/v1/subscribe/' + memberNo);
+
+            eventSource.addEventListener("connect", event => {
+                console.log(event.data)
+                $(this).off(event);
+            })
+
+        }
+
+    }
 }
 
 index.init();
