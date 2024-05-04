@@ -1,7 +1,7 @@
 
 export default {
     modalHtml: async () => {
-        return await axios.get('/auth/login',{
+        return await axios.get('/auth/login-template',{
             responseType: 'document'
         })
     },

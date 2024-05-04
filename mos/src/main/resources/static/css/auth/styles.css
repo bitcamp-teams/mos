@@ -1,5 +1,12 @@
 
 /* ============ 로그인 모달 창 스타일 ============ */
+.modal-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
 .modal {
     text-align: center;
     backdrop-filter: blur(5px);

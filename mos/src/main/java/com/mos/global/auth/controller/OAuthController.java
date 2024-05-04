@@ -8,6 +8,7 @@ import com.mos.global.auth.handler.response.LoginResponseHandler;
 
 import javax.servlet.http.HttpSession;
 
+import com.mos.global.notification.service.RedisMessageService;
 import com.mos.global.notification.service.SseEmitterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class OAuthController {
   private final MemberService memberService;
   private final LoginApiManager loginApiManager;
   private final SseEmitterService emitterService;
+  private final RedisMessageService redisMessageService;
   private final WebClient webClient;
 
   @GetMapping("/auth/login")
@@ -117,6 +119,8 @@ public class OAuthController {
     String id = String.valueOf(loginUser.getMemberNo());
     // SseEmitter 삭제
     emitterService.deleteEmitter(id);
+    // redis 구독해제
+    redisMessageService.removeSubscribe(id);
     return "redirect:/";
   }
 
