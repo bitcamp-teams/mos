@@ -192,15 +192,11 @@ const index = {
     handleLogout() {
         this.logout()
     },
-    // handleBeforeUnload() {
-    //     alert('handleBeforeUnload')
-    //     this.logout()
-    // },
     handleUnload() {
         this.logout()
     },
     logout() {
-        // sessionStorage의 'isSubscribed' 값 제거
+        // localStorage 'isSubscribed' 값 제거
         localStorage.removeItem('isSubscribed');
 
         // 로그아웃 처리
