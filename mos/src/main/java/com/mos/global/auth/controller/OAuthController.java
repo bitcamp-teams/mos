@@ -15,10 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -115,13 +112,24 @@ public class OAuthController {
 
   @GetMapping("auth/logout")
   public String logout(HttpSession session, @LoginUser MemberDto loginUser) throws Exception {
-    session.invalidate();
     String id = String.valueOf(loginUser.getMemberNo());
     // SseEmitter 삭제
     emitterService.deleteEmitter(id);
     // redis 구독해제
     redisMessageService.removeSubscribe(id);
+    session.invalidate();
     return "redirect:/";
+  }
+
+  @PostMapping("auth/logout")
+  public ResponseEntity<?> logoutWithPost(HttpSession session, @LoginUser MemberDto loginUser) throws Exception {
+    String id = String.valueOf(loginUser.getMemberNo());
+    // SseEmitter 삭제
+    emitterService.deleteEmitter(id);
+    // redis 구독해제
+    redisMessageService.removeSubscribe(id);
+    session.invalidate();
+    return ResponseEntity.ok().build();
   }
 
   @GetMapping("auth/form")

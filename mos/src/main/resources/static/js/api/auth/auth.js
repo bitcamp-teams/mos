@@ -14,6 +14,9 @@ export default {
     },
     findByEmail: async params => {
         return await axios.post('/api/v1/member/findByUsername', params);
+    },
+    logout: async () => {
+        return await axios.post('/auth/logout');
     }
 
 

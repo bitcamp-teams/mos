@@ -28,6 +28,11 @@ const index = {
             _this.signUp();
         });
 
+        // sse 연결 종료
+        $(document).on('click', '#logoutBtn', _this.handleLogout.bind(_this));
+
+        window.addEventListener('unload', _this.handleUnload.bind(_this));
+
     },
     modalOpen() {
         auth.modalHtml().then(res => {
@@ -184,20 +189,26 @@ const index = {
             modal.find('.modal-dialog').css('transform', '');
         });
     },
-    subscribe(options) {
-        alert(1111)
-        // 로그인 상태일 때만 호출됨
-        const memberNo = $('#isLoginFrm #memberNoInput').val();
-        if (memberNo !== '') {
-            const eventSource = new EventSource('/api/v1/subscribe/' + memberNo);
+    handleLogout() {
+        this.logout()
+    },
+    // handleBeforeUnload() {
+    //     alert('handleBeforeUnload')
+    //     this.logout()
+    // },
+    handleUnload() {
+        this.logout()
+    },
+    logout() {
+        // sessionStorage의 'isSubscribed' 값 제거
+        localStorage.removeItem('isSubscribed');
 
-            eventSource.addEventListener("connect", event => {
-                console.log(event.data)
-                $(this).off(event);
-            })
-
-        }
-
+        // 로그아웃 처리
+        auth.logout().then(res => {
+            if (res.status === 200) {
+                location.href = '/'
+            }
+        });
     }
 }
 
