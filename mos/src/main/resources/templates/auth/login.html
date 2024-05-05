@@ -1,31 +1,137 @@
-<div data-th-replace="header::header">머리말</div>
-<div class="wrapper-mos">
 
-    <div class="modal-container" id="authmodal">
-        <div class="login-option">
-            <a data-th-href="@{'https://github.com/login/oauth/authorize?client_id=' + ${clientId} + '&scope=user:email'}">
-                <img src="/img/github_logo.png">
-                <p>Github 로그인</p>
-            </a>
-        </div>
-        <div class="login-option">
-            <a data-th-href="@{${kakaoUrl}}">
-                <img src="/img/kakao_logo.png">
-                <p>Kakao 로그인</p>
-            </a>
-        </div>
-        <div class="login-option">
-            <a data-th-href="@{${googleUrl}}">
-                <img src="/img/google_logo.png">
-                <p>Google 로그인</p>
-            </a>
-        </div>
-        <div class="login-option">
-            <a data-th-href="@{${naverUrl}}">
-                <img src="/img/naver_logo.png">
-                <p>Naver 로그인</p>
-            </a>
-        </div>
-    </div>
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #E5E7EB; /* 약간 밝은 배경색 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #4B5563; /* 텍스트 색상 */
+            position: relative;
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1;
+            color: #000000; /* 로고 텍스트의 색상을 검은색으로 변경 */
+        }
+
+        .login-container {
+            width: 400px;
+            text-align: center;
+            background-color: #F3F4F6;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-container button {
+            background-color: #FFFFFF; /* 버튼 배경색 */
+            color: #4B5563; /* 텍스트 색상 */
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            width: calc(100% - 3px); /* 컨테이너 내부 패딩 고려하여 버튼 너비 조정 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 500;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* 그림자 효과에도 트랜지션 적용 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+        }
+
+        .login-container button:not(:last-child) {
+            margin-bottom: 20px; /* 버튼 사이 간격 조정 */
+        }
+
+        .login-container button:hover {
+            border-color: #9CA3AF; /* hover 시의 테두리 색상 */
+            color: #9CA3AF; /* hover 시의 텍스트 색상 */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .login-container button img {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .background-shape {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #a0ab8a 0%, #669fa6 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+            z-index: 0;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="header">
+    <a href=""> <img src="/img/logo_text.png" alt="로고"></a>
 </div>
-<div data-th-replace="footer::footer">꼬리말</div>
+<div class="background-shape"></div>
+<div class="login-container">
+    <button id="kakaoBtn">
+        <img src="/img/kakao_logo.png" alt="Kakao Login">
+        Kakao 계정으로 로그인
+    </button>
+    <button id="googleBtn">
+        <img src="/img/google_logo.png" alt="Google Login">
+        Google 계정으로 로그인
+    </button>
+    <button id="githubBtn">
+        <img src="/img/github_logo.png" alt="GitHub Login">
+        Github 계정으로 로그인
+    </button>
+    <button id="naverBtn">
+        <img src="/img/naver_logo.png" alt="Naver Login">
+        Naver 계정으로 로그인
+    </button>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const kakaoUrl = /*[[${kakaoUrl}]]*/ '';
+    const googleUrl = /*[[${googleUrl}]]*/ '';
+    const clientId = /*[[${clientId}]]*/ '';
+    const naverUrl = /*[[${naverUrl}]]*/ '';
+
+    document.getElementById('kakaoBtn').addEventListener('click', function() {
+        window.location.href = kakaoUrl;
+    });
+
+    document.getElementById('googleBtn').addEventListener('click', function() {
+        window.location.href = googleUrl;
+    });
+
+    document.getElementById('githubBtn').addEventListener('click', function() {
+        window.location.href = 'https://github.com/login/oauth/authorize?client_id=' + clientId + '&scope=user:email';
+    });
+
+    document.getElementById('naverBtn').addEventListener('click', function() {
+        window.location.href = naverUrl;
+    });
+    /*]]>*/
+</script>
+</body>
+</html>
