@@ -1,51 +1,70 @@
-<div data-th-replace="header::header">머리말</div>
+<div data-th-replace="header::header" xmlns="http://www.w3.org/1999/html">머리말</div>
 
 <div class="page-margin wrapper-mos">
 
-    <h2>스터디 모집하기!</h2>
+    <div class="py-5 text-center">
+        <h2>모집 글 작성</h2>
+        <hr class="my-4">
+
+    </div>
 
     <form id="studyInfo" action="./add" data-th-action="@{add}" method="post">
-        <div>
-            스터디 제목을 입력해주세요!<br> <input name="title" type="text">
+        <!-- Flex Container 시작 -->
+        <div style="display: flex; gap: 20px;">
+            <div style="flex-basis: 50%">
+            <label> 스터디 제목을 입력해주세요!</label>
+            <input name="title" type="text" class="form-control">
         </div>
-        <br>
-        <div>
-            스터디 방식을 선택해주세요!<br>
+
+            <div style="flex-basis: 50%"><div>
+                <label>스터디 방식을 선택해주세요!</label></div>
+            <div class="form-check-inline">
             <input type="radio" value="온라인" name="method" th:checked="true"> 온라인<br>
             <input type="radio" value="오프라인" name="method"> 오프라인<br>
             <input type="radio" value="자유방식" name="method"> 자유방식<br>
+            </div>
         </div>
-        <br>
-        <div>
-            모집 인원수를 설정해주세요!<br>
-            <input name="intake" type="number" th:value="5">
         </div>
-        <br>
-        <div>
-            언제까지 모집하시겠어요?<br>
+        <hr class="my-4">
+
+        <!-- Flex Container 시작 -->
+        <div style="display: flex; gap: 20px;">
+        <div style="flex-basis: 50%">
+            <div><label> 모집 인원수를 설정해주세요!</label></div>
+            <input name="intake" type="number" th:value="5" class="form-control">
+        </div>
+        <div style="flex-basis: 50%">
+            <div><label>언제까지 모집하시겠어요?</label></div>
             <input name="recruitmentDeadline" type="date" th:value="2024-05-08">
         </div>
-        <br>
-        <div>
-            스터디 빈도와 진행 기간은 어떻게 되나요?<br>
+        </div>
+        <hr class="my-4">
+
+        <!-- Flex Container 시작 -->
+        <div style="display: flex; gap: 20px;">
+        <div style="flex-basis: 50%">
+            <div><label> 스터디 빈도와 진행 기간은 어떻게 되나요?</label></div>
             시작일 : <input name="startDate" type="date" th:value="2024-05-08"><br>
             종료일 : <input name="endDate" type="date" th:value="2024-05-08"><br>
         </div>
         <br>
-        <div>
-            태그들을 선택하세요!<br>
-            <div data-th-each="tag : ${tagList}" data-th-object="${tag}">
-                <input type="checkbox" data-th-checkbox="true" data-th-value="*{tagNo}" name="tags">
+        <div style="flex-basis: 50%">
+            <div><label>태그들을 선택하세요!</label></div>
+            <div data-th-each="tag : ${tagList}" data-th-object="${tag}" class="form-check-inline">
+                <input type="checkbox" data-th-checkbox="true" data-th-value="*{tagNo}" name="tags" class="form-check-input">
                 <span data-th-text="*{name}"></span>
             </div>
         </div>
+        </div>
+        <hr class="my-4">
 
         <div id="editor"></div>
         <input type="hidden" name="introduction" id="editor-content">
 
-        <div>
-            <button type="submit">등록</button>
+        <div class="py-5 text-center">
+            <button type="submit" class="btn btn-primary">등록</button>
         </div>
+
     </form>
 
     <script>
@@ -73,6 +92,6 @@
         });
     </script>
 
-
+    </div>
 </div>
 <div data-th-replace="footer::footer">꼬리말</div>
