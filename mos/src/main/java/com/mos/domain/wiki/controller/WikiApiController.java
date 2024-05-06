@@ -1,7 +1,10 @@
 package com.mos.domain.wiki.controller;
 
 import com.mos.domain.member.dto.MemberDto;
+import com.mos.domain.study.dto.StudyLikeStatDto;
 import com.mos.domain.wiki.dto.WikiDto;
+import com.mos.domain.wiki.dto.WikiLikeStatDto;
+import com.mos.domain.wiki.service.WikiLikeService;
 import com.mos.global.auth.LoginUser;
 import java.util.List;
 
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mos.domain.wiki.dto.JstreeWikiDto;
@@ -31,6 +35,7 @@ public class WikiApiController {
   private static final Log log = LogFactory.getLog(new Object() {
   }.getClass().getEnclosingClass());
   private final WikiApiService wikiApiService;
+  private final WikiLikeService wikiLikeService;
 
   //조회 (모든 유저가 다 가능함)
   @GetMapping("")
@@ -72,6 +77,19 @@ public class WikiApiController {
   public void deleteWiki(@LoginUser MemberDto loginUser, @RequestBody JstreeWikiDto jstreeWikiDto) {
     log.debug("api/wiki: delete");
     wikiApiService.deleteWikiByWikiNo(jstreeWikiDto.getWikiNo());
+  }
+
+
+  @GetMapping("/isLiked")
+  @ResponseBody
+  public int isLiked(@LoginUser MemberDto user, @RequestParam int wikiNo) {
+    if (user != null) {
+      WikiLikeStatDto wikiLikeStatDto = new WikiLikeStatDto();
+      wikiLikeStatDto.setWikiNo(wikiNo);
+      wikiLikeStatDto.setMemberNo(user.getMemberNo());
+      return wikiLikeService.checked(wikiLikeStatDto);
+    }
+    return 0; // 좋아요 하지 않은 상태
   }
 
 

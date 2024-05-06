@@ -1,3 +1,11 @@
 /*
 /wiki/view 템플릿을 위한 css
 */
+
+.liked {
+  color: #ff69b4; /* pink color */
+}
+
+.fa-heart {
+  cursor: pointer; /* make the icon clickable */
+}

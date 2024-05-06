@@ -2,7 +2,7 @@ package com.mos.domain.study.repository;
 
 import com.mos.domain.study.dto.StudyLikeStatDto;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+
 
 @Mapper
 public interface StudyLikeStatRepository {

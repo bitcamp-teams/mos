@@ -74,6 +74,7 @@ $(function () {
       $('#contentEditLink').attr('href',
           '/wiki/editWiki?wikiNo=' + nodeContent.wikiNo);
       $('#content').attr('content', nodeContent.content);
+      $('#contentLikes').html(nodeContent.likes);
       return nodeContent;
     })
     .then(function (nodeContent) {
@@ -96,6 +97,26 @@ $(function () {
       tree.jstree('select_node', wikiNo);
     }
   });
+});
+
+// 좋아요 상태 가져오기
+fetch('/api/isLiked?wikiNo=' + wikiNo)
+.then(response => response.json())
+.then(isLiked => {
+  const heartIcon = document.querySelector('.fas.fa-heart');
+
+  // isLiked 값에 따라 초기 스타일 설정
+  if (isLiked === 1) {
+    heartIcon.classList.add('liked');
+  } else {
+    heartIcon.classList.remove('liked');
+  }
+
+  // 하트 아이콘 클릭 이벤트 핸들러 추가
+  heartIcon.addEventListener('click', () => toggleLike(heartIcon, isLiked));
+})
+.catch(error => {
+  console.error('Error fetching isLiked:', error);
 });
 
 //  사용되는 함수들
@@ -228,6 +249,45 @@ function deleteSingleNode(data) {
     tree.jstree('refresh');
   }
 
+}
+
+// 좋아요
+function toggleLike(element, isLiked) {
+
+  fetch('/wiki/like/toggleLike', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ wikiNo: wikiNo})
+  })
+  .then(response => {
+    if (!response.ok) {
+      if (response.status === 400) {
+        // Bad Request 에러 처리
+        window.location.href = '/auth/login'; // 로그인 페이지로 리다이렉트
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    }
+    return response.json();
+  })
+  .then(data => {
+    // 서버 응답에 따른 처리
+    console.log(data.message);
+
+    // isLiked 값에 따라 하트 아이콘 스타일 변경
+    if (isLiked === 1) {
+      element.classList.remove('liked');
+      isLiked = 0; // isLiked 값 업데이트
+    } else {
+      element.classList.add('liked');
+      isLiked = 1; // isLiked 값 업데이트
+    }
+  })
+  .catch(error => {
+    console.error('Error toggling like:', error);
+  });
 }
 
 $('#addRootNode').on('click', function (e) {
