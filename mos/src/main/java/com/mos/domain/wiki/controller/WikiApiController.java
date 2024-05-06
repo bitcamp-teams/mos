@@ -80,8 +80,7 @@ public class WikiApiController {
   }
 
 
-  @GetMapping("/isLiked")
-  @ResponseBody
+  @GetMapping("isLiked")
   public int isLiked(@LoginUser MemberDto user, @RequestParam int wikiNo) {
     if (user != null) {
       WikiLikeStatDto wikiLikeStatDto = new WikiLikeStatDto();

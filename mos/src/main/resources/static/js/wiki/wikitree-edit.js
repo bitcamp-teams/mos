@@ -75,6 +75,7 @@ $(function () {
           '/wiki/editWiki?wikiNo=' + nodeContent.wikiNo);
       $('#content').attr('content', nodeContent.content);
       $('#contentLikes').html(nodeContent.likes);
+      isLiked(nodeContent.id);
       return nodeContent;
     })
     .then(function (nodeContent) {
@@ -100,24 +101,26 @@ $(function () {
 });
 
 // 좋아요 상태 가져오기
-fetch('/api/isLiked?wikiNo=' + wikiNo)
-.then(response => response.json())
-.then(isLiked => {
-  const heartIcon = document.querySelector('.fas.fa-heart');
+function isLiked(wikiNo) {
+  fetch('/api/wiki/isLiked?wikiNo=' + wikiNo)
+  .then(response => response.json())
+  .then(isLiked => {
+    const heartIcon = document.querySelector('.fas.fa-heart');
 
-  // isLiked 값에 따라 초기 스타일 설정
-  if (isLiked === 1) {
-    heartIcon.classList.add('liked');
-  } else {
-    heartIcon.classList.remove('liked');
-  }
+    // isLiked 값에 따라 초기 스타일 설정
+    if (isLiked === 1) {
+      heartIcon.classList.add('liked');
+    } else {
+      heartIcon.classList.remove('liked');
+    }
 
-  // 하트 아이콘 클릭 이벤트 핸들러 추가
-  heartIcon.addEventListener('click', () => toggleLike(heartIcon, isLiked));
-})
-.catch(error => {
-  console.error('Error fetching isLiked:', error);
-});
+    // 하트 아이콘 클릭 이벤트 핸들러 추가
+    heartIcon.addEventListener('click', () => toggleLike(heartIcon, isLiked));
+  })
+  .catch(error => {
+    console.error('Error fetching isLiked:', error);
+  });
+}
 
 //  사용되는 함수들
 function getNodeContent(data) {

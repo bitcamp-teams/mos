@@ -31,7 +31,7 @@ public class WikiLikeController {
         if (loginUser == null) {
             return ResponseEntity.badRequest().build();
         }
-         wikiLikeStatDto.setWikiNo(loginUser.getMemberNo());
+         wikiLikeStatDto.setMemberNo(loginUser.getMemberNo());
         Map<String, Object> response = new HashMap<>();
 
         int checked = wikiLikeService.checked(wikiLikeStatDto);
