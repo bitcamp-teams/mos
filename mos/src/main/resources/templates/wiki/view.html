@@ -3,7 +3,7 @@
 
   <div class="row flex-nowrap">
     <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
-    <nav class="col">
+    <nav class="col-2">
       <button>collapsible</button>
       <br>
       <button id="addRootNode">위키 추가</button>
@@ -17,7 +17,7 @@
     </nav>
 
     <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
-    <div class="col-7">
+    <div class="col-8">
       <div>
         <h1 id="contentTitle"></h1>
         <a id="contentEditLink" href="editWiki.html">[편집]</a>
@@ -40,15 +40,8 @@
     <!-- 오른쪽 nav : Wiki's ToC -->
     <nav class="col">
       <a>
-        <div class="nav-link" href="#">
-          <strong>목차</strong>
-          <ol>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-          </ol>
+        <div class="col-sm-3">
+          <nav id="toc" data-toggle="toc" class="sticky-top"></nav>
         </div>
       </a>
     </nav>
@@ -58,7 +51,14 @@
 
   </div>
 </div>
-<script src="/plugins/jstree/jstree.js"></script>
+
+<!--jstree-->
 <link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">
+<script src="/plugins/jstree/jstree.js"></script>
+<!--jstree-edit-->
 <script src="/js/wiki/wikitree-edit.js"></script>
+<!--bootstrap-toc-->
+<link rel="stylesheet" href="/plugins/bootstarp-toc/bootstrap-toc.css">
+<script src="/plugins/bootstarp-toc/bootstrap-toc.js"></script>
+
 <div th:replace="footer::footer">꼬리말</div>
