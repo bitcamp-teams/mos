@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mos.domain.comment.repository.CommentApiRepository">
+
+  <!--  studyNo/wikiNo에 따라 전체 반환함(정렬은 js) -->
+  <select id="findCommentByWikiNo" parameterType="int" resultType="WikiCommentDto">
+    SELECT comment_no, parent_comment_no, content
+		FROM wiki_comment
+		WHERE wiki_no = #{wikiNo}
+      AND stat != '삭제'
+  </select>
+
+  <select id="findCommentByStudyNo" parameterType="int" resultType="StudyCommentDto">
+    SELECT comment_no, parent_comment_no, content
+		FROM study_comment
+		WHERE study_no = #{studyNo}
+      AND stat != '삭제'
+  </select>
+
+  <!-- 저장 -->
+  <insert id="saveWikiCommentByWikiNo" parameterType="int" useGeneratedKeys="true">
+    INSERT INTO
+      wiki_comment(member_no, wiki_no, content)
+    VALUE
+  </insert>
+  <insert id="saveStudyCommentByWikiNo" parameterType="int" useGeneratedKeys="true">
+    INSERT INTO
+      study_comment(member_no, study_no, content)
+    VALUES
+      (#{memberNo}, #{studyNo}, #{content})
+  </insert>
+
+
+  <!-- 삭제하면 상태만 바꿈! -->
+  <update id="deleteWikiCommentByCommentNo" parameterType="int">
+    UPDATE wiki_comment
+    SET stat='W02-104'
+    WHERE comment_no=#{commentNo}
+  </update>
+
+  <update id="deleteStudyCommentByCommentNo" parameterType="int">
+    UPDATE study_comment
+    SET stat='S02-102'
+    WHERE comment_no=#{commentNo}
+  </update>
+
+
+
+
+
+
+</mapper>

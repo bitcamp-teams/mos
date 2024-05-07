@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/comment") //fragment 로 삽입될 예정
 public class CommentController {
 
-  private static final Log log = LogFactory.getLog(Thread.currentThread().getClass());
+  private static final Log log = LogFactory.getLog(new Object() {
+  }.getClass().getEnclosingClass());
   private final CommentService commentService;
 
   //조회를 위한 컨트롤러 없음. SSR 로 처리할 것이므로, Study/Wiki Controller 에서 CommentService 요청하도록 함.
@@ -29,13 +30,13 @@ public class CommentController {
 
     commentService.addStudyComment(studyCommentDto);
     return ResponseEntity.ok(studyCommentDto);
-//    return "redirect:/study/view?studyNo=" + studyCommentDto.getStudyNo();
+    //    return "redirect:/study/view?studyNo=" + studyCommentDto.getStudyNo();
   }
 
   @GetMapping("study/delete")
   public String deleteStudyComment(@RequestParam int commentNo, @RequestParam int studyNo) throws Exception {
     commentService.deleteStudyComment(commentNo);
-    return "redirect:/study/view?studyNo="+studyNo;
+    return "redirect:/study/view?studyNo=" + studyNo;
   }
 
   //TODO 댓글 변경기능 추가할 것 (ajax)
@@ -56,7 +57,7 @@ public class CommentController {
   @GetMapping("wiki/delete")
   public String deleteWikiComment(@RequestParam int commentNo, @RequestParam int wikiNo) throws Exception {
     commentService.deleteStudyComment(commentNo);
-    return "redirect:/wiki/viewWiki?wikiNo="+ wikiNo;
+    return "redirect:/wiki/viewWiki?wikiNo=" + wikiNo;
   }
 
   //TODO 댓글 변경기능 추가할 것 (ajax)

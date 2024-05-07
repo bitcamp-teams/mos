@@ -9,7 +9,6 @@ body {
   overflow-x: auto;
   overflow-y: auto;
   position: fixed;
-  /*display: flow;*/
   top: 100px;
   height: 80vh;
   max-width: 400px;
@@ -21,4 +20,5 @@ body {
 
 .sidebar-right {
   right: 0;
+  width: 400px;
 }
