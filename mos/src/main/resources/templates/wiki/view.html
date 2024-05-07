@@ -1,27 +1,12 @@
 <div th:replace="header::header">머리말</div>
-<div class="container-fluid wrapper-mos">
-
-  <div class="row flex-nowrap">
-    <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
-    <nav class="col-2">
-      <button>collapsible</button>
-      <br>
-      <button id="addRootNode">위키 추가</button>
-      <div id="wikiTree" class="navbar-nav d-flex flex-column">
-        <ul>
-          <li>
-            불러오는 중입니다.
-          </li>
-        </ul>
-      </div>
-    </nav>
-
+<div class="container wrapper-mos">
+  <div class="row">
     <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
-    <div class="col-8">
+    <div class="col-md-8 offset-md-2">
       <div>
         <h1 id="contentTitle"></h1>
         <a id="contentEditLink" href="editWiki.html">[편집]</a>
-<!--        <a id="contentDeleteLink" href="delete.html">[삭제]</a>-->
+        <!--        <a id="contentDeleteLink" href="delete.html">[삭제]</a>-->
 
         <!--          <div> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span>-->
         </a>
@@ -40,21 +25,37 @@
       <span id="contentLikes">좋아요 수</span>
     </div>
 
-    <!-- 오른쪽 nav : Wiki's ToC -->
-    <nav class="col">
-      <a>
-        <div class="col-sm-3">
-          <nav id="toc" data-toggle="toc" class="sticky-top"></nav>
+    <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
+    <nav class="sidebar-left">
+      <div>
+        <button id="addRootNode">위키 추가</button>
+        <div id="wikiTree">
+          <ul>
+            <li>
+              불러오는 중입니다.
+            </li>
+          </ul>
         </div>
-      </a>
+      </div>
     </nav>
 
-  </div>
-  <div class="row">
 
+    <!-- 오른쪽 nav : Wiki's ToC -->
+    <nav class="sidebar-right">
+          <nav id="toc" data-toggle="toc" class="overflow-auto"></nav>
+    </nav>
+
+
+  </div>
+
+  <hr class="my-4 bg-primary">
+
+  <div class="row align-content-center">
+    <div class="column">
+      Hello?
+    </div>
   </div>
 </div>
-
 <!--jstree-->
 <link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">
 <script src="/plugins/jstree/jstree.js"></script>

@@ -82,14 +82,53 @@ $(function () {
       if (nodeContent.content == null) {
         nodeContent.content = '아직 작성되지 않은 위키입니다.';
       }
-      const viewer = toastui.Editor.factory({
+      const {Editor} = toastui;
+      const {codeSyntaxHighlight} = Editor.plugin;
+      const viewer = Editor.factory({
         el: document.querySelector('#viewer'),
         viewer: true,
-        initialValue: nodeContent.content
+        initialValue: nodeContent.content,
+        plugins: [[codeSyntaxHighlight, {highlighter: Prism}]],
       });
       history.pushState(null, null,
           '/wiki/view?studyNo=' + nodeContent.studyNo + '&wikiNo='
           + nodeContent.wikiNo);
+
+      return viewer;
+    })
+    .then(function (viewer) {
+      //프로미스가 이행되었다면 ToC를 생성한다.
+      // let tocTarget = $('.toastui-editor-contents');
+      let tocTarget = $('#viewer');
+
+      console.log('hi', tocTarget);
+
+      //ToC를 만들 객체를 선택한다. id=toc
+      var navSelector = '#toc';
+      var $myNav = $(navSelector);
+      //선택한 객체에 ToC가 생성되어 있을 수 있으므로 초기화한다.
+      $myNav.html("");
+
+      //ToC를 만든다.
+      Toc.init($myNav);
+
+      //스크롤링 감지할 수 있도록 속성값을 넣어준다.
+      // tocTarget.attr("data-spy", "scroll")
+      // tocTarget.attr("data-target", "#toc")
+      var body = $('body');
+      body.attr("data-spy", "scroll");
+      body.attr("data-target", "#toc")
+
+      $(body).scrollspy({
+        target: $myNav,
+      });
+
+      // const scrollspy = new bootstrap.Scrollspy(
+      //     $(tocTarget[0]), {
+      //       target: $('#toc')
+      //     }
+      // )
+
     })
   })
   .on('ready.jstree', function (e, data) {
@@ -296,4 +335,4 @@ function toggleLike(element) {
 
 $('#addRootNode').on('click', function (e) {
   tree.jstree("create_node", '#');
-})
+});
