@@ -71,4 +71,9 @@ public class DefaultWikiService implements WikiService {
   public Integer findWikiNoByStudyNo(int studyNo) {
     return wikiRepository.findWikiNoByStudyNo(studyNo);
   }
+
+  @Override
+  public void updateLikeCount(int wikiNo, int likes) {
+    wikiRepository.updateLikeCount(wikiNo, likes);
+  }
 }

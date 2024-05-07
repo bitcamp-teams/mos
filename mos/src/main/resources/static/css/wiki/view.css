@@ -22,3 +22,11 @@ body {
 .sidebar-right {
   right: 0;
 }
+
+.liked {
+  color: #ff69b4; /* pink color */
+}
+
+.fa-heart {
+  cursor: pointer; /* make the icon clickable */
+}

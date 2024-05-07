@@ -1,25 +1,18 @@
 package com.mos.domain.study.controller;
 
-import com.mos.domain.member.dto.MemberDto;
-import com.mos.domain.member.dto.MemberStudyDto;
-import com.mos.domain.member.service.MemberService;
+
 import com.mos.domain.study.dto.StudyLikeStatDto;
 import com.mos.domain.study.service.StudyLikeService;
-import com.mos.domain.study.service.StudyService;
-import com.mos.global.auth.LoginUser;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class StudyLikeController {
 
     private final StudyLikeService studyLikeService;
-    private final StudyService studyService;
     private final Log log = LogFactory.getLog(StudyLikeController.class);
 
     @PostMapping("toggleLike")

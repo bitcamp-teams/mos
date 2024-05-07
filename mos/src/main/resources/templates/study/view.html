@@ -71,12 +71,14 @@
             </div>
         </div>
 
+
+
         <!-- 좋아요 스크립트 -->
         <script data-th-inline="javascript">
             function toggleLike(icon) {
                 var memberNo = [[${(session.loginUser == null) ? 0 : session.loginUser.memberNo}]];
                 if (memberNo == 0) {
-                    alert("로그인을 해주세요.");;
+                    window.location.href = "/auth/login";
                     return;
                 }
                 var studyNo = parseInt(icon.getAttribute('data-study-no'));
