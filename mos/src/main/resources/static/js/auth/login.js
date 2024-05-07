@@ -1,6 +1,5 @@
-// auth/login.html 모달 구현
+// auth/form.html 모달 구현
 import auth from "../api/auth/auth.js";
-import * as util from "../util/util.js"
 
 
 const index = {
@@ -35,9 +34,12 @@ const index = {
 
     },
     modalOpen() {
+        const _this = this;
         auth.modalHtml().then(res => {
             const htmlContent = res.data.body.innerHTML;
             $('#loginModalContent').html(htmlContent);
+        }).then(value => {
+
         })
     },
     signUp() {
@@ -178,15 +180,47 @@ const index = {
         }
     },
     modalHandler(modal) {
+        console.log($(`[data-login-provider]`));
+        Popper.createPopper(button, tooltip, {
+            placement: 'top',
+            modifiers: [
+                {
+                    name: 'offset',
+                    options: {
+                        offset: ({placement, reference, popper}) => {
+                            if (placement === 'top') {
+                                return [0, popper.height / 2];
+                            } else {
+                                return [];
+                            }
+                        },
+                    },
+                },
+            ],
+        }).update();
+        $('#tooltipM').show();
+
+
+        // modal.on('show.bs.modal', function (e) {
+        //     const modal = $(this);
+        //     modal.find('.modal-dialog').css('transform', 'translateY(-100%)');
+        // });
+        //
+        // // 모달이 완전히 열린 후 애니메이션을 정상 위치로
+        // modal.on('shown.bs.modal', function (e) {
+        //     const modal = $(this);
+        //     modal.find('.modal-dialog').css('transform', '');
+        // });
+
         modal.on('show.bs.modal', function (e) {
             const modal = $(this);
-            modal.find('.modal-dialog').css('transform', 'translateY(-100%)');
+            modal.find('.modal-dialog').css('opacity', 0); // 초기에 투명도를 0으로 설정합니다.
         });
 
         // 모달이 완전히 열린 후 애니메이션을 정상 위치로
         modal.on('shown.bs.modal', function (e) {
             const modal = $(this);
-            modal.find('.modal-dialog').css('transform', '');
+            modal.find('.modal-dialog').animate({ opacity: 1 }, 400); // 400ms 동안 fade in 애니메이션을 적용합니다.
         });
     },
     handleLogout() {

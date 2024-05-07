@@ -1,11 +1,11 @@
 
 /* ============ 로그인 모달 창 스타일 ============ */
 .modal-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    padding-top: 45px;
+    /*display: flex;*/
+    /*flex-direction: row;*/
+    /*flex-wrap: nowrap;*/
+    /*justify-content: space-between;*/
+    padding-top: 70px;
 }
 
 .modal {
