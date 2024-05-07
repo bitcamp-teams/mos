@@ -28,4 +28,6 @@ public interface WikiService {
   WikiDto updateHitCount(int wikiNo);
 
   Integer findWikiNoByStudyNo(int studyNo);
+
+  void updateLikeCount(int wikiNo, int likes);
 }

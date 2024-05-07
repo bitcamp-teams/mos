@@ -74,20 +74,61 @@ $(function () {
       $('#contentEditLink').attr('href',
           '/wiki/editWiki?wikiNo=' + nodeContent.wikiNo);
       $('#content').attr('content', nodeContent.content);
+      $('#contentLikes').html(nodeContent.likes);
+      isLiked(nodeContent.wikiNo);
       return nodeContent;
     })
     .then(function (nodeContent) {
       if (nodeContent.content == null) {
         nodeContent.content = '아직 작성되지 않은 위키입니다.';
       }
-      const viewer = toastui.Editor.factory({
+      const {Editor} = toastui;
+      const {codeSyntaxHighlight} = Editor.plugin;
+      const viewer = Editor.factory({
         el: document.querySelector('#viewer'),
         viewer: true,
-        initialValue: nodeContent.content
+        initialValue: nodeContent.content,
+        plugins: [[codeSyntaxHighlight, {highlighter: Prism}]],
       });
       history.pushState(null, null,
           '/wiki/view?studyNo=' + nodeContent.studyNo + '&wikiNo='
           + nodeContent.wikiNo);
+
+      return viewer;
+    })
+    .then(function (viewer) {
+      //프로미스가 이행되었다면 ToC를 생성한다.
+      // let tocTarget = $('.toastui-editor-contents');
+      let tocTarget = $('#viewer');
+
+      console.log('hi', tocTarget);
+
+      //ToC를 만들 객체를 선택한다. id=toc
+      var navSelector = '#toc';
+      var $myNav = $(navSelector);
+      //선택한 객체에 ToC가 생성되어 있을 수 있으므로 초기화한다.
+      $myNav.html("");
+
+      //ToC를 만든다.
+      Toc.init($myNav);
+
+      //스크롤링 감지할 수 있도록 속성값을 넣어준다.
+      // tocTarget.attr("data-spy", "scroll")
+      // tocTarget.attr("data-target", "#toc")
+      var body = $('body');
+      body.attr("data-spy", "scroll");
+      body.attr("data-target", "#toc")
+
+      $(body).scrollspy({
+        target: $myNav,
+      });
+
+      // const scrollspy = new bootstrap.Scrollspy(
+      //     $(tocTarget[0]), {
+      //       target: $('#toc')
+      //     }
+      // )
+
     })
   })
   .on('ready.jstree', function (e, data) {
@@ -97,6 +138,26 @@ $(function () {
     }
   });
 });
+
+// 좋아요 상태 가져오기
+function isLiked(wikiNo) {
+  fetch('/api/wiki/isLiked?wikiNo=' + wikiNo)
+  .then(response => response.json())
+  .then(isLiked => {
+    const heartIcon = document.querySelector('.fas.fa-heart');
+
+    // isLiked 값에 따라 초기 스타일 설정
+    if (isLiked === 1) {
+      heartIcon.classList.add('liked');
+    } else {
+      heartIcon.classList.remove('liked');
+    }
+
+  })
+  .catch(error => {
+    console.error('Error fetching isLiked:', error);
+  });
+}
 
 //  사용되는 함수들
 function getNodeContent(data) {
@@ -230,6 +291,48 @@ function deleteSingleNode(data) {
 
 }
 
+function toggleLike(element) {
+  const isLiked = element.classList.contains('liked');
+
+  fetch('/wiki/like/toggleLike', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ wikiNo: wikiNo})
+  })
+  .then(response => {
+    if (!response.ok) {
+      if (response.status === 400) {
+        // Bad Request 에러 처리
+        window.location.href = '/auth/login'; // 로그인 페이지로 리다이렉트
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    }
+    return response.json();
+  })
+  .then(data => {
+    // 서버 응답에 따른 처리
+    console.log(data.message);
+
+    // isLiked 값에 따라 하트 아이콘 스타일 변경
+    if (isLiked) {
+      element.classList.remove('liked');
+    } else {
+      element.classList.add('liked');
+    }
+
+    // 좋아요 수 업데이트
+    $('#contentLikes').html(data.likesCount); // 좋아요 수 업데이트
+
+    // 여기서 좋아요 수가 실시간으로 반영되었음을 확인할 수 있습니다.
+  })
+  .catch(error => {
+    console.error('Error toggling like:', error);
+  });
+}
+
 $('#addRootNode').on('click', function (e) {
   tree.jstree("create_node", '#');
-})
+});

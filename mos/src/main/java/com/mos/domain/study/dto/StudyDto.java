@@ -18,6 +18,7 @@ import org.springframework.data.relational.core.mapping.Column;
 public class StudyDto {
   private int studyNo;
   private int memberNo;
+  private String leaderName;
   private String title;
   private String introduction;
   private String location;

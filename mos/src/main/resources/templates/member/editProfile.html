@@ -1,13 +1,27 @@
 <div data-th-replace="header :: header">머리말</div>
 
-<div class="wrapper-mos">
+<style>
+    .form-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-control {
+        width: 100%; /* 입력란의 길이를 조정합니다. */
+        margin-bottom: 10px; /* 각 입력란 사이의 간격을 조정합니다. */
+    }
+</style>
+
+<div class="form-container">
     <div data-th-replace="mypage-sidenav :: sidenav">사이드네비</div>
 
     <form action="update" data-th-action="@{/member/update}" data-th-object="${member}"
           enctype='multipart/form-data'
           method='post'>
 
-        <div class="container-profile">
+        <div class="container-profile" >
             <div id="profile">
                 <div class="rounded">
                     <a data-th-href="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}}"
@@ -20,28 +34,30 @@
                 </div>
             </div>
             <div>
-                이메일: <input data-th-value='*{email}' name='email' readonly type='text' value="user1@test.com">
+            <div>
+                이메일: <input data-th-value='*{email}' name='email' readonly type='text' value="user1@test.com" class="form-control">
             </div>
             <div>
-                닉네임: <input data-th-value='*{userName}' name='userName' type='text' value="user1">
+                닉네임: <input data-th-value='*{userName}' name='userName' type='text' value="user1" class="form-control">
             </div>
             <div>
-                경력: <input data-th-value='*{career}' name='career' type='text' value="풀스택 개발자">
+                경력: <input data-th-value='*{career}' name='career' type='text' value="풀스택 개발자" class="form-control">
             </div>
             <div>
-                소속: <input data-th-value='*{belong}' name='belong' type='text' value="아이티크라우드">
+                소속: <input data-th-value='*{belong}' name='belong' type='text' value="아이티크라우드" class="form-control">
             </div>
             <div>
-                바이오: <input data-th-value='*{biography}' name='biography' type='text' value="안녕하세요.">
+                바이오: <input data-th-value='*{biography}' name='biography' type='text' value="안녕하세요." class="form-control">
             </div>
             <div>
-                소셜링크: <input data-th-value='*{socialLink}' name='socialLink' type='text' value="facebook">
+                소셜링크: <input data-th-value='*{socialLink}' name='socialLink' type='text' value="facebook" class="form-control">
             </div>
             <div>
-                <button type="submit">수정</button>
+                <button type="submit" class="btn btn-primary">수정</button>
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#withdrawalModal">
                     탈퇴
                 </button>
+            </div>
             </div>
         </div>
     </form>

@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   <resultMap id="studyList" type="StudyDto">
     <id column="study_no" property="studyNo"/>
     <result column="member_no" property="memberNo"/>
+    <result column="leaderName" property="leaderName"/>
     <result column="title" property="title"/>
     <result column="introduction" property="introduction"/>
     <result column="location" property="location"/>
@@ -71,6 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     SELECT
       s.study_no,
       s.member_no,
+      (SELECT m.username FROM member m WHERE m.member_no = s.member_no) AS leaderName,
       s.title,
       s.intake,
       s.method,
