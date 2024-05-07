@@ -32,8 +32,11 @@ public interface StudyRepository {
   List<StudyDto> searchByStudy(String type, String keyword, Pageable pageable);
 
 //  List<StudyDto> searchByTitle(String keyword, Pageable pageable);
+//  int searchCountByTitle(String keyword);
 //
 //  List<StudyDto> searchByIntroduction(String keyword, Pageable pageable);
+//  int searchCountByIntroduction(String keyword);
 //
 //  List<StudyDto> searchByTag(String keyword, Pageable pageable);
+//  int searchCountByTag(String keyword);
 }

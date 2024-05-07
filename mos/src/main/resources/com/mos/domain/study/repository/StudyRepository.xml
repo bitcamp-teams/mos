@@ -196,10 +196,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     study s
     LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
     LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
-    WHERE
-    s.title LIKE CONCAT('%', #{keyword}, '%')
-    OR s.introduction LIKE CONCAT('%', #{keyword}, '%')
-    OR t.name LIKE CONCAT('%', #{keyword}, '%')
+    <where>
+      <choose>
+        <when test="type == 'title'">
+          <if test="keyword != null and keyword != ''">
+            AND s.title LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+        <when test="type == 'introduction'">
+          <if test="keyword != null and keyword != ''">
+            AND s.introduction LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+        <when test="type == 'tag'">
+          <if test="keyword != null and keyword != ''">
+            AND t.name LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+      </choose>
+    </where>
     ORDER BY s.study_no DESC
     LIMIT #{pageable.offset}, #{pageable.pageSize};
   </select>
@@ -211,6 +226,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     study
     WHERE #{type} LIKE CONCAT('%', #{keyword}, '%');
   </select>
+
+<!--  <select id="searchCountByTitle" resultType="int">-->
+<!--    SELECT COUNT(*) FROM study-->
+<!--    WHERE title LIKE CONCAT('%', #{keyword}, '%')-->
+<!--  </select>-->
 
 <!--  <select id="searchByTitle" resultMap="studyDetail">-->
 <!--    SELECT-->
@@ -231,6 +251,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--    LIMIT #{pageable.offset}, #{pageable.pageSize};-->
 <!--  </select>-->
 
+<!--  <select id="searchCountByIntroduction" resultType="int">-->
+<!--    SELECT COUNT(*) FROM study-->
+<!--    WHERE introduction LIKE CONCAT('%', #{keyword}, '%')-->
+<!--  </select>-->
+
 <!--  <select id="searchByIntroduction" resultMap="studyDetail">-->
 <!--    SELECT-->
 <!--    s.study_no,-->
@@ -248,6 +273,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--    WHERE s.introduction LIKE CONCAT('%', #{keyword}, '%')-->
 <!--    ORDER BY s.study_no DESC-->
 <!--    LIMIT #{pageable.offset}, #{pageable.pageSize};-->
+<!--  </select>-->
+
+<!--  <select id="searchCountByTag" resultType="int">-->
+<!--    SELECT COUNT(DISTINCT s.study_no) FROM study s-->
+<!--    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no-->
+<!--    LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no-->
+<!--    WHERE t.name LIKE CONCAT('%', #{keyword}, '%')-->
 <!--  </select>-->
 
 <!--  <select id="searchByTag" resultMap="studyDetail">-->
