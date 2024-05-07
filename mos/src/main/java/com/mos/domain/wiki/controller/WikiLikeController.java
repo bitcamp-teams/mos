@@ -31,22 +31,29 @@ public class WikiLikeController {
         if (loginUser == null) {
             return ResponseEntity.badRequest().build();
         }
-         wikiLikeStatDto.setMemberNo(loginUser.getMemberNo());
+        wikiLikeStatDto.setMemberNo(loginUser.getMemberNo());
+
         Map<String, Object> response = new HashMap<>();
 
-        int checked = wikiLikeService.checked(wikiLikeStatDto);
-        response.put("checked", checked);
+        // checked 메서드 대신 직접 조회
+        int isLiked = wikiLikeService.checked(wikiLikeStatDto);
+        response.put("checked", isLiked);
 
-        if (checked != 1) {
+        if (isLiked == 0) {
+            // 좋아요를 누르지 않은 경우
             wikiLikeService.addLike(wikiLikeStatDto);
         } else {
+            // 이미 좋아요를 누른 경우
             wikiLikeService.deleteLike(wikiLikeStatDto);
         }
+        // 좋아요 수 업데이트
+        int updatedLikesCount = wikiLikeService.countLikesByWikiNo(wikiLikeStatDto.getWikiNo());
+        response.put("likesCount", updatedLikesCount);
 
         // 클라이언트에게 성공적인 요청을 알리는 상태 코드와 메시지를 반환
         response.put("message", "Success");
         return ResponseEntity.ok(response);
 
-        }
-
     }
+
+}

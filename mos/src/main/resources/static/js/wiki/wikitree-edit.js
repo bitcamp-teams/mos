@@ -90,24 +90,6 @@ $(function () {
       history.pushState(null, null,
           '/wiki/view?studyNo=' + nodeContent.studyNo + '&wikiNo='
           + nodeContent.wikiNo);
-
-      return viewer;
-    })
-    .then(function (viewer) {
-      //프로미스가 이행되었다면 ToC를 생성한다.
-      let tocTarget = $('.toastui-editor-contents');
-      tocTarget.attr("data-spy", "scroll")
-      tocTarget.attr("data-target", "#toc")
-      console.log(tocTarget);
-
-      var navSelector = "#toc";
-      var $myNav = $(navSelector);
-      $myNav.html("");
-      Toc.init($myNav);
-      $(tocTarget[0]).scrollspy({
-        target: navSelector,
-      });
-
     })
   })
   .on('ready.jstree', function (e, data) {
@@ -132,8 +114,6 @@ function isLiked(wikiNo) {
       heartIcon.classList.remove('liked');
     }
 
-    // 하트 아이콘 클릭 이벤트 핸들러 추가
-    heartIcon.addEventListener('click', () => toggleLike(heartIcon, isLiked));
   })
   .catch(error => {
     console.error('Error fetching isLiked:', error);
@@ -272,9 +252,7 @@ function deleteSingleNode(data) {
 
 }
 
-// 좋아요
 function toggleLike(element, isLiked) {
-
   fetch('/wiki/like/toggleLike', {
     method: 'POST',
     headers: {
@@ -305,6 +283,11 @@ function toggleLike(element, isLiked) {
       element.classList.add('liked');
       isLiked = 1; // isLiked 값 업데이트
     }
+
+    // 좋아요 수 업데이트
+    $('#contentLikes').html(data.likesCount); // 좋아요 수 업데이트
+
+    // 여기서 좋아요 수가 실시간으로 반영되었음을 확인할 수 있습니다.
   })
   .catch(error => {
     console.error('Error toggling like:', error);
@@ -313,4 +296,4 @@ function toggleLike(element, isLiked) {
 
 $('#addRootNode').on('click', function (e) {
   tree.jstree("create_node", '#');
-});
+})
