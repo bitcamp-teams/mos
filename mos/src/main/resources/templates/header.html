@@ -1,296 +1,268 @@
 <!DOCTYPE html>
-<html lang='ko' data-th-fragment="header" xmlns="http://www.w3.org/1999/xhtml"
+<html lang='ko' data-th-fragment="header"
       xmlns:th="http://www.thymeleaf.org">
 <head>
 
-    <meta charset="utf-8">
-    <meta>
-    <title>모두의스터디</title>
-    <!-- custom css   -->
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/auth/modal.css">
-    <link rel="stylesheet" href="/css/auth/styles.css">
-    <link rel="stylesheet" href="/css/study/view.css">
-    <link rel="stylesheet" href="/css/study/main.css">
-    <link rel="stylesheet" href="/css/home/styles.css">
-    <link rel="stylesheet" href="/css/member/view.css">
-    <link rel="stylesheet" href="/css/member/mypage.css">
-    <!-- jQuery -->
-    <script src="/plugins/jquery/jquery.min.js"></script>
-    <!-- Select2 css -->
-    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
-    <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-    <!-- Select2 js -->
-    <script src="/plugins/select2/js/select2.full.min.js"></script>
-    <!-- bootstrap 4 css   -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <!-- Bootstrap 4 -->
-    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- TUI 에디터 CSS CDN -->
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
-    <!-- code syntax-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css"/>
-    <link rel="stylesheet"
-          href="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-<!--    <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">-->
-    <!-- iCheck -->
-<!--    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">-->
-    <!-- JQVMap -->
-<!--    <link rel="stylesheet" href="/plugins/jqvmap/jqvmap.min.css">-->
-    <!-- Theme style -->
-    <link rel="stylesheet" href="/css/adminlte.min.css">
-    <!-- Daterange picker -->
-<!--    <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">-->
-    <!-- DataTables -->
-    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-    <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-    <script src="/plugins/sweetalert2/sweetalert2.min.js"></script>
-    <!-- jquery-validation -->
-    <script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
-    <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
-    <script src="/plugins/serialize-object/serialize-object.min.js"></script>
-    <style>
-        .dropdown {
-            display: inline-block;
-            position: relative;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>모두의스터디</title>
+  <!-- custom css   -->
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/auth/modal.css">
+  <link rel="stylesheet" href="/css/auth/styles.css?v=2024050701">
+  <link rel="stylesheet" href="/css/study/view.css">
+  <link rel="stylesheet" href="/css/study/main.css">
+  <link rel="stylesheet" href="/css/wiki/view.css">
+  <link rel="stylesheet" href="/css/member/view.css">
+  <link rel="stylesheet" href="/css/member/mypage.css">
+  <!-- jQuery -->
+  <script src="/plugins/jquery/jquery.min.js"></script>
+  <!-- Select2 css -->
+  <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Select2 js -->
+  <script src="/plugins/select2/js/select2.full.min.js"></script>
+  <!-- bootstrap 4 css   -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+        crossorigin="anonymous">
+  <!-- Bootstrap 4 -->
+  <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- TUI 에디터 CSS CDN -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
 
-        .dropdown-options {
-            display: none;
-            position: absolute;
-            overflow: auto;
-            z-index: 9999;
-        }
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+<!--      <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">-->
+  <!-- iCheck -->
+  <!--    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">-->
+  <!-- JQVMap -->
+  <!--    <link rel="stylesheet" href="/plugins/jqvmap/jqvmap.min.css">-->
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/css/adminlte.min.css">
+  <!-- Daterange picker -->
+  <!--    <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">-->
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <script src="/plugins/sweetalert2/sweetalert2.min.js"></script>
+  <!-- jquery-validation -->
+  <script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
+  <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
+  <script src="/plugins/serialize-object/serialize-object.min.js"></script>
+  <!-- popper -->
+  <!-- Development version -->
+  <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
 
-        .dropdown:hover .dropdown-options {
-            display: grid;
-            width: 180px;
-            grid-auto-rows: min-content;
-            gap: 8px;
-            padding: 10px;
-            border: 1px solid #000000;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
+  <!-- Production version -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
 </head>
 
 
 <body>
 <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #DBEAFE;">
-    <a class="navbar-brand" href="/"><img src='/img/logo_text.png'></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse position-relative" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/study/main">스터디 모집 목록</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/study/list">스터디 찾기</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/study/form">모집 글 쓰기</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/wiki/modoowikilist?page=1">모두의 위키</a>
-            </li>
-        </ul>
+  <a class="navbar-brand" href="/"><img src='/img/logo_text.png'></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse position-relative" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/study/main">스터디 모집 목록</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/study/list">스터디 찾기</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/study/form">모집 글 쓰기</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/wiki/modoowikilist?page=1">모두의 위키</a>
+      </li>
+    </ul>
 
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <span class="navbar-text ml-auto mr-2">현재 접속자 수 : <strong th:text="${session.activeSessions} + '명'">0 명</strong></span>
-            </li>
-            <li class="nav-item dropdown" data-th-if="${session.loginUser != null}">
-                <a id="notificationBtn" class="nav-link" data-toggle="dropdown" href="#">
-                    <span><i class="far fa-bell fa-2x"></i></span>
-                    <span class="badge badge-warning navbar-badge"
-                          style="display: none"></span>
-                </a>
-                <div id="popupNotifications" class="popup-notify dropdown-menu dropdown-menu-lg dropdown-menu-right"
-                     style="display: none">
-                    <span class="dropdown-item dropdown-header popup-header disabled">0</span>
-                    <div class="notifications"></div>
-                </div>
-            </li>
-        </ul>
-
-
-        <div class="dropdown mr-sm-2">
-            <a href="javascript:void(0)" alt="icon image" data-th-if="${session.loginUser != null}">
-                <img src="/img/icon2.png" alt="icon image">
-            </a>
-            <div class="dropdown-options">
-                <a
-                        data-th-href="@{${session.loginUser != null ? '/member/dashboard?no=' + session.loginUser.memberNo : '/auth/login'}}"
-                        href="">대시보드</a>
-                <th-block data-th-if="${session.loginUser != null}">
-                    <a data-th-href="@{'/member/mystudy?no=' + ${session.loginUser.memberNo}}"
-                       href="">My
-                        스터디</a>
-                    <a data-th-href="@{'/member/edit'}" href="">회원 정보 수정</a>
-                    <a data-th-href="@{'/member/myWriteCommentList'}" href="">내가 쓴 글/댓글 보기</a>
-
-                </th-block>
-            </div>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <span class="navbar-text ml-auto mr-2">현재 접속자 수 : <strong
+                th:text="${session.activeSessions} + '명'">0 명</strong></span>
+      </li>
+      <li class="nav-item dropdown" data-th-if="${session.loginUser != null}">
+        <a id="notificationBtn" class="nav-link" data-toggle="dropdown" href="#">
+          <span><i class="far fa-bell fa-2x"></i></span>
+          <span class="badge badge-warning navbar-badge"
+                style="display: none"></span>
+        </a>
+        <div id="popupNotifications"
+             class="popup-notify dropdown-menu dropdown-menu-lg dropdown-menu-right"
+             style="display: none">
+          <span class="dropdown-item dropdown-header popup-header disabled">0</span>
+          <div class="notifications"></div>
         </div>
-        <div>
-            <span class="mr-sm-2" data-th-if="${session.loginUser != null}" data-th-text="${session.loginUser.email}">로그인 이메일</span>
-            <span class="mr-sm-2" data-th-if="${session.loginUser != null}">  [[${session.platform}]]</span>
-            <button data-th-if="${session.loginUser != null}" class="btn btn-outline-danger"
-                    onclick="location.href='/auth/logout';">로그아웃
-            </button>
-            <!-- 로그인 버튼 클릭 시 모달 열기 -->
-            <button data-th-if="${session.loginUser == null}" id="openLoginModal"
-                    class="btn-open-modal btn btn-outline-info"
-                    data-toggle="modal"
-                    data-target="#loginModal">로그인
-            </button>
-        </div>
+      </li>
+    </ul>
+
+
+    <div class="dropdown mr-sm-2">
+      <a href="javascript:void(0)" alt="icon image" data-th-if="${session.loginUser != null}">
+        <img src="/img/icon2.png" alt="icon image">
+      </a>
+      <div class="dropdown-options">
+        <a
+            data-th-href="@{${session.loginUser != null ? '/member/dashboard?no=' + session.loginUser.memberNo : '/auth/login'}}"
+            href="">대시보드</a>
+        <th-block data-th-if="${session.loginUser != null}">
+          <a data-th-href="@{|/member/mystudy?no=${session.loginUser.memberNo}&page=1|}"
+             href="">My스터디</a>
+          <a data-th-href="@{'/member/edit'}" href="">회원 정보 수정</a>
+          <a data-th-href="@{'/member/myWriteCommentList'}" href="">내가 쓴 글/댓글 보기</a>
+
+        </th-block>
+      </div>
     </div>
+    <div>
+      <span class="mr-sm-2" data-th-if="${session.loginUser != null}"
+            data-th-text="${session.loginUser.email}">로그인 이메일</span>
+      <span class="mr-sm-2"
+            data-th-if="${session.loginUser != null}">  [[${session.platform}]]</span>
+      <button id="logoutBtn"
+              data-th-if="${session.loginUser != null}"
+              class="btn btn-outline-danger">로그아웃
+      </button>
+      <!-- 로그인 버튼 클릭 시 모달 열기 -->
+      <button data-th-if="${session.loginUser == null}" id="openLoginModal"
+              class="btn-open-modal btn btn-outline-info"
+              data-toggle="modal"
+              data-target="#loginModal">로그인
+      </button>
+    </div>
+  </div>
 </nav>
 <!--</header>-->
 
 
 <!-- 로그인 모달 -->
 <div class="modal fade" id="loginModal">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="loginModalContent">
-        </div>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" id="loginModalContent">
     </div>
+  </div>
 </div>
 
 <!-- 회원가입 모달 -->
 <div data-th-if="${showModal}" class="modal" role="dialog" id="signUpModal" data-backdrop='static'
      data-keyboard='false'>
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <!-- 모달 창 내용 -->
-            <!-- 모달 헤더 -->
-            <div class="modal-header">
-                <h5 class="modal-title">회원가입</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <!-- 모달 바디 -->
-            <div class="modal-body">
-                <!-- form start -->
-                <div id="prevImgDiv">
-                    <img id="prevImg" class="btn-prev" src="/img/chevron-left-solid.svg"
-                         alt="back-button">
-                </div>
-                <form class="form-horizontal" id="signupFrm">
-                    <div id="step1" class="signup-step">
-                        <div class="form-group row">
-                            <label for="email" class="col-sm-2 col-form-label">Email</label>
-                            <div class="col-sm-10">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                                       data-th-value="${loginEmail}" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="platform" class="col-sm-2 col-form-label">로그인 플랫폼</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="platform" name="platform"
-                                       placeholder="platform"
-                                       data-th-value="${session.platform}" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="userName" class="col-sm-2 col-form-label">닉네임</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="userName" name="userName"
-                                       placeholder="닉네임"
-                                       required>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="step2" class="signup-step" style="display:none;">
-                        <div class="form-group row">
-                            <label for="belong" class="col-sm-2 col-form-label">소속</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="belong" id="belong" placeholder="소속">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">직군</label>
-                            <div class="col-sm-10">
-                                <select id="jobGroup" name="jobGroup" class="form-control"
-                                        data-placeholder="직군을 선택해주세요">
-                                    <option>프론트엔드</option>
-                                    <option>백엔드</option>
-                                    <option>디자이너</option>
-                                    <option>IOS</option>
-                                    <option>안드로이드</option>
-                                    <option>DevOps</option>
-                                    <option>PM</option>
-                                    <option>기획</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">경력</label>
-                            <div class="col-sm-10">
-                                <select id="career" name="career" class="form-control"
-                                        data-placeholder="경력을 선택해주세요">
-                                    <option value='1'>1 년차</option>
-                                    <option value='2'>2년차</option>
-                                    <option value='3'>3년차</option>
-                                    <option value='4'>4년차</option>
-                                    <option value='5'>5년 차</option>
-                                    <option value='6'>6년 차</option>
-                                    <option value='7'>7년 차</option>
-                                    <option value='8'>8년 차</option>
-                                    <option value='9'>9년 차</option>
-                                    <option value='10'>10년 차 이상</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-next btn btn-outline-info">다음</button>
-                <button type="submit" class="btn btn-submit btn-outline-primary" style="display: none">가입!
-                </button>
-            </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!-- 모달 창 내용 -->
+      <!-- 모달 헤더 -->
+      <div class="modal-header">
+        <h5 class="modal-title">회원가입</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- 모달 바디 -->
+      <div class="modal-body">
+        <!-- form start -->
+        <div id="prevImgDiv">
+          <img id="prevImg" class="btn-prev" src="/img/chevron-left-solid.svg"
+               alt="back-button">
         </div>
+        <form class="form-horizontal" id="signupFrm">
+          <div id="step1" class="signup-step">
+            <div class="form-group row">
+              <label for="email" class="col-sm-2 col-form-label">Email</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                       data-th-value="${loginEmail}" readonly>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="platform" class="col-sm-2 col-form-label">로그인 플랫폼</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="platform" name="platform"
+                       placeholder="platform"
+                       data-th-value="${session.platform}" readonly>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="userName" class="col-sm-2 col-form-label">닉네임</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="userName" name="userName"
+                       placeholder="닉네임"
+                       required>
+              </div>
+            </div>
+          </div>
+          <div id="step2" class="signup-step" style="display:none;">
+            <div class="form-group row">
+              <label for="belong" class="col-sm-2 col-form-label">소속</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="belong" id="belong" placeholder="소속">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">직군</label>
+              <div class="col-sm-10">
+                <select id="jobGroup" name="jobGroup" class="form-control"
+                        data-placeholder="직군을 선택해주세요">
+                  <option>프론트엔드</option>
+                  <option>백엔드</option>
+                  <option>디자이너</option>
+                  <option>IOS</option>
+                  <option>안드로이드</option>
+                  <option>DevOps</option>
+                  <option>PM</option>
+                  <option>기획</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">경력</label>
+              <div class="col-sm-10">
+                <select id="career" name="career" class="form-control"
+                        data-placeholder="경력을 선택해주세요">
+                  <option value='1'>1 년차</option>
+                  <option value='2'>2년차</option>
+                  <option value='3'>3년차</option>
+                  <option value='4'>4년차</option>
+                  <option value='5'>5년 차</option>
+                  <option value='6'>6년 차</option>
+                  <option value='7'>7년 차</option>
+                  <option value='8'>8년 차</option>
+                  <option value='9'>9년 차</option>
+                  <option value='10'>10년 차 이상</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-next btn btn-outline-info">다음</button>
+        <button type="submit" class="btn btn-submit btn-outline-primary" style="display: none">가입!
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
 <form id="isLoginFrm">
-    <input type="hidden" id="showModal" data-th-value="${showModal}">
-    <input type="hidden" id="loginEmail" data-th-value="${loginEmail}">
-    <input type="hidden" id="memberNoInput" data-th-value="${session.loginUser?.memberNo}">
+  <input type="hidden" id="showModal" data-th-value="${showModal}">
+  <input type="hidden" id="loginEmail" data-th-value="${loginEmail}">
+  <input type="hidden" id="memberNoInput" data-th-value="${session.loginUser?.memberNo}">
 </form>
 
 <!-- Editor -->
@@ -301,10 +273,18 @@
 -->
 <!-- Editor's Plugin -->
 <script
-        src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
+    src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css"
+/>
+<link
+    rel="stylesheet"
+    href="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.css"
+/>
 <!-- axios -->
 <script src="/plugins/axios/axios.min.js"></script>
 <!-- 별도의 JavaScript 파일 추가 -->
-<script type="module" src="/js/auth/modal.js"></script>
+<script type="module" src="/js/auth/login.js?v=2024050701"></script>
 <script type="module" src="/js/subscribe.js"></script>
 <script type="module" src="/js/notification/notification.js"></script>

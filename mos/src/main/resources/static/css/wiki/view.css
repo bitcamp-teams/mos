@@ -1,0 +1,32 @@
+/*
+/wiki/view 템플릿을 위한 css
+*/
+body {
+  position: relative;
+}
+
+.sidebar-left, .sidebar-right {
+  overflow-x: auto;
+  overflow-y: auto;
+  position: fixed;
+  /*display: flow;*/
+  top: 100px;
+  height: 80vh;
+  max-width: 400px;
+}
+
+.sidebar-left {
+  left: 0;
+}
+
+.sidebar-right {
+  right: 0;
+}
+
+.liked {
+  color: #ff69b4; /* pink color */
+}
+
+.fa-heart {
+  cursor: pointer; /* make the icon clickable */
+}

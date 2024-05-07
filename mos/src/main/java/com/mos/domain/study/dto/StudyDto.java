@@ -18,6 +18,7 @@ import org.springframework.data.relational.core.mapping.Column;
 public class StudyDto {
   private int studyNo;
   private int memberNo;
+  private String leaderName;
   private String title;
   private String introduction;
   private String location;
@@ -33,5 +34,7 @@ public class StudyDto {
   private String tags;
   private List<TagDto> tagList;
   private int hitCount;
+  private int likeCount;
+
 
 }

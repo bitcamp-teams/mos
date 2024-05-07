@@ -73,6 +73,7 @@ public class WikiController {
     if (wikiDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
+    wikiService.updateHitCount(wikiNo);
     // log.debug(wikiDto.toString());
     model.addAttribute("wiki", wikiDto);
 
@@ -87,6 +88,7 @@ public class WikiController {
       @RequestParam(required = false, defaultValue = "0") int wikiNo, @RequestParam int studyNo, Model model
   ) throws Exception {
     // 뷰를 반환한다. async로 api 컨트롤러에 요청하여 동작하므로 service 객체를 사용하지 않음.
+
   }
 
   @PostMapping("updateWiki")

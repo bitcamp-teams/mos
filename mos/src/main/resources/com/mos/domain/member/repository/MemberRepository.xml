@@ -151,7 +151,7 @@
   </select>
 
   <!--마이 스터디 조회-->
-  <select id="findMyStudies" resultMap="MemberStudyMap" parameterType="int">
+  <select id="findMyStudies" resultMap="MemberStudyMap">
     select
       s.study_no,
       s.member_no,
@@ -166,8 +166,15 @@
       member_study_stat mss
       inner join study s on mss.study_no = s.study_no
     where
-      mss.member_no=#{memberDto.memberNo}
+      mss.member_no=#{no}
     order by mss.favorites desc
+    LIMIT #{page.offset}, #{page.pageSize};
+  </select>
+
+  <select id="mystudiesCount">
+    SELECT count(*)
+    FROM member_study_stat
+    WHERE member_no = #{memberNo}
   </select>
 
   <!--마이스터디 상세보기-->
@@ -204,7 +211,7 @@
   <update id="withdraw" parameterType="int">
     update member set
     photo=null,
-    stat='탈퇴'
+    stat='M01-102'
     where
     member_no=#{memberNo}
   </update>

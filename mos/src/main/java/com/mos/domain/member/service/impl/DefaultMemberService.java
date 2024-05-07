@@ -53,17 +53,18 @@ public class DefaultMemberService implements MemberService {
   }
 
   @Override
-  public List<MemberStudyDto> findMyStudies(int no) {
+  public Page<MemberStudyDto> findMyStudies(int no, Pageable page) {
     MemberDto member = memberRepository.findByNo(no);
     if (member == null) {
       throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다: " + no);
     }
 
-    List<MemberStudyDto> myStudy = memberRepository.findMyStudies(no);
+    List<MemberStudyDto> myStudy = memberRepository.findMyStudies(no, page);
+    int count = memberRepository.mystudiesCount(no);
     if (myStudy == null) {
       throw new IllegalStateException("회원의 스터디 목록을 가져오는 데 실패했습니다.");
     }
-    return myStudy;
+    return new PageImpl<>(myStudy, page, count);
   }
 
   @Transactional(readOnly = true)

@@ -29,5 +29,7 @@ public interface StudyService {
 
   Page<StudyDto> listAll(Pageable pageable);
 
+  void updateLikeCount(int studyNo, int likeCount);
+
   Page<StudyDto> searchByTypeAndKeyword(String type, String keyword, Pageable pageable);
 }

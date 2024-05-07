@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -103,14 +104,15 @@ public class MemberController implements InitializingBean {
 
 // 참여한 스터디목록 페이지
 @GetMapping("mystudy")
-public String getMyStudy(@LoginUser MemberDto loginUser, Model model) {
-  int memberNo = loginUser.getMemberNo();
+public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) {
+    int memberNo = loginUser.getMemberNo();
+    Pageable pageable = PageRequest.of(page - 1, 5);
 
-  List<MemberStudyDto> myStudies = memberService.findMyStudies(memberNo);
-  System.out.println("myStudies = " + myStudies);
+    Page<MemberStudyDto> myStudies = memberService.findMyStudies(memberNo, pageable);
+    System.out.println("myStudies = " + myStudies);
 
-  model.addAttribute("memberStudyList", myStudies);
-  return "member/mystudy";
+    model.addAttribute("memberStudyList", myStudies);
+    return "member/mystudy";
 }
   /**
    * 스터디장일 경우 가입 신청, 멤버 관리를 위한 컨트롤러

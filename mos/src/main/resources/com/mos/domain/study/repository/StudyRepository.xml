@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   <resultMap id="studyList" type="StudyDto">
     <id column="study_no" property="studyNo"/>
     <result column="member_no" property="memberNo"/>
+    <result column="leaderName" property="leaderName"/>
     <result column="title" property="title"/>
     <result column="introduction" property="introduction"/>
     <result column="location" property="location"/>
@@ -16,6 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result column="created_date" property="createdDate"/>
     <result column="tags" property="tags"/>
     <result column="hit_count" property="hitCount"/>
+    <result column="like_count" property="likeCount"/>
 <!--    <collection property="tagList" ofType="TagDto">-->
 <!--      <id column="tag_no" property="tagNo"/>-->
 <!--      <result column="name" property="name"/>-->
@@ -26,6 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   <resultMap id="studyDetail" type="studyDto">
     <id column="study_no" property="studyNo"/>
     <result column="member_no" property="memberNo"/>
+    <result column="leaderName" property="leaderName"/>
     <result column="title" property="title"/>
     <result column="method" property="method"/>
     <result column="intake" property="intake"/>
@@ -36,6 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result column="introduction" property="introduction"/>
     <result column="location" property="location"/>
     <result column="hit_count" property="hitCount"/>
+    <result column="like_count" property="likeCount"/>
 
     <collection property="tagList" ofType="TagDto">
       <id column="tag_no" property="tagNo"/>
@@ -69,12 +73,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     SELECT
       s.study_no,
       s.member_no,
+      (SELECT m.username FROM member m WHERE m.member_no = s.member_no) AS leaderName,
       s.title,
       s.intake,
       s.method,
       s.recruitment_deadline,
       s.created_date,
       s.hit_count,
+      s.like_count,
       GROUP_CONCAT(DISTINCT t.name) AS tags
     FROM
       study s
@@ -95,6 +101,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     SELECT
       s.study_no,
       s.member_no,
+      (SELECT m.username FROM member m WHERE m.member_no = s.member_no) AS leaderName,
       s.title,
       s.intake,
       s.introduction,
@@ -105,6 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       s.end_date,
       s.stat,
       s.hit_count,
+      s.like_count,
       t.tag_no,
       t.name
     FROM
@@ -154,11 +162,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       study_no=#{studyNo}
   </update>
 
+  <!-- 좋아요 수 증가 -->
+  <update id="updateLikeCount">
+    UPDATE study
+    SET like_count = #{likeCount}
+    WHERE study_no = #{studyNo}
+  </update>
+
   <!-- 스터디 신청기능-->
  <insert id="applyStudy" parameterType="MemberStudyDto">
   INSERT INTO
    member_study_stat(member_no, study_no, stat, apply_msg)
-  VALUES(#{memberDto.memberNo}, #{studyDto.studyNo}, '신청 후 대기', #{applyMsg})
+  VALUES(#{memberDto.memberNo}, #{studyDto.studyNo}, 'S03-104', #{applyMsg})
  </insert>
 
   <select id="listAll" resultMap="studyList">

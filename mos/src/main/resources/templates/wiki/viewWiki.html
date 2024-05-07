@@ -1,72 +1,72 @@
 <div data-th-replace="header::header">머리말</div>
 
 <div class="page-margin wrapper-mos">
-    <div th:object="${wiki}">
-        <h1 th:text="*{title}"></h1>
-        <a data-th-href="@{/wiki/editWiki(wikiNo=*{wikiNo})}" href="edit.html">[편집]</a>
-        <br>
-        <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="list.html">[리스트로 돌아가기]</a>
+  <div th:object="${wiki}">
+    <h1 th:text="*{title}"></h1>
+    <a data-th-href="@{/wiki/editWiki(wikiNo=*{wikiNo})}" href="edit.html">[편집]</a>
+    <br>
+    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="list.html">[리스트로 돌아가기]</a>
 
-        <p> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span> </a></p>
-        <p> 작성자 = <span th:text="*{username}">회원 이름</span></p>
-        <p> 작성일 = <span th:text="*{contentCreatedDate}">작성일</span></p>
-        <p> 마지막 편집일 = <span th:text="*{contentUpdatedDate}">마지막 편집일</span></p>
-        <div th:attr="content = ${wiki.content}"></div>
-        <div id="viewer">
-            <strong>Viewer Here</strong>
-        </div>
-
-
-        <p> 좋아요 수 : <span th:text="*{likes}">좋아요수</span></p>
-        <br>
-        <a data-th-href="@{delete(wikiNo=*{wikiNo})}" href="delete.html">[삭제]</a>
-
+    <p> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span> </a></p>
+    <p> 작성자 = <span th:text="*{username}">회원 이름</span></p>
+    <p> 작성일 = <span th:text="*{contentCreatedDate}">작성일</span></p>
+    <p> 마지막 편집일 = <span th:text="*{contentUpdatedDate}">마지막 편집일</span></p>
+    <div id="content" th:attr="content = ${wiki.content}"></div>
+    <div id="viewer">
+      <strong>Viewer Here</strong>
     </div>
-    <!--  toast ui editor-->
-    <script>
-        var content = document.querySelector('[content]').getAttribute('content');
-        const viewer = toastui.Editor.factory({
-            el: document.querySelector('#viewer'),
-            viewer: true,
-            initialValue: content
-        });
-    </script>
 
-    <!--댓글 입력 기능 시작-->
-    <form th:action="@{/comment/wiki/add}" method="post">
-        <p>
-            <input type="hidden" name="wikiNo" th:value="${wiki.wikiNo}">
-            <!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
-            <!--      POST 방식으로 userNo를 넘기지 말 것-->
-            <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
-        </p>
-        <p>
-            <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
-        </p>
-        <button type="submit">댓글 등록</button>
-    </form>
-    <!--댓글 입력 기능 끝-->
 
-    <!--댓글 리스트 기능 시작-->
-    <div th:if="${#lists.isEmpty(wikiComments)}">
-        <p>아직 댓글이 없어요.</p>
+    <p> 좋아요 수 : <span th:text="*{likes}">좋아요수</span></p>
+    <br>
+    <a data-th-href="@{delete(wikiNo=*{wikiNo})}" href="delete.html">[삭제]</a>
+
+  </div>
+  <!--  toast ui editor-->
+  <script>
+    var content = $('#content').attr('content');
+    const viewer = toastui.Editor.factory({
+      el: document.querySelector('#viewer'),
+      viewer: true,
+      initialValue: content
+    });
+  </script>
+
+  <!--댓글 입력 기능 시작-->
+  <form th:action="@{/comment/wiki/add}" method="post">
+    <p>
+      <input type="hidden" name="wikiNo" th:value="${wiki.wikiNo}">
+      <!--      이 부분은 로그인 기능 구현 이후에 세션으로 처리하기-->
+      <!--      POST 방식으로 userNo를 넘기지 말 것-->
+      <input type="number" name="memberNo" placeholder="(개발용) member_no 입력">
+    </p>
+    <p>
+      <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
+    </p>
+    <button type="submit">댓글 등록</button>
+  </form>
+  <!--댓글 입력 기능 끝-->
+
+  <!--댓글 리스트 기능 시작-->
+  <div th:if="${#lists.isEmpty(wikiComments)}">
+    <p>아직 댓글이 없어요.</p>
+  </div>
+  <div th:object="${wikiComments}">
+    <div th:each="comment : ${wikiComments}">
+      <span th:text="${comment.username}"/>
+      <span th:text="${comment.createdDate}"/>
+      <a th:href="@{/comment/wiki/delete(commentNo=${comment.commentNo}, wikiNo=${comment.wikiNo})}"
+         href="#">[삭제]</a>
+      <button
+          th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.wikiNo} + ');'"
+          th:text="'편집'"></button>
+      <div class="comment-content" th:id="'comment-' + ${comment.commentNo}">
+        <span th:text="${comment.content}"></span>
+      </div>
     </div>
-    <div th:object="${wikiComments}">
-        <div th:each="comment : ${wikiComments}">
-            <span th:text="${comment.username}"/>
-            <span th:text="${comment.createdDate}"/>
-            <a th:href="@{/comment/wiki/delete(commentNo=${comment.commentNo}, wikiNo=${comment.wikiNo})}"
-               href="#">[삭제]</a>
-            <button
-                    th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.wikiNo} + ');'"
-                    th:text="'편집'"></button>
-            <div class="comment-content" th:id="'comment-' + ${comment.commentNo}">
-                <span th:text="${comment.content}"></span>
-            </div>
-        </div>
 
-    </div>
-    <!--댓글 리스트 기능 끝-->
+  </div>
+  <!--댓글 리스트 기능 끝-->
 
 </div>
 <div data-th-replace="footer::footer">꼬리말</div>

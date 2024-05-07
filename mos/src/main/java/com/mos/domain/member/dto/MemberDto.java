@@ -1,8 +1,10 @@
 package com.mos.domain.member.dto;
 
+import com.mos.domain.study.dto.StudyLikeStatDto;
 import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,5 +38,6 @@ public class MemberDto implements Serializable {
   private String filePath;
   private String location;
   private String platform;
+  private List<StudyLikeStatDto> studyLikeStats;
 
 }

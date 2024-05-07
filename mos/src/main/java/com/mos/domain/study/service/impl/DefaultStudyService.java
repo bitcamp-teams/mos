@@ -97,29 +97,8 @@ public class DefaultStudyService implements StudyService {
     }
   }
 
-  //  @Override
-//  public Page<StudyDto> searchByTypeAndKeyword(String type, String keyword, Pageable pageable) {
-//    try {
-//      int count;
-//      List<StudyDto> list;
-//
-//      if ("title".equals(type)) {
-//        count = studyRepository.searchCountByTitle(keyword);
-//        list = studyRepository.searchByTitle(keyword, pageable);
-//      } else if ("introduction".equals(type)) {
-//        count = studyRepository.searchCountByIntroduction(keyword);
-//        list = studyRepository.searchByIntroduction(keyword, pageable);
-//      } else if ("tag".equals(type)) {
-//        count = studyRepository.searchCountByTag(keyword);
-//        list = studyRepository.searchByTag(keyword, pageable);
-//      } else {
-//        throw new IllegalArgumentException("유효하지 않은 검색 유형입니다.");
-//      }
-//
-//      return new PageImpl<>(list, pageable, count);
-//    } catch (Exception e) {
-//      throw new IllegalArgumentException("검색 중 오류가 발생했습니다.");
-//    }
-//  }
-
+  @Override
+  public void updateLikeCount(int studyNo, int likeCount) {
+    studyRepository.updateLikeCount(studyNo, likeCount);
+  }
 }

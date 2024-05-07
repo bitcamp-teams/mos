@@ -31,4 +31,6 @@ public interface WikiRepository {
   Integer findWikiNoByStudyNo(int studyNo);
 
   int wikiCount();
+
+  void updateLikeCount(int wikiNo, int likes);
 }
