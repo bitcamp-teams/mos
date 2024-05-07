@@ -53,12 +53,8 @@
 }
 
 #dashboard {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #4aa3df;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0, 0.2);
+  background-color: #f8f9fa; /* 배경색 변경 */
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -67,12 +63,34 @@
 
 
 
+/* 프로필 섹션 스타일 */
+#profile-2 .txt {
+  margin-bottom: 10px;
+}
+
+#profile-2 div {
+  font-weight: bold;
+  color: #343a40; /* 다크 테마 색상 */
+}
+
+#profile-2 p {
+  margin: 0;
+  color: #6c757d; /* 부트스트랩 색상 */
+}
+
+/* 자기소개 섹션 스타일 */
 .bio {
+  background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   margin-top: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0, 0.1); /* 그림자 효과 추가 */
 }
 
+.bio p {
+  margin: 0;
+  color: #6c757d; /* 부트스트랩 색상 */
+}
 
 /* 별표 아이콘에 대한 스타일 */
 .fa-star {
