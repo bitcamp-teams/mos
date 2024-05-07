@@ -1,56 +1,91 @@
 #sidenav {
-    position: fixed;
-    width: 220px;
-    height: calc(100% - 100px); /* 헤더의 높이만큼 빼줍니다 */
-    top: 100px; /* 헤더의 아래에 위치하도록 조정합니다 */
-    left: 0;
-    z-index: 1;
-    overflow-x: hidden;
-    padding-top: 20px;
-    background-color: #f8f9fa; /* 필요에 따라 배경색 조정 */
-    border-right: 1px solid #dee2e6; /* 구분선 추가 */
+  position: fixed;
+  width: 220px;
+  height: calc(100% - 60px); /* 헤더의 높이만큼 빼줍니다 */
+  top: 60px; /* 헤더의 아래에 위치하도록 조정합니다 */
+  left: 0;
+  z-index: 1;
+  overflow-x: hidden;
+  background-color: #f8f9fa; /* 필요에 따라 배경색 조정 */
+  border-right: 1px solid #dee2e6; /* 구분선 추가 */
 }
 
 /* 컨테이너 스타일 */
 .container-mystudy {
-    margin-left: 250px;
+  margin-left: 250px;
 }
 
 .container-profile {
-    margin-left: 250px;
+  margin-left: 250px;
 }
 
 .container-myWriteCommentList {
-    margin-left: 250px;
+  margin-left: 250px;
 }
 
 /* sidenav 링크 스타일 */
 #sidenav a {
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 18px;
-    color: #000; /* 필요에 따라 텍스트 색상 조정 */
-    display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #000; /* 필요에 따라 텍스트 색상 조정 */
+  display: block;
 }
 
 /* sidenav 링크 호버 효과 */
 #sidenav a:hover {
-    background-color: #e9ecef; /* 호버 효과 추가 */
+  background-color: #e9ecef; /* 호버 효과 추가 */
 }
 
-    #profile {
-      margin-top: 20px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      list-style: none;
-    }
+#profile {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
 
-    #profile img {
-      width: 160px;
-      height: 160px;
-      object-fit: cover;
-    }
+#profile img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+}
+
+.dashboard-form-container {
+  margin-left: 20%;
+  margin-right: 10%;
+  padding: 10px 10px 20px 20px;
+  background-color: #f8f9fa; /* 배경색 변경 */
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+/* 프로필 섹션 스타일 */
+#profile-2 .txt {
+  margin-bottom: 10px;
+}
+
+#profile-2 div {
+  margin-left: 10px;
+  font-weight: bold;
+  color: #343a40; /* 다크 테마 색상 */
+}
+
+#profile-2 p {
+  margin-left: 20px;
+  color: #6c757d; /* 부트스트랩 색상 */
+}
+
+.custom-card {
+  width: 500px; /* 원하는 너비 값 */
+  height: 300px; /* 원하는 높이 값 */
+}
+
 /* 별표 아이콘에 대한 스타일 */
 .fa-star {
   color: black; /* 기본 색상 */
