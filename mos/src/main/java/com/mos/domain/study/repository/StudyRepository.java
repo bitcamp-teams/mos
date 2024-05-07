@@ -26,11 +26,14 @@ public interface StudyRepository {
 
   boolean applyStudy(MemberStudyDto memberStudyDto);
 
-  List<StudyDto> listAll();
+  Page<StudyDto> listAll(Pageable pageable);
+  int searchCount(String type, String keyword);
 
-  List<StudyDto> searchByTitle(String keyword);
+  List<StudyDto> searchByStudy(String type, String keyword, Pageable pageable);
 
-  List<StudyDto> searchByIntroduction(String keyword);
-
-  List<StudyDto> searchByTag(String keyword);
+//  List<StudyDto> searchByTitle(String keyword, Pageable pageable);
+//
+//  List<StudyDto> searchByIntroduction(String keyword, Pageable pageable);
+//
+//  List<StudyDto> searchByTag(String keyword, Pageable pageable);
 }

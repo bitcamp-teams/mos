@@ -80,24 +80,21 @@ public class DefaultStudyService implements StudyService {
   }
 
   @Override
-  public List<StudyDto> listAll() {
-    return studyRepository.listAll();
+  public Page<StudyDto> listAll(Pageable pageable) {
+    return studyRepository.listAll(pageable);
   }
 
   @Override
-  public List<StudyDto> searchByTypeAndKeyword(String type, String keyword) {
+  public Page<StudyDto> searchByTypeAndKeyword(String type, String keyword, Pageable pageable) {
 
     List<StudyDto> searchResult;
-    if ("title".equals(type)) {
-      searchResult = studyRepository.searchByTitle(keyword);
-    } else if ("introduction".equals(type)) {
-      searchResult = studyRepository.searchByIntroduction(keyword);
-    } else if ("tag".equals(type)) {
-      searchResult = studyRepository.searchByTag(keyword);
-    } else {
+    try {
+    int count = studyRepository.searchCount(type, keyword);
+    List<StudyDto> list = studyRepository.searchByStudy(type, keyword, pageable);
+    return new PageImpl<>(list, pageable, count);
+    } catch(Exception e) {
       throw new IllegalArgumentException("유효하지 않은 검색 유형입니다.");
     }
-    return searchResult;
   }
 
 }
