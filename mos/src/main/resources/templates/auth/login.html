@@ -128,7 +128,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- popper -->
-    <script src="/plugins/popper/popper.js"></script>
+    <!-- Development version -->
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+
+    <!-- Production version -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
 </head>
 <body>
 <div class="header">
@@ -154,7 +158,7 @@
     </button>
 </div>
 <!-- 툴팁 -->
-<div id="tooltip" role="tooltip" data-popper-placement="right">
+<div id="tooltip" role="tooltip" data-popper-placement="right" style="display: none">
     최근 로그인
     <div id="arrow" data-popper-arrow></div>
 </div>
@@ -204,22 +208,24 @@
             }
         });
 
-        console.log(recentLogin)
 
         const button = document.querySelector(`#${loginProvider}Btn`);
         const tooltip = document.querySelector('#tooltip');
 
-        Popper.createPopper(button, tooltip, {
-            placement: 'right',
-            modifiers: [
-                {
-                    name: 'offset',
-                    options: {
-                        offset: [0, 8],
+        if (button != null) {
+            Popper.createPopper(button, tooltip, {
+                placement: 'right',
+                modifiers: [
+                    {
+                        name: 'offset',
+                        options: {
+                            offset: [0, 8],
+                        },
                     },
-                },
-            ],
-        }).update();
+                ],
+            }).update();
+            tooltip.style.display = 'block';
+        }
 
         /*]]>*/
     })();

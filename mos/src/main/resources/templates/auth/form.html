@@ -5,8 +5,7 @@
     <div class="modal-container" id="authmodal">
         <div class="login-option">
             <a id="githubLink"
-               data-th-href="@{'https://github.com/login/oauth/authorize?client_id=' + ${clientId} + '&scope=user:email'}"
-               data-toggle="tooltip" data-placement="top">
+               data-th-href="@{'https://github.com/login/oauth/authorize?client_id=' + ${clientId} + '&scope=user:email'}">
                 <img src="/img/github_logo.png">
                 <p>Github 로그인</p>
             </a>
@@ -26,7 +25,7 @@
     </div>
 </div>
 <!-- 툴팁 -->
-<div id="tooltipM" role="tooltip" data-popper-placement="top">
+<div id="tooltipM" role="tooltip" data-popper-placement="top" style="display: none">
     최근 로그인
     <div id="arrowM" data-popper-arrow></div>
 </div>
@@ -74,24 +73,26 @@
         const button = document.querySelector(`#${loginProvider}Link`);
         const tooltip = document.querySelector('#tooltipM');
 
-        console.log(button)
-        Popper.createPopper(button, tooltip, {
-            placement: 'top',
-            modifiers: [
-                {
-                    preventOverflow:
-                        {
-                            enabled: true,
-                            escapeWithReference: true ,
-                            boundariesElement: 'viewport'
+        if (button != null) {
+            Popper.createPopper(button, tooltip, {
+                placement: 'top',
+                modifiers: [
+                    {
+                        preventOverflow:
+                            {
+                                enabled: true,
+                                escapeWithReference: true ,
+                                boundariesElement: 'viewport'
+                            },
+                        name: 'offset',
+                        options: {
+                            offset: [0, 18],
                         },
-                    name: 'offset',
-                    options: {
-                        offset: [0, 18],
                     },
-                },
-            ],
-        }).update();
+                ],
+            }).update();
+            $('#tooltipM').show();
+        }
         /*]]>*/
     })();
 </script>
