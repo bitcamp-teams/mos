@@ -90,6 +90,24 @@ $(function () {
       history.pushState(null, null,
           '/wiki/view?studyNo=' + nodeContent.studyNo + '&wikiNo='
           + nodeContent.wikiNo);
+
+      return viewer;
+    })
+    .then(function (viewer) {
+      //프로미스가 이행되었다면 ToC를 생성한다.
+      let tocTarget = $('.toastui-editor-contents');
+      tocTarget.attr("data-spy", "scroll")
+      tocTarget.attr("data-target", "#toc")
+      console.log(tocTarget);
+
+      var navSelector = "#toc";
+      var $myNav = $(navSelector);
+      $myNav.html("");
+      Toc.init($myNav);
+      $(tocTarget[0]).scrollspy({
+        target: navSelector,
+      });
+
     })
   })
   .on('ready.jstree', function (e, data) {
@@ -295,4 +313,4 @@ function toggleLike(element, isLiked) {
 
 $('#addRootNode').on('click', function (e) {
   tree.jstree("create_node", '#');
-})
+});
