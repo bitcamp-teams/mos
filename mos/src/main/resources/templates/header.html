@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/header.css">
   <link rel="stylesheet" href="/css/auth/modal.css">
-  <link rel="stylesheet" href="/css/auth/styles.css">
+  <link rel="stylesheet" href="/css/auth/styles.css?v=2024050701">
   <link rel="stylesheet" href="/css/study/view.css">
   <link rel="stylesheet" href="/css/study/main.css">
   <link rel="stylesheet" href="/css/wiki/view.css">
@@ -61,7 +61,11 @@
   <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
   <script src="/plugins/serialize-object/serialize-object.min.js"></script>
   <!-- popper -->
-  <script src="/plugins/popper/popper.js"></script>
+  <!-- Development version -->
+  <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+
+  <!-- Production version -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
 </head>
 
 
@@ -280,6 +284,6 @@
 <!-- axios -->
 <script src="/plugins/axios/axios.min.js"></script>
 <!-- 별도의 JavaScript 파일 추가 -->
-<script type="module" src="/js/auth/login.js"></script>
+<script type="module" src="/js/auth/login.js?v=2024050701"></script>
 <script type="module" src="/js/subscribe.js"></script>
 <script type="module" src="/js/notification/notification.js"></script>

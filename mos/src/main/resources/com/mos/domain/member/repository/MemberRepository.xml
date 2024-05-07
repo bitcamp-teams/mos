@@ -218,7 +218,7 @@
 
   <!--내가 쓴 위키 글 목록 조회-->
   <select id="findMyWiki" resultMap="wiki" parameterType="int">
-    SELECT wiki_no, member_no, title, created_date
+    SELECT wiki_no, member_no, study_no, title, created_date
     FROM wiki
     WHERE member_no = #{memberNo}
     ORDER BY created_date DESC;

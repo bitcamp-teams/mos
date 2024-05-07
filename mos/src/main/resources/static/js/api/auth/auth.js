@@ -1,7 +1,7 @@
 
 export default {
     modalHtml: async () => {
-        return await axios.get('/auth/login-template',{
+        return await axios.get('/auth/login',{
             responseType: 'document'
         })
     },
@@ -14,9 +14,6 @@ export default {
     },
     findByEmail: async params => {
         return await axios.post('/api/v1/member/findByUsername', params);
-    },
-    logout: async () => {
-        return await axios.post('/auth/logout');
     }
 
 

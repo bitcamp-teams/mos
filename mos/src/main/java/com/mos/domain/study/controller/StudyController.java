@@ -221,21 +221,57 @@ public class StudyController {
     return "This is a test";
   }
 
+//  @GetMapping("/search")
+//  public String search(Model model,
+//                       @RequestParam(value="type") String type,
+//                       @RequestParam(value="keyword") String keyword) {
+//    try {
+//      List<StudyDto> studyList;
+//      if (type.isEmpty() && keyword.isEmpty()) {
+//        studyList = studyService.listAll();
+//      } else {
+//        studyList = studyService.searchByTypeAndKeyword(type, keyword);
+//      }
+//      model.addAttribute("studyList", studyList);
+//      return "study/search";
+//    } catch (Exception e) {
+//      log.error("Error occurred during study search", e);
+//      model.addAttribute("errorMessage", "검색 중 오류가 발생했습니다.");
+//      return "error-page";
+//    }
+//  }
+
   @GetMapping("/search")
   public String search(Model model,
-                       @RequestParam(value="type") String type,
-                       @RequestParam(value="keyword") String keyword) {
+                       @RequestParam(value="type", required = false, defaultValue = "") String type,
+                       @RequestParam(value="keyword", required = false, defaultValue = "") String keyword,
+                       @RequestParam(value="page", required = false, defaultValue = "1") int page) {
     try {
-      List<StudyDto> studyList;
+      int pageSize = 20; // 한 페이지당 보여줄 게시글 수
+
+      Page<StudyDto> resultPage;
+
       if (type.isEmpty() && keyword.isEmpty()) {
-        studyList = studyService.listAll();
+        // 검색 조건이 없는 경우 전체 게시글 조회
+        Pageable pageable = PageRequest.of(page - 1, pageSize); // 페이지 인덱스는 0부터 시작하므로 1을 빼줍니다.
+        resultPage = studyService.list(pageable);
       } else {
-        studyList = studyService.searchByTypeAndKeyword(type, keyword);
+        // 검색 조건에 따라 게시글 검색
+        resultPage = studyService.searchByTypeAndKeyword(type, keyword, PageRequest.of(page - 1, pageSize));
       }
+
+      List<StudyDto> studyList = resultPage.getContent(); // 현재 페이지의 게시글 목록
+      int totalPages = resultPage.getTotalPages(); // 전체 페이지 수
+
       model.addAttribute("studyList", studyList);
+      model.addAttribute("currentPage", page);
+      model.addAttribute("totalPages", totalPages);
+      model.addAttribute("type", type);
+      model.addAttribute("keyword", keyword);
+
       return "study/search";
     } catch (Exception e) {
-      log.error("Error occurred during study search", e);
+//      log.error("Error occurred during study search", e);
       model.addAttribute("errorMessage", "검색 중 오류가 발생했습니다.");
       return "error-page";
     }
