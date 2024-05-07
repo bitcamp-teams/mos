@@ -71,6 +71,35 @@
             </div>
         </div>
 
+        <!--스터디 신청 자바스크립트-->
+        <script>
+            $('#submitApplyBtn').click(function() {
+                var applyMsg = $('#applyMsg').val();
+                var studyNo = $('#studyNo').val();
+
+                // AJAX 요청을 통해 서버로 데이터 전송
+                $.ajax({
+                    url: '/study/applyStudy', // 수정된 URL 입력
+                    type: 'POST',
+                    data: {
+                        applyMsg: applyMsg,
+                        studyNo: studyNo
+                    },
+                    success: function(response) {
+                        // 성공적으로 처리된 경우
+                        console.log(response);
+                        $('#applyModal').modal('hide'); // 모달창 닫기
+                        // 필요한 경우 추가 작업 수행
+                    },
+                    error: function(error) {
+                        // 오류 발생 시 처리
+                        console.error(error);
+                    }
+                });
+            });
+        </script>
+
+
         <!-- 좋아요 스크립트 -->
         <script data-th-inline="javascript">
             function toggleLike(icon) {
