@@ -75,7 +75,7 @@ $(function () {
           '/wiki/editWiki?wikiNo=' + nodeContent.wikiNo);
       $('#content').attr('content', nodeContent.content);
       $('#contentLikes').html(nodeContent.likes);
-      isLiked(nodeContent.id);
+      isLiked(nodeContent.wikiNo);
       return nodeContent;
     })
     .then(function (nodeContent) {
@@ -252,7 +252,9 @@ function deleteSingleNode(data) {
 
 }
 
-function toggleLike(element, isLiked) {
+function toggleLike(element) {
+  const isLiked = element.classList.contains('liked');
+
   fetch('/wiki/like/toggleLike', {
     method: 'POST',
     headers: {
@@ -276,12 +278,10 @@ function toggleLike(element, isLiked) {
     console.log(data.message);
 
     // isLiked 값에 따라 하트 아이콘 스타일 변경
-    if (isLiked === 1) {
+    if (isLiked) {
       element.classList.remove('liked');
-      isLiked = 0; // isLiked 값 업데이트
     } else {
       element.classList.add('liked');
-      isLiked = 1; // isLiked 값 업데이트
     }
 
     // 좋아요 수 업데이트
