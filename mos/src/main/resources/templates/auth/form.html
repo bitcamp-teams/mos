@@ -1,31 +1,97 @@
 <div class="choose_login">
 
-  <img src="/img/logo_text.png">
+    <img src="/img/logo_text.png">
 
-  <div class="modal-container" id="authmodal">
-    <div class="login-option">
-      <a data-th-href="@{'https://github.com/login/oauth/authorize?client_id=' + ${clientId} + '&scope=user:email'}">
-        <img src="/img/github_logo.png">
-        <p>Github 로그인</p>
-      </a>
+    <div class="modal-container" id="authmodal">
+        <div class="login-option">
+            <a id="githubLink"
+               data-th-href="@{'https://github.com/login/oauth/authorize?client_id=' + ${clientId} + '&scope=user:email'}"
+               data-toggle="tooltip" data-placement="top">
+                <img src="/img/github_logo.png">
+                <p>Github 로그인</p>
+            </a>
+            <a id="kakaoLink" data-th-href="@{${kakaoUrl}}">
+                <img src="/img/kakao_logo.png">
+                <p>Kakao 로그인</p>
+            </a>
+            <a id="googleLink" data-th-href="@{${googleUrl}}">
+                <img src="/img/google_logo.png">
+                <p>Google 로그인</p>
+            </a>
+            <a id="naverLink" data-th-href="@{${naverUrl}}">
+                <img src="/img/naver_logo.png">
+                <p>Naver 로그인</p>
+            </a>
+        </div>
     </div>
-    <div class="login-option">
-      <a data-th-href="@{${kakaoUrl}}">
-        <img src="/img/kakao_logo.png">
-        <p>Kakao 로그인</p>
-      </a>
-    </div>
-    <div class="login-option">
-      <a data-th-href="@{${googleUrl}}">
-        <img src="/img/google_logo.png">
-        <p>Google 로그인</p>
-      </a>
-    </div>
-    <div class="login-option">
-      <a data-th-href="@{${naverUrl}}">
-        <img src="/img/naver_logo.png">
-        <p>Naver 로그인</p>
-      </a>
-    </div>
-  </div>
 </div>
+<!-- 툴팁 -->
+<div id="tooltipM" role="tooltip" data-popper-placement="top">
+    최근 로그인
+    <div id="arrowM" data-popper-arrow></div>
+</div>
+
+<script th:inline="javascript">
+    (function () {
+        /*<![CDATA[*/
+        // 로그인 기록 가져오기
+        const recentLogin = JSON.parse(localStorage.getItem('recentLogin')) || {};
+
+        // 최근 로그인 기록 업데이트
+        function updateRecentLogin(platform) {
+            recentLogin[platform] = new Date().toLocaleString(); // 현재 시간으로 최근 로그인 기록 업데이트
+            localStorage.setItem('recentLogin', JSON.stringify(recentLogin)); // 로컬스토리지에 저장
+        }
+
+        $(document).on('click', '#kakaoLink', function () {
+            updateRecentLogin('kakao');
+        });
+
+        $(document).on('click', '#googleLink', function () {
+            updateRecentLogin('google');
+        });
+
+        $(document).on('click', '#githubLink', function () {
+            updateRecentLogin('github');
+        });
+
+        $(document).on('click', '#naverLink', function () {
+            updateRecentLogin('naver');
+        });
+
+
+        // recentLogin 에 들어있는 oauth 플랫폼 선택
+        let recentDate = new Date(0).toLocaleString();
+        let loginProvider = '';
+        Object.entries(recentLogin).forEach(value => {
+            if (recentDate < value[1]) {
+                recentDate = value[1];
+                loginProvider = value[0];
+            }
+        });
+
+        console.log('lp===============> ', loginProvider)
+        const button = document.querySelector(`#${loginProvider}Link`);
+        const tooltip = document.querySelector('#tooltipM');
+
+        console.log(button)
+        Popper.createPopper(button, tooltip, {
+            placement: 'top',
+            modifiers: [
+                {
+                    preventOverflow:
+                        {
+                            enabled: true,
+                            escapeWithReference: true ,
+                            boundariesElement: 'viewport'
+                        },
+                    name: 'offset',
+                    options: {
+                        offset: [0, 18],
+                    },
+                },
+            ],
+        }).update();
+        /*]]>*/
+    })();
+</script>

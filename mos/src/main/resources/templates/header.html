@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='ko' data-th-fragment="header" xmlns="http://www.w3.org/1999/xhtml"
+<html lang='ko' data-th-fragment="header"
       xmlns:th="http://www.thymeleaf.org">
 <head>
 
@@ -49,7 +49,7 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
-<!--      <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">-->
+  <!--      <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">-->
   <!-- iCheck -->
   <!--    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">-->
   <!-- JQVMap -->
@@ -69,6 +69,8 @@
   <script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
   <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
   <script src="/plugins/serialize-object/serialize-object.min.js"></script>
+  <!-- popper -->
+  <script src="/plugins/popper/popper.js"></script>
 </head>
 
 
@@ -100,7 +102,7 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <span class="navbar-text ml-auto mr-2">현재 접속자 수 : <strong
-            th:text="${session.activeSessions} + '명'">0 명</strong></span>
+                th:text="${session.activeSessions} + '명'">0 명</strong></span>
       </li>
       <li class="nav-item dropdown" data-th-if="${session.loginUser != null}">
         <a id="notificationBtn" class="nav-link" data-toggle="dropdown" href="#">
@@ -124,8 +126,8 @@
       </a>
       <div class="dropdown-options">
         <a
-            data-th-href="@{${session.loginUser != null ? '/member/dashboard?no=' + session.loginUser.memberNo : '/auth/login'}}"
-            href="">대시보드</a>
+                data-th-href="@{${session.loginUser != null ? '/member/dashboard?no=' + session.loginUser.memberNo : '/auth/login'}}"
+                href="">대시보드</a>
         <th-block data-th-if="${session.loginUser != null}">
           <a data-th-href="@{|/member/mystudy?no=${session.loginUser.memberNo}&page=1|}"
              href="">My스터디</a>
@@ -275,7 +277,7 @@
 -->
 <!-- Editor's Plugin -->
 <script
-    src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
+        src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
 <!-- axios -->
 <script src="/plugins/axios/axios.min.js"></script>
 <!-- 별도의 JavaScript 파일 추가 -->
