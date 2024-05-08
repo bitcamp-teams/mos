@@ -243,7 +243,7 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
       throw new Exception("회원 번호가 유효하지 않습니다.");
     }
 
-    // 회원 번호를 이용하여 회원의 스터디 댓글 목록을 조회
+    // 회원 번호를 이용하여 회원의 위키 댓글 목록을 조회
     List<WikiCommentDto> myWikiComment = memberService.findMyWikiComment(memberNo);
     if (myWikiComment == null) {
       throw new Exception("회원 번호가 유효하지 않습니다.");
