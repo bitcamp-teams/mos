@@ -1,9 +1,9 @@
 //RESTful
 const tree = $('#wikiTree');
-const url = new URL(window.location.href)
-const urlParams = url.searchParams;
-const studyNo = urlParams.get('studyNo');
-const wikiNo = urlParams.get('wikiNo');
+var url = new URL(window.location.href)
+var urlParams = url.searchParams;
+var studyNo = urlParams.get('studyNo');
+var wikiNo = urlParams.get('wikiNo');
 const getListUrl = "/api/wiki?studyNo=" + studyNo;
 const updateListOrderUrl = "/api/wiki";
 const patchUrl = "/api/wiki"
@@ -93,6 +93,8 @@ $(function () {
       history.pushState(null, null,
           '/wiki/view?studyNo=' + nodeContent.studyNo + '&wikiNo='
           + nodeContent.wikiNo);
+
+      refreshUrl();
 
       return viewer;
     })
@@ -336,3 +338,10 @@ function toggleLike(element) {
 $('#addRootNode').on('click', function (e) {
   tree.jstree("create_node", '#');
 });
+
+function refreshUrl () {
+  url = new URL(window.location.href)
+  urlParams = url.searchParams;
+  studyNo = urlParams.get('studyNo');
+  wikiNo = urlParams.get('wikiNo');
+}
