@@ -2,166 +2,229 @@
 <div class="page-margin wrapper-mos">
 
 
-    <div data-th-object="${study}">
+  <div data-th-object="${study}">
 
 
-        <h1 th:text="*{title}"></h1>
-        <a data-th-href="@{edit(studyNo=*{studyNo})}" href="delete.html">[편집]</a>
-        <a data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">[삭제]</a>
+    <h1 th:text="*{title}"></h1>
+    <a data-th-href="@{edit(studyNo=*{studyNo})}" href="delete.html">[편집]</a>
+    <a data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">[삭제]</a>
 
-        <!--    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>-->
-
-
-        <a th:if="${not #strings.isEmpty(firstWikiNo)}" th:href="@{/wiki/view(studyNo=${study.studyNo})}" href="/wiki/view.html">[이 스터디의 위키 보러가기]</a>
-        <p th:unless="${not #strings.isEmpty(firstWikiNo)}">이 스터디는 작성한 위키가 없습니다.
-            <a th:href="@{/wiki/view(studyNo=${study.studyNo})}" href="/wiki/view.html">[작성하기]</a>
-        </p>
+    <!--    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>-->
 
 
-        <p> 스터디장 = <span th:text="*{username}"> </span></p>
-        <p> 진행방식 = <span th:text="*{method}"> </span></p>
-        <p> 모집정원 = <span th:text="*{intake}"> </span></p>
-        <p> 기술스택 =
-            <span th:each="tag : ${study.tagList}">
-        <span th:text="${tag.name}"></span>
-    </span>
+    <a th:if="${not #strings.isEmpty(firstWikiNo)}"
+       th:href="@{/wiki/view(studyNo=${study.studyNo})}" href="/wiki/view.html">[이 스터디의 위키 보러가기]</a>
+    <p th:unless="${not #strings.isEmpty(firstWikiNo)}">이 스터디는 작성한 위키가 없습니다.
+      <a th:href="@{/wiki/view(studyNo=${study.studyNo})}" href="/wiki/view.html">[작성하기]</a>
     </p>
-    <p> 모집마감 = <span th:text="*{recruitmentDeadline}"> </span></p>
-    <p> 예상종료일 = <span th:text="*{endDate}"> </span></p>
-    <p> 소개 <div th:attr="introduction = ${study.introduction}"> </div></p>
-    <div id="viewer">
-      <strong>Viewer Here</strong>
-    </div>
-
-        <!-- Like button -->
-        <p>
-            <i class="fas fa-heart" th:id="'like-icon-' + *{studyNo}" th:data-study-no="*{studyNo}" th:classappend="${isLiked == null or isLiked != 1} ? '' : 'liked'" onclick="toggleLike(this)"></i>
-            <span th:id="'like-count-' + *{studyNo}" data-th-text="*{likeCount}"></span>
-        </p>
 
 
-        <div data-th-if="*{stat != 'S01-103' && stat != 'S01-104'}">
-            <button id="applyStudyBtn" data-toggle="modal" data-target="#applyModal">신청하기</button>
-        </div>
+    <!--        <p> 스터디장 = <span th:text="*{username}"> </span></p>-->
+    <!--        <p> 진행방식 = <span th:text="*{method}"> </span></p>-->
+    <!--        <p> 모집정원 = <span th:text="*{intake}"> </span></p>-->
+    <!--        <p> 기술스택 =-->
+    <!--            <span th:each="tag : ${study.tagList}"></span>-->
+    <!--            <span th:text="${tag.name}"></span>-->
+    <!--    </p>-->
+    <!--    <p> 모집마감 = <span th:text="*{recruitmentDeadline}"> </span></p>-->
+    <!--    <p> 예상종료일 = <span th:text="*{endDate}"> </span></p>-->
 
-        <!-- 스터디 신청하기 모달창-->
-        <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="applyModalLabel">스터디 신청</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="applyForm">
-                            <input id="studyNo" name="studyNo" type="hidden" data-th-value="*{studyNo}" value="5">
-                            <div class="form-group">
-                                <label for="applyMsg">신청 메시지</label>
-                                <textarea class="form-control" id="applyMsg" rows="3" placeholder="스터디장에게 보낼 메시지를 입력해주세요!"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                        <button type="button" class="btn btn-primary" id="submitApplyBtn">신청하기</button>
-                    </div>
-                </div>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">스터디 정보</h5>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="mb-3">
+              <span class="font-weight-bold">스터디장:</span>
+              <span th:text="${study.username}" class="ml-2" data-toggle="tooltip"
+                    data-placement="top" title="스터디를 진행하는 사람"></span>
             </div>
+            <div class="mb-3">
+              <span class="font-weight-bold">진행방식:</span>
+              <span th:text="${study.method}" class="ml-2" data-toggle="tooltip"
+                    data-placement="top" title="스터디 진행 방식"></span>
+            </div>
+            <div class="mb-3">
+              <span class="font-weight-bold">모집정원:</span>
+              <span th:text="${study.intake}" class="ml-2" data-toggle="tooltip"
+                    data-placement="top" title="스터디에 참여할 수 있는 최대 인원"></span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="mb-3">
+              <span class="font-weight-bold">기술스택:</span>
+              <!--            <span th:each="tag : ${study.tagList}"></span>-->
+              <!--            <span th:text="${tag.name}"></span>-->
+              <span th:each="tag : ${study.tagList}" class="ml-2" data-toggle="tooltip"
+                    data-placement="top">
+              <span th:text="${tag.name}" class="badge badge-secondary"></span>
+              </span>
+            </div>
+            <div class="mb-3">
+              <span class="font-weight-bold">모집마감:</span>
+              <!--              "*{endDate}"-->
+              <span th:text="*{recruitmentDeadline}"
+                    class="ml-2" data-toggle="tooltip" data-placement="top" title="모집 종료 날짜"></span>
+            </div>
+            <div class="mb-3">
+              <span class="font-weight-bold">예상종료일:</span>
+              <span th:text="*{endDate}" class="ml-2"
+                    data-toggle="tooltip" data-placement="top" title="스터디 예상 종료일"></span>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+    <!--    툴팁을 추가할 수 있음-->
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
 
-        <!-- 좋아요 스크립트 -->
-        <script data-th-inline="javascript">
-            function toggleLike(icon) {
-                var memberNo = [[${(session.loginUser == null) ? 0 : session.loginUser.memberNo}]];
-                if (memberNo == 0) {
-                    window.location.href = "/auth/login";
-                    return;
-                }
-                var studyNo = parseInt(icon.getAttribute('data-study-no'));
-                var likeCount = document.getElementById('like-count-' + studyNo);
+    <div class="card">
+      <div class="card-body">
+        <div th:attr="introduction = ${study.introduction}"></div>
+        <div id="viewer">
+          <strong>Viewer Here</strong>
+        </div>
+      </div>
+    </div>
 
-                // AJAX 요청을 통해 서버로 데이터 전송
-                $.ajax({
-                    url: '/study/like/toggleLike',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify( {
-                        studyNo: studyNo,
-                        memberNo: memberNo
-                    }),
-                    success: function(response) {
-                        // 성공적으로 처리된 경우
-                        console.log(response);
-                        // 좋아요 상태를 토대로 UI 업데이트
-                        if (response.checked != 1) {
-                            // 좋아요가 눌리지 않은 상태였다면
-                            icon.classList.add('liked');
-                            likeCount.textContent = parseInt(likeCount.textContent) + 1;
-                        } else {
-                            // 좋아요가 눌린 상태였다면
-                            icon.classList.remove('liked');
-                            likeCount.textContent = parseInt(likeCount.textContent) - 1;
-                        }
-                    },
-                    error: function(error) {
-                        // 오류 발생 시 처리
-                        console.error(error);
-                    }
-                });
+
+    <!-- Like button -->
+    <p>
+      <i class="fas fa-heart" th:id="'like-icon-' + *{studyNo}" th:data-study-no="*{studyNo}"
+         th:classappend="${isLiked == null or isLiked != 1} ? '' : 'liked'"
+         onclick="toggleLike(this)"></i>
+      <span th:id="'like-count-' + *{studyNo}" data-th-text="*{likeCount}"></span>
+    </p>
+
+
+    <div data-th-if="*{stat != 'S01-103' && stat != 'S01-104'}">
+      <button id="applyStudyBtn" data-toggle="modal" data-target="#applyModal">신청하기</button>
+    </div>
+
+    <!-- 스터디 신청하기 모달창-->
+    <div class="modal fade" id="applyModal" tabindex="-1" role="dialog"
+         aria-labelledby="applyModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="applyModalLabel">스터디 신청</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="applyForm">
+              <input id="studyNo" name="studyNo" type="hidden" data-th-value="*{studyNo}" value="5">
+              <div class="form-group">
+                <label for="applyMsg">신청 메시지</label>
+                <textarea class="form-control" id="applyMsg" rows="3"
+                          placeholder="스터디장에게 보낼 메시지를 입력해주세요!"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            <button type="button" class="btn btn-primary" id="submitApplyBtn">신청하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 좋아요 스크립트 -->
+    <script data-th-inline="javascript">
+      function toggleLike(icon) {
+        var memberNo = [[${(session.loginUser == null) ? 0 : session.loginUser.memberNo}]];
+        if (memberNo == 0) {
+          window.location.href = "/auth/login";
+          return;
+        }
+        var studyNo = parseInt(icon.getAttribute('data-study-no'));
+        var likeCount = document.getElementById('like-count-' + studyNo);
+
+        // AJAX 요청을 통해 서버로 데이터 전송
+        $.ajax({
+          url: '/study/like/toggleLike',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            studyNo: studyNo,
+            memberNo: memberNo
+          }),
+          success: function (response) {
+            // 성공적으로 처리된 경우
+            console.log(response);
+            // 좋아요 상태를 토대로 UI 업데이트
+            if (response.checked != 1) {
+              // 좋아요가 눌리지 않은 상태였다면
+              icon.classList.add('liked');
+              likeCount.textContent = parseInt(likeCount.textContent) + 1;
+            } else {
+              // 좋아요가 눌린 상태였다면
+              icon.classList.remove('liked');
+              likeCount.textContent = parseInt(likeCount.textContent) - 1;
             }
-        </script>
+          },
+          error: function (error) {
+            // 오류 발생 시 처리
+            console.error(error);
+          }
+        });
+      }
+    </script>
 
-        <!--댓글추가 기능 시작-->
-        <form id="commentForm" th:action="@{/comment/study/add}" method="post">
-            <p>
-                <input type="hidden" name="studyNo" th:value="${study.studyNo}">
-                <input type="hidden" name="title" th:value="${study.title}">
-                <input type="hidden" name="memberNo" th:value="${session.loginUser?.memberNo}">
-                <input type="hidden" name="notiReceiver" th:value="${study.memberNo}">
-                <input type="text" name="username" th:value="${session.loginUser?.userName}" readonly >
-            </p>
-            <p>
-                <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
-            </p>
-            <button id="submitBtn" type="button">댓글 등록</button>
-        </form>
-        <!--댓글추가 기능 끝-->
-        <!--댓글 리스트 기능 시작-->
-    </div>
+    <!--댓글추가 기능 시작-->
+    <form id="commentForm" th:action="@{/comment/study/add}" method="post">
+      <p>
+        <input type="hidden" name="studyNo" th:value="${study.studyNo}">
+        <input type="hidden" name="title" th:value="${study.title}">
+        <input type="hidden" name="memberNo" th:value="${session.loginUser?.memberNo}">
+        <input type="hidden" name="notiReceiver" th:value="${study.memberNo}">
+        <input type="text" name="username" th:value="${session.loginUser?.userName}" readonly>
+      </p>
+      <p>
+        <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
+      </p>
+      <button id="submitBtn" type="button">댓글 등록</button>
+    </form>
+    <!--댓글추가 기능 끝-->
+    <!--댓글 리스트 기능 시작-->
+  </div>
 
-    <div th:if="${#lists.isEmpty(studyComments)}">
-        <p>아직 댓글이 없어요.</p>
+  <div th:if="${#lists.isEmpty(studyComments)}">
+    <p>아직 댓글이 없어요.</p>
+  </div>
+  <div th:each="comment : ${studyComments}" th:if="${comment.stat} != '삭제'"
+       style="border: 1px solid #000;">
+    <p>
+      <a th:href="@{/comment/study/delete(commentNo=${comment.commentNo}, studyNo=${comment.studyNo})}"
+         href="#">[삭제]</a>
+      <button
+          th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'"
+          th:text="'편집'"></button>
+    </p>
+    <p>
+      <span th:text="${comment.username}"/>
+      <span th:text="${comment.createdDate}"/>
+    </p>
+    <div class="comment-content" th:id="'comment-' + ${comment.commentNo}">
+      <span th:text="${comment.content}"></span>
     </div>
-    <div th:each="comment : ${studyComments}" th:if="${comment.stat} != '삭제'"
-         style="border: 1px solid #000;">
-        <p>
-            <a th:href="@{/comment/study/delete(commentNo=${comment.commentNo}, studyNo=${comment.studyNo})}"
-               href="#">[삭제]</a>
-            <button
-                    th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'"
-                    th:text="'편집'"></button>
-        </p>
-        <p>
-            <span th:text="${comment.username}"/>
-            <span th:text="${comment.createdDate}"/>
-        </p>
-        <div class="comment-content" th:id="'comment-' + ${comment.commentNo}">
-            <span th:text="${comment.content}"></span>
-        </div>
-        <input type="text" class="comment-input" th:id="'comment-input-' + ${comment.commentNo}"
-               th:value="${comment.content}" style="display: none;">
-        <div class="button-group" style="display: none;" th:id="'button-group-' + ${comment.commentNo}">
-            <button class="save-btn" th:id="'save-btn-' + ${comment.commentNo}"
-                    th:onclick="'saveComment(' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'">
-                저장
-            </button>
-            <button class="cancel-btn" th:onclick="'cancelEdit(' + ${comment.commentNo} + ');'">취소
-            </button>
-        </div>
+    <input type="text" class="comment-input" th:id="'comment-input-' + ${comment.commentNo}"
+           th:value="${comment.content}" style="display: none;">
+    <div class="button-group" style="display: none;" th:id="'button-group-' + ${comment.commentNo}">
+      <button class="save-btn" th:id="'save-btn-' + ${comment.commentNo}"
+              th:onclick="'saveComment(' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'">
+        저장
+      </button>
+      <button class="cancel-btn" th:onclick="'cancelEdit(' + ${comment.commentNo} + ');'">취소
+      </button>
     </div>
-    <!--댓글 리스트 기능 끝-->
+  </div>
+  <!--댓글 리스트 기능 끝-->
 
 
 </div>
