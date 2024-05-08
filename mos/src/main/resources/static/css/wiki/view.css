@@ -22,3 +22,11 @@ body {
   right: 0;
   width: 400px;
 }
+
+.liked {
+  color: #ff69b4; /* pink color */
+}
+
+.fa-heart {
+  cursor: pointer; /* make the icon clickable */
+}

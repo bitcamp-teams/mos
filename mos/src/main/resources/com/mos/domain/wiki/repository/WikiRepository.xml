@@ -26,7 +26,7 @@
 
   <select id="getByWikiNo" parameterType="int" resultType="WikiDto">
     SELECT
-      wiki_no, study_no, title, wiki.member_no, username, content_created_date, content_updated_date, content, likes
+      wiki_no, study_no, title, wiki.member_no, username, content_created_date, content_updated_date, content, hit_count, likes
     FROM wiki
     JOIN member ON wiki.member_no = member.member_no
     WHERE wiki_no = #{wikiNo};
@@ -80,5 +80,11 @@
     WHERE study_no = #{studyNo}
   </select>
 
+  <!-- 좋아요 수 증가 -->
+  <update id="updateLikeCount" parameterType="int">
+    UPDATE wiki
+    SET likes = #{likes}
+    WHERE wiki_no = #{wikiNo}
+  </update>
 
 </mapper>

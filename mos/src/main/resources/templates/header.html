@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='ko' data-th-fragment="header" xmlns="http://www.w3.org/1999/xhtml"
+<html lang='ko' data-th-fragment="header"
       xmlns:th="http://www.thymeleaf.org">
 <head>
 
@@ -10,11 +10,10 @@
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/header.css">
   <link rel="stylesheet" href="/css/auth/modal.css">
-  <link rel="stylesheet" href="/css/auth/styles.css">
+  <link rel="stylesheet" href="/css/auth/styles.css?v=2024050701">
   <link rel="stylesheet" href="/css/study/view.css">
   <link rel="stylesheet" href="/css/study/main.css">
   <link rel="stylesheet" href="/css/wiki/view.css">
-  <link rel="stylesheet" href="/css/member/view.css">
   <link rel="stylesheet" href="/css/member/mypage.css">
   <!-- jQuery -->
   <script src="/plugins/jquery/jquery.min.js"></script>
@@ -41,7 +40,7 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
-  <!--      <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">-->
+<!--      <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">-->
   <!-- iCheck -->
   <!--    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">-->
   <!-- JQVMap -->
@@ -61,6 +60,12 @@
   <script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
   <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
   <script src="/plugins/serialize-object/serialize-object.min.js"></script>
+  <!-- popper -->
+  <!-- Development version -->
+  <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+
+  <!-- Production version -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
 </head>
 
 
@@ -92,7 +97,7 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <span class="navbar-text ml-auto mr-2">현재 접속자 수 : <strong
-            th:text="${session.activeSessions} + '명'">0 명</strong></span>
+                th:text="${session.activeSessions} + '명'">0 명</strong></span>
       </li>
       <li class="nav-item dropdown" data-th-if="${session.loginUser != null}">
         <a id="notificationBtn" class="nav-link" data-toggle="dropdown" href="#">
@@ -261,6 +266,10 @@
 
 <!-- Editor -->
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<!-- Viewer -->
+<!--
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.js"></script>
+-->
 <!-- Editor's Plugin -->
 <script
     src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
@@ -275,6 +284,6 @@
 <!-- axios -->
 <script src="/plugins/axios/axios.min.js"></script>
 <!-- 별도의 JavaScript 파일 추가 -->
-<script type="module" src="/js/auth/login.js"></script>
+<script type="module" src="/js/auth/login.js?v=2024050701"></script>
 <script type="module" src="/js/subscribe.js"></script>
 <script type="module" src="/js/notification/notification.js"></script>
