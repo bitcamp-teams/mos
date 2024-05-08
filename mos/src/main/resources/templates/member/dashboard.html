@@ -1,7 +1,7 @@
 <div data-th-replace="header :: header">머리말</div>
 <div class="wrapper-mos">
     <div data-th-replace="mypage-sidenav :: sidenav">사이드네비</div>
-    <div id="dashboard" data-th-object="${member}">
+    <div id="dashboard" class="dashboard-form-container" data-th-object="${member}">
         <div id="profile">
             <div class="rounded">
                 <a data-th-href="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}}"
@@ -22,13 +22,14 @@
                 </div>
             </div>
         </div>
-        <p>자기소개</p>
-        <div class="bio">
-            <p data-th-text='*{biography}'>개발자 3년차입니다.</p>
+        <div class="card custom-card bg-light mb-3">
+            <div class="card-header">자기소개</div>
+            <div class="card-body">
+                <p class="card-text" data-th-text='*{biography}'>개발자 3년차입니다..</p>
+            </div>
         </div>
     </div>
-</div>
-<div data-th-replace="footer :: footer">꼬리말</div>
+    <div data-th-replace="footer :: footer">꼬리말</div>
 
 
 

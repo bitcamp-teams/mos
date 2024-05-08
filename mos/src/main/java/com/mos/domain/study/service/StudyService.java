@@ -25,9 +25,9 @@ public interface StudyService {
 
   boolean applyStudy(MemberStudyDto memberStudyDto);
 
-  List<StudyDto> listAll();
+  Page<StudyDto> listAll(Pageable pageable);
 
-  List<StudyDto> searchByTypeAndKeyword(String type, String keyword);
+  Page<StudyDto> searchByTypeAndKeyword(String type, String keyword, Pageable pageable);
 
   void updateLikeCount(int studyNo, int likeCount);
 
