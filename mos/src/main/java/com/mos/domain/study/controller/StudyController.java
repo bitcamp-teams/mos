@@ -11,12 +11,14 @@ import com.mos.domain.study.service.StudyLikeService;
 import com.mos.domain.study.service.StudyService;
 import com.mos.domain.wiki.service.WikiService;
 import com.mos.global.auth.LoginUser;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,9 +63,8 @@ public class StudyController {
   }
 
   @PostMapping("add")
-  public String add(
-      @LoginUser MemberDto user, @ModelAttribute StudyDto studyDto, @RequestParam("tags") List<Integer> tagNums
-  ) {
+  public String add(@LoginUser MemberDto user, @ModelAttribute StudyDto studyDto,
+      @RequestParam("tags") List<Integer> tagNums) {
     try {
       int memberNo = user.getMemberNo();
       studyDto.setMemberNo(user.getMemberNo());
@@ -84,7 +85,8 @@ public class StudyController {
   }
 
   @GetMapping("view")
-  public void view(@LoginUser MemberDto user, @RequestParam int studyNo, Model model) throws Exception {
+  public void view(@LoginUser MemberDto user, @RequestParam int studyNo, Model model)
+      throws Exception {
 
     if (user != null) {
       model.addAttribute("memberNo", user.getMemberNo());
@@ -105,7 +107,6 @@ public class StudyController {
     model.addAttribute("study", studyDto);
 
     List<StudyCommentDto> studyCommentDtoList = commentService.getStudyComments(studyNo);
-
 
 
 
@@ -154,11 +155,8 @@ public class StudyController {
 
   @PostMapping("/applyStudy")
   @ResponseBody
-  public Object applyStudy(
-      @LoginUser MemberDto loginUser,
-      @RequestParam int studyNo,
-      @RequestParam String applyMsg,
-      RedirectAttributes redirectAttributes) {
+  public Object applyStudy(@LoginUser MemberDto loginUser, @RequestParam int studyNo,
+      @RequestParam String applyMsg, RedirectAttributes redirectAttributes) {
 
     if (loginUser == null) {
       return "auth/login";
@@ -210,10 +208,10 @@ public class StudyController {
   }
 
 
-//  @GetMapping("main")
-//  public void main(Model model) {
-//    model.addAttribute("studyList", studyService.list());
-//  }
+  //  @GetMapping("main")
+  //  public void main(Model model) {
+  //    model.addAttribute("studyList", studyService.list());
+  //  }
 
   @GetMapping("test")
   @ResponseBody
@@ -221,31 +219,11 @@ public class StudyController {
     return "This is a test";
   }
 
-//  @GetMapping("/search")
-//  public String search(Model model,
-//                       @RequestParam(value="type") String type,
-//                       @RequestParam(value="keyword") String keyword) {
-//    try {
-//      List<StudyDto> studyList;
-//      if (type.isEmpty() && keyword.isEmpty()) {
-//        studyList = studyService.listAll();
-//      } else {
-//        studyList = studyService.searchByTypeAndKeyword(type, keyword);
-//      }
-//      model.addAttribute("studyList", studyList);
-//      return "study/search";
-//    } catch (Exception e) {
-//      log.error("Error occurred during study search", e);
-//      model.addAttribute("errorMessage", "검색 중 오류가 발생했습니다.");
-//      return "error-page";
-//    }
-//  }
-
   @GetMapping("/search")
   public String search(Model model,
-                       @RequestParam(value="type", required = false, defaultValue = "") String type,
-                       @RequestParam(value="keyword", required = false, defaultValue = "") String keyword,
-                       @RequestParam(value="page", required = false, defaultValue = "1") int page) {
+      @RequestParam(value = "type", required = false, defaultValue = "") String type,
+      @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+      @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
     try {
       int pageSize = 20; // 한 페이지당 보여줄 게시글 수
 

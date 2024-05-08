@@ -1,110 +1,110 @@
 <div data-th-replace="header::header">머리말</div>
 
 <div class="content-container page-margin wrapper-mos">
-  <h1>스터디 모집 목록</h1>
+    <h1>스터디 모집 목록</h1>
 
-  <style>
-    .content-container {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start; /* 내부 요소를 왼쪽 정렬 */
-      padding: 20px; /* 컨테이너 주변 여백 */
-    }
+    <style>
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* 내부 요소를 왼쪽 정렬 */
+            padding: 20px; /* 컨테이너 주변 여백 */
+        }
 
-    #searchForm {
-      align-self: flex-end; /* 검색창을 오른쪽에 배치 */
-      margin-bottom: 20px; /* 검색창 아래 여백 */
-    }
+        #searchForm {
+            align-self: flex-end; /* 검색창을 오른쪽에 배치 */
+            margin-bottom: 20px; /* 검색창 아래 여백 */
+        }
 
-    .search-container {
-      display: flex;
-      justify-content: flex-start; /* 내부 요소를 왼쪽 정렬 */
-      align-items: center; /* 내부 요소를 수직 중앙 정렬 */
-      gap: 10px; /* 각 요소 사이의 간격 조정 */
-    }
+        .search-container {
+            display: flex;
+            justify-content: flex-start; /* 내부 요소를 왼쪽 정렬 */
+            align-items: center; /* 내부 요소를 수직 중앙 정렬 */
+            gap: 10px; /* 각 요소 사이의 간격 조정 */
+        }
 
-    .search-container label {
-      white-space: nowrap; /* 라벨 텍스트가 넘치지 않도록 줄바꿈 방지 */
-    }
+        .search-container label {
+            white-space: nowrap; /* 라벨 텍스트가 넘치지 않도록 줄바꿈 방지 */
+        }
 
-    #type {
-      width: 160px;
-    }
+        #type {
+            width: 160px;
+        }
 
-    #keyword {
-      flex: 1; /* 입력 필드가 가능한 최대 너비를 가질 수 있도록 설정 */
-    }
+        #keyword {
+            flex: 1; /* 입력 필드가 가능한 최대 너비를 가질 수 있도록 설정 */
+        }
 
-    button[type="submit"] {
-      min-width: 80px; /* 최소 너비 설정 */
-    }
-  </style>
+        button[type="submit"] {
+            min-width: 80px; /* 최소 너비 설정 */
+        }
+    </style>
 
-  <form action="/study/search" method="get" id="searchForm">
-    <div class="search-container">
-      <div>
-        <label for="type"></label>
-        <select name="type" id="type">
-          <option value="title">제목</option>
-          <option value="introduction">모집글 내용</option>
-          <option value="tag">기술스택</option>
-        </select>
-      </div>
-      <div>
-        <label for="keyword"></label>
-        <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요.">
-      </div>
-      <button type="submit">검색</button>
+    <form action="/study/search" method="get" id="searchForm">
+        <div class="search-container">
+            <div>
+                <label for="type"></label>
+                <select name="type" id="type">
+                    <option value="">타입 필수선택</option>
+                    <option value="title">제목</option>
+                    <option value="introduction">모집글 내용</option>
+                    <option value="tag">기술스택</option>
+                </select>
+            </div>
+            <div>
+                <label for="keyword"></label>
+                <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요.">
+            </div>
+            <button type="submit">검색</button>
+        </div>
+    </form>
+
+    <table id="studyTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>스터디장</th>
+            <th>정원</th>
+            <th>방법</th>
+            <th>마감일</th>
+            <th>태그</th>
+            <th>조회수</th>
+            <th>좋아요</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 여기에 JavaScript로 데이터를 삽입할 예정 -->
+        </tbody>
+    </table>
+    <div class="text-center">
+        <div id="loader" class="spinner-border text-primary" role="status" style="display: none;">
+            <span class="sr-only">Loading...</span>
+        </div>
     </div>
-  </form>
+    <div id="sentinel"></div>
 
-  <table id="studyTable" class="table table-striped">
-    <thead>
-    <tr>
-      <th>번호</th>
-      <th>제목</th>
-      <th>스터디장</th>
-      <th>정원</th>
-      <th>방법</th>
-      <th>마감일</th>
-      <th>태그</th>
-      <th>조회수</th>
-      <th>좋아요</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- 여기에 JavaScript로 데이터를 삽입할 예정 -->
-    </tbody>
-  </table>
-  <div class="text-center">
-    <div id="loader" class="spinner-border text-primary" role="status" style="display: none;">
-      <span class="sr-only">Loading...</span>
-    </div>
-  </div>
-  <div id="sentinel"></div>
-
-  <script data-th-inline="javascript">
-    let page = 0;
-    let isLastPage = false;
-    let loading = false; // 로딩 중 여부를 나타내는 변수
+    <script data-th-inline="javascript">
+        let page = 0;
+        let isLastPage = false;
+        let loading = false; // 로딩 중 여부를 나타내는 변수
 
         function loadStudies() {
             // 로딩 중이 아니고 마지막 페이지가 아닐 때만 실행
             if (!loading && !isLastPage) {
-                console.log("loadStudies()호출됨!!!!!!");
                 loading = true;
                 $.ajax({
                     url: '/study/api/v1/list',
                     data: {
                         page: page
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.last) {
                             isLastPage = true;
                         }
                         const studyList = data.content;
                         const tbody = $('#studyTable tbody');
-                        studyList.forEach(function(study) {
+                        studyList.forEach(function (study) {
                             const row = $('<tr></tr>');
 
                             row.append('<td>' + study.studyNo + '</td>');
@@ -131,7 +131,7 @@
                             checkScrollPosition();
                         }
                     },
-                    complete: function() {
+                    complete: function () {
                         loading = false; // 로딩 완료
                     }
                 });
@@ -147,22 +147,22 @@
 
         let debounceTimer;
 
-        $(document).scroll(function() {
+        $(document).scroll(function () {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(checkScrollPosition, 400); // 400ms 디바운스 시간
         });
 
 
-    loadStudies(); // 초기 데이터 로딩
-  </script>
+        loadStudies(); // 초기 데이터 로딩
+    </script>
 
-  <script>
-    if (this.placeholder && typeof this.placeholder.id !== 'undefined') {
-    this.$element.val(this.placeholder.id);
-} else {
-    console.error('this.placeholder가 존재하지 않거나 id 속성이 정의되지 않았습니다.');
-}
-  </script>
+    <script>
+        if (this.placeholder && typeof this.placeholder.id !== 'undefined') {
+            this.$element.val(this.placeholder.id);
+        } else {
+            console.error('this.placeholder가 존재하지 않거나 id 속성이 정의되지 않았습니다.');
+        }
+    </script>
 
 
 </div>

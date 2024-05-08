@@ -1,13 +1,17 @@
 package com.mos.domain.study.service.impl;
 
 import com.mos.domain.member.dto.MemberStudyDto;
+
 import java.util.List;
+
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.repository.TagRepository;
+
 import java.util.stream.Collectors;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -75,8 +79,8 @@ public class DefaultStudyService implements StudyService {
   @Transactional
   @Override
   public boolean applyStudy(MemberStudyDto memberStudyDto) {
-      studyRepository.applyStudy(memberStudyDto);
-      return true;
+    studyRepository.applyStudy(memberStudyDto);
+    return true;
   }
 
   @Override
@@ -89,10 +93,10 @@ public class DefaultStudyService implements StudyService {
 
     List<StudyDto> searchResult;
     try {
-    int count = studyRepository.searchCount(type, keyword);
-    List<StudyDto> list = studyRepository.searchByStudy(type, keyword, pageable);
-    return new PageImpl<>(list, pageable, count);
-    } catch(Exception e) {
+      int count = studyRepository.searchCount(type, keyword);
+      List<StudyDto> list = studyRepository.searchByStudy(type, keyword, pageable);
+      return new PageImpl<>(list, pageable, count);
+    } catch (Exception e) {
       throw new IllegalArgumentException("유효하지 않은 검색 유형입니다.");
     }
   }
