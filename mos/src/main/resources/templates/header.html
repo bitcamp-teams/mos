@@ -116,8 +116,9 @@
 
 
     <div class="dropdown mr-sm-2">
-      <a href="javascript:void(0)" alt="icon image" data-th-if="${session.loginUser != null}">
-        <img src="/img/icon2.png" alt="icon image">
+      <a href="javascript:void(0)" alt="icon image" data-th-if="${session.loginUser != null}" data-th-object="${session.loginUser}">
+        <img id="memberImg" class="rounded-circle" data-th-if="*{photo != null}" data-th-src="@{'https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/' + *{photo}(type=f,w=32,h=32,ttype=jpg)}" src="/img/icon2.png" alt="icon image">
+        <img data-th-unless="*{photo}" data-th-src='@{/img/icon2.png}' height='32px' alt="icon image">
       </a>
       <div class="dropdown-options">
         <a

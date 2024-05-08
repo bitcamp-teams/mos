@@ -93,4 +93,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 
 </div>
+<script>
+    /*<![CDATA[*/
+    const photo = '[[${member.photo}]]';
+    if (photo !== '') {
+        $('#memberImg').attr('src', `https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/${photo}?type=f&w=32&h=32&ttype=jpg`);
+    }
+    /*]]>*/
+</script>
 <div data-th-replace="footer :: footer">꼬리말</div>
