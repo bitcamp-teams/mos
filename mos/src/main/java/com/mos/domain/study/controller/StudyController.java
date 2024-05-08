@@ -63,11 +63,12 @@ public class StudyController {
   }
 
   @PostMapping("add")
-  public String add(@LoginUser MemberDto user, @ModelAttribute StudyDto studyDto,
-      @RequestParam("tags") List<Integer> tagNums) {
+  public String add(
+      @LoginUser MemberDto loginUser, @ModelAttribute StudyDto studyDto, @RequestParam("tags") List<Integer> tagNums
+  ) {
     try {
-      int memberNo = user.getMemberNo();
-      studyDto.setMemberNo(user.getMemberNo());
+      int memberNo = loginUser.getMemberNo();
+      studyDto.setMemberNo(loginUser.getMemberNo());
     } catch (Exception e) {
       log.debug("login is required");
       e.printStackTrace();
@@ -79,14 +80,21 @@ public class StudyController {
       tagList.add(tag);
     }
     studyDto.setTagList(tagList);
+
+    // MemberStudyDto 객체 생성 및 값 설정
+    MemberStudyDto memberStudyDto = new MemberStudyDto();
+    memberStudyDto.setMemberDto(loginUser);
+    memberStudyDto.setStudyDto(studyDto);
+    memberStudyDto.setStatus("S03-101");//스터디장
+
     studyService.add(studyDto);
+    studyService.applyStudy(memberStudyDto);
 
     return "redirect:list";
   }
 
   @GetMapping("view")
-  public void view(@LoginUser MemberDto user, @RequestParam int studyNo, Model model)
-      throws Exception {
+  public void view(@LoginUser MemberDto user, @RequestParam int studyNo, Model model) throws Exception {
 
     if (user != null) {
       model.addAttribute("memberNo", user.getMemberNo());
@@ -107,9 +115,6 @@ public class StudyController {
     model.addAttribute("study", studyDto);
 
     List<StudyCommentDto> studyCommentDtoList = commentService.getStudyComments(studyNo);
-
-
-
 
     model.addAttribute("studyComments", studyCommentDtoList);
 
@@ -156,8 +161,12 @@ public class StudyController {
 
   @PostMapping("/applyStudy")
   @ResponseBody
-  public Object applyStudy(@LoginUser MemberDto loginUser, @RequestParam int studyNo,
-      @RequestParam String applyMsg, RedirectAttributes redirectAttributes) {
+  public Object applyStudy(
+      @LoginUser MemberDto loginUser,
+      @RequestParam int studyNo,
+      @RequestParam String applyMsg,
+      RedirectAttributes redirectAttributes
+  ) {
 
     if (loginUser == null) {
       return "auth/login";
@@ -174,7 +183,7 @@ public class StudyController {
 
     // 스터디 상태 확인
     String stat = studyDto.getStat();
-    if (stat == null || stat.equals("모집완료") || stat.equals("종료")) {
+    if (stat == null || stat.equals("S01-103") || stat.equals("S01-104")) {
       redirectAttributes.addFlashAttribute("message", "이미 모집이 완료되었거나 종료된 스터디입니다.");
       return "study/list";
     }
@@ -183,6 +192,7 @@ public class StudyController {
     MemberStudyDto memberStudyDto = new MemberStudyDto();
     memberStudyDto.setMemberDto(loginUser);
     memberStudyDto.setStudyDto(studyDto);
+    memberStudyDto.setStatus("S03-104");
     memberStudyDto.setApplyMsg(applyMsg); // applyMsg 설정
 
     try {
@@ -225,10 +235,12 @@ public class StudyController {
   }
 
   @GetMapping("/search")
-  public String search(Model model,
+  public String search(
+      Model model,
       @RequestParam(value = "type", required = false, defaultValue = "") String type,
       @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
-      @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+      @RequestParam(value = "page", required = false, defaultValue = "1") int page
+  ) {
     try {
       int pageSize = 20; // 한 페이지당 보여줄 게시글 수
 
@@ -254,12 +266,11 @@ public class StudyController {
 
       return "study/search";
     } catch (Exception e) {
-//      log.error("Error occurred during study search", e);
+      //      log.error("Error occurred during study search", e);
       model.addAttribute("errorMessage", "검색 중 오류가 발생했습니다.");
       return "error-page";
     }
   }
-
 
 
 }

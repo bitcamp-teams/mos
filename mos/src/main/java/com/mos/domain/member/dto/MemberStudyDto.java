@@ -11,16 +11,16 @@ import lombok.NoArgsConstructor;
 @Data
 public class MemberStudyDto {
 
-    private int no;
+  private int no;
 
-    private MemberDto memberDto;
+  private MemberDto memberDto;
 
-    private StudyDto studyDto;
+  private StudyDto studyDto;
 
-    private String status;
+  private String status;
 
-    private boolean favorites;
+  private boolean favorites;
 
-    private String applyMsg;
+  private String applyMsg;
 
 }

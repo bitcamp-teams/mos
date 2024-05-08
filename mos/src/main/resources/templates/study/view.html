@@ -92,16 +92,20 @@
 
 
     <!-- Like button -->
-    <p>
-      <i class="fas fa-heart" th:id="'like-icon-' + *{studyNo}" th:data-study-no="*{studyNo}"
+    <div class="d-flex justify-content-center display-4">
+      <i class="fas fa-heart" th:id="'like-icon-' + *{studyNo}"
+         th:data-study-no="*{studyNo}"
          th:classappend="${isLiked == null or isLiked != 1} ? '' : 'liked'"
          onclick="toggleLike(this)"></i>
       <span th:id="'like-count-' + *{studyNo}" data-th-text="*{likeCount}"></span>
-    </p>
+    </div>
 
 
-    <div data-th-if="*{stat != 'S01-103' && stat != 'S01-104'}">
-      <button id="applyStudyBtn" data-toggle="modal" data-target="#applyModal">신청하기</button>
+    <div class="d-flex justify-content-center"
+         data-th-if="*{stat != 'S01-103' && stat != 'S01-104'}">
+      <button id="applyStudyBtn" class="btn btn-primary btn-lg" data-toggle="modal"
+              data-target="#applyModal">신청하기
+      </button>
     </div>
 
     <!-- 스터디 신청하기 모달창-->
@@ -184,9 +188,11 @@
         <input type="hidden" name="notiReceiver" th:value="${study.memberNo}">
         <input type="text" name="username" th:value="${session.loginUser?.userName}" readonly>
       </p>
-      <p>
-        <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
-      </p>
+      <div><textarea class="form-control" style="box-sizing: border-box; display: block;"
+                     name="content"
+                     placeholder="댓글을 입력하세요"></textarea></div>
+
+
       <button id="submitBtn" type="button">댓글 등록</button>
     </form>
     <!--댓글추가 기능 끝-->
