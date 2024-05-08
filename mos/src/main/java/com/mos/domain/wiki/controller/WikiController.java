@@ -104,6 +104,13 @@ public class WikiController {
     model.addAttribute("wikis", wikiService.listByStudyNo(studyNo));
   }
 
+  @GetMapping("card")
+  public void card(@RequestParam int studyNo, Model model) {
+    model.addAttribute("studyNo", studyNo);
+    model.addAttribute("wikis", wikiService.listByStudyNo(studyNo));
+  }
+
+
   @GetMapping("modoowikilist")
   public void modoowikilist(Model model, int page) {
     Pageable pageable = PageRequest.of(page - 1, 20);
@@ -111,18 +118,18 @@ public class WikiController {
     model.addAttribute("wiki", wikiService.listByWikiNo(pageable));
   }
 
-//  @GetMapping("view/{studyNo}")
-//  public String getWikiByStudyNo(
-//      @PathVariable int studyNo,
-//      @RequestHeader("referer") String url,
-//      RedirectAttributes redirectAttributes) {
-//    Integer wikiNo = wikiService.findWikiNoByStudyNo(studyNo);
-//    if (wikiNo == null) {
-//      return "redirect:" + url;
-//    }
-//    redirectAttributes.addAttribute("wikiNo", wikiNo);
-//    return "redirect:/wiki/view";
-//  }
+  //  @GetMapping("view/{studyNo}")
+  //  public String getWikiByStudyNo(
+  //      @PathVariable int studyNo,
+  //      @RequestHeader("referer") String url,
+  //      RedirectAttributes redirectAttributes) {
+  //    Integer wikiNo = wikiService.findWikiNoByStudyNo(studyNo);
+  //    if (wikiNo == null) {
+  //      return "redirect:" + url;
+  //    }
+  //    redirectAttributes.addAttribute("wikiNo", wikiNo);
+  //    return "redirect:/wiki/view";
+  //  }
 
   @GetMapping("delete")
   public String delete(HttpSession session, @RequestParam int wikiNo) throws Exception {

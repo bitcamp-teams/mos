@@ -110,6 +110,7 @@ public class StudyController {
 
 
 
+
     model.addAttribute("studyComments", studyCommentDtoList);
 
     //첫번째 wikiNo도 모델에 담아준다.
@@ -207,6 +208,10 @@ public class StudyController {
     return "study/list";
   }
 
+  @GetMapping("card")
+  public String card() {
+    return "study/card";
+  }
 
   //  @GetMapping("main")
   //  public void main(Model model) {

@@ -4,26 +4,31 @@
 <mapper namespace="com.mos.domain.wiki.repository.WikiApiRepository">
 
   <select id="findByStudyNo" parameterType="int" resultType="JstreeWikiDto">
-		WITH RECURSIVE get_wiki_title_tree AS
-		(SELECT wiki_no, title, parent_wiki_no, ordr, 1 AS LEVEL
+<!--		클라이언트가 정렬하므로 굳이 재귀조회하지 않아도 된다.-->
+    <!--		WITH RECURSIVE get_wiki_title_tree AS-->
+    <!--		(SELECT wiki_no, title, parent_wiki_no, ordr, 1 AS LEVEL-->
+    <!--		FROM wiki-->
+    <!--		WHERE-->
+    <!--			parent_wiki_no IS NULL-->
+    <!--			AND-->
+    <!--			study_no = #{studyNo}-->
+    <!--		-->
+    <!--		UNION ALL-->
+    <!--		-->
+    <!--		SELECT w.wiki_no,-->
+    <!--		w.title,-->
+    <!--		w.parent_wiki_no,-->
+    <!--		w.ordr,-->
+    <!--		c.LEVEL + 1-->
+    <!--		FROM get_wiki_title_tree c-->
+    <!--		INNER JOIN wiki w ON w.parent_wiki_no = c.wiki_no)-->
+    <!--		-->
+    <!--		SELECT wiki_no, parent_wiki_no, title, ordr-->
+    <!--		FROM get_wiki_title_tree-->
+    SELECT wiki_no, parent_wiki_no, title
 		FROM wiki
-		WHERE
-			parent_wiki_no IS NULL
-			AND
-			study_no = #{studyNo}
-		
-		UNION ALL
-		
-		SELECT w.wiki_no,
-		w.title,
-		w.parent_wiki_no,
-		w.ordr,
-		c.LEVEL + 1
-		FROM get_wiki_title_tree c
-		INNER JOIN wiki w ON w.parent_wiki_no = c.wiki_no)
-		
-		SELECT wiki_no, parent_wiki_no, title, ordr
-		FROM get_wiki_title_tree
+		WHERE study_no = #{studyNo}
+
 	</select>
 
 	<insert id="saveNode" parameterType="JstreeWikiDto"

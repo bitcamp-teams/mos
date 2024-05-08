@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   <resultMap id="studyDetail" type="studyDto">
     <id column="study_no" property="studyNo"/>
     <result column="member_no" property="memberNo"/>
-    <result column="leaderName" property="leaderName"/>
+    <result column="username" property="username"/>
     <result column="title" property="title"/>
     <result column="method" property="method"/>
     <result column="intake" property="intake"/>
@@ -101,7 +101,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     SELECT
       s.study_no,
       s.member_no,
-      (SELECT m.username FROM member m WHERE m.member_no = s.member_no) AS leaderName,
+      m.username,
       s.title,
       s.intake,
       s.introduction,
@@ -117,6 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       t.name
     FROM
       study s
+      JOIN member m ON s.member_no = m.member_no
       LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
       LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
     WHERE
@@ -170,11 +171,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   </update>
 
   <!-- 스터디 신청기능-->
- <insert id="applyStudy" parameterType="MemberStudyDto">
+  <insert id="applyStudy" parameterType="MemberStudyDto">
   INSERT INTO
    member_study_stat(member_no, study_no, stat, apply_msg)
   VALUES(#{memberDto.memberNo}, #{studyDto.studyNo}, 'S03-104', #{applyMsg})
- </insert>
+  </insert>
 
   <select id="listAll" resultMap="studyList">
     SELECT
