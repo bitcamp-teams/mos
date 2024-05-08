@@ -228,7 +228,7 @@
   <select id="findMyStudyComment" resultMap="studyComment" parameterType="int">
     SELECT comment_no, study_no, member_no, content, created_date
     FROM study_comment
-    WHERE member_no = #{memberNo}
+    WHERE member_no = #{memberNo} AND stat = '정상'
     ORDER BY created_date DESC;
   </select>
 
@@ -236,7 +236,7 @@
   <select id="findMyWikiComment" resultMap="wikiComment" parameterType="int">
     SELECT comment_no, member_no, content, created_date
     FROM wiki_comment
-    WHERE member_no = #{memberNo}
+    WHERE member_no = #{memberNo} AND stat = '정상'
     ORDER BY created_date DESC;
   </select>
 
