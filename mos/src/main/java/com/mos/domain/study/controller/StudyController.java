@@ -106,9 +106,6 @@ public class StudyController {
 
     List<StudyCommentDto> studyCommentDtoList = commentService.getStudyComments(studyNo);
 
-
-
-
     model.addAttribute("studyComments", studyCommentDtoList);
 
     //첫번째 wikiNo도 모델에 담아준다.
@@ -158,7 +155,8 @@ public class StudyController {
       @LoginUser MemberDto loginUser,
       @RequestParam int studyNo,
       @RequestParam String applyMsg,
-      RedirectAttributes redirectAttributes) {
+      RedirectAttributes redirectAttributes
+  ) {
 
     if (loginUser == null) {
       return "auth/login";
@@ -209,11 +207,15 @@ public class StudyController {
     return "study/list";
   }
 
+  @GetMapping("card")
+  public String card() {
+    return "study/card";
+  }
 
-//  @GetMapping("main")
-//  public void main(Model model) {
-//    model.addAttribute("studyList", studyService.list());
-//  }
+  //  @GetMapping("main")
+  //  public void main(Model model) {
+  //    model.addAttribute("studyList", studyService.list());
+  //  }
 
   @GetMapping("test")
   @ResponseBody
@@ -222,9 +224,9 @@ public class StudyController {
   }
 
   @GetMapping("/search")
-  public String search(Model model,
-                       @RequestParam(value="type") String type,
-                       @RequestParam(value="keyword") String keyword) {
+  public String search(
+      Model model, @RequestParam(value = "type") String type, @RequestParam(value = "keyword") String keyword
+  ) {
     try {
       List<StudyDto> studyList;
       if (type.isEmpty() && keyword.isEmpty()) {
@@ -240,7 +242,6 @@ public class StudyController {
       return "error-page";
     }
   }
-
 
 
 }
