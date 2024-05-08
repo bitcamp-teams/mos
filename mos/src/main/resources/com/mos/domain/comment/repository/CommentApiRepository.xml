@@ -19,12 +19,12 @@
   </select>
 
   <!-- 저장 -->
-  <insert id="saveWikiCommentByWikiNo" parameterType="int" useGeneratedKeys="true">
+  <insert id="saveWikiCommentByWikiNo" parameterType="WikiCommentDto" useGeneratedKeys="true">
     INSERT INTO
       wiki_comment(member_no, wiki_no, content)
     VALUE
   </insert>
-  <insert id="saveStudyCommentByWikiNo" parameterType="int" useGeneratedKeys="true">
+  <insert id="saveStudyCommentByWikiNo" parameterType="StudyCommentDto" useGeneratedKeys="true">
     INSERT INTO
       study_comment(member_no, study_no, content)
     VALUES
