@@ -34,6 +34,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
@@ -146,28 +147,29 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
     }
 
     MemberDto member = memberService.getNo(loginUser.getMemberNo());
-    model.addAttribute("member", member);
+    model.addAttribute("memberDto", member);
     return "member/editProfile";
   }
 
 
   // 회원 정보 수정
   @PostMapping("update")
-  public String updateMember(@Valid MemberDto member,
-      MultipartFile memberPhoto,
+  public String updateMember(@ModelAttribute MemberDto memberDto,
       BindingResult bindingResult,
+      MultipartFile memberPhoto,
+      Model model,
       @LoginUser MemberDto loginUser) throws Exception {
 
     if (loginUser == null) {
       return "auth/login";
     }
 
-    String newUserName = member.getUserName();
+    String newUserName = memberDto.getUserName();
     String originalUserName = loginUser.getUserName();
 
     // 새로운 유저네임이 비어있으면 기존 유저네임으로 설정
     if (newUserName == null || newUserName.trim().isEmpty()) {
-      member.setUserName(originalUserName);
+      memberDto.setUserName(originalUserName);
     }
 
     // 새로운 유저네임이 기존에 존재하는 유저네임인지 확인
@@ -177,20 +179,21 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
 
     // 유효성 검사 실패 시 editForm 뷰로 이동
     if (bindingResult.hasErrors()) {
+      model.addAttribute("memberDto", memberDto);
       return "member/editProfile";
     }
 
     if (memberPhoto.getSize() > 0) {
       String filename = storageService.upload(this.bucketName, this.uploadDir, memberPhoto);
-      member.setPhoto(filename); // 파일 이름 또는 경로를 저장
+      memberDto.setPhoto(filename); // 파일 이름 또는 경로를 저장
       storageService.delete(this.bucketName, this.uploadDir, loginUser.getPhoto());
     } else {
-      member.setPhoto(loginUser.getPhoto());
+      memberDto.setPhoto(loginUser.getPhoto());
     }
 
-    member.setMemberNo(loginUser.getMemberNo());
+    memberDto.setMemberNo(loginUser.getMemberNo());
 
-    memberService.update(member);
+    memberService.update(memberDto);
     return "redirect:/member/edit";
   }
 
