@@ -179,6 +179,7 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
 
     // 유효성 검사 실패 시 editForm 뷰로 이동
     if (bindingResult.hasErrors()) {
+      memberDto.setPhoto(loginUser.getPhoto());
       model.addAttribute("memberDto", memberDto);
       return "member/editProfile";
     }
