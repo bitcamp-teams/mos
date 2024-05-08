@@ -20,10 +20,7 @@ const index = {
             if (showModal) {
                 $('#signUpModal').modal('show');
             }
-            $('select').select2({
-                theme: 'bootstrap4',
-                allowClear: true
-            });
+
             _this.validation();
             _this.signUp();
         });
@@ -49,6 +46,11 @@ const index = {
             position: 'top-end',
             showConfirmButton: false,
             timer: 3000
+        });
+
+        $('select').select2({
+            theme: 'bootstrap4',
+            allowClear: true
         });
 
         $('.btn-next').on('click', function () {
