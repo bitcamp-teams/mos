@@ -1,14 +1,93 @@
 <div data-th-replace="header::header">머리말</div>
 <script>
-  window.location.href = '/study/card';
+  // window.location.href = '/study/card';
+  // 회원가입 처리 위해서 redirect 하지 마세요!
 </script>
 
-<div class="wrapper-mos">
-  <div data-th-replace="home/rtp_study::rtp_study">실시간 인기 스터디</div>
-  <div data-th-replace="home/nearby_study::nearby_study">내 주변 스터디</div>
-  <div data-th-replace="home/rtp_wiki::rtp_wiki">실시간 인기 글</div>
-</div>
+<div class="content-container page-margin wrapper-mos">
+  <!--  <div data-th-replace="home/rtp_study::rtp_study">실시간 인기 스터디</div>-->
+  <!--  <div data-th-replace="home/nearby_study::nearby_study">내 주변 스터디</div>-->
+  <!--  <div data-th-replace="home/rtp_wiki::rtp_wiki">실시간 인기 글</div>-->
+  <h1>스터디 모집 목록</h1>
 
+  <div class="row" id="studyCards"></div>
+  <div class="text-center">
+    <div id="loader" class="spinner-border text-primary" role="status" style="display: none;">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <div id="sentinel"></div>
+
+  <script data-th-inline="javascript">
+    let page = 0;
+    let isLastPage = false;
+    let loading = false;
+
+    function loadStudies() {
+      if (!loading && !isLastPage) {
+        loading = true;
+        $.ajax({
+          url: '/study/api/v1/list',
+          data: {
+            page: page
+          },
+          success: function (data) {
+            if (data.last) {
+              isLastPage = true;
+            }
+            const studyList = data.content;
+            const cardsContainer = $('#studyCards');
+            studyList.forEach(function (study) {
+              const cardCol = $('<div class="col-md-4 col-sm-6 mb-4"></div>');
+              const card = $('<div class="card h-100"></div>');
+              const cardBody = $('<div class="card-body"></div>');
+              const cardTitle = $(
+                  '<h5 class="card-title"><a href="/study/view?studyNo=' + study.studyNo + '">'
+                  + study.title + '</a></h5>');
+              const cardText = $(
+                  '<p class="card-text">' + study.leaderName + '<br>' + study.intake + '<br>'
+                  + study.method + '<br>' + study.recruitmentDeadline + '<br>' + study.tags
+                  + '<br>조회수: ' + study.hitCount + '<br>좋아요: ' + study.likeCount + '</p>');
+
+              cardBody.append(cardTitle, cardText);
+              card.append(cardBody);
+              cardCol.append(card);
+              cardsContainer.append(cardCol);
+            });
+
+            page++;
+
+            if (data.last) {
+              isLastPage = true;
+              $(document).off('scroll');
+            } else {
+              checkScrollPosition();
+            }
+          },
+          complete: function () {
+            loading = false;
+          }
+        });
+      }
+    }
+
+    function checkScrollPosition() {
+      const scrollBottom = $(document).scrollTop() + $(window).height();
+      if (scrollBottom >= $(document).height() * 0.9) {
+        loadStudies();
+      }
+    }
+
+    let debounceTimer;
+
+    $(document).scroll(function () {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(checkScrollPosition, 400);
+    });
+
+    loadStudies();
+  </script>
+</div>
 
 <div data-th-replace="footer::footer">꼬리말</div>
 
