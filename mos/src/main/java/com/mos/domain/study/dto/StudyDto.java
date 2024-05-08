@@ -16,6 +16,7 @@ import org.springframework.data.relational.core.mapping.Column;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudyDto {
+
   private int studyNo;
   private int memberNo;
   private String leaderName;
@@ -35,6 +36,7 @@ public class StudyDto {
   private List<TagDto> tagList;
   private int hitCount;
   private int likeCount;
+  private String username;
 
 
 }

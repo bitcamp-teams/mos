@@ -4,6 +4,7 @@ import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.comment.repository.CommentApiRepository;
 import com.mos.domain.comment.service.CommentApiService;
+import com.mos.global.notification.event.CommentAndAuthorIdEvent;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -35,6 +36,7 @@ public class DefaultCommentApiService implements CommentApiService {
 
   @Override
   public void createStudyComment(StudyCommentDto studyCommentDto) {
+    publishEvent(studyCommentDto);
     commentApiRepository.saveStudyCommentByWikiNo(studyCommentDto);
   }
 
@@ -46,5 +48,10 @@ public class DefaultCommentApiService implements CommentApiService {
   @Override
   public void deleteStudyCommentByCommentNo(int commentNo) {
     commentApiRepository.deleteStudyCommentByCommentNo(commentNo);
+  }
+
+  private void publishEvent(StudyCommentDto studyCommentDto) {
+    CommentAndAuthorIdEvent commentAndAuthorIdEvent = new CommentAndAuthorIdEvent(studyCommentDto);
+    applicationEventPublisher.publishEvent(commentAndAuthorIdEvent);
   }
 }
