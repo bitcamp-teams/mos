@@ -178,16 +178,16 @@ const index = {
         }
     },
     modalHandler(modal) {
-        modal.on('show.bs.modal', function (e) {
-            const modal = $(this);
-            modal.find('.modal-dialog').css('transform', 'translateY(-100%)');
-        });
-
-        // 모달이 완전히 열린 후 애니메이션을 정상 위치로
-        modal.on('shown.bs.modal', function (e) {
-            const modal = $(this);
-            modal.find('.modal-dialog').css('transform', '');
-        });
+        // modal.on('show.bs.modal', function (e) {
+        //     const modal = $(this);
+        //     modal.find('.modal-dialog').css('transform', 'translateY(-100%)');
+        // });
+        //
+        // // 모달이 완전히 열린 후 애니메이션을 정상 위치로
+        // modal.on('shown.bs.modal', function (e) {
+        //     const modal = $(this);
+        //     modal.find('.modal-dialog').css('transform', '');
+        // });
     },
     handleLogout() {
         this.logout()
