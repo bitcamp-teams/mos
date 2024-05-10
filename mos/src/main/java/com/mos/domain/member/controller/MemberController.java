@@ -3,6 +3,7 @@ package com.mos.domain.member.controller;
 import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.member.dto.MemberDto;
+import com.mos.domain.member.dto.MemberEditDto;
 import com.mos.domain.member.dto.MemberJoinDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.member.dto.MyStudiesDto;
@@ -33,6 +34,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -154,7 +156,7 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
 
   // 회원 정보 수정
   @PostMapping("update")
-  public String updateMember(@ModelAttribute MemberDto memberDto,
+  public String updateMember(@Validated @ModelAttribute("memberDto") MemberEditDto memberDto,
       BindingResult bindingResult,
       MultipartFile memberPhoto,
       Model model,
@@ -163,6 +165,9 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
     if (loginUser == null) {
       return "auth/login";
     }
+
+    System.out.println("memberDto = " + memberDto);
+    System.out.println("bindingResult = " + bindingResult);
 
     String newUserName = memberDto.getUserName();
     String originalUserName = loginUser.getUserName();
@@ -194,7 +199,18 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
 
     memberDto.setMemberNo(loginUser.getMemberNo());
 
-    memberService.update(memberDto);
+    MemberDto updateMember = MemberDto.builder()
+        .memberNo(memberDto.getMemberNo())
+        .email(memberDto.getEmail())
+        .photo(memberDto.getPhoto())
+        .biography(memberDto.getBiography())
+        .belong(memberDto.getBelong())
+        .userName(memberDto.getUserName())
+        .career(memberDto.getCareer())
+        .socialLink(memberDto.getSocialLink())
+        .build();
+
+    memberService.update(updateMember);
     return "redirect:/member/edit";
   }
 
