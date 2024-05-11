@@ -106,9 +106,13 @@
 </div>
 <script>
     /*<![CDATA[*/
-    const photo = '[[${memberDto.photo}]]';
-    if (photo !== '') {
-        $('#memberImg').attr('src', `https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/${photo}?type=f&w=32&h=32&ttype=jpg`);
+    const newPhoto = '[[${memberDto.photo}]]';
+    const oldPhoto = '[[${session.loginUser.photo}]]';
+    console.log(oldPhoto, newPhoto);
+    console.log(newPhoto !== oldPhoto);
+
+    if (newPhoto !== '' && newPhoto !== oldPhoto) {
+        $('#memberImg').attr('src', `https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/${newPhoto}?type=f&w=32&h=32&ttype=jpg`);
     }
     /*]]>*/
 </script>
