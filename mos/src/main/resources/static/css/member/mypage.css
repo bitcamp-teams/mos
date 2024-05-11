@@ -19,7 +19,15 @@
     margin-left: 250px;
 }
 
-.container-myWriteCommentList {
+.container-myWikiList {
+    margin-left: 250px;
+}
+
+.container-myStudyCommentList {
+    margin-left: 250px;
+}
+
+.container-myWikiCommentList {
     margin-left: 250px;
 }
 
@@ -35,6 +43,27 @@
 /* sidenav 링크 호버 효과 */
 #sidenav a:hover {
     background-color: #e9ecef; /* 호버 효과 추가 */
+}
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* 드롭다운 내용을 숨깁니다 */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* 드롭다운 항목에 마우스를 올리면 내용을 보여줍니다 */
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
 #profile {
