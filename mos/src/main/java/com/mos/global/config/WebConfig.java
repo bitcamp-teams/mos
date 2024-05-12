@@ -21,6 +21,8 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    // 인터셉터 등록
+    registry.addInterceptor(new LoginCheckInterceptor())
+            .order(1)
+            .addPathPatterns("/member/**");
   }
 }
