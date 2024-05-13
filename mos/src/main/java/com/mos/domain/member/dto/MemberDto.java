@@ -1,5 +1,6 @@
 package com.mos.domain.member.dto;
 
+import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.dto.StudyLikeStatDto;
 import java.io.Serial;
 import java.io.Serializable;
@@ -39,5 +40,4 @@ public class MemberDto implements Serializable {
   private String location;
   private String platform;
   private List<StudyLikeStatDto> studyLikeStats;
-
 }

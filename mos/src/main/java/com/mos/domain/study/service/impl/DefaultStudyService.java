@@ -69,8 +69,6 @@ public class DefaultStudyService implements StudyService {
     return new PageImpl<>(studyList, pageable, totalCount);
   }
 
-
-
   @Override
   public List<TagDto> getAllTags() {
     return tagRepository.findAll();

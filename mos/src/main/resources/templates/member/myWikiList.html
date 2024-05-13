@@ -11,16 +11,32 @@
             <thead>
             <tr>
                 <th>번호</th>
-                <th>제목</th>
+                <th>위키 제목</th>
+                <th>스터디 제목</th>
                 <th>생성일</th>
+                <th>조회수</th>
+                <th>좋아요</th>
             </tr>
             </thead>
             <tbody>
+<!--            <tr data-th-each="wiki : ${memberWikiList}" data-th-object="${wiki}">-->
+<!--                <td data-th-text="*{wikiNo}">1</td>-->
+<!--                <td><a data-th-href="@{/wiki/view(studyNo=*{studyNo},wikiNo=*{wikiNo})}" data-th-text="*{title}">반복문</a>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <div data-th-each="study : ${study.title}" data-th-object="${title}">-->
+<!--                        <a data-th-text="*{title}">자바 스터디</a>-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td data-th-text="*{createdDate}">2024-05-08</td>-->
+<!--            </tr>-->
             <tr data-th-each="wiki : ${memberWikiList}" data-th-object="${wiki}">
-                <td data-th-text="*{wikiNo}">1</td>
-                <td><a data-th-href="@{/wiki/view(studyNo=*{studyNo},wikiNo=*{wikiNo})}" data-th-text="*{title}">반복문</a>
-                </td>
-                <td data-th-text="*{createdDate}">2024-05-08</td>
+                <td data-th-text="${wiki.wikiNo}">1</td>
+                <td><a data-th-href="@{/wiki/view(studyNo=${wiki.studyNo},wikiNo=${wiki.wikiNo})}" data-th-text="${wiki.title}">반복문</a></td>
+                <td data-th-text="${wiki.studyTitle}">스터디 제목</td>
+                <td data-th-text="${wiki.createdDate}">2024-05-08</td>
+                <td data-th-text="${wiki.hitCount}">18</td>
+                <td data-th-text="${wiki.likes}">10</td>
             </tr>
             </tbody>
         </table>

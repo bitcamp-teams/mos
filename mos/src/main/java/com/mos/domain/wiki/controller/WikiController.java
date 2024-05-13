@@ -88,7 +88,11 @@ public class WikiController {
       @RequestParam(required = false, defaultValue = "0") int wikiNo, @RequestParam int studyNo, Model model
   ) throws Exception {
     // 뷰를 반환한다. async로 api 컨트롤러에 요청하여 동작하므로 service 객체를 사용하지 않음.
-
+    try {
+      wikiService.updateHitCount(wikiNo);
+    } catch(Exception e) {
+      // slightly quit
+    }
   }
 
   @PostMapping("updateWiki")
@@ -110,26 +114,12 @@ public class WikiController {
     model.addAttribute("wikis", wikiService.listByStudyNo(studyNo));
   }
 
-
   @GetMapping("modoowikilist")
   public void modoowikilist(Model model, int page) {
     Pageable pageable = PageRequest.of(page - 1, 20);
     System.out.println("wikiService.listByWikiNo(page) = " + wikiService.listByWikiNo(pageable));
     model.addAttribute("wiki", wikiService.listByWikiNo(pageable));
   }
-
-  //  @GetMapping("view/{studyNo}")
-  //  public String getWikiByStudyNo(
-  //      @PathVariable int studyNo,
-  //      @RequestHeader("referer") String url,
-  //      RedirectAttributes redirectAttributes) {
-  //    Integer wikiNo = wikiService.findWikiNoByStudyNo(studyNo);
-  //    if (wikiNo == null) {
-  //      return "redirect:" + url;
-  //    }
-  //    redirectAttributes.addAttribute("wikiNo", wikiNo);
-  //    return "redirect:/wiki/view";
-  //  }
 
   @GetMapping("delete")
   public String delete(HttpSession session, @RequestParam int wikiNo) throws Exception {
