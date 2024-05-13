@@ -16,6 +16,7 @@ import com.mos.domain.study.repository.StudyRepository;
 import java.util.List;
 
 import com.mos.domain.wiki.dto.WikiDto;
+import com.mos.domain.wiki.repository.WikiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -31,6 +32,7 @@ public class DefaultMemberService implements MemberService {
 
   private final MemberRepository memberRepository;
   private final StudyRepository studyRepository;
+  private final WikiRepository wikiRepository;
 
   @Override
   public MemberDto get(String email) {
@@ -118,21 +120,24 @@ public class DefaultMemberService implements MemberService {
   }
 
   @Override
-  public List<WikiDto> findMyWiki(int memberNo) {
-    List<WikiDto> myWiki = memberRepository.findMyWiki(memberNo);
-    return myWiki;
+  public Page<WikiDto> findMyWiki(int memberNo, Pageable pageable) {
+    List<WikiDto> myWiki = memberRepository.findMyWiki(memberNo, pageable);
+    int count = memberRepository.myWikiCount(memberNo);
+    return new PageImpl<>(myWiki, pageable, count);
   }
 
   @Override
-  public List<StudyCommentDto> findMyStudyComment(int memberNo) {
-    List<StudyCommentDto> mystudyComment = memberRepository.findMyStudyComment(memberNo);
-    return mystudyComment;
+  public Page<StudyCommentDto> findMyStudyComment(int memberNo, Pageable pageable) {
+    List<StudyCommentDto> myStudyComment = memberRepository.findMyStudyComment(memberNo, pageable);
+    int count = memberRepository.myStudyCommentCount(memberNo);
+    return new PageImpl<>(myStudyComment, pageable, count);
   }
 
   @Override
-  public List<WikiCommentDto> findMyWikiComment(int memberNo) {
-    List<WikiCommentDto> mywikiComment = memberRepository.findMyWikiComment(memberNo);
-    return mywikiComment;
+  public Page<WikiCommentDto> findMyWikiComment(int memberNo, Pageable pageable) {
+    List<WikiCommentDto> myWikiComment = memberRepository.findMyWikiComment(memberNo, pageable);
+    int count = memberRepository.myWikiCommentCount(memberNo);
+    return new PageImpl<>(myWikiComment, pageable, count);
   }
 
   public void updateStatus(MyStudiesUpdateDto updateDto) {

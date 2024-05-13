@@ -47,8 +47,8 @@
 
 /* 드롭다운 메뉴 스타일 */
 .dropdown {
-  position: relative;
-  display: inline-block;
+  position: relative; /* 상대 위치 */
+  display: inline-block; /* 인라인 브록 디스플레이 */
 }
 
 /* 드롭다운 내용을 숨깁니다 */
@@ -121,4 +121,31 @@
 /* 색이 채워진 별표 아이콘에 대한 스타일 */
 .filled .fa-star {
     color: gold; /* 색이 채워진 상태의 색상 */
+}
+
+/* 페이지 네이션 */
+.pagination {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-top: 20px; /* 페이지 버튼과 상단 간격 조절 */
+}
+
+.pagination li {
+  display: inline-block;
+  margin-right: 5px; /* 페이지 버튼 간 간격 조절 */
+}
+
+.pagination li a {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination li a.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
 }

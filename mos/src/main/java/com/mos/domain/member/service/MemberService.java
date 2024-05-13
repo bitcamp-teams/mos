@@ -40,11 +40,11 @@ public interface MemberService {
 
   int withdraw(int no);
 
-  List<WikiDto> findMyWiki(int no);
+  Page<WikiDto> findMyWiki(int memberNo, Pageable pageable);
 
-  List<StudyCommentDto> findMyStudyComment(int no);
+  Page<StudyCommentDto> findMyStudyComment(int memberNo, Pageable pageable);
 
-  List<WikiCommentDto> findMyWikiComment(int no);
+  Page<WikiCommentDto> findMyWikiComment(int memberNo, Pageable pageable);
 
   Page<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo, Pageable page);
 
