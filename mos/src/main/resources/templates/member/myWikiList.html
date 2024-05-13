@@ -24,6 +24,14 @@
             </tr>
             </tbody>
         </table>
+        <!-- 페이지네이션 -->
+        <div>
+            <ul class="pagination" style="justify-content: center;">
+                <li th:each="pageNum : ${#numbers.sequence(1, memberWikiList.totalPages)}">
+                    <a th:href="@{'?page=' + ${pageNum}}" th:text="${pageNum}" th:class="${pageNum == memberWikiList.number + 1} ? 'active' : ''"></a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 <div data-th-replace="footer::footer">꼬리말</div>

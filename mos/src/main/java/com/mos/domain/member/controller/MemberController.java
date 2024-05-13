@@ -235,64 +235,64 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
   }
 
   @GetMapping("myWikiList")
-  public String getMyWiki(@LoginUser MemberDto loginUser, Model model, HttpSession session) throws Exception {
-
+  public String getMyWiki(@LoginUser MemberDto loginUser, Model model,
+                          @RequestParam(name = "page", defaultValue = "1") int page) {
     int memberNo = loginUser.getMemberNo();
 
-    MemberDto member = memberService.getNo(memberNo);
-    if (member == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
-    }
-    model.addAttribute("member", member);
+    Pageable pageable = PageRequest.of(page - 1, 10);
 
-    // 회원 번호를 이용하여 회원의 위키 목록을 조회
-    List<WikiDto> myWiki = memberService.findMyWiki(memberNo);
-    if (myWiki == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
+    Page<WikiDto> myWiki = memberService.findMyWiki(memberNo, pageable);
+
+    if (myWiki != null) {
+      model.addAttribute("memberWikiList", myWiki);
+      model.addAttribute("totalPages", myWiki.getTotalPages());
+    } else {
+      model.addAttribute("errorMessage", "댓글 목록을 불러올 수 없습니다.");
     }
-    model.addAttribute("memberWikiList", myWiki);
 
     return "member/myWikiList";
   }
 
   @GetMapping("myStudyCommentList")
-  public String getMyStudyComment(@LoginUser MemberDto loginUser, Model model, HttpSession session) throws Exception {
-
+  public String getMyStudyComment(@LoginUser MemberDto loginUser, Model model,
+                                  @RequestParam(name = "page", defaultValue = "1") int page) {
     int memberNo = loginUser.getMemberNo();
 
-    MemberDto member = memberService.getNo(memberNo);
-    if (member == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
-    }
-    model.addAttribute("member", member);
+    // 페이지 요청 처리를 위한 Pageable 객체 생성
+    Pageable pageable = PageRequest.of(page - 1, 10);
 
-    // 회원 번호를 이용하여 회원의 스터디 댓글 목록을 조회
-    List<StudyCommentDto> myStudyComment = memberService.findMyStudyComment(memberNo);
-    if (myStudyComment == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
+    // 회원 번호를 이용하여 회원의 스터디 댓글 목록 조회
+    Page<StudyCommentDto> myStudyComment = memberService.findMyStudyComment(memberNo, pageable);
+
+    // 조회된 결과가 null이 아니면 모델에 추가
+    if (myStudyComment != null) {
+      model.addAttribute("memberStudyCommentList", myStudyComment);
+      model.addAttribute("totalPages", myStudyComment.getTotalPages());
+    } else {
+      // 조회된 댓글이 없는 경우 적절한 처리 (예: 에러 메시지 설정)
+      model.addAttribute("errorMessage", "댓글 목록을 불러올 수 없습니다.");
     }
-    model.addAttribute("memberStudyCommentList", myStudyComment);
 
     return "member/myStudyCommentList";
   }
 
-  @GetMapping("myWikiCommentList")
-  public String getMyWikiComment(@LoginUser MemberDto loginUser, Model model, HttpSession session) throws Exception {
 
+  @GetMapping("myWikiCommentList")
+  public String getMyWikiComment(@LoginUser MemberDto loginUser, Model model,
+                                 @RequestParam(name = "page", defaultValue = "1") int page) {
     int memberNo = loginUser.getMemberNo();
 
-    MemberDto member = memberService.getNo(memberNo);
-    if (member == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
-    }
-    model.addAttribute("member", member);
+    Pageable pageable = PageRequest.of(page - 1, 10);
 
     // 회원 번호를 이용하여 회원의 위키 댓글 목록을 조회
-    List<WikiCommentDto> myWikiComment = memberService.findMyWikiComment(memberNo);
-    if (myWikiComment == null) {
-      throw new Exception("회원 번호가 유효하지 않습니다.");
+    Page<WikiCommentDto> myWikiComment = memberService.findMyWikiComment(memberNo, pageable);
+
+    if (myWikiComment != null) {
+      model.addAttribute("memberWikiCommentList", myWikiComment);
+      model.addAttribute("totalPages", myWikiComment.getTotalPages());
+    } else {
+      model.addAttribute("errorMessage", "댓글 목록을 불러올 수 없습니다.");
     }
-    model.addAttribute("memberWikiCommentList", myWikiComment);
 
     return "member/myWikiCommentList";
   }

@@ -217,27 +217,48 @@
   </update>
 
   <!--내가 쓴 위키 글 목록 조회-->
-  <select id="findMyWiki" resultMap="wiki" parameterType="int">
+  <select id="findMyWiki" resultMap="wiki">
     SELECT wiki_no, member_no, study_no, title, created_date
     FROM wiki
     WHERE member_no = #{memberNo}
-    ORDER BY created_date DESC;
+    ORDER BY created_date DESC
+    LIMIT #{pageable.offset}, #{pageable.pageSize};
+  </select>
+
+  <select id="myWikiCount" resultType="int">
+    SELECT count(*)
+    FROM wiki
+    WHERE member_no = #{memberNo};
   </select>
 
   <!--내가 쓴 스터디 댓글 목록 조회-->
-  <select id="findMyStudyComment" resultMap="studyComment" parameterType="int">
-    SELECT comment_no, study_no, member_no, content, created_date
+  <select id="findMyStudyComment" resultMap="studyComment">
+    SELECT comment_no, member_no, study_no, content, created_date
     FROM study_comment
     WHERE member_no = #{memberNo} AND stat = '정상'
-    ORDER BY created_date DESC;
+    ORDER BY created_date DESC
+    LIMIT #{pageable.offset}, #{pageable.pageSize};
+  </select>
+
+  <select id="myStudyCommentCount" resultType="int">
+    SELECT count(*)
+    FROM study_comment
+    WHERE member_no = #{memberNo} AND stat = '정상';
   </select>
 
   <!--내가 쓴 위키 댓글 목록 조회-->
-  <select id="findMyWikiComment" resultMap="wikiComment" parameterType="int">
+  <select id="findMyWikiComment" resultMap="wikiComment">
     SELECT comment_no, member_no, content, created_date
     FROM wiki_comment
     WHERE member_no = #{memberNo} AND stat = '정상'
-    ORDER BY created_date DESC;
+    ORDER BY created_date DESC
+    LIMIT #{pageable.offset}, #{pageable.pageSize};
+  </select>
+
+  <select id="myWikiCommentCount" resultType="int">
+    SELECT count(*)
+    FROM wiki_comment
+    WHERE member_no = #{memberNo} AND stat = '정상';
   </select>
 
   <!-- 스터디 즐겨찾기 추가-->
