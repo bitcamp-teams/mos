@@ -93,7 +93,6 @@ $(function () {
       history.pushState(null, null,
           '/wiki/view?studyNo=' + nodeContent.studyNo + '&wikiNo='
           + nodeContent.wikiNo);
-
       refreshUrl();
 
       return viewer;
@@ -102,8 +101,6 @@ $(function () {
       //프로미스가 이행되었다면 ToC를 생성한다.
       // let tocTarget = $('.toastui-editor-contents');
       let tocTarget = $('#viewer');
-
-      console.log('hi', tocTarget);
 
       //ToC를 만들 객체를 선택한다. id=toc
       var navSelector = '#toc';
@@ -124,18 +121,14 @@ $(function () {
       $(body).scrollspy({
         target: $myNav,
       });
-
-      // const scrollspy = new bootstrap.Scrollspy(
-      //     $(tocTarget[0]), {
-      //       target: $('#toc')
-      //     }
-      // )
-
+    })
+    .then(function () {
+      getComments();
     })
   })
   .on('ready.jstree', function (e, data) {
-    if (wikiNo !== undefined) {
-      tree.jstree('deselect_all');
+    if (wikiNo != undefined) {
+      // tree.jstree('deselect_all');
       tree.jstree('select_node', wikiNo);
     }
   });
@@ -301,7 +294,7 @@ function toggleLike(element) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ wikiNo: wikiNo})
+    body: JSON.stringify({wikiNo: wikiNo})
   })
   .then(response => {
     if (!response.ok) {
@@ -339,7 +332,7 @@ $('#addRootNode').on('click', function (e) {
   tree.jstree("create_node", '#');
 });
 
-function refreshUrl () {
+function refreshUrl() {
   url = new URL(window.location.href)
   urlParams = url.searchParams;
   studyNo = urlParams.get('studyNo');

@@ -41,20 +41,19 @@
       <i class="fas fa-heart" onclick="toggleLike(this)"></i>
       <span id="contentLikes">좋아요 수</span>
 
-      <!-- comment 영역-->
-      <hr class="my-4 bg-primary">
 
+      <hr class="my-4 bg-primary">
+      <!-- comment 영역-->
       <div class="row">
-        <!--댓글 입력 기능 시작-->
-        <div id="comment">
-          댓글
+        <div class="commentList">
+          <!-- 댓글을 이 영역에 비동기로 만들어주기 -->
         </div>
-        <!--댓글 입력 기능 끝-->
+        <div class="commentForm">
+          <!-- 로그인한 경우에만 댓글입력칸 보이기 -->
+        </div>
       </div>
     </div>
     <!-- comment 영역 끝-->
-
-
 
 
     <!-- 오른쪽 nav : Wiki's ToC -->
@@ -75,5 +74,7 @@
 <!--bootstrap-toc-->
 <link rel="stylesheet" href="/plugins/bootstarp-toc/bootstrap-toc.css">
 <script src="/plugins/bootstarp-toc/bootstrap-toc.js"></script>
+<!--asyncComment-->
+<script src="/js/comment/asyncComment.js"></script>
 
 <div th:replace="footer::footer">꼬리말</div>
