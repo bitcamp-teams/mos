@@ -22,4 +22,5 @@ public class WikiCommentDto {
   String stat;
   Timestamp createdDate;
   Timestamp updatedDate;
+  String wikiTitle;
 }
