@@ -124,6 +124,7 @@ $(function () {
     })
     .then(function () {
       getComments();
+      createComment();
     })
   })
   .on('ready.jstree', function (e, data) {

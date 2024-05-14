@@ -1,5 +1,5 @@
 <div th:replace="header::header">머리말</div>
-<div class="container wrapper-mos">
+<div class="container-fluid">
   <div class="row justify-content-center">
     <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
 
@@ -39,17 +39,22 @@
 
 
       <i class="fas fa-heart" onclick="toggleLike(this)"></i>
-      <span id="contentLikes">좋아요 수</span>
+      <!--좋아요-->
+      <span id="contentLikes">❤️</span>
 
 
       <hr class="my-4 bg-primary">
       <!-- comment 영역-->
       <div class="row">
-        <div class="commentList">
+        <div class="commentList w-100">
           <!-- 댓글을 이 영역에 비동기로 만들어주기 -->
         </div>
-        <div class="commentForm">
+        <div class="commentForm w-100">
           <!-- 로그인한 경우에만 댓글입력칸 보이기 -->
+          <div class="form-group w-100">
+            <textarea class="form-control" id="commentContent" placeholder="댓글을 입력하세요"></textarea>
+          </div>
+          <button class="btn btn-primary float-right" id="submitComment">댓글 등록</button>
         </div>
       </div>
     </div>
