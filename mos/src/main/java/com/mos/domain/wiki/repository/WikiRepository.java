@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 @Mapper
 public interface WikiRepository {
 
-  // 모두의 위키 mooduwiki에서 사용함
+  // 모두의 위키 moodoowiki에서 사용함
   List<WikiDto> listByWikiNo(Pageable page);
 
   List<WikiDto> listByStudyNo(int studyNo);

@@ -3,42 +3,12 @@
 <div class="content-container page-margin wrapper-mos">
   <h1>스터디 모집 목록</h1>
 
-  <style>
-    .content-container {
-        display: flex;
-        flex-direction: column;
-        /*align-items: flex-start; !* 내부 요소를 왼쪽 정렬 *!*/
-        padding: 20px; /* 컨테이너 주변 여백 */
-    }
+  <!-- search css -->
+  <link rel="stylesheet" href="/css/study/search.css">
+  <link rel="stylesheet" href="/css/study/paging.css">
 
-    #searchForm {
-        align-self: flex-end; /* 검색창을 오른쪽에 배치 */
-        margin-bottom: 20px; /* 검색창 아래 여백 */
-    }
-
-    .search-container {
-        display: flex;
-        justify-content: flex-start; /* 내부 요소를 왼쪽 정렬 */
-        align-items: center; /* 내부 요소를 수직 중앙 정렬 */
-        gap: 10px; /* 각 요소 사이의 간격 조정 */
-    }
-
-    .search-container label {
-        white-space: nowrap; /* 라벨 텍스트가 넘치지 않도록 줄바꿈 방지 */
-    }
-
-    #type {
-        width: 160px;
-    }
-
-    #keyword {
-        flex: 1; /* 입력 필드가 가능한 최대 너비를 가질 수 있도록 설정 */
-    }
-
-    button[type="submit"] {
-        min-width: 80px; /* 최소 너비 설정 */
-    }
-  </style>
+  <!-- search js -->
+  <script src="/js/study/search.js"></script>
 
   <form action="/study/search" method="get" id="searchForm">
     <div class="search-container">
@@ -97,75 +67,11 @@
   <div>
     <!-- 페이지 번호 버튼 -->
     <ul class="pagination" style="justify-content: center;">
-
       <li data-th-each="pageNum : ${#numbers.sequence(1, totalPages)}">
         <a data-th-href="@{/study/search(type=${type}, keyword=${keyword}, page=${pageNum})}"
            data-th-text="${pageNum}" data-th-class="${pageNum == currentPage} ? 'active'"></a>
       </li>
     </ul>
   </div>
-
-  <style>
-    .pagination {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 20px; /* 페이지 버튼과 상단 간격 조절 */
-    }
-
-    .pagination li {
-      display: inline-block;
-      margin-right: 5px; /* 페이지 버튼 간 간격 조절 */
-    }
-
-    .pagination li a {
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      text-decoration: none;
-      color: #333;
-    }
-
-    .pagination li a.active {
-      background-color: #007bff;
-      color: #fff;
-      border-color: #007bff;
-    }
-  </style>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // 페이지가 로드될 때 이전에 저장된 검색 값이 있는지 확인
-        const searchParams = new URLSearchParams(window.location.search);
-        const type = searchParams.get('type');
-        const keyword = searchParams.get('keyword');
-
-        // 검색 타입과 키워드를 폼 요소에 설정
-        const typeSelect = document.getElementById('type');
-        const keywordInput = document.getElementById('keyword');
-
-        if (type) {
-            // 검색 타입이 저장된 경우 선택된 값으로 설정
-            typeSelect.value = type;
-        }
-
-        if (keyword) {
-            // 검색 키워드가 저장된 경우 입력 필드에 설정
-            keywordInput.value = keyword;
-        }
-    });
-
-    function clearSearch() {
-        // 검색 버튼을 클릭할 때 호출되는 함수
-        // 필요한 경우 추가적인 작업을 수행할 수 있음
-        // 여기서는 아무 작업도 하지 않음
-    }
-
-    if (this.placeholder && typeof this.placeholder.id !== 'undefined') {
-        this.$element.val(this.placeholder.id);
-    } else {
-        console.error('this.placeholder가 존재하지 않거나 id 속성이 정의되지 않았습니다.');
-    }
-  </script>
 </div>
 <div data-th-replace="footer::footer">꼬리말</div>

@@ -12,13 +12,15 @@
           <thead>
           <tr>
               <th>번호</th>
-              <th>내용</th>
+              <th>스터디 제목</th>
+              <th>댓글</th>
               <th>생성일</th>
           </tr>
           </thead>
           <tbody>
-              <tr data-th-each="study_comment : ${memberStudyCommentList}" data-th-object="${study_comment}">
+              <tr data-th-each="studyComment : ${memberStudyCommentList}" data-th-object="${studyComment}">
                   <td data-th-text="*{commentNo}">1</td>
+                  <td data-th-text="*{studyTitle}">자바 스터디</td>
                       <td>
                           <a data-th-href="@{/study/view(commentNo=*{commentNo},studyNo=*{studyNo})}"
                              data-th-text="*{content}">댓글내용</a>
