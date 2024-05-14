@@ -1,26 +1,26 @@
 /*
 /wiki/view 템플릿을 위한 css
 */
-body {
+.main {
   position: relative;
 }
 
 .sidebar-left, .sidebar-right {
   overflow-x: auto;
   overflow-y: auto;
-  position: fixed;
+  position: sticky !important;
   top: 100px;
-  height: 80vh;
-  max-width: 400px;
+  height: 85vh; /* 뷰포트 전체 높이 */
+  width: 400px;
 }
 
 .sidebar-left {
   left: 0;
+
 }
 
 .sidebar-right {
   right: 0;
-  width: 400px;
 }
 
 .liked {
