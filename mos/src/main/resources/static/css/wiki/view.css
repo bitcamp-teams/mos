@@ -11,16 +11,16 @@
   position: sticky !important;
   top: 100px;
   height: 85vh; /* 뷰포트 전체 높이 */
-  width: 400px !important;
+  width: 400px;
 }
 
 .sidebar-left {
-  left: 0 !important;
+  left: 0;
 
 }
 
 .sidebar-right {
-  right: 0 !important;
+  right: 0;
 }
 
 .liked {

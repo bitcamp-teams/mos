@@ -1,9 +1,10 @@
-#header {
-  background-color: #DBEAFE;
-  padding: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.card {
+  padding: 0.4rem;
+  border-radius: 10px;
+
+  :hover {
+    box-shadow: 4px 4px 10px grey;
+  }
 }
 
 .wrapper-mos {
@@ -13,9 +14,9 @@
 }
 
 #footer {
-  background-color:#DBEAFE;
-  padding:50px;
-  text-align:center;
+  background-color: #DBEAFE;
+  padding: 50px;
+  text-align: center;
   position: relative;
   width: 100%;
   left: 0;
