@@ -4,6 +4,7 @@ import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
+import com.mos.domain.study.dto.AttachedFileDto;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.dto.StudyLikeStatDto;
 import com.mos.domain.study.dto.TagDto;
@@ -12,6 +13,7 @@ import com.mos.domain.study.service.StudyService;
 import com.mos.domain.wiki.service.WikiService;
 import com.mos.global.auth.LoginUser;
 
+import com.mos.global.storage.service.StorageService;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,8 @@ import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,12 +42,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/study")
-public class StudyController {
+public class StudyController implements InitializingBean {
 
   // 현재 스레드의 클래스를 파라미터로 받아서 로그 객체를 만든다.
   private static final Logger log = LoggerFactory.getLogger(Thread.currentThread().getClass());
@@ -52,6 +57,20 @@ public class StudyController {
   private final CommentService commentService;
   private final WikiService wikiService;
   private final StudyLikeService studyLikeService;
+  private final StorageService storageService;
+  private String uploadDir;
+
+  @Value("${ncp.ss.bucketname}")
+  private String bucketName;
+
+
+  @Override
+  public void afterPropertiesSet() throws Exception {
+        this.uploadDir = "study/";
+
+        log.debug("uploadDir ={}", this.uploadDir);
+        log.debug("bucketname ={}", this.bucketName);
+  }
 
 
   @GetMapping("form")
@@ -64,8 +83,12 @@ public class StudyController {
 
   @PostMapping("add")
   public String add(
-      @LoginUser MemberDto loginUser, @ModelAttribute StudyDto studyDto, @RequestParam("tags") List<Integer> tagNums
-  ) {
+      @LoginUser MemberDto loginUser,
+      @ModelAttribute StudyDto studyDto,
+      @RequestParam("tags") List<Integer> tagNums,
+      HttpSession session,
+      SessionStatus sessionStatus
+  ) throws Exception {
     try {
       int memberNo = loginUser.getMemberNo();
       studyDto.setMemberNo(loginUser.getMemberNo());
@@ -81,6 +104,24 @@ public class StudyController {
     }
     studyDto.setTagList(tagList);
 
+    // 게시글 등록할 때 삽입한 이미지 목록을 세션에서 가져온다.
+    List<AttachedFileDto> attachedFiles = (List<AttachedFileDto>) session.getAttribute(
+        "attachedFiles");
+
+    for (int i = attachedFiles.size() - 1; i >= 0; i--) {
+      AttachedFileDto attachedFile = attachedFiles.get(i);
+      if (studyDto.getIntroduction().indexOf(attachedFile.getFilePath()) == -1) {
+        // Object Storage에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것은 삭제한다.
+        storageService.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
+        log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
+        attachedFiles.remove(i);
+      }
+    }
+    if (attachedFiles.size() > 0) {
+      studyDto.setFileList(attachedFiles);
+    }
+
+
     // MemberStudyDto 객체 생성 및 값 설정
     MemberStudyDto memberStudyDto = new MemberStudyDto();
     memberStudyDto.setMemberDto(loginUser);
@@ -89,6 +130,9 @@ public class StudyController {
 
     studyService.add(studyDto);
     studyService.applyStudy(memberStudyDto);
+
+    // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
+    sessionStatus.setComplete();
 
     return "redirect:list";
   }
@@ -138,10 +182,42 @@ public class StudyController {
 
   @PostMapping("update")
   // 히든필드로 POST에 studyNo를 받는다!
-  public String update(@ModelAttribute StudyDto studyDto, Model model) throws Exception {
+  public String update(@ModelAttribute StudyDto studyDto,
+      Model model,
+      HttpSession session,
+      SessionStatus sessionStatus
+      ) throws Exception {
     studyService.update(studyDto);
     StudyDto result = studyService.getByStudyNo(studyDto.getStudyNo());
+
+    // 게시글 변경할 때 삽입한 이미지 목록을 세션에서 가져온다.
+    List<AttachedFileDto> attachedFiles = (List<AttachedFileDto>) session.getAttribute(
+        "attachedFiles");
+
+    if (result.getFileList().size() > 0) {
+      // 기존 게시글에 등록된 이미지 목록과 합친다.
+      attachedFiles.addAll(result.getFileList());
+    }
+
+    for (int i = attachedFiles.size() - 1; i >= 0; i--) {
+      AttachedFileDto attachedFile = attachedFiles.get(i);
+      if (studyDto.getIntroduction().indexOf(attachedFile.getFilePath()) == -1) {
+        // Object Storage에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것은 삭제한다.
+        storageService.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
+        log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
+        attachedFiles.remove(i);
+      }
+    }
+
+    if (attachedFiles.size() > 0) {
+      studyDto.setFileList(attachedFiles);
+    }
+
     model.addAttribute("study", result);
+
+    // 게시글을 변경하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
+    sessionStatus.setComplete();
+
     // return "view?studyNo=" + studyDto.getStudyNo();
     return "redirect:view?studyNo=" + studyDto.getStudyNo();
   }
@@ -271,6 +347,32 @@ public class StudyController {
       return "error-page";
     }
   }
+
+
+  @GetMapping("file/delete")
+  public String fileDelete(@LoginUser MemberDto loginUser, int no, HttpSession session) throws Exception {
+
+    if (loginUser == null) {
+      throw new Exception("로그인하시기 바랍니다!");
+    }
+
+    AttachedFileDto file = studyService.ge(no);
+    if (file == null) {
+      throw new Exception("첨부파일 번호가 유효하지 않습니다.");
+    }
+
+    Member writer = boardService.get(file.getBoardNo()).getWriter();
+    if (writer.getNo() != loginUser.getNo()) {
+      throw new Exception("권한이 없습니다.");
+    }
+
+    boardService.deleteAttachedFile(no);
+
+    storageService.delete(this.bucketName, this.uploadDir, file.getFilePath());
+
+    return "redirect:../view?no=" + file.getBoardNo();
+  }
+
 
 
 }

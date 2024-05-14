@@ -2,6 +2,7 @@ package com.mos.domain.study.service.impl;
 
 import com.mos.domain.member.dto.MemberStudyDto;
 
+import com.mos.domain.study.dto.AttachedFileDto;
 import java.util.List;
 
 import com.mos.domain.study.dto.TagDto;
@@ -102,5 +103,15 @@ public class DefaultStudyService implements StudyService {
   @Override
   public void updateLikeCount(int studyNo, int likeCount) {
     studyRepository.updateLikeCount(studyNo, likeCount);
+  }
+
+  @Override
+  public List<AttachedFileDto> getAttachedFiles(int studyNo) {
+    return AttachedFileDto.
+  }
+
+  @Override
+  public AttachedFileDto getAttachedFile(int fileNo) {
+    return null;
   }
 }
