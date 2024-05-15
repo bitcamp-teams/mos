@@ -96,18 +96,18 @@ public class MemberController implements InitializingBean {
     return "redirect:/";
   }
 
-    @GetMapping("dashboard")
-    public void viewDashboard(int no, Model model) throws Exception {
-        MemberDto member = memberService.getNo(no);
-        if (member == null) {
-            throw new Exception("회원 번호가 유효하지 않습니다.");
-        }
-        model.addAttribute("member", member);
+  @GetMapping("dashboard")
+  public void viewDashboard(int no, Model model) throws Exception {
+    MemberDto member = memberService.getNo(no);
+    if (member == null) {
+      throw new Exception("회원 번호가 유효하지 않습니다.");
     }
+    model.addAttribute("member", member);
+  }
 
-// 참여한 스터디목록 페이지
-@GetMapping("mystudy")
-public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) {
+  // 참여한 스터디목록 페이지
+  @GetMapping("mystudy")
+  public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) {
     int memberNo = loginUser.getMemberNo();
     Pageable pageable = PageRequest.of(page - 1, 5);
 
@@ -116,18 +116,20 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
 
     model.addAttribute("memberStudyList", myStudies);
     return "member/mystudy";
-}
+  }
+
   /**
    * 스터디장일 경우 가입 신청, 멤버 관리를 위한 컨트롤러
-   * @param studyNo 스터디 번호
+   *
+   * @param studyNo   스터디 번호
    * @param loginUser 로그인 유저 정보
    * @return 해당 스터디 멤버 리스트
    */
   @GetMapping("studyManagement")
   public ResponseEntity<Page<MyStudiesDto>> studyManagement(
-      int studyNo,
-      @LoginUser MemberDto loginUser,
-      @PageableDefault(size = 5) Pageable page) {
+    int studyNo,
+    @LoginUser MemberDto loginUser,
+    @PageableDefault(size = 5) Pageable page) {
     int memberNo = loginUser.getMemberNo();
     return ResponseEntity.ok().body(memberService.findListByStudyNo(studyNo, memberNo, page));
   }
@@ -138,7 +140,6 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
     memberService.updateStatus(updateDto);
     return ResponseEntity.ok().build();
   }
-
 
   // 회원 정보 조회 페이지
   @GetMapping("edit")
@@ -152,15 +153,14 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
     model.addAttribute("memberDto", member);
     return "member/editProfile";
   }
-
-
+  
   // 회원 정보 수정
   @PostMapping("update")
   public String updateMember(@Validated @ModelAttribute("memberDto") MemberEditDto memberDto,
-      BindingResult bindingResult,
-      MultipartFile memberPhoto,
-      Model model,
-      @LoginUser MemberDto loginUser) throws Exception {
+                             BindingResult bindingResult,
+                             MultipartFile memberPhoto,
+                             Model model,
+                             @LoginUser MemberDto loginUser) throws Exception {
 
     if (loginUser == null) {
       return "auth/login";
@@ -200,15 +200,15 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
     memberDto.setMemberNo(loginUser.getMemberNo());
 
     MemberDto updateMember = MemberDto.builder()
-        .memberNo(memberDto.getMemberNo())
-        .email(memberDto.getEmail())
-        .photo(memberDto.getPhoto())
-        .biography(memberDto.getBiography())
-        .belong(memberDto.getBelong())
-        .userName(memberDto.getUserName())
-        .career(memberDto.getCareer())
-        .socialLink(memberDto.getSocialLink())
-        .build();
+      .memberNo(memberDto.getMemberNo())
+      .email(memberDto.getEmail())
+      .photo(memberDto.getPhoto())
+      .biography(memberDto.getBiography())
+      .belong(memberDto.getBelong())
+      .userName(memberDto.getUserName())
+      .career(memberDto.getCareer())
+      .socialLink(memberDto.getSocialLink())
+      .build();
 
     memberService.update(updateMember);
     return "redirect:/member/edit";
@@ -299,8 +299,8 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
 
   @PostMapping("/addFavorites")
   public ResponseEntity<?> addFavorites(@RequestBody UpdateFavoritesDto updateFavoritesDto) {
-     memberService.addFavorites(updateFavoritesDto);
-     return ResponseEntity.ok().build();
+    memberService.addFavorites(updateFavoritesDto);
+    return ResponseEntity.ok().build();
   }
 
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mos.domain.study.repository.StudyRepository">
   <resultMap id="studyList" type="StudyDto">
@@ -66,25 +66,25 @@
 
   <select id="findAll" resultMap="studyList">
     SELECT
-      s.study_no,
-      s.member_no,
-      (SELECT m.username FROM member m WHERE m.member_no = s.member_no) AS leaderName,
-      s.title,
-      s.intake,
-      s.method,
-      s.recruitment_deadline,
-      s.created_date,
-      s.hit_count,
-      s.like_count,
-      GROUP_CONCAT(DISTINCT t.name) AS tags
+    s.study_no,
+    s.member_no,
+    (SELECT m.username FROM member m WHERE m.member_no = s.member_no) AS leaderName,
+    s.title,
+    s.intake,
+    s.method,
+    s.recruitment_deadline,
+    s.created_date,
+    s.hit_count,
+    s.like_count,
+    GROUP_CONCAT(DISTINCT t.name) AS tags
     FROM
-      study s
-      LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
-      LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
+    study s
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
     GROUP BY
-      s.study_no
+    s.study_no
     ORDER BY
-      created_date DESC
+    created_date DESC
     LIMIT #{offset}, #{pageSize};
   </select>
 
@@ -94,69 +94,70 @@
 
   <select id="getByStudyNo" resultMap="studyDetail">
     SELECT
-      s.study_no,
-      s.member_no,
-      m.username,
-      s.title,
-      s.intake,
-      s.introduction,
-      s.location,
-      s.method,
-      s.recruitment_deadline,
-      s.start_date,
-      s.end_date,
-      s.stat,
-      s.hit_count,
-      s.like_count,
-      t.tag_no,
-      t.name
+    s.study_no,
+    s.member_no,
+    m.username,
+    s.title,
+    s.intake,
+    s.introduction,
+    s.location,
+    s.method,
+    s.recruitment_deadline,
+    s.start_date,
+    s.end_date,
+    s.stat,
+    s.hit_count,
+    s.like_count,
+    t.tag_no,
+    t.name
     FROM
-      study s
-      JOIN member m ON s.member_no = m.member_no
-      LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
-      LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
+    study s
+    JOIN member m ON s.member_no = m.member_no
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
     WHERE
-      s.study_no=#{studyNo}
+    s.study_no=#{studyNo}
     ORDER BY
-      study_no DESC;
+    study_no DESC;
   </select>
 
   <insert id="add" parameterType="StudyDto" useGeneratedKeys="true" keyColumn="study_no"
           keyProperty="studyNo">
     INSERT INTO
-      study(member_no, title, method, location, intake, recruitment_deadline, introduction, start_date, end_date)
-    VALUES(#{memberNo}, #{title}, #{method}, #{location}, #{intake}, #{recruitmentDeadline}, #{introduction}, #{startDate}, #{endDate});
+    study(member_no, title, method, location, intake, recruitment_deadline, introduction, start_date, end_date)
+    VALUES(#{memberNo}, #{title}, #{method}, #{location}, #{intake}, #{recruitmentDeadline}, #{introduction},
+    #{startDate}, #{endDate});
   </insert>
 
   <update id="update" parameterType="StudyDto">
     UPDATE
-      study
+    study
     SET
-      title=#{title},
-      method=#{method},
-      intake=#{intake},
-      recruitment_deadline=#{recruitmentDeadline},
-      introduction=#{introduction}
+    title=#{title},
+    method=#{method},
+    intake=#{intake},
+    recruitment_deadline=#{recruitmentDeadline},
+    introduction=#{introduction}
     WHERE
-      study_no=#{studyNo};
+    study_no=#{studyNo};
   </update>
 
   <delete id="delete" parameterType="int">
     DELETE
-      FROM
-        study
+    FROM
+    study
     WHERE
-      study_no = #{studyNo};
+    study_no = #{studyNo};
   </delete>
 
   <!-- 조회수 증가 -->
   <update id="updateHitCount" parameterType="int">
     UPDATE
-      study
+    study
     SET
-      hit_count = hit_count + 1
+    hit_count = hit_count + 1
     WHERE
-      study_no=#{studyNo}
+    study_no=#{studyNo}
   </update>
 
   <!-- 좋아요 수 증가 -->
@@ -168,30 +169,30 @@
 
   <!-- 스터디 신청기능-->
   <insert id="applyStudy" parameterType="MemberStudyDto">
-  INSERT INTO
-   member_study_stat(member_no, study_no, stat, apply_msg)
-  VALUES(#{memberDto.memberNo}, #{studyDto.studyNo}, #{status}, #{applyMsg})
+    INSERT INTO
+    member_study_stat(member_no, study_no, stat, apply_msg)
+    VALUES(#{memberDto.memberNo}, #{studyDto.studyNo}, #{status}, #{applyMsg})
   </insert>
 
   <select id="listAll" resultMap="studyList">
     SELECT
-      s.study_no,
-      s.member_no,
-      s.title,
-      s.intake,
-      s.method,
-      s.recruitment_deadline,
-      s.created_date,
-      s.hit_count,
-      GROUP_CONCAT(DISTINCT t.name) AS tags
+    s.study_no,
+    s.member_no,
+    s.title,
+    s.intake,
+    s.method,
+    s.recruitment_deadline,
+    s.created_date,
+    s.hit_count,
+    GROUP_CONCAT(DISTINCT t.name) AS tags
     FROM
-      study s
-      LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
-      LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
+    study s
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
     GROUP BY
-      s.study_no
+    s.study_no
     ORDER BY
-      created_date DESC;
+    created_date DESC;
   </select>
 
   <select id="searchByStudy" resultMap="studyDetail">
@@ -202,6 +203,8 @@
     s.intake,
     s.method,
     s.recruitment_deadline,
+    s.hit_count,
+    s.like_count,
     t.tag_no,
     t.name
     FROM
@@ -227,17 +230,60 @@
         </when>
       </choose>
     </where>
+    GROUP BY s.study_no
     ORDER BY s.study_no DESC
     LIMIT #{pageable.offset}, #{pageable.pageSize};
   </select>
 
-  <select id="searchCount">
+  <select id="searchCount" resultType="int">
     SELECT
-    count(*)
+    COUNT(DISTINCT s.study_no)
     FROM
-    study
-    WHERE #{type} LIKE CONCAT('%', #{keyword}, '%');
+    study s
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
+    <where>
+      <choose>
+        <when test="type == 'title'">
+          <if test="keyword != null and keyword != ''">
+            AND s.title LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+        <when test="type == 'introduction'">
+          <if test="keyword != null and keyword != ''">
+            AND s.introduction LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+        <when test="type == 'tag'">
+          <if test="keyword != null and keyword != ''">
+            AND t.name LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+      </choose>
+    </where>
   </select>
+
+
+  <!--  <select id="searchCount" resultType="int">-->
+  <!--    SELECT-->
+  <!--    count(*)-->
+  <!--    FROM-->
+  <!--    study-->
+  <!--    <where>-->
+  <!--      <if test="type != null and type != ''">-->
+  <!--        AND ${type} LIKE CONCAT('%', #{keyword}, '%')-->
+  <!--      </if>-->
+  <!--    </where>-->
+  <!--  </select>-->
+
+
+  <!--  <select id="searchCount">-->
+  <!--    SELECT-->
+  <!--    count(*)-->
+  <!--    FROM-->
+  <!--    study-->
+  <!--    WHERE #{type} LIKE CONCAT('%', #{keyword}, '%');-->
+  <!--  </select>-->
 
   <!--  <select id="searchByTitle" resultMap="studyDetail">-->
   <!--    SELECT-->

@@ -38,5 +38,4 @@ public class StudyDto {
   private int likeCount;
   private String username;
 
-
 }
