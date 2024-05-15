@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
-  private static final Log log = LogFactory.getLog(CodeApiController.class);
   private final SessionService sessionService;
 
   @GetMapping("/admin")

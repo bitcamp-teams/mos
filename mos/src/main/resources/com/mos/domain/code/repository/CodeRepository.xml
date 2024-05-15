@@ -28,9 +28,6 @@
         values (#{codeGroup}, #{codeGroupName}, #{moduleCode})
     </insert>
 
-<!--    <delete id="delete" parameterType="int">-->
-<!--        delete from assignments where assignment_no=#{value}-->
-<!--    </delete>-->
 
     <select id="findAllGroup" parameterType="Paging" resultType="CodeGroup">
         select
@@ -79,27 +76,13 @@
         from common_code_group
     </select>
 
-<!--    <select id="findBy" resultMap="AssignmentMap" parameterType="int">-->
-<!--        select-->
-<!--            assignment_no,-->
-<!--            title,-->
-<!--            deadline,-->
-<!--            content-->
-<!--        from-->
-<!--            assignments-->
-<!--        where assignment_no = #{value}-->
-<!--    </select>-->
+    <update id="update" parameterType="Code">
+        update
 
-<!--    <update id="update" parameterType="Assignment">-->
-<!--        update assignments set-->
-<!--            title=#{title},-->
-<!--            content=#{content},-->
-<!--            deadline=#{deadline}-->
-<!--        where assignment_no = #{no}-->
-<!--    </update>-->
+    </update>
 
-<!--    <select id="countAll" resultType="int">-->
-<!--        select count(*) from assignments-->
-<!--    </select>-->
-
+    <delete id="delete" parameterType="Code">
+        delete from common_code
+        where code = #{code}
+    </delete>
 </mapper>
