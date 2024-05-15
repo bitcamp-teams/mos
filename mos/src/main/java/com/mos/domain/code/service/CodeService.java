@@ -20,7 +20,7 @@ public interface CodeService {
 
   int update(CodeRequestDto code);
 
-  int delete(int no);
+  int delete(CodeRequestDto code);
 
   int countAll();
 

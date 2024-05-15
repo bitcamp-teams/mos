@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
-  private static final Log log = LogFactory.getLog(CodeApiController.class);
   private final SessionService sessionService;
 
   @GetMapping("/admin")
