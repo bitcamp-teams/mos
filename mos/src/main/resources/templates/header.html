@@ -40,13 +40,12 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
-<!--      <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">-->
+  <!--      <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">-->
   <!-- iCheck -->
   <!--    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">-->
   <!-- JQVMap -->
   <!--    <link rel="stylesheet" href="/plugins/jqvmap/jqvmap.min.css">-->
   <!-- Theme style -->
-  <link rel="stylesheet" href="/css/adminlte.min.css">
   <!-- Daterange picker -->
   <!--    <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">-->
   <!-- DataTables -->
@@ -90,14 +89,14 @@
         <a class="nav-link" href="/study/form">모집 글 쓰기</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/wiki/modoowikilist?page=1">모두의 위키</a>
+        <a class="nav-link" href="/wiki/modooWikiList?page=1">모두의 위키</a>
       </li>
     </ul>
 
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <span class="navbar-text ml-auto mr-2">현재 접속자 수 : <strong
-                th:text="${session.activeSessions} + '명'">0 명</strong></span>
+            th:text="${session.activeSessions} + '명'">0 명</strong></span>
       </li>
       <li class="nav-item dropdown" data-th-if="${session.loginUser != null}">
         <a id="notificationBtn" class="nav-link" data-toggle="dropdown" href="#">
@@ -116,9 +115,13 @@
 
 
     <div class="dropdown mr-sm-2">
-      <a href="javascript:void(0)" alt="icon image" data-th-if="${session.loginUser != null}" data-th-object="${session.loginUser}">
-        <img id="memberImg" class="rounded-circle" data-th-if="*{photo != null}" data-th-src="@{'https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/' + *{photo}(type=f,w=32,h=32,ttype=jpg)}" src="/img/icon2.png" alt="icon image">
-        <img data-th-unless="*{photo}" data-th-src='@{/img/icon2.png}' height='32px' alt="icon image">
+      <a href="javascript:void(0)" alt="icon image" data-th-if="${session.loginUser != null}"
+         data-th-object="${session.loginUser}">
+        <img id="memberImg" class="rounded-circle" data-th-if="*{photo != null}"
+             data-th-src="@{'https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/' + *{photo}(type=f,w=32,h=32,ttype=jpg)}"
+             src="/img/icon2.png" alt="icon image">
+        <img data-th-unless="*{photo}" data-th-src='@{/img/icon2.png}' height='32px'
+             alt="icon image">
       </a>
       <div class="dropdown-options">
         <a

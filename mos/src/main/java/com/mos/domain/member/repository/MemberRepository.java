@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.mos.domain.wiki.dto.WikiDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
 
 @Mapper
@@ -43,13 +44,19 @@ public interface MemberRepository {
   int withdraw(int no);
 
   // 회원이 쓴 위키글
-  List<WikiDto> findMyWiki(int no);
+  List<WikiDto> findMyWiki(@Param("memberNo") int memberNo, @Param("pageable") Pageable pageable);
+
+  int myWikiCount(int memberNo);
 
   // 회원이 쓴 스터디 댓글
-  List<StudyCommentDto> findMyStudyComment(int no);
+  List<StudyCommentDto> findMyStudyComment(@Param("memberNo") int memberNo, @Param("pageable") Pageable pageable);
+
+  int myStudyCommentCount(int memberNo);
 
   // 회원이 쓴 위키 댓글
-  List<WikiCommentDto> findMyWikiComment(int no);
+  List<WikiCommentDto> findMyWikiComment(@Param("memberNo") int memberNo, @Param("pageable") Pageable pageable);
+
+  int myWikiCommentCount(int memberNo);
 
   List<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo, long offset, int pageSize);
 

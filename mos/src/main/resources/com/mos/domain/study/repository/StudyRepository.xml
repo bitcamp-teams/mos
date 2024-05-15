@@ -18,11 +18,6 @@
     <result column="tags" property="tags"/>
     <result column="hit_count" property="hitCount"/>
     <result column="like_count" property="likeCount"/>
-    <!--    <collection property="tagList" ofType="TagDto">-->
-    <!--      <id column="tag_no" property="tagNo"/>-->
-    <!--      <result column="name" property="name"/>-->
-    <!--      <result column="path" property="path"/>-->
-    <!--    </collection>-->
   </resultMap>
 
   <resultMap id="studyDetail" type="studyDto">

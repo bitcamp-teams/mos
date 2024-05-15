@@ -23,4 +23,5 @@ public class StudyCommentDto {
   String stat;
   Timestamp createdDate;
   Timestamp updatedDate;
+  String studyTitle;
 }

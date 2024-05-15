@@ -13,7 +13,7 @@
   </select>
 
   <select id="listByWikiNo" resultType="WikiDto">
-    SELECT wiki_no, title, content, likes, hit_count
+    SELECT wiki_no, study_no, title, content, likes, hit_count
     FROM wiki
     ORDER BY wiki_no DESC
     LIMIT #{offset}, #{pageSize};

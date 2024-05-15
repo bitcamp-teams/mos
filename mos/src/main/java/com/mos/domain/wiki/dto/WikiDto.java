@@ -30,4 +30,5 @@ public class WikiDto {
   private int memberNo;
   private String username;
   private int hitCount;
+  private String studyTitle;
 }
