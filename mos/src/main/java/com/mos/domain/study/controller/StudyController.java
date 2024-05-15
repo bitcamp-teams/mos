@@ -192,27 +192,27 @@ public class StudyController implements InitializingBean {
     StudyDto result = studyService.getByStudyNo(studyDto.getStudyNo());
 
     // 게시글 변경할 때 삽입한 이미지 목록을 세션에서 가져온다.
-    List<AttachedFileDto> attachedFiles = (List<AttachedFileDto>) session.getAttribute(
-        "attachedFiles");
+//    List<AttachedFileDto> attachedFiles = (List<AttachedFileDto>) session.getAttribute(
+//        "attachedFiles");
+//
+//    if (result.getFileList().size() > 0) {
+//      // 기존 게시글에 등록된 이미지 목록과 합친다.
+//      attachedFiles.addAll(result.getFileList());
+//    }
+//
+//    for (int i = attachedFiles.size() - 1; i >= 0; i--) {
+//      AttachedFileDto attachedFile = attachedFiles.get(i);
+//      if (studyDto.getIntroduction().indexOf(attachedFile.getFilePath()) == -1) {
+//        // Object Storage에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것은 삭제한다.
+//        storageService.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
+//        log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
+//        attachedFiles.remove(i);
+//      }
+//    }
 
-    if (result.getFileList().size() > 0) {
-      // 기존 게시글에 등록된 이미지 목록과 합친다.
-      attachedFiles.addAll(result.getFileList());
-    }
-
-    for (int i = attachedFiles.size() - 1; i >= 0; i--) {
-      AttachedFileDto attachedFile = attachedFiles.get(i);
-      if (studyDto.getIntroduction().indexOf(attachedFile.getFilePath()) == -1) {
-        // Object Storage에 업로드 한 파일 중에서 게시글 콘텐트에 포함되지 않은 것은 삭제한다.
-        storageService.delete(this.bucketName, this.uploadDir, attachedFile.getFilePath());
-        log.debug(String.format("%s 파일 삭제!", attachedFile.getFilePath()));
-        attachedFiles.remove(i);
-      }
-    }
-
-    if (attachedFiles.size() > 0) {
-      studyDto.setFileList(attachedFiles);
-    }
+//    if (attachedFiles.size() > 0) {
+//      studyDto.setFileList(attachedFiles);
+//    }
 
     model.addAttribute("study", result);
 
