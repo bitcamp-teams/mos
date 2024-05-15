@@ -1,35 +1,26 @@
 package com.mos.domain.wiki.controller;
 
-import com.mos.domain.wiki.service.WikiApiService;
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.http.Header;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.wiki.dto.WikiDto;
+import com.mos.domain.wiki.service.WikiApiService;
 import com.mos.domain.wiki.service.WikiService;
 import com.mos.global.auth.LoginUser;
-
+import java.util.List;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -85,12 +76,20 @@ public class WikiController {
   //만약 wikiNo가 있다면 그 위키를 보여준다. (없으면 그냥 리스트만 보여주자)
   @GetMapping("view")
   public void view(
-      @RequestParam(required = false, defaultValue = "0") int wikiNo, @RequestParam int studyNo, Model model
+      @LoginUser MemberDto loginUser,
+      @RequestParam(required = false, defaultValue = "0") int wikiNo,
+      @RequestParam int studyNo,
+      Model model
   ) throws Exception {
+    try{
+      model.addAttribute("loginUser", loginUser);
+    } catch (Exception e) {
+      //slightly quit
+    }
     // 뷰를 반환한다. async로 api 컨트롤러에 요청하여 동작하므로 service 객체를 사용하지 않음.
     try {
       wikiService.updateHitCount(wikiNo);
-    } catch(Exception e) {
+    } catch (Exception e) {
       // slightly quit
     }
   }

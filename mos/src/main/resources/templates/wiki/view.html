@@ -40,7 +40,7 @@
 
       <i class="fas fa-heart" onclick="toggleLike(this)"></i>
       <!--좋아요-->
-      <span id="contentLikes">❤️</span>
+      <span id="contentLikes">️</span>
 
 
       <hr class="my-4 bg-primary">
@@ -71,6 +71,15 @@
 
 
 </div>
+<!--js-->
+<!--loginUser to var-->
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var loginUser = /*[[${loginUser}]]*/ 'no loginUser';
+  console.log(loginUser.userName);
+  console.log(loginUser.memberNo);
+  /*]]>*/
+</script>
 <!--jstree-->
 <link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">
 <script src="/plugins/jstree/jstree.js"></script>
@@ -79,7 +88,9 @@
 <!--bootstrap-toc-->
 <link rel="stylesheet" href="/plugins/bootstarp-toc/bootstrap-toc.css">
 <script src="/plugins/bootstarp-toc/bootstrap-toc.js"></script>
-<!--asyncComment-->
+<!--asyncComment(코멘트 처리를 위한 js)-->
 <script src="/js/comment/asyncComment.js"></script>
+<!--moment.js(날짜관련 라이브러리)-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <div th:replace="footer::footer">꼬리말</div>

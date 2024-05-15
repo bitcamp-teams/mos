@@ -5,26 +5,29 @@
 
   <!--  studyNo/wikiNo에 따라 전체 반환함(정렬은 js) -->
   <select id="findCommentByWikiNo" parameterType="int" resultType="WikiCommentDto">
-    SELECT comment_no, parent_comment_no, content
-		FROM wiki_comment
+    SELECT comment_no, parent_comment_no, content, m.username, wc.created_date, wc.updated_date
+		FROM wiki_comment wc
+    JOIN member m ON wc.member_no = m.member_no
 		WHERE wiki_no = #{wikiNo}
-      AND stat != '삭제'
+      AND wc.stat != '삭제'
   </select>
 
   <select id="findCommentByStudyNo" parameterType="int" resultType="StudyCommentDto">
-    SELECT comment_no, parent_comment_no, content
-		FROM study_comment
+    SELECT comment_no, parent_comment_no, content, m.username, sc.created_date, sc.updated_date
+		FROM study_comment sc
+    JOIN member m ON sc.member_no = m.member_no
 		WHERE study_no = #{studyNo}
-      AND stat != '삭제'
+      AND sc.stat != '삭제'
   </select>
 
   <!-- 저장 -->
-  <insert id="saveWikiCommentByWikiNo" parameterType="WikiCommentDto" useGeneratedKeys="true">
+  <insert id="saveWikiCommentByWikiNo" parameterType="WikiCommentDto">
     INSERT INTO
       wiki_comment(member_no, wiki_no, content)
     VALUE
+      (#{memberNo}, #{wikiNo}, #{content})
   </insert>
-  <insert id="saveStudyCommentByWikiNo" parameterType="StudyCommentDto" useGeneratedKeys="true">
+  <insert id="saveStudyCommentByWikiNo" parameterType="StudyCommentDto">
     INSERT INTO
       study_comment(member_no, study_no, content)
     VALUES

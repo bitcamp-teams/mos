@@ -4,28 +4,40 @@
 function getComments() {
   let targetElement = $('.commentList');
   targetElement.html("");
-  let apiUrl = '/api/comment/wiki/';
-  let targetGroup = wikiNo;
-
-  console.log(targetGroup);
+  let apiUrl = '/api/comment/wiki/' + wikiNo;
 
   $.ajax({
     method: 'GET',
-    url: apiUrl + targetGroup,
-    success: function (result) {
-      console.log(result);
-
-      result.forEach(function (res) {
+    url: apiUrl,
+    success: function(result) {
+      result.forEach(function(res) {
         let commentElement = $('<div>').addClass('card');
-        let commentHeader = $('<div>').addClass(
-            'card-header d-flex justify-content-between');
+        let commentHeader = $('<div>').addClass('card-header d-flex justify-content-between');
         let commentBody = $('<div>').addClass('card-body').text(res.content);
 
-        let username = res.username || 'Anonymous';
-        let createdDate = res.createdDate || 'Unknown';
+        let username = res.username || '비회원';
+        let date = new Date(res.createdDate);
 
-        let headerLeft = $('<div>').text(username);
-        let headerRight = $('<div>').addClass('text-muted').text(createdDate);
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        const formattedDate = date.toLocaleString('ko-KR', options);
+
+        let headerLeft = $('<div>').addClass('font-weight-bold').text(username);
+        let headerRight = $('<div>').addClass('text-muted').text(formattedDate);
+
+        // 수정 및 삭제 버튼 추가
+        let editButton = $('<button>').addClass('btn btn-sm btn-outline-secondary mr-1')
+        .html('<i class="fas fa-edit"></i>');
+        let deleteButton = $('<button>').addClass('btn btn-sm btn-outline-danger')
+        .html('<i class="fas fa-trash-alt"></i>');
+        let replyButton = $('<button>').addClass('btn btn-sm btn-outline-primary')
+        .html('<i class="fas fa-reply"></i>');
+
+        console.log(loginUser);
+        // 로그인한 사용자와 댓글 작성자가 같은 경우에만 수정/삭제 버튼 표시
+        if (loginUser.userName === res.username) {
+          headerRight.append(editButton, deleteButton);
+        }
+        headerRight.append(replyButton);
 
         commentHeader.append(headerLeft, headerRight);
         commentBody.addClass('bg-light border-light shadow-sm p-3');
@@ -34,7 +46,7 @@ function getComments() {
         targetElement.append(commentElement);
       });
     },
-    error: function (xhr, status, error) {
+    error: function(xhr, status, error) {
       console.log(error);
     }
   });
@@ -52,16 +64,18 @@ function createComment() {
       return;
     }
 
-    let data = {
-      memberNo: 32,
-      wikiNo: wikiNo,
+    let commentData = {
+      memberNo: Number(loginUser.memberNo),
+      wikiNo: Number(wikiNo),
       content: content
     };
+
+    console.log(commentData);
 
     $.ajax({
       type: 'POST',
       url: '/api/comment/wiki',
-      data: JSON.stringify(data),
+      data: JSON.stringify(commentData),
       contentType: 'application/json',
       success: function (response) {
         // 성공적으로 댓글이 등록된 경우
@@ -70,7 +84,7 @@ function createComment() {
       },
       error: function (xhr, status, error) {
         console.log(error);
-        alert('댓글 등록에 실패했습니다.');
+        Swal.fire('댓글 등록에 실패했습니다.');
       }
     });
   });
