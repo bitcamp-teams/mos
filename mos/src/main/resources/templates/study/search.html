@@ -24,6 +24,7 @@
         <label for="keyword"></label>
         <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요.">
       </div>
+      <input type="hidden" name="page" value="1">
       <button type="submit" onclick="clearSearch()">검색</button>
     </div>
   </form>
@@ -35,9 +36,11 @@
       <th>제목</th>
       <th>스터디장</th>
       <th>정원</th>
-      <th>방법</th>
+      <th>진행방식</th>
       <th>마감일</th>
       <th>태그</th>
+      <th>조회수</th>
+      <th>좋아요</th>
     </tr>
     </thead>
     <tbody>
@@ -54,6 +57,8 @@
           <a data-th-text="*{name}">Java</a>
         </div>
       </td>
+      <td data-th-text="*{hitCount}">18</td>
+      <td data-th-text="*{likeCount}">7</td>
     </tr>
     </tbody>
   </table>

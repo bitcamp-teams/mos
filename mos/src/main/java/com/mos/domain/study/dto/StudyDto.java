@@ -39,5 +39,4 @@ public class StudyDto {
   private String username;
   private List<AttachedFileDto> fileList;
 
-
 }
