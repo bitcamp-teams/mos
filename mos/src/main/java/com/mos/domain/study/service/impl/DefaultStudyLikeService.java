@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class DefaultStudyLikeService implements StudyLikeService {
@@ -15,7 +16,7 @@ public class DefaultStudyLikeService implements StudyLikeService {
     private final StudyLikeStatRepository studyLikeStatRepository;
     private final StudyRepository studyRepository;
 
-    @Transactional
+
     @Override
     public void addLike(StudyLikeStatDto studyLikeStatDto) {
        studyLikeStatRepository.like(studyLikeStatDto);
@@ -23,7 +24,7 @@ public class DefaultStudyLikeService implements StudyLikeService {
        studyRepository.updateLikeCount(studyLikeStatDto.getStudyNo(), likeCount);
     }
 
-    @Transactional
+
     @Override
     public void deleteLike(StudyLikeStatDto studyLikeStatDto) {
         studyLikeStatRepository.unlike(studyLikeStatDto);
@@ -31,11 +32,13 @@ public class DefaultStudyLikeService implements StudyLikeService {
         studyRepository.updateLikeCount(studyLikeStatDto.getStudyNo(), likeCount);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public int checked(StudyLikeStatDto studyLikeStatDto) {
         return studyLikeStatRepository.checked(studyLikeStatDto);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public int countLikesByStudyNo(int studyNo) {
         return studyLikeStatRepository.countLikesByStudyNo(studyNo);
