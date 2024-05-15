@@ -61,7 +61,6 @@ public class DataSourceConfig {
   @Bean
   public PlatformTransactionManager transactionManager(
       @Qualifier(value = "lazyRoutingDataSource") DataSource lazyRoutingDataSource) {
-    System.out.println("transactionmanager???");
     DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
     transactionManager.setDataSource(lazyRoutingDataSource);
     return transactionManager;

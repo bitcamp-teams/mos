@@ -28,9 +28,6 @@
         values (#{codeGroup}, #{codeGroupName}, #{moduleCode})
     </insert>
 
-<!--    <delete id="delete" parameterType="int">-->
-<!--        delete from assignments where assignment_no=#{value}-->
-<!--    </delete>-->
 
     <select id="findAllGroup" parameterType="Paging" resultType="CodeGroup">
         select
