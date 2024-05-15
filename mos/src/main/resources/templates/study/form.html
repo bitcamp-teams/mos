@@ -71,23 +71,6 @@
         const {Editor} = toastui;
         const {codeSyntaxHighlight} = Editor.plugin;
 
-        // let editor = new toastui.Editor({
-        //     el: document.querySelector('#editor'),
-        //     height: '70%',
-        //     initialEditType: 'markdown',
-        //     previewStyle: 'vertical',
-        //     plugins: [codeSyntaxHighlight],
-        //     placeholder: '스터디에 대해서 설명해주세요.',
-        //     useCommandShortcut: true,
-        //     /* start of hooks */
-        //     hooks: {
-        //         addImageBlobHook(blob, callback) {  // 이미지 업로드 로직 커스텀
-        //             console.log(blob);
-        //             console.log(callback);
-        //         }
-        //     }
-        //     /* end of hooks */
-        // });
         const editor = new toastui.Editor({
             el: document.querySelector('#editor'), // 에디터를 적용할 요소 (컨테이너)
             height: '500px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
