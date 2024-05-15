@@ -124,6 +124,7 @@ $(function () {
     })
     .then(function () {
       getComments();
+      createComment();
     })
   })
   .on('ready.jstree', function (e, data) {
@@ -165,7 +166,7 @@ function getNodeContent(data) {
         resolve(res);
       },
       error: function (res) {
-        window.alert('오류가 발생했습니다. 위키 정보를 불러오지 못했습니다.')
+        Swal.fire('오류가 발생했습니다. 위키 정보를 불러오지 못했습니다.')
         reject(res);
       }
     });
@@ -192,7 +193,7 @@ function patchSingleNode(data) {
         },
         error: function (res) {
           // 문제가 발생한 경우에만 데이터 동기가 깨진 것이므로 트리를 다시 그린다.
-          window.alert('오류가 발생했습니다. 데이터를 저장하지 못했습니다.')
+          Swal.fire('오류가 발생했습니다. 권한있는 사용자로 로그인하셨나요?')
           console.log(res);
           tree.jstree('refresh');
         }
@@ -235,7 +236,7 @@ function saveSingleNode(data) {
   })
   .catch(function (res) {
     // 문제가 발생한 경우에만 데이터 동기가 깨진 것이므로 트리를 다시 그린다.
-    window.alert('😭오류가 발생했습니다. 데이터를 저장하지 못했습니다.\n권한있는 사용자로 로그인 하셨나요?');
+    Swal.fire('😭오류가 발생했습니다.\n권한있는 사용자로 로그인 하셨나요?');
     console.log(res);
     tree.jstree('refresh');
   });
@@ -255,34 +256,50 @@ function deleteSingleNode(data) {
   var confirm = false;
 
   if (data.node.children.length !== 0) {
-    question = data.node.text + " 노드는 " + data.node.children.length
-        + "개의 자식이 있습니다.\n정말 삭제하시겠습니까?\n이 작업은 복구가 불가능합니다."
-    confirm = window.confirm(question);
-  } else {
-    question = data.node.text + " 노드를 정말 삭제하시겠습니까?\n이 작업은 복구가 불가능합니다."
-    confirm = window.confirm(question);
-  }
-  if (confirm) {
-    $.ajax({
-          method: 'DELETE',
-          url: patchUrl,
-          contentType: 'application/json',
-          data: node,
-          success: function (res) {
-            // 변경은 DB 정합성이 유지된다.
-          },
-          error: function (res) {
-            // 문제가 발생한 경우에만 데이터 동기가 깨진 것이므로 트리를 다시 그린다.
-            window.alert('오류가 발생했습니다. 데이터를 저장하지 못했습니다.')
-            console.log(res);
-            tree.jstree('refresh');
-            tree.jstree('select_node', data.node.id);
-          }
+    question = "정말 삭제하시겠습니까? [" + data.node.text + "] 위키는 " + data.node.children.length
+        + "개의 하위 위키들이 있습니다.\n";
+
+    Swal.fire({
+      title: '삭제 경고!',
+      text: question,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: '삭제 진행',
+      cancelButtonText: '취소'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // 확인 버튼 클릭 시 실행할 코드
+        confirm = true;
+        if (confirm) {
+          $.ajax({
+                method: 'DELETE',
+                url: patchUrl,
+                contentType: 'application/json',
+                data: node,
+                success: function (res) {
+                  // 변경은 DB 정합성이 유지된다.
+                },
+                error: function (res) {
+                  // 문제가 발생한 경우에만 데이터 동기가 깨진 것이므로 트리를 다시 그린다.
+                  Swal.fire('😭오류가 발생했습니다.\n권한있는 사용자로 로그인 하셨나요?');
+                  console.log(res);
+                  tree.jstree('refresh');
+                  tree.jstree('select_node', data.node.id);
+                }
+              }
+          );
         }
-    );
+      } else {
+        // 취소 버튼 클릭 시 실행할 코드
+        confirm = false;
+        tree.jstree('refresh');
+      }
+    });
   } else {
-    tree.jstree('refresh');
+    // question = data.node.text + " 노드를 정말 삭제하시겠습니까?\n이 작업은 복구가 불가능합니다."
+    confirm = true;
   }
+
 
 }
 
