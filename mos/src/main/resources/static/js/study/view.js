@@ -15,7 +15,12 @@ $('#submitApplyBtn').click(function() {
       // 성공적으로 처리된 경우
       console.log(response);
       $('#applyModal').modal('hide'); // 모달창 닫기
-      // 필요한 경우 추가 작업 수행
+      Swal.fire({
+        title: '스터디 신청이 완료 되었습니다!',
+        text: '스터디장의 승인을 기다려주세요.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      })
     },
     error: function(error) {
       // 오류 발생 시 처리

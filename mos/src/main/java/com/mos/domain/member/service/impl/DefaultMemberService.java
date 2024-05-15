@@ -143,4 +143,10 @@ public class DefaultMemberService implements MemberService {
   public void updateStatus(MyStudiesUpdateDto updateDto) {
     memberRepository.updateStatus(updateDto);
   }
+
+  @Override
+  public Page<StudyDto> findLikedStudiseByNo(int memberNo, Pageable pageable) {
+
+    return null;
+  }
 }

@@ -7,6 +7,7 @@ import com.mos.domain.member.dto.MemberStudyDto;
 
 import com.mos.domain.member.dto.MyStudiesDto;
 import com.mos.domain.member.dto.UpdateFavoritesDto;
+import com.mos.domain.study.dto.StudyDto;
 import java.util.List;
 
 import com.mos.domain.member.dto.MemberJoinDto;
@@ -48,4 +49,7 @@ public interface MemberService {
 
   Page<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo, Pageable page);
 
+  Page<StudyDto> findLikedStudiseByNo(int memberNo, Pageable page);
+
 }
+
