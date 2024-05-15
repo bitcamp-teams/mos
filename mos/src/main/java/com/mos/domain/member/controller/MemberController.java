@@ -117,6 +117,16 @@ public String getMyStudy(@LoginUser MemberDto loginUser, Model model, int page) 
     model.addAttribute("memberStudyList", myStudies);
     return "member/mystudy";
 }
+
+@GetMapping("likedStudies")
+public String findLikedStudies(@LoginUser MemberDto loginUser, Model model, int page) {
+    Pageable pageable = PageRequest.of(page - 1, 5);
+    int memberNo = loginUser.getMemberNo();
+    Page<StudyDto> likedStudies = memberService.findLikedStudiseByNo(memberNo, pageable);
+    model.addAttribute(likedStudies);
+    return "/member/likedstudies";
+}
+
   /**
    * 스터디장일 경우 가입 신청, 멤버 관리를 위한 컨트롤러
    * @param studyNo 스터디 번호

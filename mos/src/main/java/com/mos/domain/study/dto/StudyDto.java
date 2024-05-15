@@ -37,6 +37,7 @@ public class StudyDto {
   private int hitCount;
   private int likeCount;
   private String username;
+  private List<AttachedFileDto> fileList;
 
 
 }
