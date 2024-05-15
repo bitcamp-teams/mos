@@ -104,20 +104,22 @@
                          *    (이때, 컨트롤러 uploadEditorImage 메서드의 파라미터인 'image'와 formData에 append 하는 key('image')값은 동일해야 함)
                          */
                         const formData = new FormData();
-                        formData.append('image', blob);
+                        formData.append('files', blob);
 
                         // 2. FileApiController - uploadEditorImage 메서드 호출
-                        const response = await fetch('/toast-editor/image-upload', {
+                        const response = await fetch('/study/file/upload', {
                             method : 'POST',
                             body : formData,
                         });
 
                         // 3. 컨트롤러에서 전달받은 디스크에 저장된 파일명
                         const filename = await response.text();
+                        const jsonResponse = JSON.parse(filename);
+                        const filePath = jsonResponse[0].filePath;
                         console.log('서버에 저장된 파일명 : ', filename);
 
                         // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
-                        const imageUrl = `/toast-editor/image-print?filename=${filename}`;
+                        const imageUrl = `https://kr.object.ncloudstorage.com/mos/study/${filePath}`;
                         callback(imageUrl, 'image alt attribute');
 
                     } catch (error) {
