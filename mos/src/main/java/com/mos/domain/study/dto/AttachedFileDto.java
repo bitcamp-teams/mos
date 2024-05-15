@@ -13,7 +13,7 @@ public class AttachedFileDto {
 
     private int no;
     private String filePath;
-    private int boardNo;
+    private int studyNo;
 
 
 }

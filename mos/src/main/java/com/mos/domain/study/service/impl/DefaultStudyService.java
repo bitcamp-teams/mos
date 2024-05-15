@@ -3,6 +3,7 @@ package com.mos.domain.study.service.impl;
 import com.mos.domain.member.dto.MemberStudyDto;
 
 import com.mos.domain.study.dto.AttachedFileDto;
+import com.mos.domain.study.repository.AttachedFileRepository;
 import java.util.List;
 
 import com.mos.domain.study.dto.TagDto;
@@ -29,6 +30,7 @@ public class DefaultStudyService implements StudyService {
 
   private final StudyRepository studyRepository;
   private final TagRepository tagRepository;
+  private final AttachedFileRepository attachedFileRepository;
 
   @Transactional
   @Override
@@ -45,8 +47,10 @@ public class DefaultStudyService implements StudyService {
     return studyRepository.getByStudyNo(studyNo);
   }
 
+  @Transactional
   @Override
   public void deleteStudy(int studyNo) {
+    attachedFileRepository.deleteAll(studyNo);
     studyRepository.delete(studyNo);
   }
 
@@ -107,11 +111,16 @@ public class DefaultStudyService implements StudyService {
 
   @Override
   public List<AttachedFileDto> getAttachedFiles(int studyNo) {
-    return AttachedFileDto.
+    return attachedFileRepository.findAllByStudyNo(studyNo);
   }
 
   @Override
   public AttachedFileDto getAttachedFile(int fileNo) {
-    return null;
+    return attachedFileRepository.findByFileNo(fileNo);
+  }
+
+  @Override
+  public int deleteAttachedFile(int fileNo) {
+    return attachedFileRepository.delete(fileNo);
   }
 }

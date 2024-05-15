@@ -11,12 +11,12 @@ public interface AttachedFileRepository {
 
     int addAll(List<AttachedFileDto> files);
 
-    int delete(int studyNo);
+    int delete(int fileNo);
 
     int deleteAll(int studyNo);
 
     List<AttachedFileDto> findAllByStudyNo(int studyNo);
 
-    AttachedFileDto findByStudyNo(int studyNo);
+    AttachedFileDto findByFileNo(int fileNo);
 
 }

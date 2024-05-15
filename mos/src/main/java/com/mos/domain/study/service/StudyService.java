@@ -35,4 +35,6 @@ public interface StudyService {
   List<AttachedFileDto> getAttachedFiles(int studyNo);
 
   AttachedFileDto getAttachedFile(int fileNo);
+
+  int deleteAttachedFile(int fileNo);
 }
