@@ -3,6 +3,9 @@ package com.mos.domain.wiki.service.impl;
 import com.mos.domain.wiki.dto.WikiDto;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mos.domain.wiki.dto.JstreeWikiDto;
@@ -48,5 +51,11 @@ public class DefaultWikiApiService implements WikiApiService {
   @Override
   public WikiDto getWikiContent(int wikiNo) {
     return wikiApiRepository.findWikiByWikiNo(wikiNo);
+  }
+
+  @Override
+  public Page<WikiDto> getList(Pageable page) {
+    List<WikiDto> all = wikiApiRepository.findAll(page);
+    return new PageImpl<>(all, page, all.size());
   }
 }
