@@ -5,6 +5,7 @@ import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.study.dto.AttachedFileDto;
+import com.mos.domain.study.dto.StudyAddDto;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.dto.StudyLikeStatDto;
 import com.mos.domain.study.dto.TagDto;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -35,6 +37,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,10 +53,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/study")
+@Slf4j
 public class StudyController implements InitializingBean {
 
   // 현재 스레드의 클래스를 파라미터로 받아서 로그 객체를 만든다.
-  private static final Logger log = LoggerFactory.getLogger(Thread.currentThread().getClass());
   private final StudyService studyService;
   // 스터디에 파일저장 / 이미지 옵티마이징 따로 없으므로 변수 추가 없음
   private final CommentService commentService;
@@ -78,6 +82,8 @@ public class StudyController implements InitializingBean {
   public String form(Model model) throws Exception {
 
     List<TagDto> tagList = studyService.getAllTags();
+
+    model.addAttribute("study", StudyDto.builder().build());
     model.addAttribute("tagList", tagList);
     return "study/form";
   }
@@ -85,17 +91,22 @@ public class StudyController implements InitializingBean {
   @PostMapping("add")
   public String add(
       @LoginUser MemberDto loginUser,
-      @ModelAttribute StudyDto studyDto,
-      @RequestParam("tags") List<Integer> tagNums,
-      HttpSession session,
+      @Validated @ModelAttribute("study") StudyAddDto studyAddDto,
+      BindingResult bindingResult,
+      @RequestParam(value = "tags", required = false) List<Integer> tagNums,
+      Model model,
       SessionStatus sessionStatus
   ) throws Exception {
-    try {
-      int memberNo = loginUser.getMemberNo();
-      studyDto.setMemberNo(loginUser.getMemberNo());
-    } catch (Exception e) {
-      log.debug("login is required");
-      e.printStackTrace();
+
+    if (tagNums == null) {
+      bindingResult.reject("tags", null, "태그를 선택해주세요.");
+    }
+
+    if (bindingResult.hasErrors()) {
+      log.error("bindingResult={}", bindingResult);
+      model.addAttribute("study", studyAddDto);
+      model.addAttribute("tagList", studyService.getAllTags());
+      return "/study/form";
     }
 
     List<TagDto> tagList = new ArrayList<>();
@@ -103,8 +114,18 @@ public class StudyController implements InitializingBean {
       TagDto tag = TagDto.builder().tagNo(no).build();
       tagList.add(tag);
     }
-    studyDto.setTagList(tagList);
-
+    StudyDto studyDto = StudyDto.builder()
+        .memberNo(loginUser.getMemberNo())
+        .method(studyAddDto.getMethod())
+        .studyNo(studyAddDto.getStudyNo())
+        .title(studyAddDto.getTitle())
+        .introduction(studyAddDto.getIntroduction())
+        .startDate(studyAddDto.getStartDate())
+        .endDate(studyAddDto.getEndDate())
+        .intake(studyAddDto.getIntake())
+        .recruitmentDeadline(studyAddDto.getRecruitmentDeadline())
+        .tagList(tagList)
+        .build();
 
     // MemberStudyDto 객체 생성 및 값 설정
     MemberStudyDto memberStudyDto = new MemberStudyDto();
