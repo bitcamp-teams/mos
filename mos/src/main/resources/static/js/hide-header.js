@@ -12,17 +12,17 @@ setInterval(function () {
     hasScrolled();
     didScroll = false;
   }
-}, 250);
+}, 500);
 
 function hasScrolled() {
   var st = $(this).scrollTop();
 
   // If they scrolled down and are past the navbar, add class .nav-up.
   // This is necessary so you never see what is "behind" the navbar.
-  if (st > lastScrollTop && st > navbarHeight) {
+  if (st > lastScrollTop) {
     // Scroll Down
     $('header').removeClass('nav-down').addClass('nav-up');
-  } else if (st < lastScrollTop) {
+  } else {
     // Scroll Up
     $('header').removeClass('nav-up').addClass('nav-down');
   }
