@@ -14,6 +14,7 @@ public class StudyAddDto {
   private String title;
   @NotEmpty(message = "글을 작성하세요.")
   private String introduction;
+  private String method;
   private Date startDate;
   private Date endDate;
 //  @NotNull(message = "태그는 하나 이상 선택해야합니다.")

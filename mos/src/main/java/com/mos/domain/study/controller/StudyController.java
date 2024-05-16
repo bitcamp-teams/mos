@@ -98,6 +98,10 @@ public class StudyController implements InitializingBean {
       SessionStatus sessionStatus
   ) throws Exception {
 
+    if (tagNums == null) {
+      bindingResult.reject("tags", null, "태그를 선택해주세요.");
+    }
+
     if (bindingResult.hasErrors()) {
       log.error("bindingResult={}", bindingResult);
       model.addAttribute("study", studyAddDto);
@@ -111,6 +115,8 @@ public class StudyController implements InitializingBean {
       tagList.add(tag);
     }
     StudyDto studyDto = StudyDto.builder()
+        .memberNo(loginUser.getMemberNo())
+        .method(studyAddDto.getMethod())
         .studyNo(studyAddDto.getStudyNo())
         .title(studyAddDto.getTitle())
         .introduction(studyAddDto.getIntroduction())
