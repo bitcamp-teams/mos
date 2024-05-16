@@ -74,12 +74,11 @@
 
 </div>
 <!--js-->
-<!--hide-header.js-->
-<script src="/js/wiki/hide-header.js"></script>
+
 <!--loginUser to var-->
 <script th:inline="javascript">
   /*<![CDATA[*/
-  var loginUser = /*[[${loginUser}]]*/ 'no loginUser';
+  var loginUser = /*[[${loginUser}]]*/ 0;
   console.log(loginUser.userName);
   console.log(loginUser.memberNo);
   /*]]>*/

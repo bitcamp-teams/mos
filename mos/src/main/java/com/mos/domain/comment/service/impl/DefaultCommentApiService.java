@@ -50,6 +50,11 @@ public class DefaultCommentApiService implements CommentApiService {
     commentApiRepository.deleteStudyCommentByCommentNo(commentNo);
   }
 
+  @Override
+  public void patchWikiComment(WikiCommentDto wikiCommentDto) {
+    commentApiRepository.patchWikiComment(wikiCommentDto);
+  }
+
   private void publishEvent(StudyCommentDto studyCommentDto) {
     CommentAndAuthorIdEvent commentAndAuthorIdEvent = new CommentAndAuthorIdEvent(studyCommentDto);
     applicationEventPublisher.publishEvent(commentAndAuthorIdEvent);
