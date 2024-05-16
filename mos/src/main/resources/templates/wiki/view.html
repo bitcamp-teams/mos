@@ -4,7 +4,7 @@
     <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
 
     <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
-    <nav class="sidebar-left col-2 border">
+    <nav class="sidebar-left col-3 border">
       <div class="sticky">
         <button class="btn btn-primary btn-block align-middle" id="addRootNode">
           <i class="far fa-file-alt"></i> <span> + </span>
@@ -19,7 +19,7 @@
       </div>
     </nav>
 
-    <div class="main col-8 mx-auto">
+    <div class="main col-7 mx-auto">
       <div class="card">
         <div>
           <h1 id="contentTitle"></h1>
@@ -48,16 +48,18 @@
       <hr class="my-4 bg-primary">
       <!-- comment 영역-->
       <div class="row">
+
+        <div class="commentForm">
+          <div class="form-group">
+            <textarea class="form-control comment-input" id="commentContent" placeholder="댓글을 입력하세요"></textarea>
+            <button class="btn btn-primary comment-submit" id="submitComment">등록</button>
+          </div>
+        </div>
+
         <div class="commentList w-100">
           <!-- 댓글을 이 영역에 비동기로 만들어주기 -->
         </div>
-        <div class="commentForm w-100">
-          <!-- 로그인한 경우에만 댓글입력칸 보이기 -->
-          <div class="form-group w-100">
-            <textarea class="form-control" id="commentContent" placeholder="댓글을 입력하세요"></textarea>
-          </div>
-          <button class="btn btn-primary float-right" id="submitComment">댓글 등록</button>
-        </div>
+
       </div>
     </div>
     <!-- comment 영역 끝-->
@@ -84,8 +86,10 @@
   /*]]>*/
 </script>
 <!--jstree-->
-<link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">
+<!--<link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">-->
 <script src="/plugins/jstree/jstree.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+
 <!--jstree-edit-->
 <script src="/js/wiki/wikitree-edit.js"></script>
 <!--bootstrap-toc-->

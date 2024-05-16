@@ -189,9 +189,7 @@ function getComments() {
               }
 
             })
-
-            // 화면에 대댓글 렌더링
-
+            
             // 대댓글 입력 폼 제거
             replyForm.remove();
           });
