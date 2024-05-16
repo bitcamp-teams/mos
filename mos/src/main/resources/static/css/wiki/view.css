@@ -5,7 +5,7 @@ header {
   background: #f5b335;
   position: fixed !important;
   top: 0;
-  transition: top 0.2s ease-in-out;
+  transition: top 0.5s ease-in-out;
   width: 100%;
   z-index: 10;
 }
