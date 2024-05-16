@@ -24,11 +24,11 @@
   <insert id="saveWikiCommentByWikiNo" parameterType="WikiCommentDto">
     INSERT INTO
       wiki_comment(member_no, wiki_no, content
-    <if test="parentCommentNo != null">, parent_comment_no</if>
+    <if test="parentCommentNo != 0">, parent_comment_no</if>
     )
     VALUE
       (#{memberNo}, #{wikiNo}, #{content}
-    <if test="parentCommentNo != null">, #{parentCommentNo}</if>
+    <if test="parentCommentNo != 0">, #{parentCommentNo}</if>
     )
   </insert>
 

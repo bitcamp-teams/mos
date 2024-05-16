@@ -11,12 +11,16 @@ function getComments() {
     url: apiUrl,
     success: function (result) {
 
-      // 실행
+      // 받은 리스트에서 구조화를 client side에서 실행한다.
       const hierarchyComments = buildHierarchy(result);
       const flattenedComments = flattenHierarchy(hierarchyComments);
 
       flattenedComments.forEach(function (res) {
         let commentElement = $('<div>').addClass('card');
+        console.log(res.parentCommentNo);
+        if (res.parentCommentNo != 0) {
+          commentElement.addClass('reply');
+        }
         let commentHeader = $('<div>').addClass(
             'card-header d-flex justify-content-between');
         let commentBody = $('<div>').addClass('card-body').text(res.content);
@@ -49,9 +53,8 @@ function getComments() {
             'reply-btn btn btn-sm btn-outline-primary m-1')
         .html('<i class="fas fa-reply"></i>').attr('comment-no', res.commentNo);
 
-        console.log(loginUser);
+        // console.log(loginUser);
         // 로그인한 사용자와 댓글 작성자가 같은 경우에만 수정/삭제 버튼 표시
-        // TODO : 댓글에서 대댓글, 수정, 삭제 기능 구현
 
         if (loginUser != null && (loginUser.userName === res.username)) {
           headerRight.append(editButton, deleteButton, replyButton);
@@ -151,6 +154,9 @@ function getComments() {
           // 버튼 감추기
           replyButton.css('display', 'none');
 
+          //속성값 위임전에 미리 뽑아두기
+          let commentNo = $(this).attr('comment-no');
+
           // 대댓글 입력 폼 생성
           let replyForm = $('<div>').addClass('reply-form my-3');
           let replyTextarea = $('<textarea>').addClass('form-control mb-2');
@@ -170,7 +176,8 @@ function getComments() {
               contentType: 'application/json',
               data: JSON.stringify({
                 memberNo: loginUser.memberNo,
-                parentCommentNo: $(this).attr('comment-no'),
+                wikiNo: wikiNo,
+                parentCommentNo: Number(commentNo),
                 content: replyContent,
 
               }),
@@ -182,8 +189,6 @@ function getComments() {
               }
 
             })
-
-            // 화면에 대댓글 렌더링
 
             // 대댓글 입력 폼 제거
             replyForm.remove();
@@ -198,44 +203,42 @@ function getComments() {
 }
 
 //댓글 입력 폼 생성하고 submit 동작 정의하기
-function createComment() {
-  // 댓글 등록 버튼 클릭 이벤트 핸들러
-  $('#submitComment').click(function () {
-    let content = $('#commentContent').val().trim();
-    if (loginUser === undefined || loginUser === null) {
-      Swal.fire('댓글은 로그인 하셔야 작성할 수 있어요!');
-      return;
+// 댓글 등록 버튼 클릭 이벤트 핸들러
+$('#submitComment').click(function () {
+  let content = $('#commentContent').val().trim();
+  if (loginUser === undefined || loginUser === null) {
+    Swal.fire('댓글은 로그인 하셔야 작성할 수 있어요!');
+    return;
+  }
+  if (content === '') {
+    Swal.fire('댓글 내용을 입력해주세요.');
+    return;
+  }
+
+  let commentData = {
+    memberNo: Number(loginUser.memberNo),
+    wikiNo: Number(wikiNo),
+    content: content
+  };
+
+  console.log(commentData);
+
+  $.ajax({
+    type: 'POST',
+    url: '/api/comment/wiki',
+    data: JSON.stringify(commentData),
+    contentType: 'application/json',
+    success: function (response) {
+      // 성공적으로 댓글이 등록된 경우
+      $('#commentContent').val(''); // 입력칸 초기화
+      getComments(); // 댓글 리스트 갱신
+    },
+    error: function (xhr, status, error) {
+      console.log(error);
+      Swal.fire('댓글 등록에 실패했습니다.');
     }
-    if (content === '') {
-      Swal.fire('댓글 내용을 입력해주세요.');
-      return;
-    }
-
-    let commentData = {
-      memberNo: Number(loginUser.memberNo),
-      wikiNo: Number(wikiNo),
-      content: content
-    };
-
-    console.log(commentData);
-
-    $.ajax({
-      type: 'POST',
-      url: '/api/comment/wiki',
-      data: JSON.stringify(commentData),
-      contentType: 'application/json',
-      success: function (response) {
-        // 성공적으로 댓글이 등록된 경우
-        $('#commentContent').val(''); // 입력칸 초기화
-        getComments(); // 댓글 리스트 갱신
-      },
-      error: function (xhr, status, error) {
-        console.log(error);
-        Swal.fire('댓글 등록에 실패했습니다.');
-      }
-    });
   });
-}
+});
 
 // 계층 구조로 변환하는 함수
 function buildHierarchy(comments) {

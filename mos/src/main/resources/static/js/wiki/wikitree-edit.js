@@ -15,24 +15,36 @@ var addWikiUrl = "/api/wiki";
 $(function () {
   tree.jstree({
     core: {
-      multiple: true,
-      themes: {
-        "responsive": true,
+      "multiple": true,
+      "animation": {
+        "open": 100, // 열릴 때의 애니메이션 속도 (밀리초)
+        "close": 100, // 닫힐 때의 애니메이션 속도 (밀리초)
+        "easing": "swing" // 애니메이션 효과 설정
+      },
+      "themes": {
+        "dots": true,
+        "icons": false,
+        "responsive": false,
         "variant": "large",
       },
-      check_callback: true,
-      data: {
+      "check_callback": true,
+      "data": {
         //이렇게 하면 알아서 json 을 ajax로 가져와서 data로 쓴다.
-        url: getListUrl,
-        dataType: "json"
+        "url": getListUrl,
+        "dataType": "json"
       }
     },
-    plugins: ['wholerow', 'state', 'dnd', 'types', 'contextmenu', 'unique',
+    "types": {
+      "default": {
+        "icon": "fa fa-folder",
+      }
+    },
+    "plugins": ['dnd', 'types', 'contextmenu', 'unique',
       'sort'],
     //순서 저장하는 기능을 'sort' 플러그인으로 구현 가능할지도..
 
     //우클릭 컨텍스트 메뉴에서 Edit(cut, copy) 기능은 표시 X
-    contextmenu: {
+    "contextmenu": {
       'items': function (node) {
         var items = $.jstree.defaults.contextmenu.items();
         items.ccp = false;
@@ -124,7 +136,6 @@ $(function () {
     })
     .then(function () {
       getComments();
-      createComment();
     })
   })
   .on('ready.jstree', function (e, data) {
@@ -256,7 +267,8 @@ function deleteSingleNode(data) {
   var confirm = false;
 
   if (data.node.children.length !== 0) {
-    question = "정말 삭제하시겠습니까? [" + data.node.text + "] 위키는 " + data.node.children.length
+    question = "정말 삭제하시겠습니까? [" + data.node.text + "] 위키는 "
+        + data.node.children.length
         + "개의 하위 위키들이 있습니다.\n";
 
     Swal.fire({
@@ -277,7 +289,7 @@ function deleteSingleNode(data) {
                 contentType: 'application/json',
                 data: node,
                 success: function (res) {
-                  // 변경은 DB 정합성이 유지된다.
+                  tree.jstree('refresh');
                 },
                 error: function (res) {
                   // 문제가 발생한 경우에만 데이터 동기가 깨진 것이므로 트리를 다시 그린다.
@@ -299,7 +311,6 @@ function deleteSingleNode(data) {
     // question = data.node.text + " 노드를 정말 삭제하시겠습니까?\n이 작업은 복구가 불가능합니다."
     confirm = true;
   }
-
 
 }
 
