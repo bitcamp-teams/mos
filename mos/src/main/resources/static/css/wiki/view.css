@@ -1,6 +1,24 @@
 /*
 /wiki/view 템플릿을 위한 css
 */
+header {
+  background: #f5b335;
+  position: fixed !important;
+  top: 0;
+  transition: top 0.5s ease-in-out;
+  width: 100%;
+  z-index: 10;
+}
+
+.nav-up {
+  top: -80px;
+}
+
+.container-fluid {
+  padding-top: 120px;
+}
+
+
 .main {
   position: relative;
 }
