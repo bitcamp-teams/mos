@@ -1,5 +1,11 @@
 <div data-th-replace="header::header" xmlns="http://www.w3.org/1999/html">머리말</div>
 
+<style>
+    .field-error {
+        border-color: red;
+        color: red;
+    }
+</style>
 <div class="page-margin wrapper-mos">
 
     <div class="py-5 text-center">
@@ -8,12 +14,13 @@
 
     </div>
 
-    <form id="studyInfo" action="./add" data-th-action="@{add}" method="post">
+    <form id="studyInfo" action="./add" data-th-action="@{add}" method="post" data-th-object="${study}">
         <!-- Flex Container 시작 -->
         <div style="display: flex; gap: 20px;">
             <div style="flex-basis: 50%">
             <label> 스터디 제목을 입력해주세요!</label>
-            <input name="title" type="text" class="form-control">
+            <input data-th-field="*{title}" type="text" class="form-control" data-th-errorclass="field-error">
+                <div class="field-error" data-th-errors="*{title}">제목 오류</div>
         </div>
 
             <div style="flex-basis: 50%"><div>
@@ -31,7 +38,8 @@
         <div style="display: flex; gap: 20px;">
         <div style="flex-basis: 50%">
             <div><label> 모집 인원수를 설정해주세요!</label></div>
-            <input name="intake" type="number" th:value="5" class="form-control">
+            <input data-th-field="*{intake}" type="number" th:value="5" class="form-control" data-th-errorclass="field-error">
+            <div class="field-error" data-th-errors="*{intake}">인원 수 에러</div>
         </div>
         <div style="flex-basis: 50%">
             <div><label>언제까지 모집하시겠어요?</label></div>
@@ -54,11 +62,12 @@
                 <input type="checkbox" data-th-checkbox="true" data-th-value="*{tagNo}" name="tags" class="form-check-input">
                 <span data-th-text="*{name}"></span>
             </div>
+<!--            <div class="field-error" data-th-errors="*{tagList}">태그 에러</div>-->
         </div>
         </div>
         <hr class="my-4">
 
-        <div id="editor"></div>
+        <div id="editor" ></div>
         <input type="hidden" name="introduction" id="editor-content">
 
         <div class="py-5 text-center">
