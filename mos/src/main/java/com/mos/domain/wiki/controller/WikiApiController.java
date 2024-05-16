@@ -10,6 +10,10 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -89,6 +93,12 @@ public class WikiApiController {
       return wikiLikeService.checked(wikiLikeStatDto);
     }
     return 0; // 좋아요 하지 않은 상태
+  }
+
+  @GetMapping("list")
+  public ResponseEntity<?> list(@PageableDefault(size = 20) Pageable page) {
+    Page<WikiDto> list = wikiApiService.getList(page);
+    return ResponseEntity.ok().body(list);
   }
 
 
