@@ -51,3 +51,7 @@
   resize: vertical;
   box-sizing: inherit;
 }
+
+.reply {
+  margin-left: 30px;
+}

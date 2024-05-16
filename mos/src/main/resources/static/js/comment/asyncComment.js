@@ -11,12 +11,16 @@ function getComments() {
     url: apiUrl,
     success: function (result) {
 
-      // 실행
+      // 받은 리스트에서 구조화를 client side에서 실행한다.
       const hierarchyComments = buildHierarchy(result);
       const flattenedComments = flattenHierarchy(hierarchyComments);
 
       flattenedComments.forEach(function (res) {
         let commentElement = $('<div>').addClass('card');
+        console.log(res.parentCommentNo);
+        if (res.parentCommentNo != 0) {
+          commentElement.addClass('reply');
+        }
         let commentHeader = $('<div>').addClass(
             'card-header d-flex justify-content-between');
         let commentBody = $('<div>').addClass('card-body').text(res.content);
@@ -49,9 +53,8 @@ function getComments() {
             'reply-btn btn btn-sm btn-outline-primary m-1')
         .html('<i class="fas fa-reply"></i>').attr('comment-no', res.commentNo);
 
-        console.log(loginUser);
+        // console.log(loginUser);
         // 로그인한 사용자와 댓글 작성자가 같은 경우에만 수정/삭제 버튼 표시
-        // TODO : 댓글에서 대댓글, 수정, 삭제 기능 구현
 
         if (loginUser != null && (loginUser.userName === res.username)) {
           headerRight.append(editButton, deleteButton, replyButton);
@@ -151,6 +154,9 @@ function getComments() {
           // 버튼 감추기
           replyButton.css('display', 'none');
 
+          //속성값 위임전에 미리 뽑아두기
+          let commentNo = $(this).attr('comment-no');
+
           // 대댓글 입력 폼 생성
           let replyForm = $('<div>').addClass('reply-form my-3');
           let replyTextarea = $('<textarea>').addClass('form-control mb-2');
@@ -170,7 +176,8 @@ function getComments() {
               contentType: 'application/json',
               data: JSON.stringify({
                 memberNo: loginUser.memberNo,
-                parentCommentNo: $(this).attr('comment-no'),
+                wikiNo: wikiNo,
+                parentCommentNo: Number(commentNo),
                 content: replyContent,
 
               }),
