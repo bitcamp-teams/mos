@@ -39,7 +39,7 @@ $(function () {
         "icon": "fa fa-folder",
       }
     },
-    "plugins": ['state', 'dnd', 'types', 'contextmenu', 'unique',
+    "plugins": ['dnd', 'types', 'contextmenu', 'unique',
       'sort'],
     //순서 저장하는 기능을 'sort' 플러그인으로 구현 가능할지도..
 
@@ -136,12 +136,11 @@ $(function () {
     })
     .then(function () {
       getComments();
-      createComment();
     })
   })
   .on('ready.jstree', function (e, data) {
     if (wikiNo != undefined) {
-      tree.jstree('deselect_all');
+      // tree.jstree('deselect_all');
       tree.jstree('select_node', wikiNo);
     }
   });

@@ -19,11 +19,13 @@ public class DefaultCommentApiService implements CommentApiService {
   private final CommentApiRepository commentApiRepository;
   private final ApplicationEventPublisher applicationEventPublisher;
 
+  @Transactional(readOnly = true)
   @Override
   public List<WikiCommentDto> getCommentByWikiNo(int wikiNo) {
     return commentApiRepository.findCommentByWikiNo(wikiNo);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<StudyCommentDto> getCommentByStudyNo(int studyNo) {
     return commentApiRepository.findCommentByStudyNo(studyNo);
