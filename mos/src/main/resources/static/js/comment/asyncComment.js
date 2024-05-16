@@ -57,8 +57,10 @@ function getComments() {
         // 로그인한 사용자와 댓글 작성자가 같은 경우에만 수정/삭제 버튼 표시
 
         if (loginUser != null && (loginUser.userName === res.username)) {
-          headerRight.append(editButton, deleteButton, replyButton);
+          headerRight.append(editButton, deleteButton);
         }
+
+        headerRight.append(replyButton);
 
         commentHeader.append(headerLeft, headerRight);
         commentBody.addClass('bg-light border-light shadow-sm p-3');
