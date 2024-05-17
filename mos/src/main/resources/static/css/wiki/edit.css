@@ -1,13 +1,19 @@
 /*
-/wiki/view 템플릿을 위한 css
+/wiki/edit 템플릿을 위한 css
 */
 
+/*toastr을 위한 css*/
+#status {
+  margin-top: 10px;
+}
+
+/*디자인*/
 .main {
   position: relative;
   min-width: 600px;
 }
 
-.sidebar-left, .sidebar-right {
+.sidebar-left {
   overflow-x: auto;
   overflow-y: auto;
   position: sticky !important;
