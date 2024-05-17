@@ -1,11 +1,11 @@
 <div th:replace="header::header">머리말</div>
 <div class="container-fluid">
-  <div class="row justify-content-center flex-nowrap">
+  <div class="row justify-content-center">
     <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
 
     <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
-    <nav id="resizable" class="resizable-column sidebar-left border">
-      <div>
+    <nav class="sidebar-left col-3 border">
+      <div class="sticky">
         <button class="btn btn-primary btn-block align-middle" id="addRootNode">
           <i class="far fa-file-alt"></i> <span> + </span>
         </button>
@@ -19,11 +19,10 @@
       </div>
     </nav>
 
-    <div class="main col mx-auto">
+    <div class="main col-7 mx-auto">
       <div class="card">
         <div>
           <h1 id="contentTitle"></h1>
-    <!-- 편집 모드로 전환함-->
           <a class="btn btn-primary" id="contentEditLink" href="editWiki.html"><i class="fas fa-edit"></i></a>
           <!--        <a id="contentDeleteLink" href="delete.html">[삭제]</a>-->
 
@@ -77,10 +76,7 @@
 
 </div>
 <!--js-->
-<!-- for resizable column -->
-<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/hot-sneaks/jquery-ui.css"/>
-<script src="/js/wiki/jqueryui-resiazble.js"></script>
+
 <!--loginUser to var-->
 <script th:inline="javascript">
   /*<![CDATA[*/
