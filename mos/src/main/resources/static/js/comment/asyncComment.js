@@ -16,11 +16,13 @@ function getComments() {
       const flattenedComments = flattenHierarchy(hierarchyComments);
 
       flattenedComments.forEach(function (res) {
+
         let commentElement = $('<div>').addClass('card');
-        console.log(res.parentCommentNo);
         if (res.parentCommentNo != 0) {
           commentElement.addClass('reply');
         }
+        console.log(commentElement);
+
         let commentHeader = $('<div>').addClass(
             'card-header d-flex justify-content-between');
         let commentBody = $('<div>').addClass('card-body').text(res.content);
@@ -196,6 +198,7 @@ function getComments() {
             replyForm.remove();
           });
         });
+
       });
     },
     error: function (xhr, status, error) {

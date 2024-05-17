@@ -4,20 +4,35 @@
 
 .main {
   position: relative;
+  min-width: 600px;
 }
 
 .sidebar-left, .sidebar-right {
   overflow-x: auto;
   overflow-y: auto;
   position: sticky !important;
-  top: 60px;
-  height: 85vh; /* 뷰포트 전체 높이 */
-  width: 400px;
+  top: 30px;
+  height: 95vh; /* 뷰포트 전체 높이 */
 }
 
 .sidebar-left {
   left: 0;
+}
 
+/*resize하도록 만든 왼쪽 네비게이션에 핸들 디자인을 커스텀함*/
+.ui-resizable-e {
+  width: 15px !important; /* 핸들의 너비 */
+  height: 100%; /* 핸들의 높이 */
+  cursor: ew-resize; /* 커서 모양 */
+  background-color: #e5e5f7;
+  opacity: 0.8;
+}
+
+/*md크기 이하라면 ToC 숨기기(미디어쿼리)*/
+@media (max-width: 1200px) {
+  .sidebar-right {
+    display: none;
+  }
 }
 
 .sidebar-right {
@@ -36,6 +51,7 @@
 .commentForm {
   width: 100%;
   position: relative;
+  padding: 15px;
 }
 
 .form-group {
@@ -68,8 +84,14 @@
   box-shadow: 1px 1px 4px 0px #808080;
 }
 
+.toastui-editor-contents {
+  padding: 7px !important;
+  border-radius: .25rem;
+  border: 1px solid rgba(0, 0, 0, .125);
+  box-shadow: 1px 1px 4px 0px #808080;
+}
+
 .reply {
   margin-left: 40px;
   margin-top: -7px;
-  z-index: -1;
 }
