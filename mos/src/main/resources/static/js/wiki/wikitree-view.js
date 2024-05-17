@@ -39,7 +39,7 @@ $(function () {
         "icon": "fa fa-folder",
       }
     },
-    "plugins": ['dnd', 'types', 'contextmenu', 'unique',
+    "plugins": ['types', 'unique',
       'sort'],
     //순서 저장하는 기능을 'sort' 플러그인으로 구현 가능할지도..
 
@@ -81,10 +81,10 @@ $(function () {
   .on('select_node.jstree', function (e, data) {
     getNodeContent(data)
     .then(nodeContent => {
-      // $('#author').html(nodeContent.username);
-      // $('#title').html(nodeContent.title);
+      $('#author').html(nodeContent.username);
+      $('#title').html(nodeContent.title);
       $('#contentEditLink').attr('href',
-          '/wiki/view?studyNo=' + studyNo + '&wikiNo=' + nodeContent.wikiNo);
+          '/wiki/edit?studyNo=' + studyNo + '&wikiNo=' + nodeContent.wikiNo);
       $('#content').attr('content', nodeContent.content);
       $('#contentLikes').html(nodeContent.likes);
       isLiked(nodeContent.wikiNo);
@@ -98,14 +98,12 @@ $(function () {
       const {codeSyntaxHighlight} = Editor.plugin;
       const viewer = Editor.factory({
         el: document.querySelector('#viewer'),
-        //previewStyle: 'vertical',
-        viewer: false,
-        height: '100%',
+        viewer: true,
         initialValue: nodeContent.content,
         plugins: [[codeSyntaxHighlight, {highlighter: Prism}]],
       });
       history.pushState(null, null,
-          '/wiki/edit?studyNo=' + nodeContent.studyNo + '&wikiNo='
+          '/wiki/view?studyNo=' + nodeContent.studyNo + '&wikiNo='
           + nodeContent.wikiNo);
       refreshUrl();
 

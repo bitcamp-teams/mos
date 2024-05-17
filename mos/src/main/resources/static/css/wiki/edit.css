@@ -1,0 +1,33 @@
+/*
+/wiki/view 템플릿을 위한 css
+*/
+
+.main {
+  position: relative;
+  min-width: 600px;
+}
+
+.sidebar-left, .sidebar-right {
+  overflow-x: auto;
+  overflow-y: auto;
+  position: sticky !important;
+  top: 30px;
+  height: 90vh; /* 뷰포트 전체 높이 */
+}
+
+.sidebar-left {
+  left: 0;
+}
+
+/*resize하도록 만든 왼쪽 네비게이션에 핸들 디자인을 커스텀함*/
+.ui-resizable-e {
+  width: 15px !important; /* 핸들의 너비 */
+  height: 100%; /* 핸들의 높이 */
+  cursor: ew-resize; /* 커서 모양 */
+  background-color: #e5e5f7;
+  opacity: 0.8;
+}
+
+#footer {
+  display: none;
+}
