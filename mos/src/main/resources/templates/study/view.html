@@ -4,13 +4,18 @@
 
   <div data-th-object="${study}">
 
-
+  <div class="study-three">
     <h1 th:text="*{title}"></h1>
-    <a data-th-href="@{edit(studyNo=*{studyNo})}" href="delete.html">[편집]</a>
-    <a data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">[삭제]</a>
+  </div>
+
+    <div class="study-edit">
+    <th-block data-th-if="${session.loginUser != null}">
+    <a type="button" class="btn btn-outline-secondary btn-sm" data-th-if="${study.memberNo == session.loginUser.memberNo}" data-th-href="@{edit(studyNo=*{studyNo})}" href="delete.html">편집</a>
+    <a type="button" class="btn btn-outline-secondary btn-sm" data-th-if="${study.memberNo == session.loginUser.memberNo}" data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">삭제</a>
+    </th-block>
+    </div>
 
     <!--    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>-->
-
 
     <a th:if="${not #strings.isEmpty(firstWikiNo)}"
        th:href="@{/wiki/view(studyNo=${study.studyNo})}" href="/wiki/view.html">[이 스터디의 위키 보러가기]</a>
@@ -30,7 +35,7 @@
     <!--    <p> 예상종료일 = <span th:text="*{endDate}"> </span></p>-->
 
     <div class="card">
-      <div class="card-body">
+      <div class="study-card-body">
         <h5 class="card-title">스터디 정보</h5>
         <div class="row">
           <div class="col-sm-6">
@@ -57,7 +62,7 @@
               <!--            <span th:text="${tag.name}"></span>-->
               <span th:each="tag : ${study.tagList}" class="ml-2" data-toggle="tooltip"
                     data-placement="top">
-              <span th:text="${tag.name}" class="badge badge-secondary"></span>
+              <span th:text="${tag.name}" class="badge badge-warning"></span>
               </span>
             </div>
             <div class="mb-3">
@@ -92,18 +97,20 @@
 
 
     <!-- Like button -->
-    <div class="d-flex justify-content-center display-4">
-      <i class="fas fa-heart" th:id="'like-icon-' + *{studyNo}"
-         th:data-study-no="*{studyNo}"
-         th:classappend="${isLiked == null or isLiked != 1} ? '' : 'liked'"
-         onclick="toggleLike(this)"></i>
-      <span th:id="'like-count-' + *{studyNo}" data-th-text="*{likeCount}"></span>
+    <div class="d-flex align-items-center">
+      <div class="like-container">
+        <i class="fas fa-heart like-icon" th:id="'like-icon-' + *{studyNo}"
+           th:data-study-no="*{studyNo}"
+           th:classappend="${isLiked == null or isLiked != 1} ? '' : 'liked'"
+           onclick="toggleLike(this)">
+          <span class="like-count" th:id="'like-count-' + *{studyNo}" data-th-text="*{likeCount}"></span>
+        </i>
+      </div>
     </div>
-
 
     <div class="d-flex justify-content-center"
          data-th-if="*{stat != 'S01-103' && stat != 'S01-104'}">
-      <button id="applyStudyBtn" class="btn btn-primary btn-lg" data-toggle="modal"
+      <button id="applyStudyBtn" type="button" class="btn btn-secondary" data-toggle="modal"
               data-target="#applyModal">신청하기
       </button>
     </div>
