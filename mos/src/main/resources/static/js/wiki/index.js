@@ -1,5 +1,5 @@
-import wiki from "./api/wiki/wiki.js";
-import {formatDate} from "./util/util.js";
+import wiki from "../api/wiki/wiki.js";
+import {formatDate} from "../util/util.js";
 
 const index = {
     currentPage: 0,
