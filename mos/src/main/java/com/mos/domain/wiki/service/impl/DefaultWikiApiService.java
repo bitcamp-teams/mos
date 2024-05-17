@@ -17,11 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DefaultWikiApiService implements WikiApiService {
 
   private final WikiApiRepository wikiApiRepository;
 
   @Override
+  @Transactional(readOnly = true)
   public List<JstreeWikiDto> getWikiTitleTree(int studyNo) {
     return wikiApiRepository.findByStudyNo(studyNo);
   }
@@ -34,6 +36,7 @@ public class DefaultWikiApiService implements WikiApiService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public JstreeWikiDto getNodeByWikiNo(int wikiNo) {
     return wikiApiRepository.findByWikiNo(wikiNo);
   }
@@ -49,13 +52,19 @@ public class DefaultWikiApiService implements WikiApiService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public WikiDto getWikiContent(int wikiNo) {
     return wikiApiRepository.findWikiByWikiNo(wikiNo);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Page<WikiDto> getList(Pageable page) {
-    List<WikiDto> all = wikiApiRepository.findAll(page);
-    return new PageImpl<>(all, page, all.size());
+    long offset = page.getOffset();
+    int pageSize = page.getPageSize();
+    List<WikiDto> all = wikiApiRepository.findAll(offset, pageSize);
+    int count = wikiApiRepository.findAllCount();
+    return new PageImpl<>(all, page, count);
   }
+
 }

@@ -24,4 +24,5 @@ public interface WikiApiService {
   WikiDto getWikiContent(int wikiNo);
 
   Page<WikiDto> getList(Pageable pageable);
+
 }
