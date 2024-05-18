@@ -4,11 +4,7 @@ import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
-import com.mos.domain.study.dto.AttachedFileDto;
-import com.mos.domain.study.dto.StudyAddDto;
-import com.mos.domain.study.dto.StudyDto;
-import com.mos.domain.study.dto.StudyLikeStatDto;
-import com.mos.domain.study.dto.TagDto;
+import com.mos.domain.study.dto.*;
 import com.mos.domain.study.service.StudyLikeService;
 import com.mos.domain.study.service.StudyService;
 import com.mos.domain.wiki.service.WikiService;
@@ -187,8 +183,27 @@ public class StudyController implements InitializingBean {
   @PostMapping("update")
   // 히든필드로 POST에 studyNo를 받는다!
   public String update(
-      @ModelAttribute StudyDto studyDto, Model model, HttpSession session, SessionStatus sessionStatus
+          @Validated @ModelAttribute("study") StudyUpdateDto studyUpdateDtoDto,
+          BindingResult bindingResult,
+          Model model,
+          HttpSession session,
+          SessionStatus sessionStatus
   ) throws Exception {
+
+    if (bindingResult.hasErrors()) {
+      model.addAttribute("study", studyUpdateDtoDto);
+      return "/study/edit?studyNo=" + studyUpdateDtoDto.getStudyNo();
+    }
+
+    StudyDto studyDto = StudyDto.builder()
+            .studyNo(studyUpdateDtoDto.getStudyNo())
+            .title(studyUpdateDtoDto.getTitle())
+            .method(studyUpdateDtoDto.getMethod())
+            .intake(studyUpdateDtoDto.getIntake())
+            .recruitmentDeadline(studyUpdateDtoDto.getRecruitmentDeadline())
+            .introduction(studyUpdateDtoDto.getIntroduction())
+            .build();
+
     studyService.update(studyDto);
     StudyDto result = studyService.getByStudyNo(studyDto.getStudyNo());
 
