@@ -17,6 +17,7 @@
 
 .sidebar-left {
   left: 0;
+  width: 20vw;
 }
 
 /*resize하도록 만든 왼쪽 네비게이션에 핸들 디자인을 커스텀함*/

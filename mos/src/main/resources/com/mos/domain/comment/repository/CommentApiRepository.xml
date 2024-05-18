@@ -34,9 +34,13 @@
 
   <insert id="saveStudyCommentByWikiNo" parameterType="StudyCommentDto">
     INSERT INTO
-      study_comment(member_no, study_no, content)
-    VALUES
-      (#{memberNo}, #{studyNo}, #{content})
+      study_comment(member_no, study_no, content
+    <if test="parentCommentNo != 0">, parent_comment_no</if>
+    )
+    VALUE
+      (#{memberNo}, #{studyNo}, #{content}
+    <if test="parentCommentNo != 0">, #{parentCommentNo}</if>
+    )
   </insert>
 
 
@@ -49,7 +53,7 @@
 
   <update id="deleteStudyCommentByCommentNo" parameterType="int">
     UPDATE study_comment
-    SET stat='S02-102'
+    SET stat='W02-104'
     WHERE comment_no=#{commentNo}
   </update>
 
@@ -60,11 +64,10 @@
     WHERE comment_no=#{commentNo}
   </update>
 
-
-
-
-
-
-
+  <update id="patchStudyComment" parameterType="StudyCommentDto">
+    UPDATE study_comment
+    SET content=#{content}
+    WHERE comment_no=#{commentNo}
+  </update>
 
 </mapper>
