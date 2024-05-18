@@ -61,14 +61,14 @@ $(function () {
   //여기서부터 차례로 이벤트 리스너를 등록한다.
   //클릭으로 인한 선택 등, select 대상이 변경되었을 때 발생하는 이벤트
   .on('changed.jstree', function (e, data) {
-    //기존 내역을 저장한다.
-    //select_node 보다 먼저 실행되는 이벤트일 것...
+    //변경사항이 있는 경우에 저장함.
     try {
-      saveContent(viewer.getMarkdown())
+      if (viewer.getMarkdown() !== $('#content').attr('content')) {
+        saveContent(viewer.getMarkdown())
+      }
     } catch (e) {
       //slightly quit...
     }
-
   })
   //이동이 완료되었을 때 move_node 이벤트가 발생한다.
   //potion, old_position을 반환하므로 순서를 DB에 저장할 수 있다.
@@ -271,6 +271,23 @@ function deleteSingleNode(data) {
   } else {
     // question = data.node.text + " 노드를 정말 삭제하시겠습니까?\n이 작업은 복구가 불가능합니다."
     confirm = true;
+    $.ajax({
+          method: 'DELETE',
+          url: patchUrl,
+          contentType: 'application/json',
+          data: node,
+          success: function (res) {
+            tree.jstree('refresh');
+          },
+          error: function (res) {
+            // 문제가 발생한 경우에만 데이터 동기가 깨진 것이므로 트리를 다시 그린다.
+            Swal.fire('😭오류가 발생했습니다.\n권한있는 사용자로 로그인 하셨나요?');
+            console.log(res);
+            tree.jstree('refresh');
+            tree.jstree('select_node', data.node.id);
+          }
+        }
+    );
   }
 
 }
