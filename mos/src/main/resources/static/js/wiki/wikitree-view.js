@@ -4,6 +4,12 @@ var url = new URL(window.location.href)
 var urlParams = url.searchParams;
 var studyNo = urlParams.get('studyNo');
 var wikiNo = urlParams.get('wikiNo');
+
+if (wikiNo == null) {
+  $('#contentEditLink').attr('href',
+      '/wiki/edit?studyNo=' + studyNo);
+}
+
 const getListUrl = "/api/wiki?studyNo=" + studyNo;
 const updateListOrderUrl = "/api/wiki";
 const patchUrl = "/api/wiki"

@@ -286,8 +286,22 @@ function refreshUrl() {
   wikiNo = urlParams.get('wikiNo');
 }
 
-function saveContent(content) {
+//저장 관련 시작
+//자동저장 (사용자 입력이 있는 경우에, 30초마다 실행됨.
+let saveTimeout;
+const saveInterval = 3000; // 30초
 
+$('body').on('input', () => {
+  if (!saveTimeout) {
+    saveContent(viewer.getMarkdown());
+  }
+});
+
+function saveContent(content) {
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    saveTimeout = null; // 타이머 초기화
+  }, saveInterval);
   //toastr 알림 위치 설정
   toastr.options = {
     "positionClass": "toast-bottom-right",
@@ -319,5 +333,7 @@ function saveContent(content) {
 window.addEventListener('beforeunload', function (event) {
   //비동기로 저장하는거라 100% 성공한다는 보장은 없음..
   saveContent(viewer.getMarkdown());
-  event.preventDefault();
+  // event.preventDefault();
 });
+
+//저장 관련 끝
