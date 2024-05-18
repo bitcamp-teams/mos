@@ -57,6 +57,11 @@ public class DefaultCommentApiService implements CommentApiService {
     commentApiRepository.patchWikiComment(wikiCommentDto);
   }
 
+  @Override
+  public void patchStudyComment(StudyCommentDto studyCommentDto) {
+    commentApiRepository.patchStudyComment(studyCommentDto);
+  }
+
   private void publishEvent(StudyCommentDto studyCommentDto) {
     CommentAndAuthorIdEvent commentAndAuthorIdEvent = new CommentAndAuthorIdEvent(studyCommentDto);
     applicationEventPublisher.publishEvent(commentAndAuthorIdEvent);
