@@ -25,12 +25,12 @@
     <h1 th:text="*{title}"></h1>
   </div>
 
-    <div class="study-edit">
-    <th-block data-th-if="${session.loginUser != null}">
-    <a type="button" class="btn btn-outline-secondary btn-sm" data-th-if="${study.memberNo == session.loginUser.memberNo}" data-th-href="@{edit(studyNo=*{studyNo})}" href="delete.html">편집</a>
-    <a type="button" class="btn btn-outline-secondary btn-sm" data-th-if="${study.memberNo == session.loginUser.memberNo}" data-th-href="@{delete(studyNo=*{studyNo})}" href="delete.html">삭제</a>
-    </th-block>
-    </div>
+      <div class="study-edit">
+        <th-block data-th-if="${session.loginUser != null}">
+          <a type="button" class="btn btn-outline-secondary btn-sm" data-th-if="${study.memberNo == session.loginUser.memberNo}" data-th-href="@{edit(studyNo=*{studyNo})}" href="delete.html">편집</a>
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-th-if="${study.memberNo == session.loginUser.memberNo}" onclick="deleteStudy()">삭제</button>
+        </th-block>
+      </div>
 
       <!--    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>-->
 
@@ -205,6 +205,25 @@
         });
       }
     </script>
+
+      <!-- 스터디 삭제 스크립트 추가 -->
+      <script data-th-inline="javascript">
+        let studyNo = /*[[${study.studyNo}]]*/
+            function deleteStudy() {
+          $.ajax({
+            url: "/study/delete?studyNo=" + studyNo,
+            type: "GET",
+            success: function() {
+              new swal("성공", "게시물이 삭제되었습니다.", "success");
+              // 삭제 후 추가 작업이 필요한 경우 여기에 코드를 작성합니다.
+            },
+            error: function() {
+              new swal("실패", "게시물 삭제에 실패했습니다.", "error");
+            }
+          });
+        }
+      </script>
+
 
       <!--      &lt;!&ndash;댓글추가 기능 시작&ndash;&gt;-->
       <!--      <form id="commentForm" th:action="@{/comment/study/add}" method="post">-->
