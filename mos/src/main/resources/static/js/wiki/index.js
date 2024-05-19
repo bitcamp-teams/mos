@@ -1,19 +1,21 @@
-import wiki from "./api/wiki/wiki.js";
-import {formatDate} from "./util/util.js";
+import wiki from "../api/wiki/wiki.js";
+import {excludeImg, formatDate} from "../util/util.js";
 
 const index = {
     currentPage: 0,
     totalPages: 0,
     init() {
         const _this = this;
-        _this.initLoad();
+        document.addEventListener('DOMContentLoaded', function () {
+            _this.initLoad();
+        });
 
         $(window).scroll(function () {
             //전체 문서의 높이
             const documentHeight = document.body.offsetHeight;
             //(현재 화면상단 + 현재 화면 높이)
             const nowHeight = window.scrollY + window.innerHeight;
-            if (nowHeight >= documentHeight * 0.9) {
+            if (nowHeight >= documentHeight) {
                 if (_this.currentPage < _this.totalPages) {
                     _this.loadWiki(_this.currentPage, true);
                 }
@@ -50,6 +52,7 @@ const index = {
     },
     createCards(wikiList) {
         const cardsArr = [];
+        console.log(wikiList)
         wikiList.forEach(function (wiki) {
             const li = $('<li class="PostCard_block"></li>');
             // 썸네일 영역
@@ -66,12 +69,13 @@ const index = {
 
             // 본문
             const date = formatDate(wiki.createdDate);
+            const parsedData = excludeImg(wiki.content);
             const content = $(`<div class="PostCard_content">
                                             <a href="/wiki/view?studyNo=${wiki.studyNo}&wikiNo=${wiki.wikiNo}"
                                                class="VLink_block PostCard_styleLink">
                                                 <h4 class="PostCard_h4 utils_ellipsis">${wiki.title}</h4>
                                                 <div class="PostCard_descriptionWrapper">
-                                                    <p class="PostCard_clamp">${wiki.content}</p>
+                                                    <p class="PostCard_clamp">${parsedData}</p>
                                                 </div>
                                             </a>
                                             <div class="PostCard_subInfo"><span>${date}</span>

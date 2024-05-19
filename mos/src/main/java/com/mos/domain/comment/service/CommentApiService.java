@@ -19,4 +19,6 @@ public interface CommentApiService {
   void deleteStudyCommentByCommentNo(int commentNo);
 
   void patchWikiComment(WikiCommentDto wikiCommentDto);
+
+  void patchStudyComment(StudyCommentDto studyCommentDto);
 }

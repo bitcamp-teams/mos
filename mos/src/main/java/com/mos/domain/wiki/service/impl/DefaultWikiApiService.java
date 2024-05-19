@@ -67,4 +67,9 @@ public class DefaultWikiApiService implements WikiApiService {
     return new PageImpl<>(all, page, count);
   }
 
+  @Override
+  public void patchWikiContentByWikiNo(WikiDto wikiDto) {
+    wikiApiRepository.updateWikiContentByWikiNo(wikiDto);
+  }
+
 }

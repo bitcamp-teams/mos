@@ -52,3 +52,10 @@ export const formatDate = (dateString) => {
     }
 }
 
+export const excludeImg = (str) => {
+    if (!str) return '';
+    const pattern = /!\[.*?\)/g;
+    const cleaned = str.replace(pattern, '');
+    return cleaned.slice(0, 255);
+}
+

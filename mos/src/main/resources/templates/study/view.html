@@ -1,8 +1,25 @@
 <div data-th-replace="header::header">머리말</div>
-<div class="page-margin wrapper-mos">
+<link rel="stylesheet" href="/css/wiki/view.css">
+<div class="container-fluid">
 
+  <div class="row justify-content-center flex-nowrap">
 
-  <div data-th-object="${study}">
+    <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
+    <nav id="resizable" class="resizable-column sidebar-left border">
+      <div>
+        <!--TODO: study 제목을 보여주기-->
+        <div id="wikiTree">
+          <ul>
+            <li>
+              불러오는 중입니다.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 스터디 안내 -->
+    <div data-th-object="${study}" class="main col mx-auto">
 
   <div class="study-three">
     <h1 th:text="*{title}"></h1>
@@ -15,24 +32,26 @@
     </th-block>
     </div>
 
-    <!--    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>-->
-
-    <a th:if="${not #strings.isEmpty(firstWikiNo)}"
-       th:href="@{/wiki/view(studyNo=${study.studyNo})}" href="/wiki/view.html">[이 스터디의 위키 보러가기]</a>
-    <p th:unless="${not #strings.isEmpty(firstWikiNo)}">이 스터디는 작성한 위키가 없습니다.
-      <a th:href="@{/wiki/view(studyNo=${study.studyNo})}" href="/wiki/view.html">[작성하기]</a>
-    </p>
+      <!--    <a data-th-href="@{/wiki/list(studyNo=*{studyNo})}" href="/wiki/list.html">[이 스터디의 위키 보러가기]</a>-->
 
 
-    <!--        <p> 스터디장 = <span th:text="*{username}"> </span></p>-->
-    <!--        <p> 진행방식 = <span th:text="*{method}"> </span></p>-->
-    <!--        <p> 모집정원 = <span th:text="*{intake}"> </span></p>-->
-    <!--        <p> 기술스택 =-->
-    <!--            <span th:each="tag : ${study.tagList}"></span>-->
-    <!--            <span th:text="${tag.name}"></span>-->
-    <!--    </p>-->
-    <!--    <p> 모집마감 = <span th:text="*{recruitmentDeadline}"> </span></p>-->
-    <!--    <p> 예상종료일 = <span th:text="*{endDate}"> </span></p>-->
+      <a th:if="${not #strings.isEmpty(firstWikiNo)}"
+         th:href="@{/wiki/view(studyNo=${study.studyNo})}" href="/wiki/view.html">[이 스터디의 위키
+        보러가기]</a>
+      <p th:unless="${not #strings.isEmpty(firstWikiNo)}">이 스터디는 작성한 위키가 없습니다.
+        <a th:href="@{/wiki/view(studyNo=${study.studyNo})}" href="/wiki/view.html">[작성하기]</a>
+      </p>
+
+
+      <!--        <p> 스터디장 = <span th:text="*{username}"> </span></p>-->
+      <!--        <p> 진행방식 = <span th:text="*{method}"> </span></p>-->
+      <!--        <p> 모집정원 = <span th:text="*{intake}"> </span></p>-->
+      <!--        <p> 기술스택 =-->
+      <!--            <span th:each="tag : ${study.tagList}"></span>-->
+      <!--            <span th:text="${tag.name}"></span>-->
+      <!--    </p>-->
+      <!--    <p> 모집마감 = <span th:text="*{recruitmentDeadline}"> </span></p>-->
+      <!--    <p> 예상종료일 = <span th:text="*{endDate}"> </span></p>-->
 
     <div class="card">
       <div class="study-card-body">
@@ -64,36 +83,37 @@
                     data-placement="top">
               <span th:text="${tag.name}" class="badge badge-warning"></span>
               </span>
-            </div>
-            <div class="mb-3">
-              <span class="font-weight-bold">모집마감:</span>
-              <span th:text="*{recruitmentDeadline}"
-                    class="ml-2" data-toggle="tooltip" data-placement="top" title="모집 종료 날짜"></span>
-            </div>
-            <div class="mb-3">
-              <span class="font-weight-bold">예상종료일:</span>
-              <span th:text="*{endDate}" class="ml-2"
-                    data-toggle="tooltip" data-placement="top" title="스터디 예상 종료일"></span>
+              </div>
+              <div class="mb-3">
+                <span class="font-weight-bold">모집마감:</span>
+                <span th:text="*{recruitmentDeadline}"
+                      class="ml-2" data-toggle="tooltip" data-placement="top"
+                      title="모집 종료 날짜"></span>
+              </div>
+              <div class="mb-3">
+                <span class="font-weight-bold">예상종료일:</span>
+                <span th:text="*{endDate}" class="ml-2"
+                      data-toggle="tooltip" data-placement="top" title="스터디 예상 종료일"></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <!--    툴팁을 추가할 수 있음-->
-    <script>
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-      });
-    </script>
+      <!--    툴팁을 추가할 수 있음-->
+      <script>
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip();
+        });
+      </script>
 
-    <div class="card">
-      <div class="card-body">
-        <div th:attr="introduction = ${study.introduction}"></div>
-        <div id="viewer">
-          <strong>Viewer Here</strong>
+      <div class="card">
+        <div class="card-body">
+          <div th:attr="introduction = ${study.introduction}"></div>
+          <div id="viewer">
+            <strong>Viewer Here</strong>
+          </div>
         </div>
       </div>
-    </div>
 
 
     <!-- Like button -->
@@ -186,59 +206,106 @@
       }
     </script>
 
-    <!--댓글추가 기능 시작-->
-    <form id="commentForm" th:action="@{/comment/study/add}" method="post">
-      <p>
-        <input type="hidden" name="studyNo" th:value="${study.studyNo}">
-        <input type="hidden" name="title" th:value="${study.title}">
-        <input type="hidden" name="memberNo" th:value="${session.loginUser?.memberNo}">
-        <input type="hidden" name="notiReceiver" th:value="${study.memberNo}">
-        <input type="text" name="username" th:value="${session.loginUser?.userName}" readonly>
-      </p>
-      <div><textarea class="form-control" style="box-sizing: border-box; display: block;"
-                     name="content"
-                     placeholder="댓글을 입력하세요"></textarea></div>
+      <!--      &lt;!&ndash;댓글추가 기능 시작&ndash;&gt;-->
+      <!--      <form id="commentForm" th:action="@{/comment/study/add}" method="post">-->
+      <!--        <p>-->
+      <!--          <input type="hidden" name="studyNo" th:value="${study.studyNo}">-->
+      <!--          <input type="hidden" name="title" th:value="${study.title}">-->
+      <!--          <input type="hidden" name="memberNo" th:value="${session.loginUser?.memberNo}">-->
+      <!--          <input type="hidden" name="notiReceiver" th:value="${study.memberNo}">-->
+      <!--          <input type="text" name="username" th:value="${session.loginUser?.userName}" readonly>-->
+      <!--        </p>-->
+      <!--        <div><textarea class="form-control" style="box-sizing: border-box; display: block;"-->
+      <!--                       name="content"-->
+      <!--                       placeholder="댓글을 입력하세요"></textarea></div>-->
 
 
-      <button id="submitBtn" type="button">댓글 등록</button>
-    </form>
-    <!--댓글추가 기능 끝-->
-    <!--댓글 리스트 기능 시작-->
-  </div>
+      <!--        <button id="submitBtn" type="button">댓글 등록</button>-->
+      <!--      </form>-->
+      <!--      &lt;!&ndash;댓글추가 기능 끝&ndash;&gt;-->
+      <!--      &lt;!&ndash;댓글 리스트 기능 시작&ndash;&gt;-->
+      <!--    </div>-->
 
-  <div th:if="${#lists.isEmpty(studyComments)}">
-    <p>아직 댓글이 없어요.</p>
-  </div>
-  <div th:each="comment : ${studyComments}" th:if="${comment.stat} != '삭제'"
-       style="border: 1px solid #000;">
-    <p>
-      <a th:href="@{/comment/study/delete(commentNo=${comment.commentNo}, studyNo=${comment.studyNo})}"
-         href="#">[삭제]</a>
-      <button
-          th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'"
-          th:text="'편집'"></button>
-    </p>
-    <p>
-      <span th:text="${comment.username}"/>
-      <span th:text="${comment.createdDate}"/>
-    </p>
-    <div class="comment-content" th:id="'comment-' + ${comment.commentNo}">
-      <span th:text="${comment.content}"></span>
+      <!--    <div th:if="${#lists.isEmpty(studyComments)}">-->
+      <!--      <p>아직 댓글이 없어요.</p>-->
+      <!--    </div>-->
+      <!--    <div th:each="comment : ${studyComments}" th:if="${comment.stat} != '삭제'"-->
+      <!--         style="border: 1px solid #000;">-->
+      <!--      <p>-->
+      <!--        <a th:href="@{/comment/study/delete(commentNo=${comment.commentNo}, studyNo=${comment.studyNo})}"-->
+      <!--           href="#">[삭제]</a>-->
+      <!--        <button-->
+      <!--            th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'"-->
+      <!--            th:text="'편집'"></button>-->
+      <!--      </p>-->
+      <!--      <p>-->
+      <!--        <span th:text="${comment.username}"/>-->
+      <!--        <span th:text="${comment.createdDate}"/>-->
+      <!--      </p>-->
+      <!--      <div class="comment-content" th:id="'comment-' + ${comment.commentNo}">-->
+      <!--        <span th:text="${comment.content}"></span>-->
+      <!--      </div>-->
+      <!--      <input type="text" class="comment-input" th:id="'comment-input-' + ${comment.commentNo}"-->
+      <!--             th:value="${comment.content}" style="display: none;">-->
+      <!--      <div class="button-group" style="display: none;"-->
+      <!--           th:id="'button-group-' + ${comment.commentNo}">-->
+      <!--        <button class="save-btn" th:id="'save-btn-' + ${comment.commentNo}"-->
+      <!--                th:onclick="'saveComment(' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'">-->
+      <!--          저장-->
+      <!--        </button>-->
+      <!--        <button class="cancel-btn" th:onclick="'cancelEdit(' + ${comment.commentNo} + ');'">취소-->
+      <!--        </button>-->
+      <!--      </div>-->
+      <!--    </div>-->
+      <!--    &lt;!&ndash;댓글 리스트 기능 끝&ndash;&gt;-->
+
+      <!-- comment 영역-->
+      <hr class="my-4 bg-primary">
+      <div class="row">
+
+        <div class="commentForm">
+          <div class="form-group">
+            <textarea class="form-control comment-input" id="commentContent"
+                      placeholder="댓글을 입력하세요"></textarea>
+            <button class="btn btn-primary comment-submit" id="submitComment">등록</button>
+          </div>
+        </div>
+
+        <div class="commentList">
+          <!-- 댓글을 이 영역에 비동기로 만들어주기 -->
+        </div>
+
+      </div>
+      <!-- comment 영역 끝-->
     </div>
-    <input type="text" class="comment-input" th:id="'comment-input-' + ${comment.commentNo}"
-           th:value="${comment.content}" style="display: none;">
-    <div class="button-group" style="display: none;" th:id="'button-group-' + ${comment.commentNo}">
-      <button class="save-btn" th:id="'save-btn-' + ${comment.commentNo}"
-              th:onclick="'saveComment(' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'">
-        저장
-      </button>
-      <button class="cancel-btn" th:onclick="'cancelEdit(' + ${comment.commentNo} + ');'">취소
-      </button>
-    </div>
   </div>
-  <!--댓글 리스트 기능 끝-->
-
-
 </div>
+<!--js-->
+<!-- for resizable column -->
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/hot-sneaks/jquery-ui.css"/>
+<script src="/js/wiki/jqueryui-resiazble.js"></script>
+<!--loginUser to var-->
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var loginUser = /*[[${loginUser}]]*/ 0;
+  console.log(loginUser.userName);
+  console.log(loginUser.memberNo);
+  /*]]>*/
+</script>
+<!--jstree-->
+<!--<link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">-->
+<script src="/plugins/jstree/jstree.js"></script>
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>
 <script src="/js/study/view.js"></script>
+<!--study용 jstree view-->
+<script src="/js/study/wikitree-view.js"></script>
+<!--bootstrap-toc-->
+<link rel="stylesheet" href="/plugins/bootstarp-toc/bootstrap-toc.css">
+<script src="/plugins/bootstarp-toc/bootstrap-toc.js"></script>
+<!--asyncComment(코멘트 처리를 위한 js)-->
+<script src="/js/comment/study-async-comment.js"></script>
+<!--moment.js(날짜관련 라이브러리)-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <div data-th-replace="footer::footer">꼬리말</div>

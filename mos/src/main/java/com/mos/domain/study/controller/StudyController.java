@@ -71,10 +71,10 @@ public class StudyController implements InitializingBean {
 
   @Override
   public void afterPropertiesSet() throws Exception {
-        this.uploadDir = "study/";
+    this.uploadDir = "study/";
 
-        log.debug("uploadDir ={}", this.uploadDir);
-        log.debug("bucketname ={}", this.bucketName);
+    log.debug("uploadDir ={}", this.uploadDir);
+    log.debug("bucketname ={}", this.bucketName);
   }
 
 
@@ -114,18 +114,10 @@ public class StudyController implements InitializingBean {
       TagDto tag = TagDto.builder().tagNo(no).build();
       tagList.add(tag);
     }
-    StudyDto studyDto = StudyDto.builder()
-        .memberNo(loginUser.getMemberNo())
-        .method(studyAddDto.getMethod())
-        .studyNo(studyAddDto.getStudyNo())
-        .title(studyAddDto.getTitle())
-        .introduction(studyAddDto.getIntroduction())
-        .startDate(studyAddDto.getStartDate())
-        .endDate(studyAddDto.getEndDate())
-        .intake(studyAddDto.getIntake())
-        .recruitmentDeadline(studyAddDto.getRecruitmentDeadline())
-        .tagList(tagList)
-        .build();
+    StudyDto studyDto = StudyDto.builder().memberNo(loginUser.getMemberNo()).method(studyAddDto.getMethod())
+        .studyNo(studyAddDto.getStudyNo()).title(studyAddDto.getTitle()).introduction(studyAddDto.getIntroduction())
+        .startDate(studyAddDto.getStartDate()).endDate(studyAddDto.getEndDate()).intake(studyAddDto.getIntake())
+        .recruitmentDeadline(studyAddDto.getRecruitmentDeadline()).tagList(tagList).build();
 
     // MemberStudyDto 객체 생성 및 값 설정
     MemberStudyDto memberStudyDto = new MemberStudyDto();
@@ -143,13 +135,18 @@ public class StudyController implements InitializingBean {
   }
 
   @GetMapping("view")
-  public void view(@LoginUser MemberDto user, @RequestParam int studyNo, Model model) throws Exception {
+  public void view(@LoginUser MemberDto loginUser, @RequestParam int studyNo, Model model) throws Exception {
 
-    if (user != null) {
-      model.addAttribute("memberNo", user.getMemberNo());
+    try {
+      model.addAttribute("loginUser", loginUser);
+    } catch (Exception e) {
+      //slightly quit
+    }
+    if (loginUser != null) {
+      model.addAttribute("memberNo", loginUser.getMemberNo());
       StudyLikeStatDto studyLikeStatDto = new StudyLikeStatDto();
       studyLikeStatDto.setStudyNo(studyNo);
-      studyLikeStatDto.setMemberNo(user.getMemberNo());
+      studyLikeStatDto.setMemberNo(loginUser.getMemberNo());
       model.addAttribute("isLiked", studyLikeService.checked(studyLikeStatDto));
     } else {
 
@@ -169,7 +166,9 @@ public class StudyController implements InitializingBean {
 
     //첫번째 wikiNo도 모델에 담아준다.
     try {
+
       model.addAttribute("firstWikiNo", wikiService.getFirstWikiNo(studyNo));
+
     } catch (Exception e) {
       //아직 위키가 없는 상태임
     }
@@ -187,14 +186,11 @@ public class StudyController implements InitializingBean {
 
   @PostMapping("update")
   // 히든필드로 POST에 studyNo를 받는다!
-  public String update(@ModelAttribute StudyDto studyDto,
-      Model model,
-      HttpSession session,
-      SessionStatus sessionStatus
-      ) throws Exception {
+  public String update(
+      @ModelAttribute StudyDto studyDto, Model model, HttpSession session, SessionStatus sessionStatus
+  ) throws Exception {
     studyService.update(studyDto);
     StudyDto result = studyService.getByStudyNo(studyDto.getStudyNo());
-
 
     model.addAttribute("study", result);
 
@@ -365,8 +361,7 @@ public class StudyController implements InitializingBean {
 
   @PostMapping("file/upload")
   @ResponseBody
-  public Object fileUpload(@LoginUser MemberDto loginUser, MultipartFile[] files, Model model)
-      throws Exception {
+  public Object fileUpload(@LoginUser MemberDto loginUser, MultipartFile[] files, Model model) throws Exception {
     // NCP Object Storage에 저장한 파일의 이미지 이름을 보관할 컬렉션을 준비한다.
     ArrayList<AttachedFileDto> attachedFiles = new ArrayList<>();
 

@@ -25,4 +25,5 @@ public interface WikiApiService {
 
   Page<WikiDto> getList(Pageable pageable);
 
+  void patchWikiContentByWikiNo(WikiDto wikiDto);
 }
