@@ -6,14 +6,16 @@ const index = {
     totalPages: 0,
     init() {
         const _this = this;
-        _this.initLoad();
+        document.addEventListener('DOMContentLoaded', function () {
+            _this.initLoad();
+        });
 
         $(window).scroll(function () {
             //전체 문서의 높이
             const documentHeight = document.body.offsetHeight;
             //(현재 화면상단 + 현재 화면 높이)
             const nowHeight = window.scrollY + window.innerHeight;
-            if (nowHeight >= documentHeight * 0.9) {
+            if (nowHeight >= documentHeight) {
                 if (_this.currentPage < _this.totalPages) {
                     _this.loadWiki(_this.currentPage, true);
                 }
