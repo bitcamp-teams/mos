@@ -12,6 +12,8 @@ import com.mos.global.auth.LoginUser;
 
 import com.mos.global.storage.service.StorageService;
 import java.net.URI;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -147,7 +149,6 @@ public class StudyController implements InitializingBean {
       studyLikeStatDto.setMemberNo(loginUser.getMemberNo());
       model.addAttribute("isLiked", studyLikeService.checked(studyLikeStatDto));
     } else {
-
       model.addAttribute("isLiked", null);
     }
 
