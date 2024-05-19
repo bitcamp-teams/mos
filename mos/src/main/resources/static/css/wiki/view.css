@@ -96,6 +96,13 @@
   margin-left: 40px;
   margin-top: -7px;
 }
+.wiki-header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
 
 #profile-image {
   max-width: 100px;

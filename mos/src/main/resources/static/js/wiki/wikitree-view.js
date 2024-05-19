@@ -102,7 +102,7 @@ $(function () {
           }
       $('#profile-image').attr('src', profileImageUrl);
       $('#author').html(nodeContent.username);
-      $('#title').html(nodeContent.title);
+      $('#contentTitle').html(nodeContent.title);
       $('#contentEditLink').attr('href',
           '/wiki/edit?studyNo=' + studyNo + '&wikiNo=' + nodeContent.wikiNo);
       $('#content').attr('content', nodeContent.content);
