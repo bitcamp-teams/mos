@@ -28,6 +28,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -217,23 +218,35 @@ public class StudyController implements InitializingBean {
     return "redirect:view?studyNo=" + studyDto.getStudyNo();
   }
 
+//  @GetMapping("delete")
+//  public String delete(HttpSession session, int studyNo) throws Exception {
+//    // TODO 스터디장만 삭제 권한 있고,
+//    //  연결된 다른 참여회원이 존재할 경우 삭제 불가하며
+//    //  타인이 작성된 위키가 있는 경우는 삭제 불가
+//    studyService.deleteStudy(studyNo);
+//
+////    List<AttachedFileDto> files = studyService.getAttachedFiles(studyNo);
+//
+//    // TODO 연결된 위키도 전부 삭제함
+//    // wikiService.deleteAllByStudyNo(studyNo);
+//
+////    for (AttachedFileDto file : files) {
+////      storageService.delete(this.bucketName, this.uploadDir, file.getFilePath());
+////    }
+//
+//    return "redirect:list";
+//  }
+
   @GetMapping("delete")
-  public String delete(HttpSession session, int studyNo) throws Exception {
-    // TODO 스터디장만 삭제 권한 있고,
-    //  연결된 다른 참여회원이 존재할 경우 삭제 불가하며
-    //  타인이 작성된 위키가 있는 경우는 삭제 불가
-    studyService.deleteStudy(studyNo);
+  public ResponseEntity<String> delete(int studyNo) throws Exception {
+    try {
+      // 삭제 작업 수행
+      studyService.deleteStudy(studyNo);
 
-//    List<AttachedFileDto> files = studyService.getAttachedFiles(studyNo);
-
-    // TODO 연결된 위키도 전부 삭제함
-    // wikiService.deleteAllByStudyNo(studyNo);
-
-//    for (AttachedFileDto file : files) {
-//      storageService.delete(this.bucketName, this.uploadDir, file.getFilePath());
-//    }
-
-    return "redirect:list";
+      return ResponseEntity.ok("성공");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("실패");
+    }
   }
 
   @PostMapping("/applyStudy")
