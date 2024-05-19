@@ -350,58 +350,6 @@ public class StudyController implements InitializingBean {
   }
 
 
-  @GetMapping("file/delete")
-  public String fileDelete(@LoginUser MemberDto loginUser, int fileNo) throws Exception {
-
-    if (loginUser == null) {
-      throw new Exception("로그인하시기 바랍니다!");
-    }
-
-    AttachedFileDto file = studyService.getAttachedFile(fileNo);
-    if (file == null) {
-      throw new Exception("첨부파일 번호가 유효하지 않습니다.");
-    }
-
-    int writerNo = studyService.getByStudyNo(file.getStudyNo()).getMemberNo();
-    if (writerNo != loginUser.getMemberNo()) {
-      throw new Exception("권한이 없습니다.");
-    }
-
-    studyService.deleteAttachedFile(fileNo);
-
-    storageService.delete(this.bucketName, this.uploadDir, file.getFilePath());
-
-    return "redirect:/study/view?no=" + file.getStudyNo();
-  }
-
-
-  @PostMapping("file/upload")
-  @ResponseBody
-  public Object fileUpload(@LoginUser MemberDto loginUser, MultipartFile[] files, Model model) throws Exception {
-    // NCP Object Storage에 저장한 파일의 이미지 이름을 보관할 컬렉션을 준비한다.
-    ArrayList<AttachedFileDto> attachedFiles = new ArrayList<>();
-
-    if (loginUser == null) {
-      // 로그인 하지 않았으면 빈 목록을 보낸다.
-      return attachedFiles;
-    }
-
-    // 클라이언트가 보낸 멀티파트 파일을 NCP Object Storage에 업로드한다.
-    for (MultipartFile file : files) {
-      if (file.getSize() == 0) {
-        continue;
-      }
-      String filename = storageService.upload(this.bucketName, this.uploadDir, file);
-      attachedFiles.add(AttachedFileDto.builder().filePath(filename).build());
-    }
-
-    // 업로드한 파일 목록을 세션에 보관한다.
-    model.addAttribute("attachedFiles", attachedFiles);
-
-    // 클라이언트에서 이미지 이름을 가지고 <img> 태그를 생성할 수 있도록
-    // 업로드한 파일의 이미지 정보를 보낸다.
-    return attachedFiles;
-  }
 
 
 }

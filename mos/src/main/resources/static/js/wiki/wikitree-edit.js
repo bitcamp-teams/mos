@@ -109,14 +109,53 @@ $(function () {
       }
       const {Editor} = toastui;
       const {codeSyntaxHighlight} = Editor.plugin;
+
       viewer = Editor.factory({
-        el: document.querySelector('#viewer'),
-        //previewStyle: 'vertical',
+        el: document.querySelector('#viewer'), // 에디터를 적용할 요소 (컨테이너)
         viewer: false,
-        height: '100%',
+        height: '100%',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+        initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
         initialValue: nodeContent.content,
-        plugins: [[codeSyntaxHighlight, {highlighter: Prism}]],
+        plugins: [[codeSyntaxHighlight, {highlighter: Prism}]],                   // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
+        previewStyle: 'vertical',               // 마크다운 프리뷰 스타일 (tab || vertical)
+        placeholder: '내용을 입력해 주세요.',
+        /* start of hooks */
+        hooks: {
+          async addImageBlobHook(blob, callback) { // 이미지 업로드 로직 커스텀
+            try {
+              /*
+               * 1. 에디터에 업로드한 이미지를 FormData 객체에 저장
+               *    (이때, 컨트롤러 uploadEditorImage 메서드의 파라미터인 'image'와 formData에 append 하는 key('image')값은 동일해야 함)
+               */
+              const formData = new FormData();
+              formData.append('files', blob);
+
+              // 2. FileApiController - uploadEditorImage 메서드 호출
+              const response = await fetch('/storage/file/upload', {
+                method : 'POST',
+                body : formData,
+              });
+
+              // 3. 컨트롤러에서 전달받은 디스크에 저장된 파일명
+              const filename = await response.text();
+              const jsonResponse = JSON.parse(filename);
+              const filePath = jsonResponse[0].filePath;
+              console.log('서버에 저장된 파일명 : ', filename);
+
+              // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
+              const imageUrl = `https://kr.object.ncloudstorage.com/mos/study/${filePath}`;
+              callback(imageUrl, 'image alt attribute');
+
+            } catch (error) {
+              console.error('업로드 실패 : ', error);
+            }
+          }
+        }
+        /* end of hooks */
       });
+
+
+
       history.pushState(null, null,
           '/wiki/edit?studyNo=' + nodeContent.studyNo + '&wikiNo='
           + nodeContent.wikiNo);

@@ -1,7 +1,7 @@
 package com.mos.domain.study.service;
 
 import com.mos.domain.member.dto.MemberStudyDto;
-import com.mos.domain.study.dto.AttachedFileDto;
+import com.mos.domain.study.dto.AttachedFileStudyDto;
 import java.util.List;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.dto.TagDto;
@@ -32,9 +32,9 @@ public interface StudyService {
 
   void updateLikeCount(int studyNo, int likeCount);
 
-  List<AttachedFileDto> getAttachedFiles(int studyNo);
+  List<AttachedFileStudyDto> getAttachedFiles(int studyNo);
 
-  AttachedFileDto getAttachedFile(int fileNo);
+  AttachedFileStudyDto getAttachedFile(int fileNo);
 
   int deleteAttachedFile(int fileNo);
 }

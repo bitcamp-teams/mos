@@ -1,7 +1,7 @@
 package com.mos.global.storage.controller;
 
 import com.mos.domain.member.dto.MemberDto;
-import com.mos.domain.study.dto.AttachedFileDto;
+import com.mos.domain.study.dto.AttachedFileStudyDto;
 import com.mos.global.auth.LoginUser;
 import com.mos.global.storage.service.StorageService;
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,7 +66,7 @@ public class StorageController implements InitializingBean {
     public Object fileUpload(@LoginUser MemberDto loginUser, MultipartFile[] files, Model model)
         throws Exception {
         // NCP Object Storage에 저장한 파일의 이미지 이름을 보관할 컬렉션을 준비한다.
-        ArrayList<AttachedFileDto> attachedFiles = new ArrayList<>();
+        ArrayList<AttachedFileStudyDto> attachedFiles = new ArrayList<>();
 
         if (loginUser == null) {
             // 로그인 하지 않았으면 빈 목록을 보낸다.
@@ -80,7 +79,7 @@ public class StorageController implements InitializingBean {
                 continue;
             }
             String filename = storageService.upload(this.bucketName, this.uploadDir, file);
-            attachedFiles.add(AttachedFileDto.builder().filePath(filename).build());
+            attachedFiles.add(AttachedFileStudyDto.builder().filePath(filename).build());
         }
 
         // 업로드한 파일 목록을 세션에 보관한다.
