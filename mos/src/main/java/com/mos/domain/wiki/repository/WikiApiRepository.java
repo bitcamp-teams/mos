@@ -25,9 +25,9 @@ public interface WikiApiRepository {
 
   WikiDto findWikiByWikiNo(int wikiNo);
 
-  List<WikiDto> findAll(long offset, int pageSize);
+  List<WikiDto> findAll(long offset, int pageSize, String searchText);
 
-  int findAllCount();
+  int findAllCount(String searchText);
 
   void updateWikiContentByWikiNo(WikiDto wikiDto);
 }

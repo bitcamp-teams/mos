@@ -4,10 +4,27 @@ import {excludeImg, formatDate} from "../util/util.js";
 const index = {
     currentPage: 0,
     totalPages: 0,
+    searchText: '',
     init() {
         const _this = this;
         document.addEventListener('DOMContentLoaded', function () {
             _this.initLoad();
+            $('.search_searchInput').on('keypress', function (e) {
+                $('.search_searchInitialize').show();
+                if ($(this).val() === '') {
+                    $('.search_searchInitialize').hide();
+                }
+                // 엔터 치면 검색
+                if (e.keyCode === 13) {
+                    _this.searchText = $(this).val();
+                    _this.loadWiki(0, false);
+                }
+            });
+            $('.search_searchInitialize').on('click', function () {
+                $('.search_searchInput').val('');
+                $('.search_searchInitialize').hide();
+                _this.searchText = '';
+            });
         });
 
         $(window).scroll(function () {
@@ -16,6 +33,7 @@ const index = {
             //(현재 화면상단 + 현재 화면 높이)
             const nowHeight = window.scrollY + window.innerHeight;
             if (nowHeight >= documentHeight) {
+                console.log(_this.currentPage, _this.totalPages);
                 if (_this.currentPage < _this.totalPages) {
                     _this.loadWiki(_this.currentPage, true);
                 }
@@ -35,15 +53,24 @@ const index = {
     loadWiki(page, append = false) {
         const _this = this;
         const cardsContainer = $('.PostCardGrid_block');
+
         if (append) {
             $('.loader').show();
         } else {
             cardsContainer.html('');
         }
-        wiki.findAll(page).then(res => {
+
+        const params = {
+            page: page,
+            searchText: _this.searchText
+        };
+
+        wiki.findAll(params).then(res => {
+            console.log(res.data.totalElements);
             if (res.data == null) {
                 throw new Error('위키 정보를 불러올 수 없음');
             }
+            $('#totalWikiCount').text(res.data.totalElements);
             _this.totalPages = res.data.totalPages;
             _this.currentPage++;
             return res.data.content;
@@ -58,7 +85,6 @@ const index = {
     },
     createCards(wikiList) {
         const cardsArr = [];
-        console.log(wikiList)
         wikiList.forEach(function (wiki) {
             const li = $('<li class="PostCard_block"></li>');
             // 썸네일 영역

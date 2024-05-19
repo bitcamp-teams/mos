@@ -96,12 +96,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <if test="flag != null and flag != ''">
       ORDER BY result.${flag} desc
     </if>
-
     LIMIT #{pageable.offset}, #{pageable.pageSize};
   </select>
 
   <select id="countAll" resultType="long">
     SELECT COUNT(*) FROM study
+    WHERE 1=1
+    <if test="searchText != null and searchText != ''">
+      AND title like CONCAT('%',#{searchText},'%') OR introduction like CONCAT('%',#{searchText},'%')
+    </if>
   </select>
 
   <select id="getByStudyNo" resultMap="studyDetail">

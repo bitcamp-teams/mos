@@ -267,6 +267,58 @@ body {
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
+.HomeTab_right_wiki {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.search_container {
+  display: flex;
+  width: 300px;
+  height: 38px;
+  padding: 0 20px;
+  align-items: center;
+  grid-gap: 10px;
+  gap: 10px;
+  border-radius: 36px;
+  background: #ffffff;
+  position: relative;
+  box-shadow: 10px 5px 5px rgb(165 23 23 / 5%);
+}
+
+.search_searchImg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.search_searchInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 0;
+  font-weight: 500;
+  font-size: 16px;
+  width: 100%;
+}
+
+.search_searchInitialize {
+  display: block;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+.total-count-container {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  padding: 10px;
+  margin-right: 20px;
+}
 /*.sticky {*/
 /*  position: sticky !important;*/
 /*  top: 0;*/

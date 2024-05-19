@@ -59,11 +59,11 @@ public class DefaultWikiApiService implements WikiApiService {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<WikiDto> getList(Pageable page) {
+  public Page<WikiDto> getList(Pageable page, String searchText) {
     long offset = page.getOffset();
     int pageSize = page.getPageSize();
-    List<WikiDto> all = wikiApiRepository.findAll(offset, pageSize);
-    int count = wikiApiRepository.findAllCount();
+    List<WikiDto> all = wikiApiRepository.findAll(offset, pageSize, searchText);
+    int count = wikiApiRepository.findAllCount(searchText);
     return new PageImpl<>(all, page, count);
   }
 
