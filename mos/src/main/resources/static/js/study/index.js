@@ -25,6 +25,22 @@ const index = {
 
         document.addEventListener('DOMContentLoaded', function () {
             _this.initLoad();
+            $('.search_searchInput').on('keypress', function (e) {
+                $('.search_searchInitialize').show();
+                if ($(this).val() === '') {
+                    $('.search_searchInitialize').hide();
+                }
+                // 엔터 치면 검색
+                if (e.keyCode === 13) {
+                    const searchText = $(this).val();
+                    _this.initLoad(_this.flag, searchText)
+                }
+            });
+            $('.search_searchInitialize').on('click', function () {
+                $('.search_searchInput').val('');
+                $('.search_searchInitialize').hide();
+            });
+
         });
 
         $(window).scroll(function () {
@@ -40,22 +56,23 @@ const index = {
         });
 
     },
-    initLoad(flag = 'hit_count') {
+    initLoad(flag = 'hit_count', searchText = null) {
         const _this = this;
         // 초기 페이지 번호 설정
         _this.currentPage = 0;
         _this.totalPages = 0;
         $(document).scrollTop(0);
 
-        _this.loadStudy(_this.currentPage,false, flag);
+        _this.loadStudy(_this.currentPage,false, flag, searchText);
     },
-    loadStudy(page, append = false, flag = 'hit_count') {
+    loadStudy(page, append = false, flag = 'hit_count', searchText = null) {
         const _this = this;
         const cardsContainer = $('.PostCardGrid_block');
 
         const params = {
             page: page,
-            flag: flag
+            flag: flag,
+            searchText: searchText
         };
 
         if (append) {
