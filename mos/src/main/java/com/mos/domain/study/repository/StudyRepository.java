@@ -14,6 +14,7 @@ public interface StudyRepository {
   void add(StudyDto studyDto);
 
   List<StudyDto> findAll(Pageable pageable);
+  List<StudyDto> findAll(Pageable pageable, String flag);
   long countAll(); //
 
   StudyDto getByStudyNo(int studyNo);
