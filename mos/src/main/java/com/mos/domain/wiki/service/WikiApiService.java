@@ -23,7 +23,7 @@ public interface WikiApiService {
 
   WikiDto getWikiContent(int wikiNo);
 
-  Page<WikiDto> getList(Pageable pageable);
+  Page<WikiDto> getList(Pageable pageable, String searchText);
 
   void patchWikiContentByWikiNo(WikiDto wikiDto);
 }

@@ -35,7 +35,7 @@ const index = {
                 // 엔터 치면 검색
                 if (e.keyCode === 13) {
                     _this.searchText = $(this).val();
-                    _this.initLoad(_this.flag)
+                    _this.loadStudy(0, false, _this.flag);
                 }
             });
             $('.search_searchInitialize').on('click', function () {
@@ -52,6 +52,7 @@ const index = {
             //(현재 화면상단 + 현재 화면 높이)
             const nowHeight = window.scrollY + window.innerHeight;
             if (nowHeight >= documentHeight) {
+                console.log(_this.currentPage,  _this.totalPages)
                 if (_this.currentPage < _this.totalPages) {
                     _this.loadStudy(_this.currentPage, true);
                 }
