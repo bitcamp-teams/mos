@@ -60,13 +60,35 @@ body {
   --card-count: 5;
   --spacer: calc(var(--card-count) - 1);
   --width: 20%;
-  grid-template-columns: repeat(var(--card-count), minmax(calc((var(--width) - (32px * var(--spacer) / var(--card-count))) * 0.8), 1fr));
+  /*grid-template-columns: repeat(var(--card-count), minmax(calc((var(--width) - (32px * var(--spacer) / var(--card-count))) * 0.8), 1fr));*/
+  grid-template-columns: repeat(var(--card-count),calc(var(--width) - (32px * var(--spacer)/var(--card-count))))
 }
 
 @media screen and (max-width: 1919px) {
   .grid_homeGrid {
     --card-count: 4;
     --width: 25%;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .grid_homeGrid {
+    --card-count:3;
+    --width: 33.33%
+  }
+}
+
+@media screen and (max-width: 1056px) {
+  .grid_homeGrid {
+    --card-count:2;
+    --width: 50%
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .grid_homeGrid {
+    grid-template-columns:repeat(1,100%);
+    grid-gap: 16px
   }
 }
 
@@ -245,9 +267,9 @@ body {
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-.sticky {
-  position: sticky !important;
-  top: 0;
-  z-index: 1000;
-}
+/*.sticky {*/
+/*  position: sticky !important;*/
+/*  top: 0;*/
+/*  z-index: 1000;*/
+/*}*/
 

@@ -4,27 +4,46 @@ import {formatDate} from "../util/util.js";
 const index = {
     currentPage: 0,
     totalPages: 0,
-    flag: '',
+    flag: 'hit_count',
+    totalCount: 0,
+    searchText: '',
     init() {
         const _this = this;
-        $('.HomeTab_tab__viwzb > a').on('click', function (e) {
+        $('.HomeTab_tab > a').on('click', function (e) {
             e.preventDefault();
             $('.loader').show();
-            $('.HomeTab_tab__viwzb > a').removeClass('HomeTab_active__qHDGO');
-            $(this).addClass('HomeTab_active__qHDGO');
+            $('.HomeTab_tab > a').removeClass('HomeTab_active');
+            $(this).addClass('HomeTab_active');
             const flag = $(this).attr('data-flag');
             if (flag === 'trending') {
                 _this.flag = 'hit_count';
-                $('.HomeTab_indicator__wQ03f').css('left', '4%');
+                $('.HomeTab_indicator').css('left', '4%');
             } else if (flag === 'recent') {
                 _this.flag = 'created_date';
-                $('.HomeTab_indicator__wQ03f').css('left', '63.33%');
+                $('.HomeTab_indicator').css('left', '63.33%');
             }
             _this.initLoad(_this.flag);
         })
 
         document.addEventListener('DOMContentLoaded', function () {
             _this.initLoad();
+            $('.search_searchInput').on('keypress', function (e) {
+                $('.search_searchInitialize').show();
+                if ($(this).val() === '') {
+                    $('.search_searchInitialize').hide();
+                }
+                // 엔터 치면 검색
+                if (e.keyCode === 13) {
+                    _this.searchText = $(this).val();
+                    _this.initLoad(_this.flag)
+                }
+            });
+            $('.search_searchInitialize').on('click', function () {
+                $('.search_searchInput').val('');
+                $('.search_searchInitialize').hide();
+                _this.searchText = '';
+            });
+
         });
 
         $(window).scroll(function () {
@@ -55,7 +74,8 @@ const index = {
 
         const params = {
             page: page,
-            flag: flag
+            flag: flag,
+            searchText: _this.searchText
         };
 
         if (append) {
@@ -65,12 +85,13 @@ const index = {
         }
 
         study.findAll(params).then(res => {
+            console.log(res.data.totalElements);
             if (res.data == null) {
                 throw new Error('스터디 정보를 불러올 수 없음');
             }
+            $('#totalCount').text(res.data.totalElements);
             _this.totalPages = res.data.totalPages;
             _this.currentPage++;
-            console.log(res.data.content)
             return res.data.content;
         }).then(studyList => {
             if (!studyList || studyList.length === 0) {
