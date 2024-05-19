@@ -4,6 +4,7 @@ import com.mos.domain.member.dto.MemberStudyDto;
 
 import com.mos.domain.study.dto.AttachedFileDto;
 import com.mos.domain.study.repository.AttachedFileRepository;
+
 import java.util.List;
 
 import com.mos.domain.study.dto.TagDto;
@@ -14,9 +15,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.repository.StudyRepository;
@@ -72,6 +71,14 @@ public class DefaultStudyService implements StudyService {
   @Override
   public Page<StudyDto> list(Pageable pageable) {
     List<StudyDto> studyList = studyRepository.findAll(pageable);
+    long totalCount = studyRepository.countAll(); // 전체 데이터 개수 구하기
+    return new PageImpl<>(studyList, pageable, totalCount);
+  }
+
+  @Transactional(readOnly = true)
+  @Override
+  public Page<StudyDto> list(Pageable pageable, String flag) {
+    List<StudyDto> studyList = studyRepository.findAll(pageable, flag);
     long totalCount = studyRepository.countAll(); // 전체 데이터 개수 구하기
     return new PageImpl<>(studyList, pageable, totalCount);
   }

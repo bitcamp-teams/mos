@@ -12,6 +12,8 @@ public interface StudyService {
 
   Page<StudyDto> list(Pageable pageable);
 
+  Page<StudyDto> list(Pageable pageable, String flag);
+
   void add(StudyDto studyDto);
 
   StudyDto getByStudyNo(int studyNo);
