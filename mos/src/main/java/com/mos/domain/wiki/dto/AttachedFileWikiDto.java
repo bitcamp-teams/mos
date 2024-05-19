@@ -1,4 +1,4 @@
-package com.mos.domain.study.dto;
+package com.mos.domain.wiki.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class AttachedFileDto {
+public class AttachedFileWikiDto {
 
     private int no;
     private String filePath;
-    private int studyNo;
+    private int wikiNo;
 
 
 }

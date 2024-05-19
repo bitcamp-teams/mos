@@ -2,17 +2,12 @@ package com.mos.domain.study.service.impl;
 
 import com.mos.domain.member.dto.MemberStudyDto;
 
-import com.mos.domain.study.dto.AttachedFileDto;
-import com.mos.domain.study.repository.AttachedFileRepository;
+import com.mos.domain.study.dto.AttachedFileStudyDto;
+import com.mos.global.storage.repository.AttachedFileRepository;
 import java.util.List;
 
 import com.mos.domain.study.dto.TagDto;
 import com.mos.domain.study.repository.TagRepository;
-
-import java.util.stream.Collectors;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -113,12 +108,12 @@ public class DefaultStudyService implements StudyService {
   }
 
   @Override
-  public List<AttachedFileDto> getAttachedFiles(int studyNo) {
+  public List<AttachedFileStudyDto> getAttachedFiles(int studyNo) {
     return attachedFileRepository.findAllByStudyNo(studyNo);
   }
 
   @Override
-  public AttachedFileDto getAttachedFile(int fileNo) {
+  public AttachedFileStudyDto getAttachedFile(int fileNo) {
     return attachedFileRepository.findByFileNo(fileNo);
   }
 
