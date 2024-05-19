@@ -72,6 +72,14 @@ public class DefaultStudyService implements StudyService {
 
   @Transactional(readOnly = true)
   @Override
+  public Page<StudyDto> list(Pageable pageable, String flag) {
+    List<StudyDto> studyList = studyRepository.findAll(pageable, flag);
+    long totalCount = studyRepository.countAll(); // 전체 데이터 개수 구하기
+    return new PageImpl<>(studyList, pageable, totalCount);
+  }
+
+  @Transactional(readOnly = true)
+  @Override
   public List<TagDto> getAllTags() {
     return tagRepository.findAll();
   }

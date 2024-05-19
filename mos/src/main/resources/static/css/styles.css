@@ -147,7 +147,15 @@ body {
 }
 
 .PostCard_content .PostCard_descriptionWrapper {
-  flex: 1 1;
+  /*flex: 1 1;*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap:break-word;
+  line-height: 1.2em;
+  height: 3.9375rem;
 }
 
 .PostCard_content p.PostCard_clamp {
@@ -222,4 +230,26 @@ body {
   width: .75rem;
   height: .75rem;
   margin-right: .5rem;
+}
+
+/* 로딩 */
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey - border 전체 색상 지정*/
+  border-top: 16px solid #3498db; /* Blue - 로딩 영역 색상 지정 */
+  border-radius: 50%; /* 둥근 모서리 효과 */
+  width: 120px; /* 크기 지정 */
+  height: 120px;
+  animation: spin 2s linear infinite;
+  /* 키프레임 애니메이션값 2초 가속도없이 일정하게 연속적인 로딩 */
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
 }

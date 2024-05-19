@@ -64,30 +64,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
   </resultMap>
 
-  <select id="findAll" resultMap="studyList">
-    SELECT
-    s.study_no,
-    s.member_no,
-    (SELECT m.username FROM member m WHERE m.member_no = s.member_no) AS leaderName,
-    s.title,
-    s.intake,
-    s.method,
-    s.recruitment_deadline,
-    s.created_date,
-    s.hit_count,
-    s.like_count,
-    GROUP_CONCAT(DISTINCT t.name) AS tags
-    FROM
-    study s
-    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
-    LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
-    WHERE
-    s.stat != 'S01-105'
-    GROUP BY
-    s.study_no
-    ORDER BY
-    created_date DESC
-    LIMIT #{offset}, #{pageSize};
+  <select id="findAll" resultType="StudyDto">
+    SELECT result.*
+    FROM (
+      SELECT
+        s.study_no,
+        s.member_no,
+        (SELECT m.username FROM member m WHERE m.member_no = s.member_no) AS leaderName,
+        s.title,
+        s.introduction,
+        s.intake,
+        s.method,
+        s.recruitment_deadline,
+        s.created_date,
+        s.hit_count,
+        s.like_count,
+        GROUP_CONCAT(DISTINCT t.name) AS tags,
+        count(sc.comment_no) AS comment_count
+      FROM
+        study s
+        LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+        LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
+        Left Join study_comment sc on s.study_no = sc.study_no
+    GROUP BY s.study_no
+    ) as result
+    <if test="flag != null and flag != ''">
+      ORDER BY result.${flag} desc
+    </if>
+    LIMIT #{pageable.offset}, #{pageable.pageSize};
   </select>
 
   <select id="countAll" resultType="long">
