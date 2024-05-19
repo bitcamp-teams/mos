@@ -75,6 +75,7 @@
         #{studyNo}, #{title}, #{ordr}, #{memberNo});
     </insert>
 
+    <!-- tree 구성을 위한 최소 정보 반환 -->
     <select id="findByWikiNo" parameterType="int" resultType="JstreeWikiDto">
         SELECT wiki_no, parent_wiki_no, title, ordr
         FROM wiki
@@ -84,7 +85,7 @@
   <!--	Wiki의 상세 내역을 반환한다.-->
   <select id="findWikiByWikiNo" resultType="WikiDto">
         SELECT
-        wiki_no, study_no, title, wiki.member_no, username, content_created_date, content_updated_date, content, likes
+        wiki_no, study_no, title, wiki.member_no, username, member.photo, wiki.created_date, wiki.updated_date, content, likes
         FROM wiki
         JOIN member ON wiki.member_no = member.member_no
         WHERE wiki_no = #{wikiNo};

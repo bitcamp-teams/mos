@@ -135,8 +135,37 @@
             event.preventDefault();
             const editorContent = editor.getMarkdown();
             document.getElementById('editor-content').value = editorContent;
-            form.submit();
+            Swal.fire({
+                title: '스터디 모집글 작성이 완료 되었습니다!',
+                text: '저희 서비스를 이용해 주셔서 감사합니다.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+            form.submit()
+            // $.ajax({
+            //     method: 'POST',
+            //     url: '/study/add',
+            //     contentType: 'application/x-www-form-urlencoded',
+            //     success: function () {
+            //         Swal.fire({
+            //             title: '스터디 모집글 작성이 완료 되었습니다!',
+            //             text: '저희 서비스를 이용해 주셔서 감사합니다.',
+            //             icon: 'success',
+            //             confirmButtonText: 'OK'
+            //         });
+            //     },
+            //     error: function () {
+            //         Swal.fire({
+            //             icon: 'error',
+            //             title: '모집글 작성에 실패했습니다.',
+            //             text: '다시 시도해주세요.',
+            //             showConfirmButton: true
+            //         });
+            //     }
+            // })
+
         });
+
     </script>
 
     </div>
