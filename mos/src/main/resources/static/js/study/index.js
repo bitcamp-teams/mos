@@ -4,7 +4,9 @@ import {formatDate} from "../util/util.js";
 const index = {
     currentPage: 0,
     totalPages: 0,
-    flag: '',
+    flag: 'hit_count',
+    totalCount: 0,
+    searchText: '',
     init() {
         const _this = this;
         $('.HomeTab_tab > a').on('click', function (e) {
@@ -32,13 +34,14 @@ const index = {
                 }
                 // 엔터 치면 검색
                 if (e.keyCode === 13) {
-                    const searchText = $(this).val();
-                    _this.initLoad(_this.flag, searchText)
+                    _this.searchText = $(this).val();
+                    _this.initLoad(_this.flag)
                 }
             });
             $('.search_searchInitialize').on('click', function () {
                 $('.search_searchInput').val('');
                 $('.search_searchInitialize').hide();
+                _this.searchText = '';
             });
 
         });
@@ -56,23 +59,23 @@ const index = {
         });
 
     },
-    initLoad(flag = 'hit_count', searchText = null) {
+    initLoad(flag = 'hit_count') {
         const _this = this;
         // 초기 페이지 번호 설정
         _this.currentPage = 0;
         _this.totalPages = 0;
         $(document).scrollTop(0);
 
-        _this.loadStudy(_this.currentPage,false, flag, searchText);
+        _this.loadStudy(_this.currentPage,false, flag);
     },
-    loadStudy(page, append = false, flag = 'hit_count', searchText = null) {
+    loadStudy(page, append = false, flag = 'hit_count') {
         const _this = this;
         const cardsContainer = $('.PostCardGrid_block');
 
         const params = {
             page: page,
             flag: flag,
-            searchText: searchText
+            searchText: _this.searchText
         };
 
         if (append) {
@@ -82,12 +85,13 @@ const index = {
         }
 
         study.findAll(params).then(res => {
+            console.log(res.data.totalElements);
             if (res.data == null) {
                 throw new Error('스터디 정보를 불러올 수 없음');
             }
+            $('#totalCount').text(res.data.totalElements);
             _this.totalPages = res.data.totalPages;
             _this.currentPage++;
-            console.log(res.data.content)
             return res.data.content;
         }).then(studyList => {
             if (!studyList || studyList.length === 0) {
