@@ -158,6 +158,14 @@
         right: 20px;
         top: 10px;
     }
+
+    .total-count-container {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        padding: 10px;
+        margin-right: 20px;
+    }
 </style>
 <div class="content-container page-margin wrapper-mos">
     <h1>스터디 모집 목록</h1>
@@ -189,37 +197,15 @@
                     <span>최신</span>
                 </a>
 
-<!--                &lt;!&ndash;  피드   &ndash;&gt;-->
-<!--                <a class="" href="">-->
-<!--                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em"-->
-<!--                         width="1em"-->
-<!--                         xmlns="http://www.w3.org/2000/svg">-->
-<!--                        <path fill="none" d="M0 0h24v24H0z"></path>-->
-<!--                        <circle cx="6.18" cy="17.82" r="2.18"></circle>-->
-<!--                        <path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"></path>-->
-<!--                    </svg>-->
-<!--                    <span>피드</span>-->
-<!--                </a>-->
                 <!--    3%,     38.33%,     70.33%        -->
                 <div class="HomeTab_indicator" style="left: 2%;"></div>
             </div>
         </nav>
 
         <div class="HomeTab_right">
-<!--            <div class="HomeTab_selector">이번 주-->
-<!--                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em"-->
-<!--                     width="1em"-->
-<!--                     xmlns="http://www.w3.org/2000/svg">-->
-<!--                    <path fill="none" d="M0 0h24v24H0z"></path>-->
-<!--                    <path d="M7 10l5 5 5-5z"></path>-->
-<!--                </svg>-->
-<!--            </div>-->
-<!--            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"-->
-<!--                 class="HomeTab_extra"-->
-<!--                 height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">-->
-<!--                <path fill="none" d="M0 0h24v24H0z"></path>-->
-<!--                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>-->
-<!--            </svg>-->
+            <div id="totalCountContainer" class="total-count-container">
+                총 갯수: <span id="totalCount">0</span>
+            </div>
             <div class="search_container">
                 <img class="search_searchImg" src="/img/search.png" alt="search icon">
                 <input placeholder="제목, 글 내용을 검색해보세요." class="search_searchInput" value="">
