@@ -70,7 +70,7 @@
               formData.append('files', blob);
 
               // 2. FileApiController - uploadEditorImage 메서드 호출
-              const response = await fetch('/study/file/upload', {
+              const response = await fetch('/storage/file/upload', {
                 method : 'POST',
                 body : formData,
               });
