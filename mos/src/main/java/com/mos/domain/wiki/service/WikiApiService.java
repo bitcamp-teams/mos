@@ -4,6 +4,8 @@ import com.mos.domain.wiki.dto.WikiDto;
 import java.util.List;
 
 import com.mos.domain.wiki.dto.JstreeWikiDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface WikiApiService {
 
@@ -20,4 +22,8 @@ public interface WikiApiService {
   void deleteWikiByWikiNo(int wikiNo);
 
   WikiDto getWikiContent(int wikiNo);
+
+  Page<WikiDto> getList(Pageable pageable);
+
+  void patchWikiContentByWikiNo(WikiDto wikiDto);
 }

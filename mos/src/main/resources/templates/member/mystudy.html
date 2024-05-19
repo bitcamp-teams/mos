@@ -110,37 +110,55 @@
                 e.preventDefault(); // 폼 기본 제출 방지
                 console.log('함수 호출 성공');
 
-                // '탈퇴하시겠습니까?' 확인 대화상자 표시
-                var confirmResult = confirm('탈퇴하시겠습니까?');
-
                 var currentForm = $(this).closest('form'); // 클릭된 버튼을 포함하는 가장 가까운 폼을 찾음
                 var actionUrl = '/member/updateStatus'; // 폼 액션 URL
                 console.log(actionUrl);
 
-                if (confirmResult) {
-                    var id = currentForm.find('[name="id"]').val();
-                    var message = currentForm.find('[name="message"]').val();
-                    console.log(id);
-                    console.log(message);
+                // SweetAlert2로 확인 대화상자 표시
+                Swal.fire({
+                    title: '탈퇴하시겠습니까?',
+                    text: "이 작업은 되돌릴 수 없습니다!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '탈퇴',
+                    cancelButtonText: '취소'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var id = currentForm.find('[name="id"]').val();
+                        var message = currentForm.find('[name="message"]').val();
+                        console.log(id);
+                        console.log(message);
 
-                    // 사용자가 '확인'을 클릭하면, AJAX를 통해 폼 데이터를 서버로 전송
-                    $.ajax({
-                        url: actionUrl, // 서버 엔드포인트 URL
-                        type: 'PATCH', // HTTP 요청 메소드
-                        contentType: 'application/json',
-                        data: JSON.stringify({id: id, message: message}), // 폼 데이터 직렬화
-                        success: function (response) {
-                            // 요청 성공 시 처리 로직
-                            alert('탈퇴 처리가 완료되었습니다.');
-                        },
-                        error: function (xhr, status, error) {
-                            // 요청 실패 시 처리 로직
-                            alert('오류가 발생했습니다. 다시 시도해주세요.');
-                        }
-                    });
-                }
+                        // 사용자가 '확인'을 클릭하면, AJAX를 통해 폼 데이터를 서버로 전송
+                        $.ajax({
+                            url: actionUrl, // 서버 엔드포인트 URL
+                            type: 'PATCH', // HTTP 요청 메소드
+                            contentType: 'application/json',
+                            data: JSON.stringify({id: id, message: message}), // 폼 데이터 직렬화
+                            success: function (response) {
+                                // 요청 성공 시 처리 로직
+                                Swal.fire(
+                                    '탈퇴 완료',
+                                    '탈퇴 처리가 완료되었습니다.',
+                                    'success'
+                                );
+                            },
+                            error: function (xhr, status, error) {
+                                // 요청 실패 시 처리 로직
+                                Swal.fire(
+                                    '오류',
+                                    '오류가 발생했습니다. 다시 시도해주세요.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
             });
         });
+
 
         $(document).ready(function () {
             var page = 0; // 페이지 번호 초기화
@@ -155,6 +173,7 @@
                 var currentForm = $(this).closest('form'); // 클릭된 버튼을 포함하는 가장 가까운 폼을 찾음
                 var studyNo = currentForm.find("input[name='studyNo']").val(); // 해당 폼의 studyNo를 가져옴
                 console.log(studyNo);
+                isLoading = false;
                 isLastPage = false; // 마지막 페이지 플래그 초기화
                 $('.modal-body').empty(); // 모달 내용 초기화
                 $('.modal-content').scrollTop(0);
@@ -173,68 +192,75 @@
                     url: actionUrl + '?page=' + page + '&studyNo=' + studyNo, // 페이지 번호를 쿼리 파라미터로 추가
                     type: 'get',
                     success: function (response) {
-                        if (response.content.length === 0) {
+                        console.log(response.totalPages);
+                        if (response.content.length === 0 && response.totalPages != 0) {
                             isLastPage = true; // 더 이상 로드할 페이지가 없음
+                        } else if (response.totalPages === 0) {
+                            console.log('신청이 없음');
+                            Swal.fire(
+                                '스터디 신청',
+                                '신청이 없습니다.',
+                                'error'
+                            );
                         } else {
                             page++; // 페이지 번호 증가
                             // JSON 결과를 바탕으로 내용 추가
                             $.each(response.content, function (index, item) {
                                 var defaultPhotoUrl = '/img/user2-160x160.jpg'; // 기본 사진 URL
                                 var photoUrl = item.photo ? item.photo : defaultPhotoUrl;
-                                var photo = $('<img>').attr('src', photoUrl).css({'width': '100px', 'height': '100px'});
-                                var container = $('<div>').css({
-                                    'text-align': 'left',
-                                    'display': 'flex',
-                                    'flex-direction': 'column'
-                                });
-                                var memberName = $('<div>').text(item.memberName).css({'font-weight': 'bold'});
-                                var message = item.message ? $('<div>').text(item.message) : $('<div>').text("한 줄 소개가 없습니다.");
-                                var messageContainer = container.append(memberName).append(message);
-                                var contentWrapper = $('<div>').css({'display': 'flex', 'align-items': 'center'});
-                                contentWrapper.append(photo).append(messageContainer);
 
-                                // 버튼 클릭 시 공통으로 사용할 함수 정의
-                                function updateMemberStatus(message) {
-                                    $.ajax({
-                                        url: '/member/updateStatus', // 실제 서버 엔드포인트로 변경
-                                        type: 'PATCH',
-                                        contentType: 'application/json',
-                                        data: JSON.stringify({id: item.id, message: message}), // 올바른 형태로 데이터 전송
-                                        success: function (response) {
-                                            console.log('Success:', response);
-                                            location.reload(true);
-                                        },
-                                        error: function (xhr, status, error) {
-                                            console.error('Error:', error);
-                                        }
-                                    });
-                                }
+                                var photo = $('<img>').attr('src', photoUrl).css({
+                                    'width': '100px',
+                                    'height': '100px',
+                                    'margin-right': '20px' // 사진 오른쪽에 간격 추가
+                                });
+
+                                var memberName = $('<div>').text(item.memberName).css({
+                                    'font-weight': 'bold',
+                                    'margin-bottom': '10px' // 이름 아래 간격 추가
+                                });
+
+                                var message = item.message ? $('<div>').text(item.message) : $('<div>').text("한 줄 소개가 없습니다.");
+
+                                var messageContainer = $('<div>').css({
+                                    'text-align': 'center',
+                                    'flex': '1'
+                                }).append(memberName).append(message);
 
                                 // '승인' 버튼 생성 및 이벤트 핸들러 설정
                                 var acceptBtn = $('<button>')
                                     .addClass('btn btn-primary m-2')
                                     .text('승인')
                                     .click(function () {
-                                        updateMemberStatus('S03-102');
-                                    });
+                                    updateMemberStatus('S03-102');
+                                });
 
                                 // '거절' 버튼 생성 및 이벤트 핸들러 설정
                                 var refuseBtn = $('<button>')
-                                    .addClass('btn btn-primary m-2')
+                                    .addClass('btn btn-warning m-2')
                                     .text('거절')
                                     .click(function () {
-                                        updateMemberStatus('S03-105');
-                                    });
+                                    updateMemberStatus('S03-105');
+                                });
 
-                                contentWrapper.append(acceptBtn).append(refuseBtn);
+                                var buttonContainer = $('<div>').css({
+                                    'display': 'flex',
+                                    'flex-direction': 'column',
+                                    'align-items': 'center'
+                                }).append(acceptBtn).append(refuseBtn);
+
+                                var contentWrapper = $('<div>').css({
+                                    'display': 'flex',
+                                    'align-items': 'center',
+                                    'margin-bottom': '20px' // 각 항목 아래 간격 추가
+                                });
+
+                                contentWrapper.append(photo).append(messageContainer).append(buttonContainer);
 
                                 $('.modal-body').append(contentWrapper); // 모달에 내용 추가
                             });
                             $('#jsonResultModal').modal('show'); // 모달 표시
                         }
-                    },
-                    complete: function () {
-                        isLoading = false; // 로딩 상태 해제
                     }
                 });
             }
@@ -247,8 +273,6 @@
                 }
             });
 
-            // 문서 준비가 완료되었을 때 최초 멤버 로드
-            <!--    loadMembers();-->
         });
     </script>
 

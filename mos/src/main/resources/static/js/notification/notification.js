@@ -1,3 +1,5 @@
+import {formatDate} from '../util/util.js';
+
 const index = {
     // 초기 페이지 번호 설정
     currentPage: 0,
@@ -56,6 +58,7 @@ const index = {
             .then(notifyListJson => {
                 console.log(notifyListJson);
                 _this.totalPages = notifyListJson.totalPages; // 총 페이지 수 업데이트
+                console.log('알림토탈' , _this.totalPages);
                 _this.currentPage++; // 현재 페이지 업데이트
                 _this.displayNotifications(notifyListJson, append); // append 인자를 전달
             })
@@ -99,7 +102,7 @@ const index = {
 
                 // 경과시간 출력
                 const $time = $('<span class="float-right text-muted text-sm ml-1"></span>')
-                $time.text(`${_this.formatDate(item.createdDate)}`)
+                $time.text(`${formatDate(item.createdDate)}`)
                 let link = $a.append($i).append($time);
                 _this.notificationsContainer.append($divider).append(link);
             });
@@ -159,28 +162,7 @@ const index = {
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
             });
-    },
-    formatDate(dateString) {
-        const date = new Date(dateString);
-        const now = new Date();
-        const timeDiff = now.getTime() - date.getTime();
-
-        if (timeDiff < 60000) { // 1분 미만
-            return '방금 전';
-        } else if (timeDiff < 3600000) { // 1시간 미만
-            const minutes = Math.floor(timeDiff / 60000);
-            return `${minutes}분 전`;
-        } else if (timeDiff < 86400000) { // 24시간 미만
-            const hours = Math.floor(timeDiff / 3600000);
-            return `${hours}시간 전`;
-        } else { // 24시간 이상
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
     }
-
 }
 
 index.init();

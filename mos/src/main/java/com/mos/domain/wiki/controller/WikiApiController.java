@@ -10,6 +10,10 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -68,7 +72,15 @@ public class WikiApiController {
   @PatchMapping("")
   public void updateWiki(@LoginUser MemberDto loginUser, @RequestBody JstreeWikiDto jstreeWikiDto) {
     //한개의 위키 데이터를 가져와서, wiki_no 기준으로 맞는 것을 patch 한다. (parent_wiki_no, title, ordr만 변경됨)
+    //jstree에서 변경한 것을 저장함
     wikiApiService.patchWikiByWikiNo(jstreeWikiDto);
+  }
+
+  @PatchMapping("content")
+  public void updateWikiContent(@LoginUser MemberDto loginUser, @RequestBody WikiDto wikiDto) {
+    //한개의 위키 데이터를 가져와서, wiki_no 기준으로 맞는 것을 patch 한다. (content만 변경됨)
+    //wiki/edit에서 변경한 content 정보를 저장함
+    wikiApiService.patchWikiContentByWikiNo(wikiDto);
   }
 
   //TODO: 권한 검증
@@ -89,6 +101,12 @@ public class WikiApiController {
       return wikiLikeService.checked(wikiLikeStatDto);
     }
     return 0; // 좋아요 하지 않은 상태
+  }
+
+  @GetMapping("list")
+  public ResponseEntity<?> list(@PageableDefault(size = 20) Pageable page) {
+    Page<WikiDto> list = wikiApiService.getList(page);
+    return ResponseEntity.ok().body(list);
   }
 
 

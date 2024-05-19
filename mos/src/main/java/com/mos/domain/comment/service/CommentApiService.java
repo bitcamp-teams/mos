@@ -2,12 +2,7 @@ package com.mos.domain.comment.service;
 
 import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.dto.WikiCommentDto;
-import com.mos.domain.comment.repository.CommentApiRepository;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface CommentApiService {
 
@@ -22,4 +17,8 @@ public interface CommentApiService {
   void deleteWikiCommentByCommentNo(int commentNo);
 
   void deleteStudyCommentByCommentNo(int commentNo);
+
+  void patchWikiComment(WikiCommentDto wikiCommentDto);
+
+  void patchStudyComment(StudyCommentDto studyCommentDto);
 }

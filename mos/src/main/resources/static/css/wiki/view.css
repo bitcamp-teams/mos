@@ -1,40 +1,39 @@
 /*
 /wiki/view 템플릿을 위한 css
 */
-header {
-  background: #f5b335;
-  position: fixed !important;
-  top: 0;
-  transition: top 0.5s ease-in-out;
-  width: 100%;
-  z-index: 10;
-}
-
-.nav-up {
-  top: -80px;
-}
-
-.container-fluid {
-  padding-top: 120px;
-}
-
 
 .main {
   position: relative;
+  min-width: 600px;
 }
 
 .sidebar-left, .sidebar-right {
   overflow-x: auto;
   overflow-y: auto;
   position: sticky !important;
-  top: 100px;
-  height: 85vh; /* 뷰포트 전체 높이 */
-  width: 400px;
+  top: 30px;
+  height: 90vh; /* 뷰포트 전체 높이 */
 }
 
 .sidebar-left {
   left: 0;
+  width: 20vw;
+}
 
+/*resize하도록 만든 왼쪽 네비게이션에 핸들 디자인을 커스텀함*/
+.ui-resizable-e {
+  width: 15px !important; /* 핸들의 너비 */
+  height: 100%; /* 핸들의 높이 */
+  cursor: ew-resize; /* 커서 모양 */
+  background-color: #e5e5f7;
+  opacity: 0.8;
+}
+
+/*md크기 이하라면 ToC 숨기기(미디어쿼리)*/
+@media (max-width: 1200px) {
+  .sidebar-right {
+    display: none;
+  }
 }
 
 .sidebar-right {
@@ -49,6 +48,31 @@ header {
   cursor: pointer; /* make the icon clickable */
 }
 
+/*입력 폼*/
+.commentForm {
+  width: 100%;
+  position: relative;
+  padding: 15px;
+}
+
+.form-group {
+  position: relative;
+}
+
+.comment-input {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  padding-right: 100px; /* 버튼 너비 + 여백 */
+  box-sizing: border-box;
+}
+
+.comment-submit {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
 /*comment*/
 .commentList {
   display: flex;
@@ -56,9 +80,19 @@ header {
   width: 100%;
 }
 
-.form {
-  width: 100%;
-  height: 70px;
-  resize: vertical;
-  box-sizing: inherit;
+.commentList > * {
+  margin: 7px;
+  box-shadow: 1px 1px 4px 0px #808080;
+}
+
+.toastui-editor-contents {
+  padding: 7px !important;
+  border-radius: .25rem;
+  border: 1px solid rgba(0, 0, 0, .125);
+  box-shadow: 1px 1px 4px 0px #808080;
+}
+
+.reply {
+  margin-left: 40px;
+  margin-top: -7px;
 }

@@ -13,7 +13,8 @@
   <link rel="stylesheet" href="/css/auth/styles.css?v=2024050701">
   <link rel="stylesheet" href="/css/study/view.css">
   <link rel="stylesheet" href="/css/study/main.css">
-  <link rel="stylesheet" href="/css/wiki/view.css">
+  <!--  /css/wiki/view.css, edit.css 는 충돌로 인해 해당 템플릿에서만 개별 로드-->
+  
   <link rel="stylesheet" href="/css/member/mypage.css">
   <!-- jQuery -->
   <script src="/plugins/jquery/jquery.min.js"></script>
@@ -65,6 +66,10 @@
 
   <!-- Production version -->
   <script src="https://unpkg.com/@popperjs/core@2"></script>
+
+  <!-- 헤더 숨김처리 -->
+  <!--hide-header.js-->
+  <script src="/js/hide-header.js"></script>
 </head>
 
 
@@ -90,7 +95,7 @@
           <a class="nav-link" href="/study/form">모집 글 쓰기</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/wiki/modooWikiList?page=1">모두의 위키</a>
+          <a class="nav-link" href="/wiki/modooWikiList">모두의 위키</a>
         </li>
       </ul>
 

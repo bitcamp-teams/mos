@@ -1,38 +1,108 @@
+<style>
+  .field-error {
+        border-color: red;
+        color: red;
+    }
+</style>
+
 <div data-th-replace="header::header">머리말</div>
 <div class="page-margin wrapper-mos">
   <div data-th-object="${study}">
     <form id="studyInfo" action="update" data-th-action="@{/study/update}" method='post'>
       <!--POST 방식이라 Hidden Field 방식으로 studyNo 전달함-->
-      <input name="studyNo" th:value="*{studyNo}" type="hidden">
-      <h1>제목: <input name="title" th:value="*{title}" type="text"></h1>
-      <p>진행방식 = <input name="method" th:value="*{method}" type="text"></p>
-      <p>모집정원 = <input name="intake" th:value="*{intake}" type="number"></p>
-      <p>모집마감 = <input name="recruitmentDeadline" th:value="*{recruitmentDeadline}" type="date">
-      </p>
+      <input name="studyNo" th:field="*{studyNo}" type="hidden">
+      <div>
+        <label>제목: </label>
+        <input name="title" th:field="*{title}" type="text">
+        <div class="field-error" th:errors="*{title}">닉네임 오류</div>
+      </div>
+      <div>
+        <label>진행방식: </label>
+        <input name="method" th:field="*{method}" type="text">
+        <div class="field-error" th:errors="*{method}">닉네임 오류</div>
+      </div>
+      <div>
+        <label>모집정원: </label>
+        <input name="intake" th:field="*{intake}" type="number">
+        <div class="field-error" th:errors="*{intake}">닉네임 오류</div>
+      </div>
+      <div>
+        <label>모집마감: </label>
+        <input name="recruitmentDeadline" th:field="*{recruitmentDeadline}" type="date">
+        <div class="field-error" th:errors="*{recruitmentDeadline}">닉네임 오류</div>
+      </div>
       <!--      <p> 예상종료일 = <input name="endDate" th:value="*{endDate}" type="date"></p>-->
 <!--      <p> 소개 = <input name="introduction" th:value="*{introduction}" type="text"></p>-->
+      <div class="field-error" th:errors="*{introduction}">content 오류</div>
       <div id="editor"></div>
-      <input type="hidden" name="introduction" th:attr="introduction=*{introduction}"
-             id="editor-content" value="소개">
-      <button type="submit">편집완료</button>
+<!--      <input type="hidden" name="introduction" th:attr="introduction=*{introduction}"-->
+<!--             id="editor-content" value="소개">-->
+      <input type="hidden" name="introduction" th:value="*{introduction}"
+             id="editor-content">
+
+      <button type="submit" class="btn btn-primary">편집완료</button>
       <a href="list">저장하지 않고 돌아가기</a>
     </form>
 
     <script>
-      var content = document.querySelector('[introduction]').getAttribute('introduction');
+      var content = document.getElementById('editor-content').value;
+      console.log(content); // This should log the value of the introduction field
       const {Editor} = toastui;
       const {codeSyntaxHighlight} = Editor.plugin;
 
-      let editor = new toastui.Editor({
-        el: document.querySelector(('#editor')),
-        height: '70%',
-        initialEditType: 'markdown',
-        previewStyle: 'vertical',
-        plugins: [codeSyntaxHighlight],
-        placeholder: 'placeholder',
-        useCommandShortcut: true,
-        initialValue: content
+      const editor = new toastui.Editor({
+        el: document.querySelector('#editor'), // 에디터를 적용할 요소 (컨테이너)
+        height: '500px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+        initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
+        initialValue: content,
+        // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
+        previewStyle: 'vertical',               // 마크다운 프리뷰 스타일 (tab || vertical)
+        placeholder: '내용을 입력해 주세요.',
+        /* start of hooks */
+        hooks: {
+          async addImageBlobHook(blob, callback) { // 이미지 업로드 로직 커스텀
+            try {
+              /*
+               * 1. 에디터에 업로드한 이미지를 FormData 객체에 저장
+               *    (이때, 컨트롤러 uploadEditorImage 메서드의 파라미터인 'image'와 formData에 append 하는 key('image')값은 동일해야 함)
+               */
+              const formData = new FormData();
+              formData.append('files', blob);
+
+              // 2. FileApiController - uploadEditorImage 메서드 호출
+              const response = await fetch('/study/file/upload', {
+                method : 'POST',
+                body : formData,
+              });
+
+              // 3. 컨트롤러에서 전달받은 디스크에 저장된 파일명
+              const filename = await response.text();
+              const jsonResponse = JSON.parse(filename);
+              const filePath = jsonResponse[0].filePath;
+              console.log('서버에 저장된 파일명 : ', filename);
+
+              // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
+              const imageUrl = `https://kr.object.ncloudstorage.com/mos/study/${filePath}`;
+              callback(imageUrl, 'image alt attribute');
+
+            } catch (error) {
+              console.error('업로드 실패 : ', error);
+            }
+          }
+        }
+        /* end of hooks */
       });
+
+//      let editor = new toastui.Editor({
+//        el: document.querySelector(('#editor')),
+//        height: '70%',
+//        initialEditType: 'markdown',
+//        previewStyle: 'vertical',
+//        plugins: [codeSyntaxHighlight],
+//        placeholder: 'placeholder',
+//        useCommandShortcut: true,
+//        initialValue: content
+//      });
 
       const form = document.getElementById('studyInfo');
       // const editorContent = document.getElementById('editor-content');

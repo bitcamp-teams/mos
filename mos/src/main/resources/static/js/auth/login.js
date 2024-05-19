@@ -28,7 +28,7 @@ const index = {
         // sse 연결 종료
         $(document).on('click', '#logoutBtn', _this.handleLogout.bind(_this));
 
-        window.addEventListener('unload', _this.handleUnload.bind(_this));
+        // window.addEventListener('unload', _this.handleUnload.bind(_this));
 
     },
     modalOpen() {

@@ -1,5 +1,6 @@
 <div th:replace="header::header">머리말</div>
-<link rel="stylesheet" href="/css/wiki/view.css">
+<link rel="stylesheet" href="/css/wiki/edit.css">
+
 <div class="container-fluid">
   <div class="row justify-content-center flex-nowrap">
     <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
@@ -7,7 +8,9 @@
     <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
     <nav id="resizable" class="resizable-column sidebar-left border">
       <div>
-        <!--TODO: study 제목을 보여주기-->
+        <button class="btn btn-primary btn-block align-middle" id="addRootNode">
+          <i class="far fa-file-alt"></i> <span> + </span>
+        </button>
         <div id="wikiTree">
           <ul>
             <li>
@@ -19,19 +22,20 @@
     </nav>
 
     <div class="main col mx-auto">
-      <div class="card">
+      <div class>
         <div>
           <h1 id="contentTitle"></h1>
-    <!-- 편집 모드로 전환함-->
-          <a class="btn btn-primary" id="contentEditLink" href="editWiki.html"><i class="fas fa-edit"></i></a>
+          <!-- 조회 모드로 전환함-->
+          <a class="btn btn-primary" id="contentEditLink" href="editWiki.html"><i
+              class="fas fa-eye"></i></a>
           <!--        <a id="contentDeleteLink" href="delete.html">[삭제]</a>-->
 
           <!--          <div> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span>-->
-          </a>
+
         </div>
-        <div> 작성자 = <span id="author">회원 이름</span></div>
-        <div> 작성일 = <span id="createdDate">작성일</span></div>
-        <div> 마지막 편집일 = <span id="updatedDate">마지막 편집일</span></div>
+        <!--        <div> 작성자 = <span id="author">회원 이름</span></div>-->
+        <!--        <div> 작성일 = <span id="createdDate">작성일</span></div>-->
+        <!--        <div> 마지막 편집일 = <span id="updatedDate">마지막 편집일</span></div>-->
         <!--          <div th:attr="content = *{content}"></div>-->
       </div>
       <div id="content"></div>
@@ -39,42 +43,15 @@
         <strong>Viewer Here</strong>
       </div>
 
-
-      <i class="fas fa-heart" onclick="toggleLike(this)"></i>
-      <!--좋아요-->
-      <span id="contentLikes">️</span>
-
-      <!-- comment 영역-->
-      <hr class="my-4 bg-primary">
-      <div class="row">
-
-        <div class="commentForm">
-          <div class="form-group">
-            <textarea class="form-control comment-input" id="commentContent" placeholder="댓글을 입력하세요"></textarea>
-            <button class="btn btn-primary comment-submit" id="submitComment">등록</button>
-          </div>
-        </div>
-
-        <div class="commentList">
-          <!-- 댓글을 이 영역에 비동기로 만들어주기 -->
-        </div>
-
+      <div id="status">
       </div>
-      <!-- comment 영역 끝-->
     </div>
-
-
-
-    <!-- 오른쪽 nav : Wiki's ToC -->
-    <nav class="sidebar-right col-2">
-      <nav id="toc" data-toggle="toc" class="overflow-auto sticky"></nav>
-    </nav>
 
 
   </div>
 
-
 </div>
+
 <!--js-->
 <!-- for resizable column -->
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
@@ -91,10 +68,11 @@
 <!--jstree-->
 <!--<link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">-->
 <script src="/plugins/jstree/jstree.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>
 
-<!--jstree-view-->
-<script src="/js/wiki/wikitree-view.js"></script>
+<!--jstree-edit-->
+<script src="/js/wiki/wikitree-edit.js"></script>
 <!--bootstrap-toc-->
 <link rel="stylesheet" href="/plugins/bootstarp-toc/bootstrap-toc.css">
 <script src="/plugins/bootstarp-toc/bootstrap-toc.js"></script>
@@ -102,5 +80,9 @@
 <script src="/js/comment/asyncComment.js"></script>
 <!--moment.js(날짜관련 라이브러리)-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<!--toastr(토스트알림 라이브러리)-->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <div th:replace="footer::footer">꼬리말</div>

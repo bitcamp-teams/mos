@@ -4,7 +4,7 @@
 function getComments() {
   let targetElement = $('.commentList');
   targetElement.html("");
-  let apiUrl = '/api/comment/wiki/' + wikiNo;
+  let apiUrl = '/api/comment/study/' + studyNo;
 
   $.ajax({
     method: 'GET',
@@ -95,7 +95,7 @@ function getComments() {
             }
             $.ajax({
               method: 'PATCH',
-              url: '/api/comment/wiki/',
+              url: '/api/comment/study/',
               contentType: 'application/json',
               data: JSON.stringify(updatedComment),
               success: function (res) {
@@ -130,7 +130,7 @@ function getComments() {
               // 서버로 삭제 요청 보내기
               $.ajax({
                 method: 'DELETE',
-                url: '/api/comment/wiki/' + commentNo,
+                url: '/api/comment/study/' + commentNo,
                 success: function (result) {
                   // 화면에서 해당 댓글 요소 제거
                   commentElement.remove();
@@ -176,11 +176,11 @@ function getComments() {
             // 서버로 대댓글 작성 요청 보내기
             $.ajax({
               method: 'POST',
-              url: '/api/comment/wiki',
+              url: '/api/comment/study',
               contentType: 'application/json',
               data: JSON.stringify({
                 memberNo: loginUser.memberNo,
-                wikiNo: wikiNo,
+                studyNo: studyNo,
                 parentCommentNo: Number(commentNo),
                 content: replyContent,
 
@@ -222,7 +222,7 @@ $('#submitComment').click(function () {
 
   let commentData = {
     memberNo: Number(loginUser.memberNo),
-    wikiNo: Number(wikiNo),
+    studyNo: Number(studyNo),
     content: content
   };
 
@@ -230,7 +230,7 @@ $('#submitComment').click(function () {
 
   $.ajax({
     type: 'POST',
-    url: '/api/comment/wiki',
+    url: '/api/comment/study',
     data: JSON.stringify(commentData),
     contentType: 'application/json',
     success: function (response) {
@@ -292,3 +292,5 @@ function flattenHierarchy(hierarchy) {
   flattenChildren(hierarchy, 0);
   return flattenedComments;
 }
+
+getComments();

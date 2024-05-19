@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.mos.domain.wiki.dto.JstreeWikiDto;
+import org.springframework.data.domain.Pageable;
 
 @Mapper
 public interface WikiApiRepository {
@@ -23,4 +24,10 @@ public interface WikiApiRepository {
   void deleteWikiByWikiNo(int wikiNo);
 
   WikiDto findWikiByWikiNo(int wikiNo);
+
+  List<WikiDto> findAll(long offset, int pageSize);
+
+  int findAllCount();
+
+  void updateWikiContentByWikiNo(WikiDto wikiDto);
 }

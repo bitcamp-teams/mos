@@ -1,5 +1,13 @@
 body {
+  padding-top: 64px;
   background: #f8f9fa !important;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  /*align-items: flex-start; !* 내부 요소를 왼쪽 정렬 *!*/
+  padding: 20px; /* 컨테이너 주변 여백 */
 }
 
 .card {
@@ -32,4 +40,186 @@ body {
 .page-margin {
   margin-left: 15%;
   margin-right: 15%;
+}
+
+/* 카드 UI */
+.HomeLayout_block {
+  /*display: flex;*/
+  justify-content: center;
+  flex-flow: row wrap;
+}
+
+.HomeLayout_block .HomeLayout_innerBlock {
+  display: flex;
+  margin: 0 auto;
+  flex-flow: row wrap;
+}
+
+.HomeLayout_mainWrapper {
+  width: 100%;
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+
+.grid_homeGrid {
+  display: grid;
+  grid-gap: 32px;
+  padding: 0;
+  margin: 0;
+  --card-count: 5;
+  --spacer: calc(var(--card-count) - 1);
+  --width: 20%;
+  grid-template-columns: repeat(var(--card-count), minmax(calc((var(--width) - (32px * var(--spacer) / var(--card-count))) * 0.8), 1fr));
+}
+
+@media screen and (max-width: 1919px) {
+  .grid_homeGrid {
+    --card-count: 4;
+    --width: 25%;
+  }
+}
+
+.PostCard_block {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .04);
+  transition: box-shadow .25s ease-in, transform .25s ease-in;
+}
+
+.PostCard_block:hover {
+  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, .1); /* Adjust shadow values as needed */
+  transform: translateY(-4px);
+}
+
+.PostCard_block .PostCard_styleLink {
+  display: block;
+  color: inherit;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.RatioImage_block {
+  width: 100%;
+  position: relative;
+}
+
+.RatioImage_block img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.PostCard_content {
+  padding: 1rem;
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+}
+
+.PostCard_block .PostCard_styleLink {
+  display: block;
+  color: inherit;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.PostCard_content .PostCard_h4 {
+  font-size: 1rem;
+  margin: 0 0 .25rem;
+  line-height: 1.5;
+  word-break: break-word;
+  color: #212529;
+}
+
+.utils_ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.PostCard_content .PostCard_descriptionWrapper {
+  flex: 1 1;
+}
+
+.PostCard_content p.PostCard_clamp {
+  height: 3.9375rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+.PostCard_content__W3lPm p {
+  word-break: break-word;
+  word-wrap: break-word;
+  font-size: .875rem;
+  line-height: 1.5;
+  color: #495057;
+  margin: 0 0 1.5rem;
+}
+
+.PostCard_content .PostCard_subInfo {
+  margin-top: auto;
+  font-size: .75rem;
+  line-height: 1.5;
+  color: #868e96;
+}
+
+.PostCard_content .PostCard_subInfo .PostCard_separator {
+  margin-left: .25rem;
+  margin-right: .25rem;
+}
+
+.PostCard_footer {
+  padding: .625rem 1rem;
+  border-top: 1px solid #f1f3f5;
+  display: flex;
+  font-size: .75rem;
+  line-height: 1.5;
+  justify-content: space-between;
+}
+
+.PostCard_footer .PostCard_userInfo {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.PostCard_footer .PostCard_userInfo img {
+  -o-object-fit: cover;
+  object-fit: cover;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+  margin-right: .5rem;
+}
+
+.PostCard_footer .PostCard_userInfo span {
+  color: #868e96;
+}
+
+.PostCard_footer .PostCard_likes {
+  display: flex;
+  align-items: center;
+  color: #212529;
+}
+
+.PostCard_footer .PostCard_likes svg {
+  width: .75rem;
+  height: .75rem;
+  margin-right: .5rem;
 }

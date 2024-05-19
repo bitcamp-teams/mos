@@ -9,7 +9,7 @@
 		FROM wiki_comment wc
     JOIN member m ON wc.member_no = m.member_no
 		WHERE wiki_no = #{wikiNo}
-      AND wc.stat != '삭제'
+      AND wc.stat != 'W02-104'
   </select>
 
   <select id="findCommentByStudyNo" parameterType="int" resultType="StudyCommentDto">
@@ -17,21 +17,30 @@
 		FROM study_comment sc
     JOIN member m ON sc.member_no = m.member_no
 		WHERE study_no = #{studyNo}
-      AND sc.stat != '삭제'
+      AND sc.stat != 'W02-104'
   </select>
 
   <!-- 저장 -->
   <insert id="saveWikiCommentByWikiNo" parameterType="WikiCommentDto">
     INSERT INTO
-      wiki_comment(member_no, wiki_no, content)
+      wiki_comment(member_no, wiki_no, content
+    <if test="parentCommentNo != 0">, parent_comment_no</if>
+    )
     VALUE
-      (#{memberNo}, #{wikiNo}, #{content})
+      (#{memberNo}, #{wikiNo}, #{content}
+    <if test="parentCommentNo != 0">, #{parentCommentNo}</if>
+    )
   </insert>
+
   <insert id="saveStudyCommentByWikiNo" parameterType="StudyCommentDto">
     INSERT INTO
-      study_comment(member_no, study_no, content)
-    VALUES
-      (#{memberNo}, #{studyNo}, #{content})
+      study_comment(member_no, study_no, content
+    <if test="parentCommentNo != 0">, parent_comment_no</if>
+    )
+    VALUE
+      (#{memberNo}, #{studyNo}, #{content}
+    <if test="parentCommentNo != 0">, #{parentCommentNo}</if>
+    )
   </insert>
 
 
@@ -44,13 +53,21 @@
 
   <update id="deleteStudyCommentByCommentNo" parameterType="int">
     UPDATE study_comment
-    SET stat='S02-102'
+    SET stat='W02-104'
     WHERE comment_no=#{commentNo}
   </update>
 
+  <!-- 업데이트하면 내용만 바꿈 -->
+  <update id="patchWikiComment" parameterType="WikiCommentDto">
+    UPDATE wiki_comment
+    SET content=#{content}
+    WHERE comment_no=#{commentNo}
+  </update>
 
-
-
-
+  <update id="patchStudyComment" parameterType="StudyCommentDto">
+    UPDATE study_comment
+    SET content=#{content}
+    WHERE comment_no=#{commentNo}
+  </update>
 
 </mapper>
