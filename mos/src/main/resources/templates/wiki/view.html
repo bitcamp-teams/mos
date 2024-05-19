@@ -19,27 +19,13 @@
     </nav>
 
     <div class="main col mx-auto">
-      <div class="card">
-        <div>
-          <h1 id="contentTitle"></h1>
-    <!-- 편집 모드로 전환함-->
-          <a class="btn btn-primary" id="contentEditLink" href="editWiki.html"><i class="fas fa-edit"></i></a>
-          <!--        <a id="contentDeleteLink" href="delete.html">[삭제]</a>-->
-
-          <!--          <div> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span>-->
-          </a>
-        </div>
-        <div>
-          <div id="writer-container">
-            <img id="profile-image" class="rounded-circle">
-            <div id="author">회원 이름</div>
-            <div id="createdDate">작성일</div>
-          </div>
-        </div>
-
-
-        <!--          <div th:attr="content = *{content}"></div>-->
+      <div class="wiki-header">
+        <a class="btn btn-primary" id="contentEditLink" href="editWiki.html"><i
+            class="fas fa-edit"></i></a>
+        <h1 id="contentTitle"></h1>
+        <div id="createdDate">작성일</div>
       </div>
+
       <div id="content"></div>
       <div id="viewer">
         <strong>Viewer Here</strong>
@@ -50,13 +36,21 @@
       <!--좋아요-->
       <span id="contentLikes">️</span>
 
+      <div>
+        <div id="writer-container">
+          <img id="profile-image" class="rounded-circle">
+          <div id="author">회원 이름</div>
+        </div>
+      </div>
+
       <!-- comment 영역-->
       <hr class="my-4 bg-primary">
       <div class="row">
 
         <div class="commentForm">
           <div class="form-group">
-            <textarea class="form-control comment-input" id="commentContent" placeholder="댓글을 입력하세요"></textarea>
+            <textarea class="form-control comment-input" id="commentContent"
+                      placeholder="댓글을 입력하세요"></textarea>
             <button class="btn btn-primary comment-submit" id="submitComment">등록</button>
           </div>
         </div>
@@ -68,7 +62,6 @@
       </div>
       <!-- comment 영역 끝-->
     </div>
-
 
 
     <!-- 오른쪽 nav : Wiki's ToC -->
@@ -97,7 +90,8 @@
 <!--jstree-->
 <!--<link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">-->
 <script src="/plugins/jstree/jstree.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>
 
 <!--jstree-view-->
 <script src="/js/wiki/wikitree-view.js"></script>
