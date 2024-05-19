@@ -267,9 +267,9 @@ body {
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-.sticky {
-  position: sticky !important;
-  top: 0;
-  z-index: 1000;
-}
+/*.sticky {*/
+/*  position: sticky !important;*/
+/*  top: 0;*/
+/*  z-index: 1000;*/
+/*}*/
 
