@@ -88,7 +88,7 @@ public class StudyController implements InitializingBean {
   }
 
   @PostMapping("add")
-  public String add(
+  public ResponseEntity<?> add(
       @LoginUser MemberDto loginUser,
       @Validated @ModelAttribute("study") StudyAddDto studyAddDto,
       BindingResult bindingResult,
@@ -105,7 +105,7 @@ public class StudyController implements InitializingBean {
       log.error("bindingResult={}", bindingResult);
       model.addAttribute("study", studyAddDto);
       model.addAttribute("tagList", studyService.getAllTags());
-      return "/study/form";
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     List<TagDto> tagList = new ArrayList<>();
@@ -131,7 +131,7 @@ public class StudyController implements InitializingBean {
     // 게시글을 등록하는 과정에서 세션에 임시 보관한 첨부파일 목록 정보를 제거한다.
     sessionStatus.setComplete();
 
-    return "redirect:list";
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @GetMapping("view")

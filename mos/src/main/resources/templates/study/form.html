@@ -133,38 +133,37 @@
 
         form.addEventListener('submit', function (event) {
             event.preventDefault();
-            const editorContent = editor.getMarkdown();
-            document.getElementById('editor-content').value = editorContent;
-            Swal.fire({
-                title: '스터디 모집글 작성이 완료 되었습니다!',
-                text: '저희 서비스를 이용해 주셔서 감사합니다.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-            form.submit()
-            // $.ajax({
-            //     method: 'POST',
-            //     url: '/study/add',
-            //     contentType: 'application/x-www-form-urlencoded',
-            //     success: function () {
-            //         Swal.fire({
-            //             title: '스터디 모집글 작성이 완료 되었습니다!',
-            //             text: '저희 서비스를 이용해 주셔서 감사합니다.',
-            //             icon: 'success',
-            //             confirmButtonText: 'OK'
-            //         });
-            //     },
-            //     error: function () {
-            //         Swal.fire({
-            //             icon: 'error',
-            //             title: '모집글 작성에 실패했습니다.',
-            //             text: '다시 시도해주세요.',
-            //             showConfirmButton: true
-            //         });
-            //     }
-            // })
+            const editorText = editor.getMarkdown(); // editor에서 마크다운 형식의 텍스트를 가져옵니다.
+            document.getElementById('editor-content').value = editorText; // editor의 내용을 editor-content 요소의 value로 설정합니다.
 
+            const formData = new FormData(form); // FormData 객체를 생성하고 form의 데이터를 추가합니다.
+            formData.append('editor-content', editorText); // editor에서 가져온 텍스트를 FormData에 추가합니다.
+
+            $.ajax({
+                method: 'POST',
+                url: '/study/add',
+                data: formData, // AJAX 요청에 form 데이터를 포함시킵니다.
+                processData: false, // jQuery가 데이터를 처리하지 않도록 설정합니다.
+                contentType: false, // 기본값인 application/x-www-form-urlencoded 대신 FormData의 타입을 사용하도록 설정합니다.
+                success: function () {
+                    Swal.fire({
+                        title: '스터디 모집글 작성이 완료 되었습니다!',
+                        text: '저희 서비스를 이용해 주셔서 감사합니다.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '모집글 작성에 실패했습니다.',
+                        text: '다시 시도해주세요.',
+                        showConfirmButton: true
+                    });
+                }
+            });
         });
+
 
     </script>
 
