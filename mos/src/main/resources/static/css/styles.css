@@ -26,17 +26,7 @@ body {
   padding-bottom: 180px;
 }
 
-#footer {
-  background-color: #DBEAFE;
-  padding: 5px;
-  text-align: center;
-  position: relative;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-  height: 80px;
-  /*transform: translateY(-100%);*/
-}
+
 
 .page-margin {
   margin-left: 15%;
