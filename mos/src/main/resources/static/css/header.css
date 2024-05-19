@@ -1,17 +1,14 @@
-#header {
-  background-color: #DBEAFE;
-  padding: 30px;
-  display: flex;
+header {
   justify-content: space-between;
-  align-items: center;
+  position: fixed;
+  background-color: #DEE2E6;
+  top: 0;
+  transition: top 0.5s  ease-in-out;
+  width: 100%;
+  box-shadow: 1px 1px 1px rgba(0,0,0,.1);
 }
 
-header {
-  background: #f5b335;
-  position: fixed !important;
-  top: 0;
-  transition: top 0.5s ease-in-out;
-  width: 100%;
+header * {
   z-index: 10;
 }
 
