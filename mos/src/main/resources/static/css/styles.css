@@ -44,7 +44,7 @@ body {
 
 /* 카드 UI */
 .HomeLayout_block {
-  display: flex;
+  /*display: flex;*/
   justify-content: center;
   flex-flow: row wrap;
 }
