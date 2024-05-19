@@ -275,6 +275,16 @@
   <input type="hidden" id="memberNoInput" data-th-value="${session.loginUser?.memberNo}">
 </form>
 
+
+<!-- 맨위로 버튼 -->
+<script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
+<script>
+  addBackToTop({
+    diameter: 56,
+    backgroundColor: 'rgb(6,165,186)',
+    textColor: '#fff'
+  })
+</script>
 <!-- Editor -->
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <!-- Viewer -->
