@@ -3,6 +3,7 @@ package com.mos.domain.wiki.controller;
 import com.mos.domain.comment.dto.WikiCommentDto;
 import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.member.dto.MemberDto;
+import com.mos.domain.member.service.MemberService;
 import com.mos.domain.wiki.dto.WikiDto;
 import com.mos.domain.wiki.service.WikiApiService;
 import com.mos.domain.wiki.service.WikiService;
@@ -31,6 +32,7 @@ public class WikiController {
   private final WikiService wikiService;
   private final WikiApiService wikiApiService;
   private final CommentService commentService;
+  private final MemberService memberService;
 
   @GetMapping("form")
   public void form(@RequestParam int studyNo, Model model) throws Exception {
@@ -83,6 +85,8 @@ public class WikiController {
       Model model
   ) throws Exception {
     try {
+      //작성자 번호를 여기서 넣으면 안됨. 비동기라서...
+      //model.addAttribute("writer",memberService.getNo(wikiService.getByWikiNo(wikiNo).getMemberNo()));
       model.addAttribute("loginUser", loginUser);
     } catch (Exception e) {
       //slightly quit
