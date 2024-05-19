@@ -12,7 +12,7 @@ public interface StudyService {
 
   Page<StudyDto> list(Pageable pageable);
 
-  Page<StudyDto> list(Pageable pageable, String flag);
+  Page<StudyDto> list(Pageable pageable, String flag, String searchText);
 
   void add(StudyDto studyDto);
 

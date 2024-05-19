@@ -88,11 +88,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         Left Join study_comment sc on s.study_no = sc.study_no
       WHERE
         s.stat != 'S01-105'
+        <if test="searchText != null and searchText != ''">
+          AND title like CONCAT('%',#{searchText},'%') OR introduction like CONCAT('%',#{searchText},'%')
+        </if>
     GROUP BY s.study_no
     ) as result
     <if test="flag != null and flag != ''">
       ORDER BY result.${flag} desc
     </if>
+
     LIMIT #{pageable.offset}, #{pageable.pageSize};
   </select>
 
