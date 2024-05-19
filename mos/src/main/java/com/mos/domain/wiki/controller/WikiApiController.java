@@ -1,6 +1,7 @@
 package com.mos.domain.wiki.controller;
 
 import com.mos.domain.member.dto.MemberDto;
+import com.mos.domain.member.service.MemberService;
 import com.mos.domain.study.dto.StudyLikeStatDto;
 import com.mos.domain.wiki.dto.WikiDto;
 import com.mos.domain.wiki.dto.WikiLikeStatDto;
@@ -40,6 +41,7 @@ public class WikiApiController {
   }.getClass().getEnclosingClass());
   private final WikiApiService wikiApiService;
   private final WikiLikeService wikiLikeService;
+  private final MemberService memberService;
 
   //조회 (모든 유저가 다 가능함)
   @GetMapping("")

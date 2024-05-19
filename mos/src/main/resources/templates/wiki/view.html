@@ -29,9 +29,15 @@
           <!--          <div> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span>-->
           </a>
         </div>
-        <div> 작성자 = <span id="author">회원 이름</span></div>
-        <div> 작성일 = <span id="createdDate">작성일</span></div>
-        <div> 마지막 편집일 = <span id="updatedDate">마지막 편집일</span></div>
+        <div>
+          <div id="writer-container">
+            <img id="profile-image" class="rounded-circle">
+            <div id="author">회원 이름</div>
+            <div id="createdDate">작성일</div>
+          </div>
+        </div>
+
+
         <!--          <div th:attr="content = *{content}"></div>-->
       </div>
       <div id="content"></div>
@@ -83,7 +89,7 @@
 <!--loginUser to var-->
 <script th:inline="javascript">
   /*<![CDATA[*/
-  var loginUser = /*[[${loginUser}]]*/ 0;
+  const loginUser = /*[[${loginUser}]]*/ 0;
   console.log(loginUser.userName);
   console.log(loginUser.memberNo);
   /*]]>*/

@@ -87,12 +87,27 @@ $(function () {
   .on('select_node.jstree', function (e, data) {
     getNodeContent(data)
     .then(nodeContent => {
+      //data-th-src="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}}"
+
+      //https://4l8fsxs62676.edge.naverncp.com/hudgg8JEM5/member/e9514b16-acd7-4d0b-811d-bf30de70ac3f?type=f&w=80&h=80&ttype=jpg
+
+      //https://4l8fsxs62676.edge.naverncp.com/hudgg8JEM5/member/55c69e50-1284-4364-a306-0a2d6eb9118b?type=f&w=80&h=80&ttype=jpg
+
+
+      let profileImageUrl ;
+          if(nodeContent.photo==null) {
+            profileImageUrl = '/img/user2-160x160.jpg';
+          } else {
+            profileImageUrl = 'https://kr.object.ncloudstorage.com/mos/member/' + nodeContent.photo;
+          }
+      $('#profile-image').attr('src', profileImageUrl);
       $('#author').html(nodeContent.username);
       $('#title').html(nodeContent.title);
       $('#contentEditLink').attr('href',
           '/wiki/edit?studyNo=' + studyNo + '&wikiNo=' + nodeContent.wikiNo);
       $('#content').attr('content', nodeContent.content);
       $('#contentLikes').html(nodeContent.likes);
+      $('#createdDate').html(nodeContent.createdDate);
       isLiked(nodeContent.wikiNo);
       return nodeContent;
     })
