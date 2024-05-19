@@ -115,8 +115,8 @@ public class WikiController {
   }
 
   @GetMapping("modooWikiList")
-  public void modooWikiList(Model model, int page) {
-    Pageable pageable = PageRequest.of(page - 1, 20);
+  public void modooWikiList(Model model) {
+    Pageable pageable = PageRequest.of(0, 20);
     System.out.println("wikiService.listByWikiNo(page) = " + wikiService.listByWikiNo(pageable));
     model.addAttribute("wiki", wikiService.listByWikiNo(pageable));
   }

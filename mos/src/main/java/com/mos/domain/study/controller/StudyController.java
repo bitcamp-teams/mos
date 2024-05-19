@@ -224,14 +224,14 @@ public class StudyController implements InitializingBean {
     //  타인이 작성된 위키가 있는 경우는 삭제 불가
     studyService.deleteStudy(studyNo);
 
-    List<AttachedFileDto> files = studyService.getAttachedFiles(studyNo);
+//    List<AttachedFileDto> files = studyService.getAttachedFiles(studyNo);
 
     // TODO 연결된 위키도 전부 삭제함
     // wikiService.deleteAllByStudyNo(studyNo);
 
-    for (AttachedFileDto file : files) {
-      storageService.delete(this.bucketName, this.uploadDir, file.getFilePath());
-    }
+//    for (AttachedFileDto file : files) {
+//      storageService.delete(this.bucketName, this.uploadDir, file.getFilePath());
+//    }
 
     return "redirect:list";
   }

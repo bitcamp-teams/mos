@@ -52,7 +52,6 @@ public class DefaultStudyService implements StudyService {
   @Transactional
   @Override
   public void deleteStudy(int studyNo) {
-    attachedFileRepository.deleteAll(studyNo);
     studyRepository.delete(studyNo);
   }
 
