@@ -8,6 +8,7 @@ body {
   flex-direction: column;
   /*align-items: flex-start; !* 내부 요소를 왼쪽 정렬 *!*/
   padding: 20px; /* 컨테이너 주변 여백 */
+  min-height: auto;
 }
 
 .card {
@@ -253,3 +254,10 @@ body {
   0% { transform: translate(-50%, -50%) rotate(0deg); }
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
+
+.sticky {
+  position: sticky !important;
+  top: 0;
+  z-index: 1000;
+}
+
