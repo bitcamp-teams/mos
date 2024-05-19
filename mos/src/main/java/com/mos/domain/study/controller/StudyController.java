@@ -183,25 +183,26 @@ public class StudyController implements InitializingBean {
   @PostMapping("update")
   // 히든필드로 POST에 studyNo를 받는다!
   public String update(
-          @Validated @ModelAttribute("study") StudyUpdateDto studyUpdateDtoDto,
+          @Validated @ModelAttribute("study") StudyUpdateDto studyUpdateDto,
           BindingResult bindingResult,
           Model model,
           HttpSession session,
           SessionStatus sessionStatus
   ) throws Exception {
 
+    System.out.println("bindingResult = " + bindingResult);
     if (bindingResult.hasErrors()) {
-      model.addAttribute("study", studyUpdateDtoDto);
-      return "/study/edit?studyNo=" + studyUpdateDtoDto.getStudyNo();
+      model.addAttribute("study", studyUpdateDto);
+      return "/study/edit";
     }
 
     StudyDto studyDto = StudyDto.builder()
-            .studyNo(studyUpdateDtoDto.getStudyNo())
-            .title(studyUpdateDtoDto.getTitle())
-            .method(studyUpdateDtoDto.getMethod())
-            .intake(studyUpdateDtoDto.getIntake())
-            .recruitmentDeadline(studyUpdateDtoDto.getRecruitmentDeadline())
-            .introduction(studyUpdateDtoDto.getIntroduction())
+            .studyNo(studyUpdateDto.getStudyNo())
+            .title(studyUpdateDto.getTitle())
+            .method(studyUpdateDto.getMethod())
+            .intake(studyUpdateDto.getIntake())
+            .recruitmentDeadline(studyUpdateDto.getRecruitmentDeadline())
+            .introduction(studyUpdateDto.getIntroduction())
             .build();
 
     studyService.update(studyDto);

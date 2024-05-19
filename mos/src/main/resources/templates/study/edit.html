@@ -35,14 +35,18 @@
 <!--      <p> 소개 = <input name="introduction" th:value="*{introduction}" type="text"></p>-->
       <div id="editor"></div>
       <div class="field-error" th:errors="*{introduction}">닉네임 오류</div>
-      <input type="hidden" name="introduction" th:attr="introduction=*{introduction}"
-             id="editor-content" value="소개">
+<!--      <input type="hidden" name="introduction" th:attr="introduction=*{introduction}"-->
+<!--             id="editor-content" value="소개">-->
+      <input type="hidden" name="introduction" th:value="${introduction}"
+             id="editor-content">
+
       <button type="submit" class="btn btn-primary">편집완료</button>
       <a href="list">저장하지 않고 돌아가기</a>
     </form>
 
     <script>
-      var content = document.querySelector('[introduction]').getAttribute('introduction');
+      var content = document.getElementById('editor-content').value;
+      console.log(content); // This should log the value of the introduction field
       const {Editor} = toastui;
       const {codeSyntaxHighlight} = Editor.plugin;
 
