@@ -21,4 +21,6 @@ public interface CommentApiRepository {
   void deleteStudyCommentByCommentNo(int commentNo);
 
   void patchWikiComment(WikiCommentDto wikiCommentDto);
+
+  void patchStudyComment(StudyCommentDto studyCommentDto);
 }

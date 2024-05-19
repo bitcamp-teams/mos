@@ -49,7 +49,7 @@ public class WikiController {
   }
 
   @GetMapping("editWiki")
-  public void edit(@RequestParam int wikiNo, Model model) throws Exception {
+  public void editWiki(@RequestParam int wikiNo, Model model) throws Exception {
     WikiDto wikiDto = wikiService.getByWikiNo(wikiNo);
     if (wikiDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
@@ -57,20 +57,21 @@ public class WikiController {
     model.addAttribute("wiki", wikiDto);
   }
 
-  //viewWiki is deprecated! use view.
-  @GetMapping("viewWiki")
-  public void viewWiki(@RequestParam int wikiNo, Model model) throws Exception {
-    WikiDto wikiDto = wikiService.getByWikiNo(wikiNo);
-    if (wikiDto == null) {
-      throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
+  @GetMapping("edit")
+  public void edit(
+      @LoginUser MemberDto loginUser,
+      @RequestParam(required = false, defaultValue = "0") int wikiNo,
+      @RequestParam int studyNo,
+      Model model
+  ) throws Exception {
+    try {
+      model.addAttribute("loginUser", loginUser);
+    } catch (Exception e) {
+      //slightly quit
     }
-    wikiService.updateHitCount(wikiNo);
-    // log.debug(wikiDto.toString());
-    model.addAttribute("wiki", wikiDto);
-
-    List<WikiCommentDto> wikiCommentDtoList = commentService.getWikiComments(wikiNo);
-    model.addAttribute("wikiComments", wikiCommentDtoList);
+    
   }
+
 
   //studyNo에 따라 리스트를 가져오고, 거기서 비동기로 wikiNo에 따라 본문을 보여준다.
   //만약 wikiNo가 있다면 그 위키를 보여준다. (없으면 그냥 리스트만 보여주자)
@@ -81,7 +82,7 @@ public class WikiController {
       @RequestParam int studyNo,
       Model model
   ) throws Exception {
-    try{
+    try {
       model.addAttribute("loginUser", loginUser);
     } catch (Exception e) {
       //slightly quit

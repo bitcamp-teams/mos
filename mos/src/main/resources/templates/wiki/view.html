@@ -1,4 +1,5 @@
 <div th:replace="header::header">머리말</div>
+<link rel="stylesheet" href="/css/wiki/view.css">
 <div class="container-fluid">
   <div class="row justify-content-center flex-nowrap">
     <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
@@ -6,9 +7,7 @@
     <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
     <nav id="resizable" class="resizable-column sidebar-left border">
       <div>
-        <button class="btn btn-primary btn-block align-middle" id="addRootNode">
-          <i class="far fa-file-alt"></i> <span> + </span>
-        </button>
+        <!--TODO: study 제목을 보여주기-->
         <div id="wikiTree">
           <ul>
             <li>
@@ -45,9 +44,8 @@
       <!--좋아요-->
       <span id="contentLikes">️</span>
 
-
-      <hr class="my-4 bg-primary">
       <!-- comment 영역-->
+      <hr class="my-4 bg-primary">
       <div class="row">
 
         <div class="commentForm">
@@ -62,8 +60,9 @@
         </div>
 
       </div>
+      <!-- comment 영역 끝-->
     </div>
-    <!-- comment 영역 끝-->
+
 
 
     <!-- 오른쪽 nav : Wiki's ToC -->
@@ -94,8 +93,8 @@
 <script src="/plugins/jstree/jstree.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 
-<!--jstree-edit-->
-<script src="/js/wiki/wikitree-edit.js"></script>
+<!--jstree-view-->
+<script src="/js/wiki/wikitree-view.js"></script>
 <!--bootstrap-toc-->
 <link rel="stylesheet" href="/plugins/bootstarp-toc/bootstrap-toc.css">
 <script src="/plugins/bootstarp-toc/bootstrap-toc.js"></script>
