@@ -7,42 +7,78 @@
 
 <div data-th-replace="header::header">머리말</div>
 <div class="page-margin wrapper-mos">
+  <div class="py-5 text-center">
+    <h2>모집 글 편집</h2>
+    <hr class="my-4">
+  </div>
+
   <div data-th-object="${study}">
     <form id="studyInfo" action="update" data-th-action="@{/study/update}" method='post'>
-      <!--POST 방식이라 Hidden Field 방식으로 studyNo 전달함-->
-      <input name="studyNo" th:field="*{studyNo}" type="hidden">
-      <div>
-        <label>제목: </label>
-        <input name="title" th:field="*{title}" type="text">
-        <div class="field-error" th:errors="*{title}">닉네임 오류</div>
-      </div>
-      <div>
-        <label>진행방식: </label>
-        <input name="method" th:field="*{method}" type="text">
-        <div class="field-error" th:errors="*{method}">닉네임 오류</div>
-      </div>
-      <div>
-        <label>모집정원: </label>
-        <input name="intake" th:field="*{intake}" type="number">
-        <div class="field-error" th:errors="*{intake}">닉네임 오류</div>
-      </div>
-      <div>
-        <label>모집마감: </label>
-        <input name="recruitmentDeadline" th:field="*{recruitmentDeadline}" type="date">
-        <div class="field-error" th:errors="*{recruitmentDeadline}">닉네임 오류</div>
-      </div>
-      <!--      <p> 예상종료일 = <input name="endDate" th:value="*{endDate}" type="date"></p>-->
-<!--      <p> 소개 = <input name="introduction" th:value="*{introduction}" type="text"></p>-->
-      <div class="field-error" th:errors="*{introduction}">content 오류</div>
-      <div id="editor"></div>
-<!--      <input type="hidden" name="introduction" th:attr="introduction=*{introduction}"-->
-<!--             id="editor-content" value="소개">-->
-      <input type="hidden" name="introduction" th:value="*{introduction}"
-             id="editor-content">
+        <!--POST 방식이라 Hidden Field 방식으로 studyNo 전달함-->
+        <input name="studyNo" th:field="*{studyNo}" type="hidden">
+        <!-- Flex Container 시작 -->
+        <div style="display: flex; gap: 20px;">
+          <div style="flex-basis: 50%">
+            <label> 스터디 제목을 입력해주세요!</label>
+            <input data-th-field="*{title}" type="text" class="form-control" data-th-errorclass="field-error">
+            <div class="field-error" data-th-errors="*{title}">제목 오류</div>
+          </div>
 
-      <button type="submit" class="btn btn-primary">편집완료</button>
-      <a href="list">저장하지 않고 돌아가기</a>
-    </form>
+          <div style="flex-basis: 50%"><div>
+            <label>스터디 방식을 선택해주세요!</label></div>
+            <div class="form-check-inline">
+              <input type="radio" value="온라인" name="method" th:checked="true"> 온라인<br>
+              <input type="radio" value="오프라인" name="method"> 오프라인<br>
+              <input type="radio" value="자유방식" name="method"> 자유방식<br>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4">
+
+        <!-- Flex Container 시작 -->
+        <div style="display: flex; gap: 20px;">
+          <div style="flex-basis: 50%">
+            <div><label> 모집 인원수를 설정해주세요!</label></div>
+            <input data-th-field="*{intake}" type="number" th:value="5" class="form-control" data-th-errorclass="field-error">
+            <div class="field-error" data-th-errors="*{intake}">인원 수 에러</div>
+          </div>
+          <div style="flex-basis: 50%">
+            <div><label>언제까지 모집하시겠어요?</label></div>
+            <input name="recruitmentDeadline" type="date" th:value="2024-05-08">
+          </div>
+        </div>
+        <hr class="my-4">
+
+        <!-- Flex Container 시작 -->
+        <div style="display: flex; gap: 20px;">
+          <div style="flex-basis: 50%">
+            <div><label> 스터디 빈도와 진행 기간은 어떻게 되나요?</label></div>
+            시작일 : <input name="startDate" type="date" th:value="2024-05-08"><br>
+            종료일 : <input name="endDate" type="date" th:value="2024-05-08"><br>
+          </div>
+          <br>
+          <div style="flex-basis: 50%">
+            <div><label>태그들을 선택하세요!</label></div>
+            <div data-th-each="tag : ${tagList}" data-th-object="${tag}" class="form-check-inline">
+              <input type="checkbox" data-th-checkbox="true" data-th-value="*{tagNo}" name="tags" class="form-check-input">
+              <span data-th-text="*{name}"></span>
+            </div>
+            <div data-th-if="${#fields.hasGlobalErrors()}">
+              <p class="field-error" data-th-text="${#fields.globalErrors()}">태그 에러</p>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4">
+
+        <div class="field-error" data-th-errors="*{introduction}"></div>
+        <div id="editor" ></div>
+        <input type="hidden" name="introduction" th:field="*{introduction}" id="editor-content">
+
+        <div class="py-5 text-center">
+          <button type="submit" class="btn btn-primary">등록</button>
+        </div>
+
+      </form>
 
     <script>
       var content = document.getElementById('editor-content').value;

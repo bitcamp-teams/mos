@@ -111,6 +111,7 @@ public class StudyController implements InitializingBean {
       TagDto tag = TagDto.builder().tagNo(no).build();
       tagList.add(tag);
     }
+
     StudyDto studyDto = StudyDto.builder().memberNo(loginUser.getMemberNo()).method(studyAddDto.getMethod())
         .studyNo(studyAddDto.getStudyNo()).title(studyAddDto.getTitle()).introduction(studyAddDto.getIntroduction())
         .startDate(studyAddDto.getStartDate()).endDate(studyAddDto.getEndDate()).intake(studyAddDto.getIntake())
