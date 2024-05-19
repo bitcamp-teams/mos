@@ -81,6 +81,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     study s
     LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
     LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
+    WHERE
+    s.stat != 'S01-105'
     GROUP BY
     s.study_no
     ORDER BY
@@ -142,13 +144,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     study_no=#{studyNo};
   </update>
 
-  <delete id="delete" parameterType="int">
-    DELETE
-    FROM
+  <update id="delete" parameterType="int">
+    UPDATE
     study
+    SET
+    stat = 'S01-105'
     WHERE
     study_no = #{studyNo};
-  </delete>
+  </update>
 
   <!-- 조회수 증가 -->
   <update id="updateHitCount" parameterType="int">
@@ -212,6 +215,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
     LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
     <where>
+      s.stat != 'S01-105'
       <choose>
         <when test="type == 'title'">
           <if test="keyword != null and keyword != ''">
@@ -243,6 +247,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
     LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
     <where>
+      s.stat != 'S01-105'
       <choose>
         <when test="type == 'title'">
           <if test="keyword != null and keyword != ''">
