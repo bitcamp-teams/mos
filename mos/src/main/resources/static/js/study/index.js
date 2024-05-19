@@ -7,18 +7,18 @@ const index = {
     flag: '',
     init() {
         const _this = this;
-        $('.HomeTab_tab__viwzb > a').on('click', function (e) {
+        $('.HomeTab_tab > a').on('click', function (e) {
             e.preventDefault();
             $('.loader').show();
-            $('.HomeTab_tab__viwzb > a').removeClass('HomeTab_active__qHDGO');
-            $(this).addClass('HomeTab_active__qHDGO');
+            $('.HomeTab_tab > a').removeClass('HomeTab_active');
+            $(this).addClass('HomeTab_active');
             const flag = $(this).attr('data-flag');
             if (flag === 'trending') {
                 _this.flag = 'hit_count';
-                $('.HomeTab_indicator__wQ03f').css('left', '4%');
+                $('.HomeTab_indicator').css('left', '4%');
             } else if (flag === 'recent') {
                 _this.flag = 'created_date';
-                $('.HomeTab_indicator__wQ03f').css('left', '63.33%');
+                $('.HomeTab_indicator').css('left', '63.33%');
             }
             _this.initLoad(_this.flag);
         })

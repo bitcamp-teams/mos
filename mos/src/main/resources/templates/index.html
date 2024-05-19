@@ -1,17 +1,17 @@
 <div data-th-replace="header::header">머리말</div>
 
 <style>
-    .HomeTab_left__o1RQE, .HomeTab_left__o1RQE .HomeTab_tab__viwzb {
+    .HomeTab_left, .HomeTab_left .HomeTab_tab {
         display: flex;
         position: relative;
     }
 
-    .HomeTab_left__o1RQE .HomeTab_tab__viwzb a.HomeTab_active__qHDGO {
+    .HomeTab_left .HomeTab_tab a.HomeTab_active {
         color: #212529;
         font-weight: 700;
     }
 
-    .HomeTab_left__o1RQE .HomeTab_tab__viwzb a {
+    .HomeTab_left .HomeTab_tab a {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -22,14 +22,14 @@
         color: #868e96;
     }
 
-    .responsive_mainHeaderResponsive__S6XhY {
+    .responsive_mainHeaderResponsive {
         width: 100%;
         padding-top: 12px;
         padding-bottom: 12px;
         margin: 0 auto;
     }
 
-    .HomeTab_wrapper__Z8vJT {
+    .HomeTab_wrapper {
         width: 100%;
         margin-top: 24px;
         display: flex;
@@ -38,12 +38,12 @@
         position: relative;
     }
 
-    .HomeTab_left__o1RQE, .HomeTab_left__o1RQE .HomeTab_tab__viwzb {
+    .HomeTab_left, .HomeTab_left__o1RQE .HomeTab_tab {
         display: flex;
         position: relative;
     }
 
-    .HomeTab_left__o1RQE {
+    .HomeTab_left {
         justify-content: flex-start;
         align-items: center;
         height: 48px;
@@ -52,16 +52,16 @@
         user-select: none;
     }
 
-    .HomeTab_left__o1RQE .HomeTab_tab__viwzb a svg {
+    .HomeTab_left .HomeTab_tab a svg {
         font-size: 24px;
         margin-right: 8px;
     }
 
-    .HomeTab_left__o1RQE .HomeTab_tab__viwzb a + a {
+    .HomeTab_left .HomeTab_tab a + a {
         margin-left: 20px;
     }
 
-    .HomeTab_left__o1RQE .HomeTab_tab__viwzb a {
+    .HomeTab_left .HomeTab_tab a {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -72,7 +72,7 @@
         color: #868e96;
     }
 
-    .HomeTab_left__o1RQE .HomeTab_tab__viwzb .HomeTab_indicator__wQ03f {
+    .HomeTab_left .HomeTab_tab .HomeTab_indicator {
         position: absolute;
         width: 44%;
         height: 2px;
@@ -80,12 +80,12 @@
         bottom: -10px;
     }
 
-    .HomeTab_right__GMLbd {
+    .HomeTab_right {
         position: relative;
         display: flex;
     }
 
-    .HomeTab_right__GMLbd .HomeTab_selector__I5TLL {
+    .HomeTab_right .HomeTab_selector {
         background: #fff;
         height: 32px;
         width: 100px;
@@ -106,12 +106,12 @@
         cursor: pointer;
     }
 
-    .HomeTab_right__GMLbd .HomeTab_selector__I5TLL svg {
+    .HomeTab_right .HomeTab_selector svg {
         width: 24px;
         height: 24px;
     }
 
-    .HomeTab_right__GMLbd .HomeTab_extra__x0Vmq {
+    .HomeTab_right .HomeTab_extra {
         margin-top: 5px;
         cursor: pointer;
         font-size: 24px;
@@ -121,12 +121,12 @@
 <div class="content-container page-margin wrapper-mos">
     <h1>스터디 모집 목록</h1>
 
-    <div class="HomeTab_wrapper__Z8vJT responsive_mainHeaderResponsive__S6XhY sticky">
-        <nav class="HomeTab_left__o1RQE ">
-            <div class="HomeTab_tab__viwzb ">
+    <div class="HomeTab_wrapper responsive_mainHeaderResponsive sticky">
+        <nav class="HomeTab_left">
+            <div class="HomeTab_tab">
 
                 <!--  트렌딩   -->
-                <a class="HomeTab_active__qHDGO" href="" data-flag="trending">
+                <a class="HomeTab_active" href="" data-flag="trending">
                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em"
                          width="1em"
                          xmlns="http://www.w3.org/2000/svg">
@@ -160,7 +160,7 @@
 <!--                    <span>피드</span>-->
 <!--                </a>-->
                 <!--    3%,     38.33%,     70.33%        -->
-                <div class="HomeTab_indicator__wQ03f" style="left: 2%;"></div>
+                <div class="HomeTab_indicator" style="left: 2%;"></div>
             </div>
         </nav>
 
