@@ -86,6 +86,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
         LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
         Left Join study_comment sc on s.study_no = sc.study_no
+      WHERE
+        s.stat != 'S01-105'
     GROUP BY s.study_no
     ) as result
     <if test="flag != null and flag != ''">

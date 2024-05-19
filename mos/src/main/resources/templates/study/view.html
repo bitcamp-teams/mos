@@ -211,7 +211,7 @@
         let studyNo = /*[[${study.studyNo}]]*/
             function deleteStudy() {
           $.ajax({
-            url: "/delete?studyNo=" + studyNo,
+            url: "/study/delete?studyNo=" + studyNo,
             type: "GET",
             success: function() {
               new swal("성공", "게시물이 삭제되었습니다.", "success");
