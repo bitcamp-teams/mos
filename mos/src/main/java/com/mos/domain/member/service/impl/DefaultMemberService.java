@@ -17,16 +17,17 @@ import java.util.List;
 
 import com.mos.domain.wiki.dto.WikiDto;
 import com.mos.domain.wiki.repository.WikiRepository;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class DefaultMemberService implements MemberService {
 
 
@@ -34,26 +35,31 @@ public class DefaultMemberService implements MemberService {
   private final StudyRepository studyRepository;
   private final WikiRepository wikiRepository;
 
+  @Transactional(readOnly = true)
   @Override
   public MemberDto get(String email) {
     return memberRepository.findByEmail(email);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public MemberDto getName(String username) {
     return memberRepository.findByUsername(username);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public MemberDto getNo(int no) {
     return memberRepository.findByNo(no);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public MemberDto getUsername(String username) {
     return memberRepository.findByUsername(username);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public Page<MemberStudyDto> findMyStudies(int no, Pageable page) {
     MemberDto member = memberRepository.findByNo(no);
@@ -72,11 +78,16 @@ public class DefaultMemberService implements MemberService {
   @Transactional(readOnly = true)
   @Override
   public Page<MyStudiesDto> findListByStudyNo(int studyNo, int memberNo, Pageable page) {
-    List<MyStudiesDto> list = memberRepository.findListByStudyNo(studyNo, memberNo, page.getOffset(), page.getPageSize());
+    List<MyStudiesDto> list = memberRepository.findListByStudyNo(studyNo,
+        memberNo,
+        page.getOffset(),
+        page.getPageSize()
+    );
     int count = memberRepository.acceptCount(studyNo, memberNo);
     return new PageImpl<>(list, page, count);
   }
 
+  @Transactional
   @Override
   public void addFavorites(UpdateFavoritesDto updateFavoritesDto) {
     memberRepository.addFavorites(updateFavoritesDto);
@@ -89,11 +100,13 @@ public class DefaultMemberService implements MemberService {
     return memberRepository.add(joinDto);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public boolean existsByEmail(String email) {
     return memberRepository.existsByEmail(email);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<MemberStudyDto> viewMyStudies(int no) {
     StudyDto studyDto = studyRepository.getByStudyNo(no);
@@ -114,11 +127,13 @@ public class DefaultMemberService implements MemberService {
     return memberRepository.withdraw(no);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public boolean existsByUserName(String username) {
     return memberRepository.existsByUserName(username);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public Page<WikiDto> findMyWiki(int memberNo, Pageable pageable) {
     List<WikiDto> myWiki = memberRepository.findMyWiki(memberNo, pageable);
@@ -126,6 +141,7 @@ public class DefaultMemberService implements MemberService {
     return new PageImpl<>(myWiki, pageable, count);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public Page<StudyCommentDto> findMyStudyComment(int memberNo, Pageable pageable) {
     List<StudyCommentDto> myStudyComment = memberRepository.findMyStudyComment(memberNo, pageable);
@@ -133,6 +149,7 @@ public class DefaultMemberService implements MemberService {
     return new PageImpl<>(myStudyComment, pageable, count);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public Page<WikiCommentDto> findMyWikiComment(int memberNo, Pageable pageable) {
     List<WikiCommentDto> myWikiComment = memberRepository.findMyWikiComment(memberNo, pageable);
@@ -140,13 +157,22 @@ public class DefaultMemberService implements MemberService {
     return new PageImpl<>(myWikiComment, pageable, count);
   }
 
+  @Transactional
   public void updateStatus(MyStudiesUpdateDto updateDto) {
     memberRepository.updateStatus(updateDto);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public Page<StudyDto> findLikedStudiseByNo(int memberNo, Pageable pageable) {
 
     return null;
   }
+
+  @Transactional(readOnly = true)
+  @Override
+  public List<MemberDto> getAuthorizedMembers(int studyNo) {
+    return memberRepository.findAuthorizedMembersByStudyNo(studyNo);
+  }
+
 }

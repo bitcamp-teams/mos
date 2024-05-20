@@ -48,6 +48,10 @@
         FROM wiki w
         JOIN member m ON w.member_no = m.member_no
         left join mos.wiki_comment wc on w.wiki_no = wc.wiki_no
+        where 1=1
+        <if test="searchText != null and searchText != ''">
+            AND w.title like CONCAT('%',#{searchText},'%') OR w.content like CONCAT('%',#{searchText},'%')
+        </if>
         group by w.wiki_no
         LIMIT #{offset}, #{pageSize}
     </select>
@@ -60,6 +64,10 @@
             FROM wiki w
             JOIN member m ON w.member_no = m.member_no
             left join mos.wiki_comment wc on w.wiki_no = wc.wiki_no
+            WHERE 1=1
+            <if test="searchText != null and searchText != ''">
+                AND w.title like CONCAT('%',#{searchText},'%') OR w.content like CONCAT('%',#{searchText},'%')
+            </if>
             group by w.wiki_no
         ) AS q
     </select>

@@ -79,6 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         s.created_date,
         s.hit_count,
         s.like_count,
+        m.photo,
         GROUP_CONCAT(DISTINCT t.name) AS tags,
         count(sc.comment_no) AS comment_count
       FROM
@@ -86,8 +87,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
         LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
         Left Join study_comment sc on s.study_no = sc.study_no
+        left join member m on s.member_no = m.member_no
       WHERE
         s.stat != 'S01-105'
+        <if test="searchText != null and searchText != ''">
+          AND title like CONCAT('%',#{searchText},'%') OR introduction like CONCAT('%',#{searchText},'%')
+        </if>
     GROUP BY s.study_no
     ) as result
     <if test="flag != null and flag != ''">
@@ -98,6 +103,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
   <select id="countAll" resultType="long">
     SELECT COUNT(*) FROM study
+    WHERE 1=1
+    <if test="searchText != null and searchText != ''">
+      AND title like CONCAT('%',#{searchText},'%') OR introduction like CONCAT('%',#{searchText},'%')
+    </if>
   </select>
 
   <select id="getByStudyNo" resultMap="studyDetail">

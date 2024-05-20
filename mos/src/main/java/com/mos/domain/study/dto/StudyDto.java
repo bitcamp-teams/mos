@@ -37,5 +37,6 @@ public class StudyDto {
   private String username;
   private int commentCount;
   private List<AttachedFileStudyDto> fileList;
+  private String photo;
 
 }

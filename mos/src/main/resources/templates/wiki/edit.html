@@ -1,7 +1,7 @@
 <div th:replace="header::header">머리말</div>
 <link rel="stylesheet" href="/css/wiki/edit.css">
 
-<div class="container-fluid">
+<div th:if="${authorized}" class="container-fluid">
   <div class="row justify-content-center flex-nowrap">
     <!-- 비동기 갱신되는 중앙 컨텐츠 영역 -->
 
@@ -50,6 +50,9 @@
 
   </div>
 
+</div>
+<div th:unless="${authorized}" class="page-margin wrapper-mos">
+  편집은 팀원들만 가능해요!!
 </div>
 
 <!--js-->

@@ -1,8 +1,8 @@
 <style>
   .field-error {
-        border-color: red;
-        color: red;
-    }
+    border-color: red;
+    color: red;
+  }
 </style>
 
 <div data-th-replace="header::header">머리말</div>
@@ -12,6 +12,7 @@
     <hr class="my-4">
   </div>
 
+<div th:if="${authorized}" class="page-margin wrapper-mos">
   <div data-th-object="${study}">
     <form id="studyInfo" action="update" data-th-action="@{/study/update}" method='post'>
         <!--POST 방식이라 Hidden Field 방식으로 studyNo 전달함-->
@@ -70,9 +71,14 @@
         </div>
         <hr class="my-4">
 
-        <div class="field-error" data-th-errors="*{introduction}"></div>
-        <div id="editor" ></div>
-        <input type="hidden" name="introduction" th:field="*{introduction}" id="editor-content">
+      <!--      <p> 예상종료일 = <input name="endDate" th:value="*{endDate}" type="date"></p>-->
+      <!--      <p> 소개 = <input name="introduction" th:value="*{introduction}" type="text"></p>-->
+      <div class="field-error" th:errors="*{introduction}">content 오류</div>
+      <div id="editor"></div>
+      <!--      <input type="hidden" name="introduction" th:attr="introduction=*{introduction}"-->
+      <!--             id="editor-content" value="소개">-->
+      <input type="hidden" name="introduction" th:value="*{introduction}"
+             id="editor-content">
 
         <div class="py-5 text-center">
           <button type="submit" class="btn btn-primary">등록</button>
@@ -107,8 +113,8 @@
 
               // 2. FileApiController - uploadEditorImage 메서드 호출
               const response = await fetch('/storage/file/upload', {
-                method : 'POST',
-                body : formData,
+                method: 'POST',
+                body: formData,
               });
 
               // 3. 컨트롤러에서 전달받은 디스크에 저장된 파일명
@@ -129,16 +135,16 @@
         /* end of hooks */
       });
 
-//      let editor = new toastui.Editor({
-//        el: document.querySelector(('#editor')),
-//        height: '70%',
-//        initialEditType: 'markdown',
-//        previewStyle: 'vertical',
-//        plugins: [codeSyntaxHighlight],
-//        placeholder: 'placeholder',
-//        useCommandShortcut: true,
-//        initialValue: content
-//      });
+      //      let editor = new toastui.Editor({
+      //        el: document.querySelector(('#editor')),
+      //        height: '70%',
+      //        initialEditType: 'markdown',
+      //        previewStyle: 'vertical',
+      //        plugins: [codeSyntaxHighlight],
+      //        placeholder: 'placeholder',
+      //        useCommandShortcut: true,
+      //        initialValue: content
+      //      });
 
       const form = document.getElementById('studyInfo');
       // const editorContent = document.getElementById('editor-content');
@@ -152,8 +158,10 @@
     </script>
 
 
-
-
   </div>
 </div>
+<div th:unless="${authorized}" class="page-margin wrapper-mos">
+  편집은 팀원들만 가능해요!!
+</div>
+
 <div data-th-replace="footer::footer">꼬리말</div>

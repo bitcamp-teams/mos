@@ -4,27 +4,46 @@ import {formatDate} from "../util/util.js";
 const index = {
     currentPage: 0,
     totalPages: 0,
-    flag: '',
+    flag: 'hit_count',
+    totalCount: 0,
+    searchText: '',
     init() {
         const _this = this;
-        $('.HomeTab_tab__viwzb > a').on('click', function (e) {
+        $('.HomeTab_tab > a').on('click', function (e) {
             e.preventDefault();
             $('.loader').show();
-            $('.HomeTab_tab__viwzb > a').removeClass('HomeTab_active__qHDGO');
-            $(this).addClass('HomeTab_active__qHDGO');
+            $('.HomeTab_tab > a').removeClass('HomeTab_active');
+            $(this).addClass('HomeTab_active');
             const flag = $(this).attr('data-flag');
             if (flag === 'trending') {
                 _this.flag = 'hit_count';
-                $('.HomeTab_indicator__wQ03f').css('left', '4%');
+                $('.HomeTab_indicator').css('left', '4%');
             } else if (flag === 'recent') {
                 _this.flag = 'created_date';
-                $('.HomeTab_indicator__wQ03f').css('left', '63.33%');
+                $('.HomeTab_indicator').css('left', '63.33%');
             }
             _this.initLoad(_this.flag);
         })
 
         document.addEventListener('DOMContentLoaded', function () {
             _this.initLoad();
+            $('.search_searchInput').on('keypress', function (e) {
+                $('.search_searchInitialize').show();
+                if ($(this).val() === '') {
+                    $('.search_searchInitialize').hide();
+                }
+                // 엔터 치면 검색
+                if (e.keyCode === 13) {
+                    _this.searchText = $(this).val();
+                    _this.loadStudy(0, false, _this.flag);
+                }
+            });
+            $('.search_searchInitialize').on('click', function () {
+                $('.search_searchInput').val('');
+                $('.search_searchInitialize').hide();
+                _this.searchText = '';
+            });
+
         });
 
         $(window).scroll(function () {
@@ -33,6 +52,7 @@ const index = {
             //(현재 화면상단 + 현재 화면 높이)
             const nowHeight = window.scrollY + window.innerHeight;
             if (nowHeight >= documentHeight) {
+                console.log(_this.currentPage,  _this.totalPages)
                 if (_this.currentPage < _this.totalPages) {
                     _this.loadStudy(_this.currentPage, true);
                 }
@@ -55,12 +75,12 @@ const index = {
 
         const params = {
             page: page,
-            flag: flag
+            flag: flag,
+            searchText: _this.searchText
         };
 
-        if (append) {
-            $('.loader').show();
-        } else {
+        $('.loader').show();
+        if (!append) {
             cardsContainer.html('');
         }
 
@@ -68,9 +88,9 @@ const index = {
             if (res.data == null) {
                 throw new Error('스터디 정보를 불러올 수 없음');
             }
+            $('#totalCount').text(res.data.totalElements);
             _this.totalPages = res.data.totalPages;
             _this.currentPage++;
-            console.log(res.data.content)
             return res.data.content;
         }).then(studyList => {
             if (!studyList || studyList.length === 0) {
@@ -99,6 +119,8 @@ const index = {
 
             // 본문
             const date = formatDate(study.createdDate);
+            // photo 가 없으면 ''
+            const photo = (study.photo != null) ? `https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/${study.photo}?type=f&w=32&h=32&ttype=jpg` : '/img/icon2.png';
             const content = $(`<div class="PostCard_content">
                                             <a href="/study/view?studyNo=${study.studyNo}"
                                                class="VLink_block PostCard_styleLink">
@@ -117,7 +139,7 @@ const index = {
                                                     alt="user thumbnail of heyday.xz" loading="lazy" width="24" height="24"
                                                     decoding="async"
                                                     data-nimg="1"
-                                                    src="https://picsum.photos/24/24"
+                                                    src="${photo}"
                                                     style="color: transparent;"><span>by <b>${study.leaderName}</b></span></a>
                                             <div class="PostCard_likes">
                                                 <svg viewBox="0 0 24 24">

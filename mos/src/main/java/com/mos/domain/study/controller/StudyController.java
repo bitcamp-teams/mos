@@ -4,6 +4,7 @@ import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
+import com.mos.domain.member.service.MemberService;
 import com.mos.domain.study.dto.*;
 import com.mos.domain.study.service.StudyLikeService;
 import com.mos.domain.study.service.StudyService;
@@ -57,7 +58,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 public class StudyController implements InitializingBean {
 
-  // 현재 스레드의 클래스를 파라미터로 받아서 로그 객체를 만든다.
+  private final MemberService memberService;
   private final StudyService studyService;
   // 스터디에 파일저장 / 이미지 옵티마이징 따로 없으므로 변수 추가 없음
   private final CommentService commentService;
@@ -179,7 +180,19 @@ public class StudyController implements InitializingBean {
   }
 
   @GetMapping("edit")
-  public void edit(int studyNo, Model model) throws Exception {
+  public void edit(@LoginUser MemberDto loginUser, @RequestParam int studyNo, Model model) throws Exception {
+    // 권한체크
+    boolean authorized = false;
+    List<MemberDto> members = memberService.getAuthorizedMembers(studyNo);
+    for (MemberDto member : members) {
+      if (member.getMemberNo() == loginUser.getMemberNo()) {
+        authorized = true;
+        log.debug("TRUE###");
+        break;
+      }
+    }
+    model.addAttribute("authorized", authorized);
+
     StudyDto studyDto = studyService.getByStudyNo(studyNo);
     if (studyDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
@@ -190,11 +203,11 @@ public class StudyController implements InitializingBean {
   @PostMapping("update")
   // 히든필드로 POST에 studyNo를 받는다!
   public String update(
-          @Validated @ModelAttribute("study") StudyUpdateDto studyUpdateDto,
-          BindingResult bindingResult,
-          Model model,
-          HttpSession session,
-          SessionStatus sessionStatus
+      @Validated @ModelAttribute("study") StudyUpdateDto studyUpdateDto,
+      BindingResult bindingResult,
+      Model model,
+      HttpSession session,
+      SessionStatus sessionStatus
   ) throws Exception {
 
     System.out.println("bindingResult = " + bindingResult);
@@ -203,14 +216,10 @@ public class StudyController implements InitializingBean {
       return "/study/edit";
     }
 
-    StudyDto studyDto = StudyDto.builder()
-            .studyNo(studyUpdateDto.getStudyNo())
-            .title(studyUpdateDto.getTitle())
-            .method(studyUpdateDto.getMethod())
-            .intake(studyUpdateDto.getIntake())
-            .recruitmentDeadline(studyUpdateDto.getRecruitmentDeadline())
-            .introduction(studyUpdateDto.getIntroduction())
-            .build();
+    StudyDto studyDto = StudyDto.builder().studyNo(studyUpdateDto.getStudyNo()).title(studyUpdateDto.getTitle())
+        .method(studyUpdateDto.getMethod()).intake(studyUpdateDto.getIntake())
+        .recruitmentDeadline(studyUpdateDto.getRecruitmentDeadline()).introduction(studyUpdateDto.getIntroduction())
+        .build();
 
     studyService.update(studyDto);
     StudyDto result = studyService.getByStudyNo(studyDto.getStudyNo());
@@ -224,24 +233,24 @@ public class StudyController implements InitializingBean {
     return "redirect:view?studyNo=" + studyDto.getStudyNo();
   }
 
-//  @GetMapping("delete")
-//  public String delete(HttpSession session, int studyNo) throws Exception {
-//    // TODO 스터디장만 삭제 권한 있고,
-//    //  연결된 다른 참여회원이 존재할 경우 삭제 불가하며
-//    //  타인이 작성된 위키가 있는 경우는 삭제 불가
-//    studyService.deleteStudy(studyNo);
-//
-////    List<AttachedFileDto> files = studyService.getAttachedFiles(studyNo);
-//
-//    // TODO 연결된 위키도 전부 삭제함
-//    // wikiService.deleteAllByStudyNo(studyNo);
-//
-////    for (AttachedFileDto file : files) {
-////      storageService.delete(this.bucketName, this.uploadDir, file.getFilePath());
-////    }
-//
-//    return "redirect:list";
-//  }
+  //  @GetMapping("delete")
+  //  public String delete(HttpSession session, int studyNo) throws Exception {
+  //    // TODO 스터디장만 삭제 권한 있고,
+  //    //  연결된 다른 참여회원이 존재할 경우 삭제 불가하며
+  //    //  타인이 작성된 위키가 있는 경우는 삭제 불가
+  //    studyService.deleteStudy(studyNo);
+  //
+  ////    List<AttachedFileDto> files = studyService.getAttachedFiles(studyNo);
+  //
+  //    // TODO 연결된 위키도 전부 삭제함
+  //    // wikiService.deleteAllByStudyNo(studyNo);
+  //
+  ////    for (AttachedFileDto file : files) {
+  ////      storageService.delete(this.bucketName, this.uploadDir, file.getFilePath());
+  ////    }
+  //
+  //    return "redirect:list";
+  //  }
 
   @GetMapping("delete")
   public ResponseEntity<String> delete(int studyNo) throws Exception {
@@ -367,8 +376,6 @@ public class StudyController implements InitializingBean {
       return "error-page";
     }
   }
-
-
 
 
 }
