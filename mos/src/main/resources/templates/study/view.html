@@ -1,22 +1,22 @@
 <div data-th-replace="header::header">머리말</div>
-
-<div class="container-fluid">
+<link rel="stylesheet" href="/css/study/view.css">
+<div class="container">
 
   <div class="row justify-content-center flex-nowrap">
 
     <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
-    <nav id="resizable" class="resizable-column sidebar-left border">
-      <div>
-        <!--TODO: study 제목을 보여주기-->
-        <div id="wikiTree">
-          <ul>
-            <li>
-              불러오는 중입니다.
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <!--    <nav id="resizable" class="resizable-column sidebar-left border">-->
+    <!--      <div>-->
+    <!--        &lt;!&ndash;TODO: study 제목을 보여주기&ndash;&gt;-->
+    <!--        <div id="wikiTree">-->
+    <!--          <ul>-->
+    <!--            <li>-->
+    <!--              불러오는 중입니다.-->
+    <!--            </li>-->
+    <!--          </ul>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </nav>-->
 
     <!-- 스터디 안내 -->
     <div data-th-object="${study}" class="main col mx-auto">
@@ -191,6 +191,7 @@
             success: function (response) {
               // 성공적으로 처리된 경우
               console.log(response);
+              console.log('hihi');
               // 좋아요 상태를 토대로 UI 업데이트
               if (response.checked != 1) {
                 // 좋아요가 눌리지 않은 상태였다면
@@ -264,11 +265,11 @@
 </script>
 <!--jstree-->
 <!--<link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">-->
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>
-<script src="/plugins/jstree/jstree.js"></script>
+<!--<link rel="stylesheet"-->
+<!--      href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>-->
+<!--<script src="/plugins/jstree/jstree.js"></script>-->
 <script src="/js/study/view.js"></script>
-<script src="/js/study/wikitree-view.js"></script>
+<!--<script src="/js/study/wikitree-view.js"></script>-->
 <script src="/js/comment/study-async-comment.js"></script>
 <link rel="stylesheet" href="/css/wiki/view.css">
 <div data-th-replace="footer::footer">꼬리말</div>
