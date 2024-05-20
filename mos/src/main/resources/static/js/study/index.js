@@ -105,7 +105,6 @@ const index = {
     createCards(studyList) {
         const cardsArr = [];
         studyList.forEach(function (study) {
-            console.log(study)
             const li = $('<li class="PostCard_block"></li>');
             // 썸네일 영역
             const thumbnail = $(`<a href="/study/view?studyNo=${study.studyNo}" class="VLink_block PostCard_styleLink">
