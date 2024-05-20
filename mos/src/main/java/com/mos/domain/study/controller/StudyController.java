@@ -115,6 +115,7 @@ public class StudyController implements InitializingBean {
                   .toList();
       log.error("errorMessages={}", errorMessages);
       log.error("bindingResult={}", bindingResult);
+      model.addAttribute("tagList", studyService.getAllTags());
       return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
     }
 
@@ -202,6 +203,7 @@ public class StudyController implements InitializingBean {
     if (studyDto == null) {
       throw new Exception("해당 스터디 번호가 존재하지 않습니다.");
     }
+    model.addAttribute("tagList", studyService.getAllTags());
     model.addAttribute("study", studyDto);
   }
 
