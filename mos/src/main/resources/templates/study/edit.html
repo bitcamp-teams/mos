@@ -28,9 +28,18 @@
           <div style="flex-basis: 50%"><div>
             <label>스터디 방식을 선택해주세요!</label></div>
             <div class="form-check-inline">
-              <input type="radio" value="온라인" name="method" th:checked="true"> 온라인<br>
-              <input type="radio" value="오프라인" name="method"> 오프라인<br>
-              <input type="radio" value="자유방식" name="method"> 자유방식<br>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="method" id="inlineRadio1" value="온라인" th:checked="true">
+                <label class="form-check-label" for="inlineRadio1">온라인</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="method" id="inlineRadio2" value="오프라인">
+                <label class="form-check-label" for="inlineRadio2">오프라인</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="method" id="inlineRadio3" value="자유방식">
+                <label class="form-check-label" for="inlineRadio3">자유방식</label>
+              </div>
             </div>
           </div>
         </div>
@@ -53,14 +62,23 @@
         <!-- Flex Container 시작 -->
         <div style="display: flex; gap: 20px;">
           <div style="flex-basis: 50%">
-            <div><label> 스터디 빈도와 진행 기간은 어떻게 되나요?</label></div>
-            시작일 : <input th:field="*{startDate}" type="date"><br>
-            종료일 : <input th:field="*{endDate}" type="date"><br>
+            <label>스터디 진행 기간을 설정해 주세요!</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                  </span>
+              </div>
+              <input type="text" class="form-control float-right" id="period">
+              <input type="hidden" id="startDate" th:field="*{startDate}">
+              <input type="hidden" id="endDate" th:field="*{endDate}">
+            </div>
           </div>
           <br>
           <div style="flex-basis: 50%">
             <div><label>태그들을 선택하세요!</label></div>
-            <div data-th-each="tag : ${tagList}" data-th-object="${tag}" class="form-check-inline">
+            <div data-th-each="tag : ${tagList}" data-th-object="${tag}" class="form-check form-check-inline">
+              <label>
               <input type="checkbox"
                      data-th-checkbox="true"
                      data-th-value="*{tagNo}"
@@ -68,6 +86,7 @@
                      class="form-check-input"
                      th:checked="${#lists.contains(studyTags, tag.tagNo)}">
               <span data-th-text="*{name}"></span>
+              </label>
             </div>
             <div data-th-if="${#fields.hasGlobalErrors()}">
               <p class="field-error" data-th-text="${#fields.globalErrors()}">태그 에러</p>
@@ -96,7 +115,30 @@
       console.log(content); // This should log the value of the introduction field
       const {Editor} = toastui;
       const {codeSyntaxHighlight} = Editor.plugin;
-      const studyNo = /*[[${study.studyNo}]]*/;
+      const studyNo = /*[[${study.studyNo}]]*/'';
+
+      //Date range picker
+      $('#period').daterangepicker({
+        "locale": {
+          "format": "YYYY-MM-DD",
+          "separator": " ~ ",
+          "applyLabel": "확인",
+          "cancelLabel": "취소",
+          "fromLabel": "From",
+          "toLabel": "To",
+          "customRangeLabel": "Custom",
+          "weekLabel": "W",
+          "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
+          "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+        },
+        "startDate": $('#startDate').val(),
+        "endDate": $('#endDate').val(),
+        "drops": "auto"
+      }, function (start, end, label) {
+        console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+        $('input[id="startDate"]').val(start.format("YYYY-MM-DD"));
+        $('input[id="endDate"]').val(end.format("YYYY-MM-DD"));
+      });
 
       const editor = new toastui.Editor({
         el: document.querySelector('#editor'), // 에디터를 적용할 요소 (컨테이너)
@@ -151,6 +193,8 @@
 
         const formData = new FormData(form); // FormData 객체를 생성하고 form의 데이터를 추가합니다.
         formData.append('editor-content', editorText); // editor에서 가져온 텍스트를 FormData에 추가합니다.
+        formData.append('startDate', $('input[id="startDate"]').val());
+        formData.append('endDate', $('input[id="endDate"]').val());
 
         $.ajax({
           method: 'POST',
