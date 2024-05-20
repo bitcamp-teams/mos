@@ -84,8 +84,13 @@ public class StudyController implements InitializingBean {
   public String form(Model model) throws Exception {
 
     List<TagDto> tagList = studyService.getAllTags();
+    Date currentDate = Date.valueOf(LocalDate.now());
 
-    model.addAttribute("study", StudyDto.builder().build());
+    model.addAttribute("study", StudyDto.builder()
+        .startDate(currentDate)
+        .endDate(currentDate)
+        .recruitmentDeadline(currentDate)
+        .build());
     model.addAttribute("tagList", tagList);
     return "study/form";
   }
