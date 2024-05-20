@@ -1,22 +1,22 @@
 <div data-th-replace="header::header">머리말</div>
 <link rel="stylesheet" href="/css/study/view.css">
-<div class="container-fluid">
+<div class="container">
 
   <div class="row justify-content-center flex-nowrap">
 
     <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
-    <nav id="resizable" class="resizable-column sidebar-left border">
-      <div>
-        <!--TODO: study 제목을 보여주기-->
-        <div id="wikiTree">
-          <ul>
-            <li>
-              불러오는 중입니다.
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <!--    <nav id="resizable" class="resizable-column sidebar-left border">-->
+    <!--      <div>-->
+    <!--        &lt;!&ndash;TODO: study 제목을 보여주기&ndash;&gt;-->
+    <!--        <div id="wikiTree">-->
+    <!--          <ul>-->
+    <!--            <li>-->
+    <!--              불러오는 중입니다.-->
+    <!--            </li>-->
+    <!--          </ul>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </nav>-->
 
     <!-- 스터디 안내 -->
     <div data-th-object="${study}" class="main col mx-auto">
@@ -176,8 +176,8 @@
             window.location.href = "/auth/login";
             return;
           }
-          var studyNo = parseInt(icon.getAttribute('data-study-no'));
-          var likeCount = document.getElementById('like-count-' + studyNo);
+          var studyNoAttr = parseInt(icon.getAttribute('data-study-no'));
+          var likeCount = document.getElementById('like-count-' + studyNoAttr);
 
           // AJAX 요청을 통해 서버로 데이터 전송
           $.ajax({
@@ -185,12 +185,13 @@
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-              studyNo: studyNo,
+              studyNo: studyNoAttr,
               memberNo: memberNo
             }),
             success: function (response) {
               // 성공적으로 처리된 경우
               console.log(response);
+              console.log('hihi');
               // 좋아요 상태를 토대로 UI 업데이트
               if (response.checked != 1) {
                 // 좋아요가 눌리지 않은 상태였다면
@@ -212,10 +213,10 @@
 
       <!-- 스터디 삭제 스크립트 추가 -->
       <script data-th-inline="javascript">
-        let studyNo = /*[[${study.studyNo}]]*/
+        let studyNoDeleted = /*[[${study.studyNo}]]*/
             function deleteStudy() {
               $.ajax({
-                url: "/study/delete?studyNo=" + studyNo,
+                url: "/study/delete?studyNo=" + studyNoDeleted,
                 type: "GET",
                 success: function () {
                   new swal("성공", "게시물이 삭제되었습니다.", "success");
@@ -264,10 +265,11 @@
 </script>
 <!--jstree-->
 <!--<link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">-->
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>
-<script src="/plugins/jstree/jstree.js"></script>
+<!--<link rel="stylesheet"-->
+<!--      href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>-->
+<!--<script src="/plugins/jstree/jstree.js"></script>-->
 <script src="/js/study/view.js"></script>
-<script src="/js/study/wikitree-view.js"></script>
+<!--<script src="/js/study/wikitree-view.js"></script>-->
 <script src="/js/comment/study-async-comment.js"></script>
+<link rel="stylesheet" href="/css/wiki/view.css">
 <div data-th-replace="footer::footer">꼬리말</div>
