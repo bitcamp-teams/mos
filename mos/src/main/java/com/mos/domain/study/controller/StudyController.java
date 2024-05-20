@@ -223,10 +223,7 @@ public class StudyController implements InitializingBean {
       return "/study/edit";
     }
 
-    StudyDto studyDto = StudyDto.builder().studyNo(studyUpdateDto.getStudyNo()).title(studyUpdateDto.getTitle())
-        .method(studyUpdateDto.getMethod()).intake(studyUpdateDto.getIntake())
-        .recruitmentDeadline(studyUpdateDto.getRecruitmentDeadline()).introduction(studyUpdateDto.getIntroduction())
-        .build();
+    StudyDto studyDto = setStudyDto(studyUpdateDto);
 
     studyService.update(studyDto);
     StudyDto result = studyService.getByStudyNo(studyDto.getStudyNo());
@@ -238,6 +235,19 @@ public class StudyController implements InitializingBean {
 
     // return "view?studyNo=" + studyDto.getStudyNo();
     return "redirect:view?studyNo=" + studyDto.getStudyNo();
+  }
+
+  private static StudyDto setStudyDto(StudyUpdateDto studyUpdateDto) {
+    return StudyDto.builder()
+        .studyNo(studyUpdateDto.getStudyNo())
+        .title(studyUpdateDto.getTitle())
+        .method(studyUpdateDto.getMethod())
+        .intake(studyUpdateDto.getIntake())
+        .startDate(studyUpdateDto.getStartDate())
+        .endDate(studyUpdateDto.getEndDate())
+        .recruitmentDeadline(studyUpdateDto.getRecruitmentDeadline())
+        .introduction(studyUpdateDto.getIntroduction())
+        .build();
   }
 
   //  @GetMapping("delete")

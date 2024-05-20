@@ -153,6 +153,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     title=#{title},
     method=#{method},
     intake=#{intake},
+    start_date=#{startDate},
+    end_date=#{endDate},
     recruitment_deadline=#{recruitmentDeadline},
     introduction=#{introduction}
     WHERE

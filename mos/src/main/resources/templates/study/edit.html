@@ -12,7 +12,7 @@
     <hr class="my-4">
   </div>
 
-<div th:if="${authorized}" class="page-margin wrapper-mos">
+<div th:if="${authorized}" class="container-fluid">
   <div data-th-object="${study}">
     <form id="studyInfo" action="update" data-th-action="@{/study/update}" method='post'>
         <!--POST 방식이라 Hidden Field 방식으로 studyNo 전달함-->
@@ -45,7 +45,7 @@
           </div>
           <div style="flex-basis: 50%">
             <div><label>언제까지 모집하시겠어요?</label></div>
-            <input name="recruitmentDeadline" type="date" th:value="2024-05-08">
+            <input th:field="*{recruitmentDeadline}" type="date">
           </div>
         </div>
         <hr class="my-4">
@@ -54,8 +54,8 @@
         <div style="display: flex; gap: 20px;">
           <div style="flex-basis: 50%">
             <div><label> 스터디 빈도와 진행 기간은 어떻게 되나요?</label></div>
-            시작일 : <input name="startDate" type="date" th:value="2024-05-08"><br>
-            종료일 : <input name="endDate" type="date" th:value="2024-05-08"><br>
+            시작일 : <input th:field="*{startDate}" type="date"><br>
+            종료일 : <input th:field="*{endDate}" type="date"><br>
           </div>
           <br>
           <div style="flex-basis: 50%">
