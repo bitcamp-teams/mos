@@ -86,7 +86,6 @@ const index = {
         }
 
         study.findAll(params).then(res => {
-            console.log(res.data.totalElements);
             if (res.data == null) {
                 throw new Error('스터디 정보를 불러올 수 없음');
             }
@@ -106,6 +105,7 @@ const index = {
     createCards(studyList) {
         const cardsArr = [];
         studyList.forEach(function (study) {
+            console.log(study)
             const li = $('<li class="PostCard_block"></li>');
             // 썸네일 영역
             const thumbnail = $(`<a href="/study/view?studyNo=${study.studyNo}" class="VLink_block PostCard_styleLink">
@@ -121,6 +121,8 @@ const index = {
 
             // 본문
             const date = formatDate(study.createdDate);
+            // photo 가 없으면 ''
+            const photo = (study.photo != null) ? `https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/${study.photo}?type=f&w=32&h=32&ttype=jpg` : '/img/icon2.png';
             const content = $(`<div class="PostCard_content">
                                             <a href="/study/view?studyNo=${study.studyNo}"
                                                class="VLink_block PostCard_styleLink">
@@ -139,7 +141,7 @@ const index = {
                                                     alt="user thumbnail of heyday.xz" loading="lazy" width="24" height="24"
                                                     decoding="async"
                                                     data-nimg="1"
-                                                    src="https://picsum.photos/24/24"
+                                                    src="${photo}"
                                                     style="color: transparent;"><span>by <b>${study.leaderName}</b></span></a>
                                             <div class="PostCard_likes">
                                                 <svg viewBox="0 0 24 24">
