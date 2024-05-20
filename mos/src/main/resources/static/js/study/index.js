@@ -146,7 +146,7 @@ const index = {
             const content = $(`<div class="PostCard_content">
                                             <a href="/study/view?studyNo=${study.studyNo}"
                                                class="VLink_block PostCard_styleLink">
-                                                <h4 class="PostCard_h4 utils_ellipsis">${study.title}</h4>
+                                                <h4 class="PostCard_h4 utils_ellipsis" style="">${study.title}</h4>
                                                 <div class="PostCard_descriptionWrapper">
                                                     <p class="PostCard_clamp">${parsedData}</p>
                                                 </div>

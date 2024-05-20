@@ -29,8 +29,8 @@ body {
 
 
 .page-margin {
-  margin-left: 15%;
-  margin-right: 15%;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 /* 카드 UI */
@@ -319,6 +319,12 @@ body {
   padding: 10px;
   margin-right: 20px;
 }
+
+.PostCard_clamp {
+  font-weight: lighter;
+
+}
+
 /*.sticky {*/
 /*  position: sticky !important;*/
 /*  top: 0;*/
