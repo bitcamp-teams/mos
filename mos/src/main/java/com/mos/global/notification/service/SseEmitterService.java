@@ -15,7 +15,7 @@ import java.io.IOException;
 public class SseEmitterService {
 
   private final EmitterRepository emitterRepository;
-  private static final long DEFAULT_TIMEOUT = 10L * 1000 * 60;
+  private static final long DEFAULT_TIMEOUT = 30L * 1000 * 60;
 
 
   public SseEmitter createEmitter(String key) {

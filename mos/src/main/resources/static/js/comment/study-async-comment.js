@@ -222,7 +222,8 @@ $('#submitComment').click(function () {
   let commentData = {
     memberNo: Number(loginUser.memberNo),
     studyNo: Number(studyNoDeleted),
-    content: content
+    content: content,
+    notiReceiver: $('#notiReceiver').val()
   };
 
   console.log(commentData);

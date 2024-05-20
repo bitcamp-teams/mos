@@ -28,7 +28,6 @@ public class DefaultCommentService implements CommentService {
 
   @Override
   public void addStudyComment(StudyCommentDto studyCommentDto) {
-    publishEvent(studyCommentDto);
     commentRepository.addStudyComment(studyCommentDto);
   }
 
@@ -53,9 +52,4 @@ public class DefaultCommentService implements CommentService {
     commentRepository.deleteWikiComment(commentNo);
   }
 
-  private void publishEvent(StudyCommentDto studyCommentDto) {
-    CommentAndAuthorIdEvent commentAndAuthorIdEvent =
-        new CommentAndAuthorIdEvent(studyCommentDto);
-    applicationEventPublisher.publishEvent(commentAndAuthorIdEvent);
-  }
 }
