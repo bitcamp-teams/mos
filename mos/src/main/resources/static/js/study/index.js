@@ -1,5 +1,5 @@
 import study from "../api/study/study.js";
-import {formatDate} from "../util/util.js";
+import {excludeImg, formatDate} from "../util/util.js";
 
 let base = 167;
 let circle = 10;
@@ -138,6 +138,7 @@ const index = {
 
             // 본문
             const date = formatDate(study.createdDate);
+            const parsedData = excludeImg(study.introduction);
             // photo 가 없으면 ''
             const photo = (study.photo != null)
                 ? `https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/${study.photo}?type=f&w=32&h=32&ttype=jpg`
@@ -147,7 +148,7 @@ const index = {
                                                class="VLink_block PostCard_styleLink">
                                                 <h4 class="PostCard_h4 utils_ellipsis">${study.title}</h4>
                                                 <div class="PostCard_descriptionWrapper">
-                                                    <p class="PostCard_clamp">${study.introduction}</p>
+                                                    <p class="PostCard_clamp">${parsedData}</p>
                                                 </div>
                                             </a>
                                             <div class="PostCard_subInfo"><span>${date}</span>
