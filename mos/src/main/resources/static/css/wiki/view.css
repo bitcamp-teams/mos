@@ -4,7 +4,12 @@
 
 .main {
   position: relative;
-  min-width: 600px;
+  margin: 0;
+  padding: 1px;
+}
+
+.toastui-editor-contents {
+  min-height: 300px;
 }
 
 .sidebar-left, .sidebar-right {
@@ -86,7 +91,7 @@
 }
 
 .toastui-editor-contents {
-  padding: 7px !important;
+  padding-bottom: 7px !important;
   border-radius: .25rem;
   border: 1px solid rgba(0, 0, 0, .125);
   box-shadow: 1px 1px 4px 0px #808080;
