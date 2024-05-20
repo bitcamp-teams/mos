@@ -111,13 +111,10 @@
         });
       </script>
 
-      <div class="card">
-        <div class="card-body">
-          <div th:attr="introduction = ${study.introduction}"></div>
-          <div id="viewer">
-            <strong>Viewer Here</strong>
-          </div>
-        </div>
+
+      <div th:attr="introduction = ${study.introduction}"></div>
+      <div id="viewer">
+        <strong>Viewer Here</strong>
       </div>
 
 
@@ -230,60 +227,6 @@
               });
             }
       </script>
-
-
-      <!--      &lt;!&ndash;댓글추가 기능 시작&ndash;&gt;-->
-      <!--      <form id="commentForm" th:action="@{/comment/study/add}" method="post">-->
-      <!--        <p>-->
-      <!--          <input type="hidden" name="studyNo" th:value="${study.studyNo}">-->
-      <!--          <input type="hidden" name="title" th:value="${study.title}">-->
-      <!--          <input type="hidden" name="memberNo" th:value="${session.loginUser?.memberNo}">-->
-      <!--          <input type="hidden" name="notiReceiver" th:value="${study.memberNo}">-->
-      <!--          <input type="text" name="username" th:value="${session.loginUser?.userName}" readonly>-->
-      <!--        </p>-->
-      <!--        <div><textarea class="form-control" style="box-sizing: border-box; display: block;"-->
-      <!--                       name="content"-->
-      <!--                       placeholder="댓글을 입력하세요"></textarea></div>-->
-
-
-      <!--        <button id="submitBtn" type="button">댓글 등록</button>-->
-      <!--      </form>-->
-      <!--      &lt;!&ndash;댓글추가 기능 끝&ndash;&gt;-->
-      <!--      &lt;!&ndash;댓글 리스트 기능 시작&ndash;&gt;-->
-      <!--    </div>-->
-
-      <!--    <div th:if="${#lists.isEmpty(studyComments)}">-->
-      <!--      <p>아직 댓글이 없어요.</p>-->
-      <!--    </div>-->
-      <!--    <div th:each="comment : ${studyComments}" th:if="${comment.stat} != '삭제'"-->
-      <!--         style="border: 1px solid #000;">-->
-      <!--      <p>-->
-      <!--        <a th:href="@{/comment/study/delete(commentNo=${comment.commentNo}, studyNo=${comment.studyNo})}"-->
-      <!--           href="#">[삭제]</a>-->
-      <!--        <button-->
-      <!--            th:onclick="'editComment(this, ' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'"-->
-      <!--            th:text="'편집'"></button>-->
-      <!--      </p>-->
-      <!--      <p>-->
-      <!--        <span th:text="${comment.username}"/>-->
-      <!--        <span th:text="${comment.createdDate}"/>-->
-      <!--      </p>-->
-      <!--      <div class="comment-content" th:id="'comment-' + ${comment.commentNo}">-->
-      <!--        <span th:text="${comment.content}"></span>-->
-      <!--      </div>-->
-      <!--      <input type="text" class="comment-input" th:id="'comment-input-' + ${comment.commentNo}"-->
-      <!--             th:value="${comment.content}" style="display: none;">-->
-      <!--      <div class="button-group" style="display: none;"-->
-      <!--           th:id="'button-group-' + ${comment.commentNo}">-->
-      <!--        <button class="save-btn" th:id="'save-btn-' + ${comment.commentNo}"-->
-      <!--                th:onclick="'saveComment(' + ${comment.commentNo} + ', ' + ${comment.studyNo} + ');'">-->
-      <!--          저장-->
-      <!--        </button>-->
-      <!--        <button class="cancel-btn" th:onclick="'cancelEdit(' + ${comment.commentNo} + ');'">취소-->
-      <!--        </button>-->
-      <!--      </div>-->
-      <!--    </div>-->
-      <!--    &lt;!&ndash;댓글 리스트 기능 끝&ndash;&gt;-->
 
       <!-- comment 영역-->
       <hr class="my-4 bg-primary">
