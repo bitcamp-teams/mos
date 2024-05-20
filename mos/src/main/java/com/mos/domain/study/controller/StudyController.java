@@ -4,6 +4,7 @@ import com.mos.domain.comment.dto.StudyCommentDto;
 import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.dto.MemberStudyDto;
+import com.mos.domain.member.service.MemberService;
 import com.mos.domain.study.dto.*;
 import com.mos.domain.study.service.StudyLikeService;
 import com.mos.domain.study.service.StudyService;
