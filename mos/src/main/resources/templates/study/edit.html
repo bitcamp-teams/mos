@@ -91,11 +91,12 @@
 
       </form>
 
-    <script>
+    <script data-th-inline="javascript">
       var content = document.getElementById('editor-content').value;
       console.log(content); // This should log the value of the introduction field
       const {Editor} = toastui;
       const {codeSyntaxHighlight} = Editor.plugin;
+      const studyNo = /*[[${study.studyNo}]]*/;
 
       const editor = new toastui.Editor({
         el: document.querySelector('#editor'), // 에디터를 적용할 요소 (컨테이너)
@@ -140,26 +141,51 @@
         /* end of hooks */
       });
 
-      //      let editor = new toastui.Editor({
-      //        el: document.querySelector(('#editor')),
-      //        height: '70%',
-      //        initialEditType: 'markdown',
-      //        previewStyle: 'vertical',
-      //        plugins: [codeSyntaxHighlight],
-      //        placeholder: 'placeholder',
-      //        useCommandShortcut: true,
-      //        initialValue: content
-      //      });
-
       const form = document.getElementById('studyInfo');
-      // const editorContent = document.getElementById('editor-content');
+      const editorContent = document.getElementById('editor-content');
 
       form.addEventListener('submit', function (event) {
         event.preventDefault();
-        const editorContent = editor.getMarkdown();
-        document.getElementById('editor-content').value = editorContent;
-        form.submit();
-      })
+        const editorText = editor.getMarkdown(); // editor에서 마크다운 형식의 텍스트를 가져옵니다.
+        document.getElementById('editor-content').value = editorText; // editor의 내용을 editor-content 요소의 value로 설정합니다.
+
+        const formData = new FormData(form); // FormData 객체를 생성하고 form의 데이터를 추가합니다.
+        formData.append('editor-content', editorText); // editor에서 가져온 텍스트를 FormData에 추가합니다.
+
+        $.ajax({
+          method: 'POST',
+          url: '/study/update',
+          data: formData, // AJAX 요청에 form 데이터를 포함시킵니다.
+          processData: false, // jQuery가 데이터를 처리하지 않도록 설정합니다.
+          contentType: false, // 기본값인 application/x-www-form-urlencoded 대신 FormData의 타입을 사용하도록 설정합니다.
+          success: function () {
+            Swal.fire({
+              title: '스터디 모집글 수정이 완료 되었습니다!',
+              text: '스터디원들의 신청을 조금만 기다려주세요.',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.href = '/study/view?studyNo='+ studyNo;
+              }
+            });
+
+          },
+          error: function(xhr) {
+            if (xhr.status === 400) {
+              var errorMessages = xhr.responseJSON; // This should be an array of error messages
+              var errorText = errorMessages.join('\n'); // Join error messages with newlines
+
+              Swal.fire({
+                icon: 'error',
+                title: '모집글 수정에 실패했습니다.',
+                text: errorText,
+                showConfirmButton: true
+              });
+            }
+          }
+        });
+      });
     </script>
 
 

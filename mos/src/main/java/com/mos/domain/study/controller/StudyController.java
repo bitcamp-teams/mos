@@ -227,7 +227,7 @@ public class StudyController implements InitializingBean {
 
   @PostMapping("update")
   // 히든필드로 POST에 studyNo를 받는다!
-  public String update(
+  public ResponseEntity<?> update(
       @Validated @ModelAttribute("study") StudyUpdateDto studyUpdateDto,
       BindingResult bindingResult,
       @RequestParam(value = "tags", required = false) List<Integer> tagNums,
@@ -238,8 +238,11 @@ public class StudyController implements InitializingBean {
 
     System.out.println("bindingResult = " + bindingResult);
     if (bindingResult.hasErrors()) {
+      List<String> errorMessages = bindingResult.getFieldErrors().stream()
+          .map(FieldError::getDefaultMessage)
+          .toList();
       model.addAttribute("study", studyUpdateDto);
-      return "/study/edit";
+      return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
     }
     List<TagDto> tagList = new ArrayList<>();
     for (int no : tagNums) {
@@ -258,7 +261,7 @@ public class StudyController implements InitializingBean {
     sessionStatus.setComplete();
 
     // return "view?studyNo=" + studyDto.getStudyNo();
-    return "redirect:view?studyNo=" + studyDto.getStudyNo();
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   private static StudyDto setStudyDtoByUpdateDto(StudyUpdateDto studyUpdateDto, List<TagDto> tags) {
