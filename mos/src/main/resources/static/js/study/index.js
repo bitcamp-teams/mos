@@ -114,8 +114,8 @@ const index = {
           % circle);
       if (study.thumbnail != null) {
         thumbnailUrl = study.thumbnail;
-      } else if (extractImageUrl(study.content) != null) {
-        thumbnailUrl = extractImageUrl(study.content);
+      } else if (extractImageUrl(study.introduction) != null) {
+        thumbnailUrl = extractImageUrl(study.introduction);
       }
 
       // 썸네일 영역
