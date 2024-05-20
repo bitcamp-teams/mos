@@ -51,5 +51,6 @@ public interface MemberService {
 
   Page<StudyDto> findLikedStudiseByNo(int memberNo, Pageable page);
 
+  List<MemberDto> getAuthorizedMembers(int studyNo);
 }
 
