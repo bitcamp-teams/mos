@@ -115,12 +115,13 @@ const index = {
                                             </div>
                                         </div>`);
             // 유저 정보
+            const photo = (wiki.photo != null) ? `https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/${wiki.photo}?type=f&w=32&h=32&ttype=jpg` : '/img/icon2.png';
             const userInfo = $(`<div class="PostCard_footer"><a class="PostCard_userInfo" href="/member/dashboard?no=${wiki.memberNo}">
                                             <img
                                                     alt="user thumbnail of heyday.xz" loading="lazy" width="24" height="24"
                                                     decoding="async"
                                                     data-nimg="1"
-                                                    src="https://picsum.photos/24/24"
+                                                    src="${photo}"
                                                     style="color: transparent;"><span>by <b>${wiki.username}</b></span></a>
                                             <div class="PostCard_likes">
                                                 <svg viewBox="0 0 24 24">
