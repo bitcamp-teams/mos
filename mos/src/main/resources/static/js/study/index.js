@@ -1,6 +1,10 @@
 import study from "../api/study/study.js";
 import {formatDate} from "../util/util.js";
 
+let base = 167;
+let circle = 10;
+let count = 0;
+
 const index = {
     currentPage: 0,
     totalPages: 0,
@@ -17,10 +21,15 @@ const index = {
             const flag = $(this).attr('data-flag');
             if (flag === 'trending') {
                 _this.flag = 'hit_count';
-                $('.HomeTab_indicator').css('left', '4%');
+                $('.HomeTab_indicator').css('left', '2%');
+                $('#primary-stroke').css('stroke', 'rgb(0, 0, 0)');
+                $('#secondary-stroke').css('stroke', 'rgb(44, 169, 188)');
+                $('#tertiary-fill').css('fill', '#b7b7b7');
             } else if (flag === 'recent') {
                 _this.flag = 'created_date';
-                $('.HomeTab_indicator').css('left', '63.33%');
+                $('.HomeTab_indicator').css('left', '60.33%');
+                $('#primary-stroke').css('stroke', '');
+                $('#secondary-stroke').css('stroke', '');
             }
             _this.initLoad(_this.flag);
         })
@@ -52,7 +61,7 @@ const index = {
             //(현재 화면상단 + 현재 화면 높이)
             const nowHeight = window.scrollY + window.innerHeight;
             if (nowHeight >= documentHeight) {
-                console.log(_this.currentPage,  _this.totalPages)
+                console.log(_this.currentPage, _this.totalPages)
                 if (_this.currentPage < _this.totalPages) {
                     _this.loadStudy(_this.currentPage, true);
                 }
@@ -67,7 +76,7 @@ const index = {
         _this.totalPages = 0;
         $(document).scrollTop(0);
 
-        _this.loadStudy(_this.currentPage,false, flag);
+        _this.loadStudy(_this.currentPage, false, flag);
     },
     loadStudy(page, append = false, flag = 'hit_count') {
         const _this = this;
@@ -94,7 +103,7 @@ const index = {
             return res.data.content;
         }).then(studyList => {
             if (!studyList || studyList.length === 0) {
-                cardsContainer.html('데이터가 없습니다.');
+                cardsContainer.append('<div>데이터가 없습니다.</div>');
             } else {
                 cardsContainer.append(_this.createCards(studyList));
             }
@@ -104,15 +113,25 @@ const index = {
     createCards(studyList) {
         const cardsArr = [];
         studyList.forEach(function (study) {
-            const li = $('<li class="PostCard_block"></li>');
+
+      //썸네일 교체. 우선순위: UUID/1번이미지/랜덤이미지
+      let thumbnailUrl = 'https://picsum.photos/320/' + (base + count++
+          % circle);
+      if (study.thumbnail != null) {
+        thumbnailUrl = study.thumbnail;
+      } else if (extractImageUrl(study.introduction) != null) {
+        thumbnailUrl = extractImageUrl(study.introduction);
+      }
+
             // 썸네일 영역
+            const li = $('<li class="PostCard_block"></li>');
             const thumbnail = $(`<a href="/study/view?studyNo=${study.studyNo}" class="VLink_block PostCard_styleLink">
                                             <div class="RatioImage_block" style="padding-top: 52.1921%;">
                                                 <img alt="thumbnail"
                                                      fetchpriority="high"
                                                      decoding="async"
                                                      data-nimg="fill"
-                                                     src="https://picsum.photos/320/167"
+                                                     src="${thumbnailUrl}"
                                                      style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                                             </div>
                                         </a>`);
@@ -120,7 +139,9 @@ const index = {
             // 본문
             const date = formatDate(study.createdDate);
             // photo 가 없으면 ''
-            const photo = (study.photo != null) ? `https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/${study.photo}?type=f&w=32&h=32&ttype=jpg` : '/img/icon2.png';
+            const photo = (study.photo != null)
+                ? `https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/${study.photo}?type=f&w=32&h=32&ttype=jpg`
+                : '/img/icon2.png';
             const content = $(`<div class="PostCard_content">
                                             <a href="/study/view?studyNo=${study.studyNo}"
                                                class="VLink_block PostCard_styleLink">
