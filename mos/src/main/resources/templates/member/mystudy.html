@@ -232,7 +232,7 @@
                                     .addClass('btn btn-primary m-2')
                                     .text('승인')
                                     .click(function () {
-                                    updateMemberStatus('S03-102');
+                                    updateMemberStatus('S03-102', item);
                                 });
 
                                 // '거절' 버튼 생성 및 이벤트 핸들러 설정
@@ -240,7 +240,7 @@
                                     .addClass('btn btn-warning m-2')
                                     .text('거절')
                                     .click(function () {
-                                    updateMemberStatus('S03-105');
+                                    updateMemberStatus('S03-105', item);
                                 });
 
                                 var buttonContainer = $('<div>').css({
@@ -261,6 +261,21 @@
                             });
                             $('#jsonResultModal').modal('show'); // 모달 표시
                         }
+                    }
+                });
+            }
+            function updateMemberStatus(message, item) {
+                $.ajax({
+                    url: '/member/updateStatus', // 실제 서버 엔드포인트로 변경
+                    type: 'PATCH',
+                    contentType: 'application/json',
+                    data: JSON.stringify({id: item.id, message: message}), // 올바른 형태로 데이터 전송
+                    success: function(response) {
+                        console.log('Success:', response);
+                        location.reload(true);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
                     }
                 });
             }
