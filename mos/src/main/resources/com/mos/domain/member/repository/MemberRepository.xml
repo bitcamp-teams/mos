@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mos.domain.member.repository.MemberRepository">
 
@@ -84,13 +84,13 @@
 
   <select id="findListByStudyNo" resultMap="MyStudiesMap">
     SELECT
-      mss.member_study_stat_no,
-      mss.member_no,
-      mss.study_no,
-      mss.stat,
-      mss.apply_msg,
-      m.photo,
-      m.username
+    mss.member_study_stat_no,
+    mss.member_no,
+    mss.study_no,
+    mss.stat,
+    mss.apply_msg,
+    m.photo,
+    m.username
     FROM member_study_stat mss
     JOIN member m ON mss.member_no = m.member_no
     WHERE mss.study_no = #{studyNo} AND mss.member_no != #{memberNo} AND mss.stat = 'S03-104'
@@ -124,54 +124,54 @@
 
   <select id="existsByEmail" resultType="boolean" parameterType="String">
     SELECT
-      CASE
-        WHEN COUNT(*) > 0 THEN 'true'  <!-- 이메일이 이미 존재하는 경우 -->
+    CASE
+    WHEN COUNT(*) > 0 THEN 'true'  <!-- 이메일이 이미 존재하는 경우 -->
     ELSE 'false' <!-- 이메일이 존재하지 않는 경우 -->
     END AS email_exists
     FROM
-      member
+    member
     WHERE
-      email = #{email};
+    email = #{email};
   </select>
 
   <select id="existsByUserName" resultType="boolean" parameterType="String">
     SELECT
-      CASE
-        WHEN COUNT(*) > 0 THEN 'true' <!-- username이 이미 존재하는 경우 -->
+    CASE
+    WHEN COUNT(*) > 0 THEN 'true' <!-- username이 이미 존재하는 경우 -->
     ELSE 'false' <!-- username이 존재하지 않는 경우 -->
     END AS username_exists
     FROM
-      member
+    member
     WHERE
-      username = #{username}
+    username = #{username}
   </select>
 
   <select id="findByNo" resultType="MemberDto" parameterType="int">
     select
-      *
+    *
     from
-      member
+    member
     where
-      member_no=#{memberNo}
+    member_no=#{memberNo}
   </select>
 
   <!--마이 스터디 조회-->
   <select id="findMyStudies" resultMap="MemberStudyMap">
     select
-      s.study_no,
-      s.member_no,
-      s.title,
-      s.start_date,
-      s.end_date,
-      mss.member_study_stat_no,
-      mss.stat,
-      mss.favorites,
-      mss.apply_msg
+    s.study_no,
+    s.member_no,
+    s.title,
+    s.start_date,
+    s.end_date,
+    mss.member_study_stat_no,
+    mss.stat,
+    mss.favorites,
+    mss.apply_msg
     from
-      member_study_stat mss
-      inner join study s on mss.study_no = s.study_no
+    member_study_stat mss
+    inner join study s on mss.study_no = s.study_no
     where
-      mss.member_no=#{no}
+    mss.member_no=#{no}
     order by mss.favorites desc
     LIMIT #{page.offset}, #{page.pageSize};
   </select>
@@ -224,7 +224,7 @@
   <!--내가 쓴 위키 글 목록 조회-->
   <select id="findMyWiki" resultMap="wiki">
     SELECT w.wiki_no, w.member_no, w.study_no, w.title AS wiki_title,
-            s.title AS study_title, w.created_date, w.hit_count, w.likes
+    s.title AS study_title, w.created_date, w.hit_count, w.likes
     FROM wiki w
     INNER JOIN study s ON w.study_no = s.study_no
     WHERE w.member_no = #{memberNo}
@@ -241,7 +241,7 @@
   <!--내가 쓴 스터디 댓글 목록 조회-->
   <select id="findMyStudyComment" resultMap="studyComment">
     SELECT sc.comment_no, sc.member_no, sc.study_no, sc.content,
-            s.title AS study_title, sc.created_date
+    s.title AS study_title, sc.created_date
     FROM study_comment sc
     INNER JOIN study s ON sc.study_no = s.study_no
     WHERE sc.member_no = #{memberNo} AND sc.stat = '정상'
@@ -258,7 +258,7 @@
   <!--내가 쓴 위키 댓글 목록 조회-->
   <select id="findMyWikiComment" resultMap="wikiComment">
     SELECT wc.comment_no, wc.member_no, wc.content, wc.created_date,
-            w.title AS wiki_title
+    w.title AS wiki_title
     FROM wiki_comment wc
     INNER JOIN wiki w ON wc.wiki_no = w.wiki_no
     WHERE wc.member_no = #{memberNo} AND wc.stat = '정상'
@@ -278,5 +278,12 @@
     SET favorites = #{favorites}
     WHERE member_no = #{memberNo} AND study_no = #{studyNo}
   </update>
+
+  <!-- 권한 인가를 위한 승인된 스터디원 및 스터디장 멤버 리스트 조회 -->
+  <select id="findAuthorizedMembersByStudyNo" parameterType="int" resultType="MemberDto">
+    SELECT member_no
+    FROM member_study_stat
+    WHERE study_no=#{studyNo} AND (stat='S03-102' OR stat='S03-101')
+  </select>
 
 </mapper>
