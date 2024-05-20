@@ -103,7 +103,7 @@ const index = {
             return res.data.content;
         }).then(studyList => {
             if (!studyList || studyList.length === 0) {
-                cardsContainer.html('데이터가 없습니다.');
+                cardsContainer.append('<div>데이터가 없습니다.</div>');
             } else {
                 cardsContainer.append(_this.createCards(studyList));
             }
