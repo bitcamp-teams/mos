@@ -105,9 +105,17 @@
 }
 
 #profile-image {
-  max-width: 100px;
-  max-height: 100px;
+  width: 100px;
+  height: 100px;
+  box-shadow: 1px 1px 4px 0px #808080;
 }
+
+#author {
+  margin-top: 10px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
 #writer-container {
   display: flex;
   flex-direction: column;

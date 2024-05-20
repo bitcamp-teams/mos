@@ -79,9 +79,8 @@ const index = {
             searchText: _this.searchText
         };
 
-        if (append) {
-            $('.loader').show();
-        } else {
+        $('.loader').show();
+        if (!append) {
             cardsContainer.html('');
         }
 

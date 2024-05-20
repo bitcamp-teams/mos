@@ -1,11 +1,8 @@
 package com.mos.domain.wiki.controller;
 
-import com.mos.domain.comment.dto.WikiCommentDto;
-import com.mos.domain.comment.service.CommentService;
 import com.mos.domain.member.dto.MemberDto;
 import com.mos.domain.member.service.MemberService;
 import com.mos.domain.wiki.dto.WikiDto;
-import com.mos.domain.wiki.service.WikiApiService;
 import com.mos.domain.wiki.service.WikiService;
 import com.mos.global.auth.LoginUser;
 import java.util.List;
@@ -13,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration.AutoConfiguredMapperScannerRegistrar;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -30,8 +28,6 @@ public class WikiController {
 
   private static final Log log = LogFactory.getLog(Thread.currentThread().getClass());
   private final WikiService wikiService;
-  private final WikiApiService wikiApiService;
-  private final CommentService commentService;
   private final MemberService memberService;
 
   @GetMapping("form")
@@ -66,12 +62,24 @@ public class WikiController {
       @RequestParam int studyNo,
       Model model
   ) throws Exception {
+
+    //        권한체크
+    boolean authorized = false;
+    List<MemberDto> members = memberService.getAuthorizedMembers(studyNo);
+    for (MemberDto member : members) {
+      if (member.getMemberNo() == loginUser.getMemberNo()) {
+        authorized = true;
+        break;
+      }
+    }
+
+    model.addAttribute("authorized", authorized);
+
     try {
       model.addAttribute("loginUser", loginUser);
     } catch (Exception e) {
       //slightly quit
     }
-    
   }
 
 
@@ -84,6 +92,19 @@ public class WikiController {
       @RequestParam int studyNo,
       Model model
   ) throws Exception {
+
+    // 권한체크, but 비동기 고려해야 함.
+    boolean authorized = false;
+    List<MemberDto> members = memberService.getAuthorizedMembers(studyNo);
+    for (MemberDto member : members) {
+      if (member.getMemberNo() == loginUser.getMemberNo()) {
+        authorized = true;
+        log.debug("TRUE###");
+        break;
+      }
+    }
+    model.addAttribute("authorized", authorized);
+
     try {
       //작성자 번호를 여기서 넣으면 안됨. 비동기라서...
       //model.addAttribute("writer",memberService.getNo(wikiService.getByWikiNo(wikiNo).getMemberNo()));
