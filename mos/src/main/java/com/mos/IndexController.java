@@ -34,4 +34,10 @@ public class IndexController {
     session.setAttribute("activeSessions", activeSession);
     return "index";
   }
+
+  @GetMapping("/about")
+  public String showAboutPage() {
+    return "about";
+  }
+
 }
