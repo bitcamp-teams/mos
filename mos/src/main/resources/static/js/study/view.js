@@ -1,7 +1,7 @@
 //스터디 신청 버튼에 대한 이벤트 리스너
 $('#submitApplyBtn').click(function () {
   var applyMsg = $('#applyMsg').val();
-  var studyNo = $('#studyNo').val();
+  var studyNoAttr = $('#studyNo').val();
 
   // AJAX 요청을 통해 서버로 데이터 전송
   $.ajax({
@@ -9,7 +9,7 @@ $('#submitApplyBtn').click(function () {
     type: 'POST',
     data: {
       applyMsg: applyMsg,
-      studyNo: studyNo
+      studyNo: studyNoAttr
     },
     success: function (response) {
       // 성공적으로 처리된 경우

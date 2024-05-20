@@ -1,4 +1,3 @@
-//RESTful
 const tree = $('#wikiTree');
 var url = new URL(window.location.href)
 var urlParams = url.searchParams;
@@ -93,13 +92,13 @@ $(function () {
 
       //https://4l8fsxs62676.edge.naverncp.com/hudgg8JEM5/member/55c69e50-1284-4364-a306-0a2d6eb9118b?type=f&w=80&h=80&ttype=jpg
 
-
-      let profileImageUrl ;
-          if(nodeContent.photo==null) {
-            profileImageUrl = '/img/user2-160x160.jpg';
-          } else {
-            profileImageUrl = 'https://kr.object.ncloudstorage.com/mos/member/' + nodeContent.photo;
-          }
+      let profileImageUrl;
+      if (nodeContent.photo == null) {
+        profileImageUrl = '/img/user2-160x160.jpg';
+      } else {
+        profileImageUrl = 'https://kr.object.ncloudstorage.com/mos/member/'
+            + nodeContent.photo;
+      }
       $('#profile-image').attr('src', profileImageUrl);
       $('#author').html(nodeContent.username);
       $('#contentTitle').html(nodeContent.title);

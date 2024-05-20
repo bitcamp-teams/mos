@@ -4,7 +4,7 @@
 function getComments() {
   let targetElement = $('.commentList');
   targetElement.html("");
-  let apiUrl = '/api/comment/study/' + studyNo;
+  let apiUrl = '/api/comment/study/' + studyNoDeleted;
 
   $.ajax({
     method: 'GET',
@@ -21,7 +21,6 @@ function getComments() {
         if (res.parentCommentNo != 0) {
           commentElement.addClass('reply');
         }
-        console.log(commentElement);
 
         let commentHeader = $('<div>').addClass(
             'card-header d-flex justify-content-between');
@@ -180,7 +179,7 @@ function getComments() {
               contentType: 'application/json',
               data: JSON.stringify({
                 memberNo: loginUser.memberNo,
-                studyNo: studyNo,
+                studyNo: studyNoDeleted,
                 parentCommentNo: Number(commentNo),
                 content: replyContent,
 
@@ -222,7 +221,7 @@ $('#submitComment').click(function () {
 
   let commentData = {
     memberNo: Number(loginUser.memberNo),
-    studyNo: Number(studyNo),
+    studyNo: Number(studyNoDeleted),
     content: content
   };
 

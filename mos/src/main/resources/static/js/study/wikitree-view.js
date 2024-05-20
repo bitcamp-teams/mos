@@ -1,7 +1,7 @@
 const tree = $('#wikiTree');
 var url = new URL(window.location.href)
 var urlParams = url.searchParams;
-studyNo = urlParams.get('studyNo');
+var studyNo = urlParams.get('studyNo');
 var wikiNo = urlParams.get('wikiNo');
 
 if (wikiNo == null) {

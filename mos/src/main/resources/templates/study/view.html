@@ -1,5 +1,5 @@
 <div data-th-replace="header::header">머리말</div>
-<link rel="stylesheet" href="/css/wiki/view.css">
+
 <div class="container-fluid">
 
   <div class="row justify-content-center flex-nowrap">
@@ -176,8 +176,8 @@
             window.location.href = "/auth/login";
             return;
           }
-          var studyNo = parseInt(icon.getAttribute('data-study-no'));
-          var likeCount = document.getElementById('like-count-' + studyNo);
+          var studyNoAttr = parseInt(icon.getAttribute('data-study-no'));
+          var likeCount = document.getElementById('like-count-' + studyNoAttr);
 
           // AJAX 요청을 통해 서버로 데이터 전송
           $.ajax({
@@ -185,7 +185,7 @@
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-              studyNo: studyNo,
+              studyNo: studyNoAttr,
               memberNo: memberNo
             }),
             success: function (response) {
@@ -212,10 +212,10 @@
 
       <!-- 스터디 삭제 스크립트 추가 -->
       <script data-th-inline="javascript">
-        let studyNo = /*[[${study.studyNo}]]*/
+        let studyNoDeleted = /*[[${study.studyNo}]]*/
             function deleteStudy() {
               $.ajax({
-                url: "/study/delete?studyNo=" + studyNo,
+                url: "/study/delete?studyNo=" + studyNoDeleted,
                 type: "GET",
                 success: function () {
                   new swal("성공", "게시물이 삭제되었습니다.", "success");
@@ -270,4 +270,5 @@
 <script src="/js/study/view.js"></script>
 <script src="/js/study/wikitree-view.js"></script>
 <script src="/js/comment/study-async-comment.js"></script>
+<link rel="stylesheet" href="/css/wiki/view.css">
 <div data-th-replace="footer::footer">꼬리말</div>
