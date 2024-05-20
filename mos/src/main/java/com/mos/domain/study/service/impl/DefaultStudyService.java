@@ -52,6 +52,11 @@ public class DefaultStudyService implements StudyService {
 
   @Override
   public int update(StudyDto studyDto) {
+    tagRepository.deleteByStudyNo(studyDto.getStudyNo());
+    for (TagDto tagDto : studyDto.getTagList()) {
+      tagDto.setStudyNo(studyDto.getStudyNo());
+    }
+    tagRepository.addAll(studyDto.getTagList());
     return studyRepository.update(studyDto);
   }
 
