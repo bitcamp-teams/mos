@@ -29,7 +29,8 @@ public class WikiDto {
   private String stat;
   private int memberNo;
   private String username;
-  private String photo;
+  private String photo; //user profile
+  private String thumbnail; //card thumbnail image uuid
   private int hitCount;
   private String studyTitle;
   private int commentCount;
