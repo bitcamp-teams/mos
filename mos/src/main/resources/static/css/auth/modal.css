@@ -54,3 +54,7 @@
     overflow-y: auto;  /* 세로 스크롤바 설정. 내용이 최대 높이를 초과할 경우 자동으로 스크롤바가 생성됨 *!*/
     max-height: 250px; /* 팝업의 최대 높이 설정 */
 }
+
+#noticnt {
+    color: blue;
+}
