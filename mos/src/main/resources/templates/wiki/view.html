@@ -20,8 +20,13 @@
 
     <div class="main col mx-auto">
       <div class="wiki-header">
-        <a class="btn btn-primary" id="contentEditLink" href="editWiki.html"><i
-            class="fas fa-edit"></i></a>
+        <div th:if="${authorized}">
+          <a class="btn btn-primary" id="contentEditLink"
+             href="editWiki.html">
+            <i class="fas fa-edit"></i> 편집
+          </a>
+        </div>
+
         <h1 id="contentTitle"></h1>
         <div id="createdDate">작성일</div>
       </div>
