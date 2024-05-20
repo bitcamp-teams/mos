@@ -4,10 +4,27 @@ import {excludeImg, formatDate} from "../util/util.js";
 const index = {
     currentPage: 0,
     totalPages: 0,
+    searchText: '',
     init() {
         const _this = this;
         document.addEventListener('DOMContentLoaded', function () {
             _this.initLoad();
+            $('.search_searchInput').on('keypress', function (e) {
+                $('.search_searchInitialize').show();
+                if ($(this).val() === '') {
+                    $('.search_searchInitialize').hide();
+                }
+                // 엔터 치면 검색
+                if (e.keyCode === 13) {
+                    _this.searchText = $(this).val();
+                    _this.loadWiki(0, false);
+                }
+            });
+            $('.search_searchInitialize').on('click', function () {
+                $('.search_searchInput').val('');
+                $('.search_searchInitialize').hide();
+                _this.searchText = '';
+            });
         });
 
         $(window).scroll(function () {
@@ -16,6 +33,7 @@ const index = {
             //(현재 화면상단 + 현재 화면 높이)
             const nowHeight = window.scrollY + window.innerHeight;
             if (nowHeight >= documentHeight) {
+                console.log(_this.currentPage, _this.totalPages);
                 if (_this.currentPage < _this.totalPages) {
                     _this.loadWiki(_this.currentPage, true);
                 }
@@ -35,15 +53,23 @@ const index = {
     loadWiki(page, append = false) {
         const _this = this;
         const cardsContainer = $('.PostCardGrid_block');
-        if (append) {
-            $('.loader').show();
-        } else {
+
+        $('.loader').show();
+        if (!append) {
             cardsContainer.html('');
         }
-        wiki.findAll(page).then(res => {
+
+        const params = {
+            page: page,
+            searchText: _this.searchText
+        };
+
+        wiki.findAll(params).then(res => {
+            console.log(res.data.totalElements);
             if (res.data == null) {
                 throw new Error('위키 정보를 불러올 수 없음');
             }
+            $('#totalWikiCount').text(res.data.totalElements);
             _this.totalPages = res.data.totalPages;
             _this.currentPage++;
             return res.data.content;
@@ -58,7 +84,6 @@ const index = {
     },
     createCards(wikiList) {
         const cardsArr = [];
-        console.log(wikiList)
         wikiList.forEach(function (wiki) {
             const li = $('<li class="PostCard_block"></li>');
             // 썸네일 영역
@@ -89,12 +114,13 @@ const index = {
                                             </div>
                                         </div>`);
             // 유저 정보
+            const photo = (wiki.photo != null) ? `https://4l8fsxs62676.edge.naverncp.com/iBroLT7rzG/member/${wiki.photo}?type=f&w=32&h=32&ttype=jpg` : '/img/icon2.png';
             const userInfo = $(`<div class="PostCard_footer"><a class="PostCard_userInfo" href="/member/dashboard?no=${wiki.memberNo}">
                                             <img
                                                     alt="user thumbnail of heyday.xz" loading="lazy" width="24" height="24"
                                                     decoding="async"
                                                     data-nimg="1"
-                                                    src="https://picsum.photos/24/24"
+                                                    src="${photo}"
                                                     style="color: transparent;"><span>by <b>${wiki.username}</b></span></a>
                                             <div class="PostCard_likes">
                                                 <svg viewBox="0 0 24 24">
