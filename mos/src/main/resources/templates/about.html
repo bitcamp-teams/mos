@@ -1,0 +1,223 @@
+<div data-th-replace="header::header">머리말</div>
+
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+
+  section {
+    margin-bottom: 60px;
+  }
+
+  .hero {
+    background-color: #f9f9f9;
+    padding: 80px 40px;
+    text-align: center;
+  }
+
+  .hero h2 {
+    padding-top: 15px;
+    font-size: 36px;
+    margin-bottom: 5px;
+  }
+
+  .hero .subtitle {
+    font-size: 18px;
+    color: #666;
+  }
+
+  .vision-banner {
+    background-image: linear-gradient(to right, #667eea, #764ba2);
+    color: #fff;
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vision-content {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .vision-content h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    animation: fadeInDown 1s ease;
+  }
+
+  .vision-content p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    animation: fadeInUp 1s ease;
+  }
+
+  .vision-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('path/to/your/image.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+    z-index: 0;
+  }
+
+  @keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .features {
+    background-color: #f9f9f9;
+    padding: 40px;
+  }
+
+  .feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    list-style: none;
+    padding: 0;
+  }
+
+  .feature-list li {
+    flex-basis: calc(50% - 20px);
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .feature-list i {
+    font-size: 36px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+
+  .cta {
+    text-align: center;
+  }
+
+  .cta .btn {
+    display: inline-block;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .cta .btn:hover {
+    background-color: #555;
+  }
+
+</style>
+
+<div class="container-fluid">
+  <div class="row justify-content-center flex-nowrap">
+
+  <main>
+    <section class="hero">
+      <h2>열정과 지식을 나누는 공간</h2>
+      <p class="subtitle">스터디에 참여하고 성장하는 즐거움을 경험해보세요</p>
+    </section>
+
+    <section class="vision">
+      <div class="vision-banner">
+        <div class="vision-content">
+          <h2>우리의 비전</h2>
+          <p>학습은 혼자가 아닌 함께할 때 더욱 의미 있습니다. 우리는 이런 믿음을 바탕으로 사람들이 자유롭게 스터디를 만들고 참여할 수 있는 플랫폼을 만들었습니다.</p>
+          <p>여기서 여러분은 관심사가 같은 사람들과 만나 지식을 나누고, 배우며, 성장할 수 있습니다. 온라인 스터디를 통해 시간과 장소에 구애받지 않고 편리하게 학습할 수 있죠.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <h2>우리만의 특별함</h2>
+      <ul class="feature-list">
+        <li>
+          <i class="fas fa-book"></i>
+          <h3>다양한 주제의 스터디</h3>
+          <p>프로그래밍, 디자인, 마케팅 등 다양한 분야의 스터디가 개설되어 있습니다.</p>
+        </li>
+        <li>
+          <i class="fas fa-edit"></i>
+          <h3>팀 블로그 기능</h3>
+          <p>스터디원들과 함께 블로그 포스트를 작성하고 지식을 공유할 수 있습니다.</p>
+        </li>
+        <li>
+          <i class="fas fa-share-alt"></i>
+          <h3>학습 자료 공유</h3>
+          <p>유용한 강의, 서적, 문서 등의 자료를 스터디원들과 공유할 수 있습니다.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="cta">
+      <h2>함께 성장합시다</h2>
+      <p>여러분의 배움에 대한 열정을 이 곳에서 실현해보세요. 새로운 스터디에 참여하거나 직접 스터디를 개설하고 여러분만의 커뮤니티를 만들어가시길 바랍니다. 우리는 여러분 곁에서 지식의 나눔과 성장을 응원하겠습니다.</p>
+      <a href="/" class="btn">스터디 시작하기</a>
+    </section>
+  </main>
+
+
+  </div>
+</div>
+
+
+
+<div data-th-replace="footer::footer">꼬리말</div>
+
+<script>
+  window.addEventListener('load', function() {
+    const heroSection = document.querySelector('.hero');
+    const heroText = heroSection.querySelector('h2');
+    const subtitle = heroSection.querySelector('.subtitle');
+
+    heroText.classList.add('animate__animated', 'animate__fadeInDown');
+    subtitle.classList.add('animate__animated', 'animate__fadeInUp');
+
+    const featureList = document.querySelectorAll('.feature-list li');
+    featureList.forEach((feature, index) => {
+      setTimeout(() => {
+        feature.classList.add('animate__animated', 'animate__fadeInUp');
+      }, (index + 1) * 300); // 0.3초 간격으로 애니메이션 실행
+    });
+
+    const ctaSection = document.querySelector('.cta');
+    const ctaText = ctaSection.querySelector('h2');
+    const ctaButton = ctaSection.querySelector('.btn');
+
+    ctaText.classList.add('animate__animated', 'animate__fadeInLeft');
+    ctaButton.classList.add('animate__animated', 'animate__fadeInRight');
+  });
+</script>

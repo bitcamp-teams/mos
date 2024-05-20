@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class WikiCommentDto {
   int commentNo;
   int parentCommentNo;
+  int studyNo;
   int wikiNo;
   int memberNo;
   String username;

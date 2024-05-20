@@ -105,7 +105,6 @@ textarea#applyMsg::placeholder {
   position: relative;
   text-align: center;
 }
-
 .study-three h1:before {
   content: "";
   position: absolute;
@@ -116,7 +115,6 @@ textarea#applyMsg::placeholder {
   width: 55px;
   background-color: #111;
 }
-
 .study-three h1:after {
   content: "";
   position: absolute;

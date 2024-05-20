@@ -17,6 +17,7 @@ import com.mos.domain.wiki.service.WikiService;
 import com.mos.global.auth.LoginUser;
 import com.mos.global.storage.service.StorageService;
 
+import java.lang.reflect.Member;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -31,6 +32,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -224,7 +226,6 @@ public String findLikedStudies(@LoginUser MemberDto loginUser, Model model, int 
     return "redirect:/member/edit";
   }
 
-
   @PostMapping("/withdraw")
   public String withdrawMember(HttpSession session) throws Exception {
     MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
@@ -296,7 +297,7 @@ public String findLikedStudies(@LoginUser MemberDto loginUser, Model model, int 
 
     // 회원 번호를 이용하여 회원의 위키 댓글 목록을 조회
     Page<WikiCommentDto> myWikiComment = memberService.findMyWikiComment(memberNo, pageable);
-
+    System.out.println("myWikiComment = " + myWikiComment);
     if (myWikiComment != null) {
       model.addAttribute("memberWikiCommentList", myWikiComment);
       model.addAttribute("totalPages", myWikiComment.getTotalPages());
