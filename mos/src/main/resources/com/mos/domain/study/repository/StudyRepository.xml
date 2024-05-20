@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mos.domain.study.repository.StudyRepository">
   <resultMap id="studyList" type="StudyDto">
@@ -79,6 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         s.created_date,
         s.hit_count,
         s.like_count,
+        s.thumbnail,
         m.photo,
         GROUP_CONCAT(DISTINCT t.name) AS tags,
         count(sc.comment_no) AS comment_count
@@ -153,6 +154,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     title=#{title},
     method=#{method},
     intake=#{intake},
+    start_date=#{startDate},
+    end_date=#{endDate},
+
     recruitment_deadline=#{recruitmentDeadline},
     introduction=#{introduction}
     WHERE

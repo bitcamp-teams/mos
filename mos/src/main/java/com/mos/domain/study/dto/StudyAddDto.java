@@ -18,7 +18,7 @@ public class StudyAddDto {
   private Date startDate;
   private Date endDate;
 //  @NotNull(message = "태그는 하나 이상 선택해야합니다.")
-  private List<TagDto> tagList;
+  private List<Integer> tagList;
   @Min(value = 1, message = "모집 인원 수는 1명 이상 필요합니다.")
   private int intake;
   private Date recruitmentDeadline;

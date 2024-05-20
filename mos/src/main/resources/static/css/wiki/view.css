@@ -4,12 +4,12 @@
 
 .main {
   position: relative;
-  margin: 0;
-  padding: 1px;
+  padding: 10px;
 }
 
 .toastui-editor-contents {
   min-height: 300px;
+  background-color: white;
 }
 
 .sidebar-left, .sidebar-right {
