@@ -173,6 +173,7 @@ public class StudyController implements InitializingBean {
       studyLikeStatDto.setStudyNo(studyNo);
       studyLikeStatDto.setMemberNo(loginUser.getMemberNo());
       model.addAttribute("isLiked", studyLikeService.checked(studyLikeStatDto));
+      System.out.println("studyLikeService.checked(studyLikeStatDto) = " + studyLikeService.checked(studyLikeStatDto));
     } else {
       model.addAttribute("isLiked", null);
     }
