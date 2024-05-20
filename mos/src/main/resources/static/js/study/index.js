@@ -114,14 +114,14 @@ const index = {
         const cardsArr = [];
         studyList.forEach(function (study) {
 
-            //썸네일 교체. 우선순위: UUID/1번이미지/랜덤이미지
-            let thumbnailUrl = 'https://picsum.photos/320/' + (base + count++
-                % circle);
-            if (study.thumbnail != null) {
-                thumbnailUrl = study.thumbnail;
-            } else if (extractImageUrl(study.content) != null) {
-                thumbnailUrl = extractImageUrl(study.content);
-            }
+      //썸네일 교체. 우선순위: UUID/1번이미지/랜덤이미지
+      let thumbnailUrl = 'https://picsum.photos/320/' + (base + count++
+          % circle);
+      if (study.thumbnail != null) {
+        thumbnailUrl = study.thumbnail;
+      } else if (extractImageUrl(study.introduction) != null) {
+        thumbnailUrl = extractImageUrl(study.introduction);
+      }
 
             // 썸네일 영역
             const li = $('<li class="PostCard_block"></li>');
@@ -131,7 +131,7 @@ const index = {
                                                      fetchpriority="high"
                                                      decoding="async"
                                                      data-nimg="fill"
-                                                     src="https://picsum.photos/320/167"
+                                                     src="${thumbnailUrl}"
                                                      style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                                             </div>
                                         </a>`);
