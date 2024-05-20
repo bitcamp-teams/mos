@@ -54,9 +54,8 @@ const index = {
         const _this = this;
         const cardsContainer = $('.PostCardGrid_block');
 
-        if (append) {
-            $('.loader').show();
-        } else {
+        $('.loader').show();
+        if (!append) {
             cardsContainer.html('');
         }
 
