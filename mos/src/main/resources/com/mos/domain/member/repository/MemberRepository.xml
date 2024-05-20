@@ -74,6 +74,7 @@
   <resultMap id="wikiComment" type="WikiCommentDto">
     <id column="comment_no" property="commentNo"/>
     <result column="parent_comment_no" property="parentCommentNo"/>
+    <result column="study_no" property="studyNo"/>
     <result column="wiki_no" property="wikiNo"/>
     <result column="member_no" property="memberNo"/>
     <result column="created_date" property="createdDate"/>
@@ -257,7 +258,7 @@
 
   <!--내가 쓴 위키 댓글 목록 조회-->
   <select id="findMyWikiComment" resultMap="wikiComment">
-    SELECT wc.comment_no, wc.member_no, wc.content, wc.created_date,
+    SELECT wc.comment_no, wc.member_no, wc.content, wc.created_date, w.study_no, w.wiki_no,
             w.title AS wiki_title
     FROM wiki_comment wc
     INNER JOIN wiki w ON wc.wiki_no = w.wiki_no

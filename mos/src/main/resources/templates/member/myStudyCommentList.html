@@ -18,8 +18,8 @@
           </tr>
           </thead>
           <tbody>
-              <tr data-th-each="studyComment : ${memberStudyCommentList}" data-th-object="${studyComment}">
-                  <td data-th-text="*{commentNo}">1</td>
+              <tr data-th-each="studyComment, studyCommentStat : ${memberStudyCommentList}" data-th-object="${studyComment}">
+                  <td data-th-text="${studyCommentStat.count}">1</td>
                   <td data-th-text="*{studyTitle}">자바 스터디</td>
                       <td>
                           <a data-th-href="@{/study/view(commentNo=*{commentNo},studyNo=*{studyNo})}"
@@ -32,7 +32,7 @@
       <!-- 페이지네이션 -->
       <div>
           <ul class="pagination" style="justify-content: center;">
-            <li th:each="pageNum : ${#numbers.sequence(1, memberStudyCommentList.totalPages)}">
+            <li th:if="${memberStudyCommentList.totalPages > 0}" th:each="pageNum : ${#numbers.sequence(1, memberStudyCommentList.totalPages)}">
               <a th:href="@{'?page=' + ${pageNum}}" th:text="${pageNum}"
                  th:class="${pageNum == memberStudyCommentList.number + 1} ? 'active' : ''"></a>
             </li>

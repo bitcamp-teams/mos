@@ -19,8 +19,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr data-th-each="wiki : ${memberWikiList}" data-th-object="${wiki}">
-                <td data-th-text="${wiki.wikiNo}">1</td>
+            <tr data-th-each="wiki, wikiStat : ${memberWikiList}" data-th-object="${wiki}">
+                <td data-th-text="${wikiStat.count}">1</td>
                 <td><a data-th-href="@{/wiki/view(studyNo=${wiki.studyNo},wikiNo=${wiki.wikiNo})}" data-th-text="${wiki.title}">반복문</a></td>
                 <td data-th-text="${wiki.studyTitle}">스터디 제목</td>
                 <td data-th-text="${wiki.createdDate}">2024-05-08</td>
@@ -30,10 +30,19 @@
             </tbody>
         </table>
         <!-- 페이지네이션 -->
+<!--        <div>-->
+<!--            <ul class="pagination" style="justify-content: center;">-->
+<!--                &lt;!&ndash; totalPages가 0보다 클 때만 페이징 번호를 표시합니다. &ndash;&gt;-->
+<!--                <li th:if="${memberWikiList.totalPages > 0}" th:each="pageNum : ${#numbers.sequence(1, memberWikiList.totalPages)}">-->
+<!--                    <a th:href="@{'?page=' + ${pageNum}}" th:text="${pageNum}" th:class="${pageNum == memberWikiList.number + 1} ? 'active' : ''"></a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
         <div>
             <ul class="pagination" style="justify-content: center;">
                 <li th:each="pageNum : ${#numbers.sequence(1, memberWikiList.totalPages)}">
-                    <a th:href="@{'?page=' + ${pageNum}}" th:text="${pageNum}" th:class="${pageNum == memberWikiList.number + 1} ? 'active' : ''"></a>
+                    <a th:href="@{'?page=' + ${pageNum}}" th:text="${pageNum}"
+                       th:class="${pageNum == memberWikiList.number + 1} ? 'active' : ''"></a>
                 </li>
             </ul>
         </div>

@@ -9,6 +9,8 @@ import com.mos.domain.member.dto.MemberStudyDto;
 import com.mos.domain.member.dto.MyStudiesDto;
 import com.mos.domain.member.dto.MyStudiesUpdateDto;
 import com.mos.domain.member.dto.UpdateFavoritesDto;
+
+import java.lang.reflect.Member;
 import java.util.List;
 
 import com.mos.domain.wiki.dto.WikiDto;

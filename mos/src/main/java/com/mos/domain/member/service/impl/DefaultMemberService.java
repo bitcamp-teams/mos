@@ -13,6 +13,7 @@ import com.mos.domain.member.service.MemberService;
 import com.mos.domain.study.dto.StudyDto;
 import com.mos.domain.study.repository.StudyRepository;
 
+import java.lang.reflect.Member;
 import java.util.List;
 
 import com.mos.domain.wiki.dto.WikiDto;
@@ -174,5 +175,4 @@ public class DefaultMemberService implements MemberService {
   public List<MemberDto> getAuthorizedMembers(int studyNo) {
     return memberRepository.findAuthorizedMembersByStudyNo(studyNo);
   }
-
 }
