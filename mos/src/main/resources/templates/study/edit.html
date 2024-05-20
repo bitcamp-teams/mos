@@ -61,7 +61,12 @@
           <div style="flex-basis: 50%">
             <div><label>태그들을 선택하세요!</label></div>
             <div data-th-each="tag : ${tagList}" data-th-object="${tag}" class="form-check-inline">
-              <input type="checkbox" data-th-checkbox="true" data-th-value="*{tagNo}" name="tags" class="form-check-input">
+              <input type="checkbox"
+                     data-th-checkbox="true"
+                     data-th-value="*{tagNo}"
+                     name="tags"
+                     class="form-check-input"
+                     th:checked="${#lists.contains(studyTags, tag.tagNo)}">
               <span data-th-text="*{name}"></span>
             </div>
             <div data-th-if="${#fields.hasGlobalErrors()}">

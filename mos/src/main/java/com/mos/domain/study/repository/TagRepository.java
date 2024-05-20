@@ -16,6 +16,8 @@ public interface TagRepository {
 
   int delete(int tagNo);
 
+  boolean deleteByStudyNo(int studyNo);
+
   List<TagDto> findAll();
 
   TagDto getByTagNo(int tagNo);

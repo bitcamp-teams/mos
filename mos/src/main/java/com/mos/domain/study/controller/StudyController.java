@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import javax.swing.text.html.HTML.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
@@ -125,10 +126,7 @@ public class StudyController implements InitializingBean {
       tagList.add(tag);
     }
 
-    StudyDto studyDto = StudyDto.builder().memberNo(loginUser.getMemberNo()).method(studyAddDto.getMethod())
-        .studyNo(studyAddDto.getStudyNo()).title(studyAddDto.getTitle()).introduction(studyAddDto.getIntroduction())
-        .startDate(studyAddDto.getStartDate()).endDate(studyAddDto.getEndDate()).intake(studyAddDto.getIntake())
-        .recruitmentDeadline(studyAddDto.getRecruitmentDeadline()).tagList(tagList).build();
+    StudyDto studyDto = setStudyDtoByAddDto(loginUser, studyAddDto, tagList);
 
     // MemberStudyDto 객체 생성 및 값 설정
     MemberStudyDto memberStudyDto = new MemberStudyDto();
@@ -143,6 +141,22 @@ public class StudyController implements InitializingBean {
     sessionStatus.setComplete();
 
     return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  private static StudyDto setStudyDtoByAddDto(MemberDto loginUser, StudyAddDto studyAddDto,
+      List<TagDto> tagList) {
+    return StudyDto.builder()
+        .memberNo(loginUser.getMemberNo())
+        .method(studyAddDto.getMethod())
+        .studyNo(studyAddDto.getStudyNo())
+        .title(studyAddDto.getTitle())
+        .introduction(studyAddDto.getIntroduction())
+        .startDate(studyAddDto.getStartDate())
+        .endDate(studyAddDto.getEndDate())
+        .intake(studyAddDto.getIntake())
+        .recruitmentDeadline(studyAddDto.getRecruitmentDeadline())
+        .tagList(tagList)
+        .build();
   }
 
   @GetMapping("view")
@@ -205,6 +219,10 @@ public class StudyController implements InitializingBean {
     }
     model.addAttribute("tagList", studyService.getAllTags());
     model.addAttribute("study", studyDto);
+    List<Integer> tagList = studyDto.getTagList().stream()
+        .map(TagDto::getTagNo)
+        .toList();
+    model.addAttribute("studyTags", tagList);
   }
 
   @PostMapping("update")
@@ -212,6 +230,7 @@ public class StudyController implements InitializingBean {
   public String update(
       @Validated @ModelAttribute("study") StudyUpdateDto studyUpdateDto,
       BindingResult bindingResult,
+      @RequestParam(value = "tags", required = false) List<Integer> tagNums,
       Model model,
       HttpSession session,
       SessionStatus sessionStatus
@@ -222,8 +241,13 @@ public class StudyController implements InitializingBean {
       model.addAttribute("study", studyUpdateDto);
       return "/study/edit";
     }
+    List<TagDto> tagList = new ArrayList<>();
+    for (int no : tagNums) {
+      TagDto tag = TagDto.builder().tagNo(no).build();
+      tagList.add(tag);
+    }
 
-    StudyDto studyDto = setStudyDto(studyUpdateDto);
+    StudyDto studyDto = setStudyDtoByUpdateDto(studyUpdateDto, tagList);
 
     studyService.update(studyDto);
     StudyDto result = studyService.getByStudyNo(studyDto.getStudyNo());
@@ -237,7 +261,7 @@ public class StudyController implements InitializingBean {
     return "redirect:view?studyNo=" + studyDto.getStudyNo();
   }
 
-  private static StudyDto setStudyDto(StudyUpdateDto studyUpdateDto) {
+  private static StudyDto setStudyDtoByUpdateDto(StudyUpdateDto studyUpdateDto, List<TagDto> tags) {
     return StudyDto.builder()
         .studyNo(studyUpdateDto.getStudyNo())
         .title(studyUpdateDto.getTitle())
@@ -245,6 +269,7 @@ public class StudyController implements InitializingBean {
         .intake(studyUpdateDto.getIntake())
         .startDate(studyUpdateDto.getStartDate())
         .endDate(studyUpdateDto.getEndDate())
+        .tagList(tags)
         .recruitmentDeadline(studyUpdateDto.getRecruitmentDeadline())
         .introduction(studyUpdateDto.getIntroduction())
         .build();

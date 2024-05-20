@@ -156,6 +156,7 @@
     intake=#{intake},
     start_date=#{startDate},
     end_date=#{endDate},
+
     recruitment_deadline=#{recruitmentDeadline},
     introduction=#{introduction}
     WHERE
