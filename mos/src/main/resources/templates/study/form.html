@@ -151,15 +151,25 @@
                         text: '저희 서비스를 이용해 주셔서 감사합니다.',
                         icon: 'success',
                         confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/';
+                        }
                     });
+
                 },
-                error: function () {
+                error: function(xhr) {
+                if (xhr.status === 400) {
+                    var errorMessages = xhr.responseJSON; // This should be an array of error messages
+                    var errorText = errorMessages.join('\n'); // Join error messages with newlines
+
                     Swal.fire({
                         icon: 'error',
                         title: '모집글 작성에 실패했습니다.',
-                        text: '다시 시도해주세요.',
+                        text: errorText,
                         showConfirmButton: true
                     });
+                  }
                 }
             });
         });
