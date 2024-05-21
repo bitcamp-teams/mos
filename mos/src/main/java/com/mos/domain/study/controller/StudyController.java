@@ -106,7 +106,7 @@ public class StudyController implements InitializingBean {
   ) throws Exception {
 
     if (tagNums == null) {
-      bindingResult.reject("tags", null, "태그를 선택해주세요.");
+      bindingResult.rejectValue("tagList", null, "태그를 선택해주세요.");
     }
 
     if (bindingResult.hasErrors()) {
@@ -240,7 +240,10 @@ public class StudyController implements InitializingBean {
       SessionStatus sessionStatus
   ) throws Exception {
 
-    System.out.println("bindingResult = " + bindingResult);
+    if (tagNums == null) {
+      bindingResult.rejectValue("tagList", null, "태그를 선택해주세요.");
+    }
+
     if (bindingResult.hasErrors()) {
       List<String> errorMessages = bindingResult.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
       model.addAttribute("study", studyUpdateDto);
