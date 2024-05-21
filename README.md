@@ -11,7 +11,8 @@
 - 협업을 통한 지식 공유 및 문서화 작업 수행
 - 참여자들의 포트폴리오 제작 지원
 
---
+---
+
 ![image](https://github.com/bitcamp-teams/mos/assets/150896440/bcc1d0f4-1777-409d-907c-afe5e70bed1e)
 
 ![image](https://github.com/bitcamp-teams/mos/assets/150896440/062120a3-b3b4-4b8a-8c0a-1c9df066202e)
