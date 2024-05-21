@@ -218,12 +218,12 @@
           error: function(xhr) {
             if (xhr.status === 400) {
               var errorMessages = xhr.responseJSON; // This should be an array of error messages
-              var errorText = errorMessages.join('\n'); // Join error messages with newlines
+              var errorText = errorMessages.join('<br>'); // Join error messages with newlines
 
               Swal.fire({
                 icon: 'error',
                 title: '모집글 수정에 실패했습니다.',
-                text: errorText,
+                html: errorText,
                 showConfirmButton: true
               });
             }
