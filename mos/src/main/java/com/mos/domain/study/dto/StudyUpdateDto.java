@@ -1,5 +1,6 @@
 package com.mos.domain.study.dto;
 
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -16,8 +17,9 @@ public class StudyUpdateDto {
     private Date recruitmentDeadline;
     private Date startDate;
     private Date endDate;
+    @NotNull(message = "모집 인원 수를 선택해주세요.")
     @Min(value = 1, message = "인원수는 한 명 이상이어야 합니다.")
-    private int intake;
+    private Integer intake;
     @NotEmpty(message = "내용을 입력해주세요.")
     private String introduction;
 }
