@@ -5,10 +5,22 @@ var url = new URL(window.location.href)
 var urlParams = url.searchParams;
 var studyNo = urlParams.get('studyNo');
 var wikiNo = urlParams.get('wikiNo');
+let $main = $('.main');
+let $nomain = $('.nomain');
 
 if (wikiNo == null) {
-  $('#contentEditLink').attr('href',
-      '/wiki/view?studyNo=' + studyNo);
+  $main.hide();
+  $nomain.append(`
+    <div class="explanation jumbotron">
+      <h1 class="display-4">위키 편집기입니다.</h1>
+      <p class="lead">왼쪽 트리에서 위키를 만들고, 삭제할 수 있습니다.</p>
+      <hr class="my-4">
+      <p>드래그 앤 드랍, 우클릭, F2 키를 사용하실 수 있어요.</p>
+      <p><i class="far fa-file-alt"></i>+ 버튼을 눌러서 최상위 위키를 추가할 수 있어요.</p>
+      <p><i class="fas fa-eye"></i>  버튼을 눌러서 조회 모드로 변경할 수 있어요.</p>
+      <p>위키는 자동으로 저장되니 걱정하지 마세요. 😁</p>
+    </div>
+  `);
 }
 
 const getListUrl = "/api/wiki?studyNo=" + studyNo;
@@ -94,6 +106,8 @@ $(function () {
   })
   //노드를 선택했을 때이다. 해당 id(wiki_no) 위키 정보를 요청하고 뷰어를 만든다.
   .on('select_node.jstree', function (e, data) {
+    $main.show();
+    $nomain.hide();
     getNodeContent(data)
     .then(nodeContent => {
       // $('#author').html(nodeContent.username);
@@ -132,8 +146,8 @@ $(function () {
 
               // 2. FileApiController - uploadEditorImage 메서드 호출
               const response = await fetch('/storage/file/upload', {
-                method : 'POST',
-                body : formData,
+                method: 'POST',
+                body: formData,
               });
 
               // 3. 컨트롤러에서 전달받은 디스크에 저장된 파일명
@@ -153,8 +167,6 @@ $(function () {
         }
         /* end of hooks */
       });
-
-
 
       history.pushState(null, null,
           '/wiki/edit?studyNo=' + nodeContent.studyNo + '&wikiNo='

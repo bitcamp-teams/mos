@@ -22,7 +22,7 @@
     </nav>
 
     <div class="main col mx-auto">
-      <div class>
+      <div>
         <div>
           <h1 id="contentTitle"></h1>
           <!-- 조회 모드로 전환함-->
@@ -46,6 +46,8 @@
       <div id="status">
       </div>
     </div>
+    <div class="nomain col mx-auto">
+    </div>
 
 
   </div>
@@ -63,9 +65,10 @@
 <!--loginUser to var-->
 <script th:inline="javascript">
   /*<![CDATA[*/
-  var loginUser = /*[[${loginUser}]]*/ 0;
-  console.log(loginUser.userName);
-  console.log(loginUser.memberNo);
+  const loginUser = /*[[${loginUser}]]*/ 0;
+  /*]]>*/
+  /*<![CDATA[*/
+  const authorized = /*[[${authorized}]]*/ false;
   /*]]>*/
 </script>
 <!--jstree-->

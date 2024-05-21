@@ -3,10 +3,12 @@ var url = new URL(window.location.href)
 var urlParams = url.searchParams;
 var studyNo = urlParams.get('studyNo');
 var wikiNo = urlParams.get('wikiNo');
+let $main = $('.main');
+let $nomain = $('.nomain');
 
 if (wikiNo == null) {
-  $('.main').html("");
-  $('.main').append(`
+  $main.hide();
+  $nomain.append(`
     <div class="jumbotron">
       <h1 class="display-4">환영합니다!</h1>
       <p class="lead">왼쪽 트리에서 원하는 위키를 클릭해 주세요.</p>
@@ -94,6 +96,8 @@ $(function () {
   })
   //노드를 선택했을 때이다. 해당 id(wiki_no) 위키 정보를 요청하고 뷰어를 만든다.
   .on('select_node.jstree', function (e, data) {
+    $main.show();
+    $nomain.hide();
     getNodeContent(data)
     .then(nodeContent => {
       //data-th-src="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}}"
