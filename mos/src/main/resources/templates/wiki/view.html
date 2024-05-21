@@ -6,6 +6,12 @@
 
     <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
     <nav id="resizable" class="resizable-column sidebar-left border">
+      <div class="tree-btn-wrapper" th:if="${authorized}">
+        <a class="btn btn-outline-info tree-btn" id="contentEditLink"
+           href="editWiki.html">
+          <i class="fas fa-edit"></i> 편집
+        </a>
+      </div>
       <div>
         <!--TODO: study 제목을 보여주기-->
         <div id="wikiTree">
@@ -20,13 +26,6 @@
 
     <div class="main col mx-auto">
       <div class="wiki-header">
-        <div th:if="${authorized}">
-          <a class="btn btn-primary" id="contentEditLink"
-             href="editWiki.html">
-            <i class="fas fa-edit"></i> 편집
-          </a>
-        </div>
-
         <h1 id="contentTitle"></h1>
         <div id="createdDate">작성일</div>
       </div>
