@@ -1,5 +1,13 @@
 //스터디 신청 버튼에 대한 이벤트 리스너
 $('#submitApplyBtn').click(function () {
+  if (loginUser == null) {
+    Swal.fire({
+      icon: 'warning',
+      title: '로그인 후 신청해주세요!',
+      showConfirmButton: true,
+    })
+    return;
+  }
   var applyMsg = $('#applyMsg').val();
   var studyNoAttr = $('#studyNo').val();
 
