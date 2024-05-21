@@ -105,6 +105,7 @@
   <select id="countAll" resultType="long">
     SELECT COUNT(*) FROM study
     WHERE 1=1
+    AND stat != 'S01-105'
     <if test="searchText != null and searchText != ''">
       AND title like CONCAT('%',#{searchText},'%') OR introduction like CONCAT('%',#{searchText},'%')
     </if>
