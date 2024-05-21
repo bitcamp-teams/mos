@@ -1,310 +1,78 @@
 <div data-th-replace="header::header">머리말</div>
-
-<style>
-    .HomeTab_left, .HomeTab_left .HomeTab_tab {
-        display: flex;
-        position: relative;
-    }
-
-    .HomeTab_left .HomeTab_tab a.HomeTab_active {
-        color: #212529;
-        font-weight: 700;
-    }
-
-    .HomeTab_left .HomeTab_tab a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        -webkit-text-decoration: none;
-        text-decoration: none;
-        white-space: nowrap;
-        color: #868e96;
-    }
-
-    .responsive_mainHeaderResponsive {
-        width: 100%;
-        padding-top: 12px;
-        padding-bottom: 12px;
-        margin: 0 auto;
-    }
-
-    .HomeTab_wrapper {
-        width: 100%;
-        margin-top: 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-    }
-
-    .HomeTab_left, .HomeTab_left__o1RQE .HomeTab_tab {
-        display: flex;
-        position: relative;
-    }
-
-    .HomeTab_left {
-        justify-content: flex-start;
-        align-items: center;
-        height: 48px;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-    }
-
-    .HomeTab_left .HomeTab_tab a svg {
-        font-size: 24px;
-        margin-right: 8px;
-    }
-
-    .HomeTab_left .HomeTab_tab a + a {
-        margin-left: 20px;
-    }
-
-    .HomeTab_left .HomeTab_tab a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        -webkit-text-decoration: none;
-        text-decoration: none;
-        white-space: nowrap;
-        color: #868e96;
-    }
-
-    .HomeTab_left .HomeTab_tab .HomeTab_indicator {
-        position: absolute;
-        width: 44%;
-        height: 2px;
-        background: #343a40;
-        bottom: -10px;
-    }
-
-    .HomeTab_right {
-        position: relative;
-        display: flex;
-    }
-
-    .HomeTab_right .HomeTab_selector {
-        background: #fff;
-        height: 32px;
-        width: 100px;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-left: 8px;
-        padding-right: 8px;
-        margin-right: 10px;
-        font-weight: 600;
-        color: #495057;
-        font-size: 14px;
-        box-shadow: 0 0 4px rgba(0, 0, 0, .05);
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-        cursor: pointer;
-    }
-
-    .HomeTab_right .HomeTab_selector svg {
-        width: 24px;
-        height: 24px;
-    }
-
-    .HomeTab_right .HomeTab_extra {
-        margin-top: 5px;
-        cursor: pointer;
-        font-size: 24px;
-        color: #868e96
-    }
-
-    /* 검색 */
-    .search_container {
-        display: flex;
-        width: 300px;
-        height: 38px;
-        padding: 0 20px;
-        align-items: center;
-        grid-gap: 10px;
-        gap: 10px;
-        border-radius: 36px;
-        background: #ffffff;
-        position: relative;
-        box-shadow: 10px 5px 5px rgb(165 23 23 / 5%);
-    }
-
-    .search_searchImg {
-        display: block;
-        width: 18px;
-        height: 18px;
-    }
-
-    .search_searchInput {
-        border: none;
-        background: transparent;
-        outline: none;
-        padding: 0;
-        font-weight: 500;
-        font-size: 16px;
-        width: 100%;
-    }
-
-    .search_searchInitialize {
-        display: block;
-        width: 15px;
-        height: 15px;
-        cursor: pointer;
-        position: absolute;
-        right: 20px;
-        top: 10px;
-    }
-
-  .total-count-container {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    padding: 10px;
-    margin-right: 20px;
-  }
-
-  .banner {
-    position: relative;
-    height: 300px;
-    overflow: hidden;
-    background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1, #fbc2eb);
-    background-size: 400% 400%;
-    animation: gradientAnimation 15s ease infinite;
-  }
-
-  @keyframes gradientAnimation {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  .banner-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: #fff;
-    z-index: 1;
-  }
-
-  .banner-title {
-    font-size: 3rem;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-bottom: 1rem;
-  }
-
-  .banner-subtitle {
-    font-size: 1.5rem;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  }
-    .total-count-container {
-        font-size: 16px;
-        font-weight: bold;
-        color: #333;
-        padding: 10px;
-        margin-right: 20px;
-    }
-
-    #tertiary-fill {
-        /*fill: #b7b7b7;*/
-        stroke-width: 2;
-    }
-
-    #primary-stroke {
-        fill: none;
-        /*stroke: rgb(0, 0, 0);*/
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        stroke-width: 2;
-    }
-
-    #secondary-stroke {
-        fill: none;
-        /*stroke: rgb(44, 169, 188);*/
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        stroke-width: 2;
-    }
-</style>
 <div class="content-container page-margin wrapper-mos">
 
   <div class="banner">
     <div class="banner-content">
-      <h1 class="banner-title">Welcome to MOS</h1>
-      <p class="banner-subtitle">함께 스터디하고 결과물을 창작해봐요</p>
+      <h1 class="banner-title">모두의 스터디</h1>
+      <p class="banner-subtitle">스터디를 모집하고 같이 글을 써요</p>
     </div>
   </div>
 
-    <div class="HomeTab_wrapper responsive_mainHeaderResponsive sticky">
-        <nav class="HomeTab_left">
-            <div class="HomeTab_tab">
+  <div class="HomeTab_wrapper responsive_mainHeaderResponsive sticky">
+    <nav class="HomeTab_left">
+      <div class="HomeTab_tab">
 
-                <!--  트렌딩   -->
-                <a class="HomeTab_active" href="" data-flag="trending">
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em"
-                         width="1em"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill="none" d="M0 0h24v24H0z"></path>
-                        <path id="tertiary-fill" d="M6,21H3V17H6Zm8-6H11v6h3Zm8-4H19V21h3Z"></path>
-                        <path id="primary-stroke" d="M6,21H3V17H6Zm8-6H11v6h3Zm8-4H19V21h3Z"></path>
-                        <path id="secondary-stroke" d="M20,3c-4,7-13,9-17,9M21,7,20,3H16"></path>
-                    </svg>
-                    <span>인기</span>
-                </a>
+        <!--  트렌딩   -->
+        <a class="HomeTab_active" href="" data-flag="trending">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+               height="1em"
+               width="1em"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" d="M0 0h24v24H0z"></path>
+            <path id="tertiary-fill" d="M6,21H3V17H6Zm8-6H11v6h3Zm8-4H19V21h3Z"></path>
+            <path id="primary-stroke" d="M6,21H3V17H6Zm8-6H11v6h3Zm8-4H19V21h3Z"></path>
+            <path id="secondary-stroke" d="M20,3c-4,7-13,9-17,9M21,7,20,3H16"></path>
+          </svg>
+          <span>인기</span>
+        </a>
 
-                <!--  최신   -->
-                <a class="" href="" data-flag="recent">
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" width="1.5rem" height="1.5rem"
-                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0" fill="none" width="24" height="24"/>
-                        <path d="M23 12l-2.44 2.78.34 3.68-3.61.82-1.89 3.18L12 21l-3.4 1.47-1.89-3.18-3.61-.82.34-3.69L1 12l2.44-2.79-.34-3.68 3.61-.81L8.6 1.54 12 3l3.4-1.46 1.89 3.18 3.61.82-.34 3.68L23 12zm-2.67 0L18.5 9.89l.24-2.79L16 6.5l-1.42-2.43L12 5.18 9.42 4.07 8 6.5l-2.74.59.24 2.79L3.67 12l1.83 2.1-.24 2.8 2.74.6 1.42 2.43L12 18.81l2.58 1.11L16 17.5l2.74-.61-.24-2.79 1.83-2.1zM11 15h2v2h-2v-2zm0-8h2v6h-2V7z"/>
-                    </svg>
-                    <span>최신</span>
-                </a>
+        <!--  최신   -->
+        <a class="" href="" data-flag="recent">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" width="1.5rem"
+               height="1.5rem"
+               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" fill="none" width="24" height="24"/>
+            <path
+                d="M23 12l-2.44 2.78.34 3.68-3.61.82-1.89 3.18L12 21l-3.4 1.47-1.89-3.18-3.61-.82.34-3.69L1 12l2.44-2.79-.34-3.68 3.61-.81L8.6 1.54 12 3l3.4-1.46 1.89 3.18 3.61.82-.34 3.68L23 12zm-2.67 0L18.5 9.89l.24-2.79L16 6.5l-1.42-2.43L12 5.18 9.42 4.07 8 6.5l-2.74.59.24 2.79L3.67 12l1.83 2.1-.24 2.8 2.74.6 1.42 2.43L12 18.81l2.58 1.11L16 17.5l2.74-.61-.24-2.79 1.83-2.1zM11 15h2v2h-2v-2zm0-8h2v6h-2V7z"/>
+          </svg>
+          <span>최신</span>
+        </a>
 
-                <!--    3%,     38.33%,     70.33%        -->
-                <div class="HomeTab_indicator" style="left: 2%;"></div>
-            </div>
-        </nav>
+        <!--    3%,     38.33%,     70.33%        -->
+        <div class="HomeTab_indicator" style="left: 2%;"></div>
+      </div>
+    </nav>
 
-        <div class="HomeTab_right">
-            <div id="totalCountContainer" class="total-count-container">
-                총 갯수 : <span id="totalCount">0</span>
-            </div>
-            <div class="search_container">
-                <img class="search_searchImg" src="/img/search.png" alt="search icon">
-                <input placeholder="제목, 글 내용을 검색해보세요." class="search_searchInput" value="">
-                <img class="search_searchInitialize" src="/img/search-close-icon.png" alt="검색 내용 초기화"
-                     style="display: none">
-            </div>
-        </div>
-
+    <div class="HomeTab_right">
+      <div id="totalCountContainer" class="total-count-container">
+        총 갯수 : <span id="totalCount">0</span>
+      </div>
+      <div class="search_container">
+        <img class="search_searchImg" src="/img/search.png" alt="search icon">
+        <input placeholder="제목, 글 내용을 검색해보세요." class="search_searchInput" value="">
+        <img class="search_searchInitialize" src="/img/search-close-icon.png" alt="검색 내용 초기화"
+             style="display: none">
+      </div>
     </div>
-    <div class="HomeLayout_block">
-        <div class="HomeLayout_innerBlock">
-            <div class="HomeLayout_mainWrapper">
-                <ul class="PostCardGrid_block grid_homeGrid">
 
-                </ul>
-            </div>
-        </div>
+  </div>
+  <div class="HomeLayout_block">
+    <div class="HomeLayout_innerBlock">
+      <div class="HomeLayout_mainWrapper">
+        <ul class="PostCardGrid_block grid_homeGrid">
+
+        </ul>
+      </div>
     </div>
+  </div>
 
 </div>
 <div class="loader"></div>
 
+<!--CSS 분리-->
+<link rel="stylesheet" href="/css/index/banner.css">
+<link rel="stylesheet" href="/css/index/main.css">
+<!--필요한 스크립트-->
 <script src="/js/util/url-validator.js"></script>
 <script type="module" src="/js/study/index.js"></script>
 <div data-th-replace="footer::footer">꼬리말</div>
