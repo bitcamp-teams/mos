@@ -58,3 +58,21 @@
 #noticnt {
     color: blue;
 }
+
+/* swal toast */
+.swal2-popup.swal2-toast {
+    padding: 13px !important;
+}
+
+/* 커스텀 스타일을 사용하여 SweetAlert2 알림의 위치를 조정합니다. */
+.swal2-popup {
+    position: fixed !important;
+}
+/* 제목 텍스트 크기 조정 */
+.custom-swal-title {
+    font-size: 17px !important;/* 원하는 크기로 조정 */
+}
+/* 내용 텍스트 크기 조정 */
+.custom-swal-text {
+    font-size: 18px !important; /* 원하는 크기로 조정 */
+}

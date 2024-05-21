@@ -6,11 +6,7 @@ let index = {
         const _this = this;
 
         $(function () {
-            if (localStorage.getItem('isSubscribed') === 'Y') {
-                return; // 이미 구독중이면 중복 요청 안함
-            }
-
-            if (_this.memberNo !== '' && localStorage.getItem('isSubscribed') !== 'Y') {
+            if (_this.memberNo !== '' && _this.memberNo !== null) {
                 _this.subscribe();
             }
         });
@@ -27,7 +23,7 @@ let index = {
                 const data = JSON.parse(event.data);
                 const Toast = Swal.mixin({
                     toast: true,
-                    position: 'top-end',
+                    // position: 'bottom-start',
                     showConfirmButton: false,
                     timer: 3000,
                     timerProgressBar: true,
@@ -39,12 +35,16 @@ let index = {
 
                 Toast.fire({
                     icon: 'success',
-                    title: `${data.message}`
+                    title: `${data.message}`,
+                    customClass: {
+                        popup: 'swal2-random-position',
+                        title: 'custom-swal-title',
+                        content: 'custom-swal-text'
+                    },
                 })
             } catch (error) {
                 // sse 최초 연결시 더미데이터는 따로 처리하지 않음
             }
-
         });
 
     },

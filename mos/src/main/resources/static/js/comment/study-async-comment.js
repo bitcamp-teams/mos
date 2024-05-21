@@ -223,7 +223,8 @@ $('#submitComment').click(function () {
     memberNo: Number(loginUser.memberNo),
     studyNo: Number(studyNoDeleted),
     content: content,
-    notiReceiver: $('#notiReceiver').val()
+    notiReceiver: $('#notiReceiver').val(),
+    title: $('#studyTitle').text(),
   };
 
   console.log(commentData);
