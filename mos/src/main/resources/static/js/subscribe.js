@@ -6,7 +6,7 @@ let index = {
         const _this = this;
 
         $(function () {
-            if (_this.memberNo !== '' && _this.memberNo !== null) {
+            if (_this.memberNo !== '' && _this.memberNo !== null && localStorage.getItem('isSubscribed') !== 'Y') {
                 _this.subscribe();
             }
         });
