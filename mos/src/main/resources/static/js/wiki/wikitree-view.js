@@ -10,7 +10,7 @@ if (wikiNo == null) {
   $main.hide();
   $nomain.append(`
     <div class="jumbotron">
-      <h1 class="display-4">환영합니다!</h1>
+      <p class="display-4">환영합니다!</p>
       <p class="lead">왼쪽 트리에서 원하는 위키를 클릭해 주세요.</p>
       ${authorized ? `
         <hr class="my-4">
@@ -19,6 +19,8 @@ if (wikiNo == null) {
       ` : ''}
     </div>
   `);
+  $('#contentEditLink').attr('href',
+      '/wiki/edit?studyNo=' + studyNo);
 }
 
 const getListUrl = "/api/wiki?studyNo=" + studyNo;

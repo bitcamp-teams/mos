@@ -29,15 +29,15 @@
             <label>스터디 방식을 선택해주세요!</label></div>
             <div class="form-check-inline">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="method" id="inlineRadio1" value="온라인" th:checked="true">
+                <input class="form-check-input" type="radio" th:field="*{method}" id="inlineRadio1" value="온라인" th:checked="true">
                 <label class="form-check-label" for="inlineRadio1">온라인</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="method" id="inlineRadio2" value="오프라인">
+                <input class="form-check-input" type="radio" th:field="*{method}" id="inlineRadio2" value="오프라인">
                 <label class="form-check-label" for="inlineRadio2">오프라인</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="method" id="inlineRadio3" value="자유방식">
+                <input class="form-check-input" type="radio" th:field="*{method}" id="inlineRadio3" value="자유방식">
                 <label class="form-check-label" for="inlineRadio3">자유방식</label>
               </div>
             </div>
@@ -218,12 +218,12 @@
           error: function(xhr) {
             if (xhr.status === 400) {
               var errorMessages = xhr.responseJSON; // This should be an array of error messages
-              var errorText = errorMessages.join('\n'); // Join error messages with newlines
+              var errorText = errorMessages.join('<br>'); // Join error messages with newlines
 
               Swal.fire({
                 icon: 'error',
                 title: '모집글 수정에 실패했습니다.',
-                text: errorText,
+                html: errorText,
                 showConfirmButton: true
               });
             }
