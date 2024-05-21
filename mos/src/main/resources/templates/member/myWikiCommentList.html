@@ -19,7 +19,7 @@
             <tr data-th-each="wikiComment, wikiCommentStat : ${memberWikiCommentList}" data-th-object="${wikiComment}">
                 <td data-th-text="${wikiCommentStat.count}">1</td>
                 <td data-th-text="*{wikiTitle}">조건문</td>
-                <td><a data-th-href="@{/wiki/view(studyNo=*{studyNo},wikiNo=*{wikiNo})}">댓글</a>
+                <td><a data-th-href="@{/wiki/view(studyNo=*{studyNo},wikiNo=*{wikiNo})}" data-th-text="*{content}">댓글</a>
                 </td>
                 <td data-th-text="*{createdDate}">2024-05-08</td>
             </tr>
