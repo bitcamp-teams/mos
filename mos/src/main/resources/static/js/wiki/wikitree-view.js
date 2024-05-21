@@ -19,6 +19,8 @@ if (wikiNo == null) {
       ` : ''}
     </div>
   `);
+  $('#contentEditLink').attr('href',
+      '/wiki/edit?studyNo=' + studyNo);
 }
 
 const getListUrl = "/api/wiki?studyNo=" + studyNo;
