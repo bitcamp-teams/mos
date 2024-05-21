@@ -86,6 +86,7 @@ textarea#applyMsg::placeholder {
 
 .study-edit {
   text-align: center;
+  padding: 1rem 0;
 }
 
 .study-three h1 {

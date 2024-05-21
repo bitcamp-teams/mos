@@ -26,7 +26,7 @@
                 <td>
                     <a data-th-if="${memberStudy.studyDto != null}"
                        data-th-text="${memberStudy.studyDto.title}"
-                       data-th-href="@{'/wiki/view?studyNo=' + ${memberStudy.studyDto.studyNo}}">
+                       data-th-href="@{'/study/view?studyNo=' + ${memberStudy.studyDto.studyNo}}">
                     </a>
                     <span data-th-if="${memberStudy.studyDto == null}">제목 없음</span>
                 </td>
