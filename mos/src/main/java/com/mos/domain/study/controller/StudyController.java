@@ -87,11 +87,10 @@ public class StudyController implements InitializingBean {
     List<TagDto> tagList = studyService.getAllTags();
     Date currentDate = Date.valueOf(LocalDate.now());
 
-    model.addAttribute("study", StudyDto.builder()
-        .startDate(currentDate)
-        .endDate(currentDate)
-        .recruitmentDeadline(currentDate)
-        .build());
+    model.addAttribute(
+        "study",
+        StudyDto.builder().startDate(currentDate).endDate(currentDate).recruitmentDeadline(currentDate).build()
+    );
     model.addAttribute("tagList", tagList);
     return "study/form";
   }
@@ -111,9 +110,7 @@ public class StudyController implements InitializingBean {
     }
 
     if (bindingResult.hasErrors()) {
-      List<String> errorMessages = bindingResult.getFieldErrors().stream()
-                  .map(FieldError::getDefaultMessage)
-                  .toList();
+      List<String> errorMessages = bindingResult.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
       log.error("errorMessages={}", errorMessages);
       log.error("bindingResult={}", bindingResult);
       model.addAttribute("tagList", studyService.getAllTags());
@@ -143,24 +140,29 @@ public class StudyController implements InitializingBean {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  private static StudyDto setStudyDtoByAddDto(MemberDto loginUser, StudyAddDto studyAddDto,
-      List<TagDto> tagList) {
-    return StudyDto.builder()
-        .memberNo(loginUser.getMemberNo())
-        .method(studyAddDto.getMethod())
-        .studyNo(studyAddDto.getStudyNo())
-        .title(studyAddDto.getTitle())
-        .introduction(studyAddDto.getIntroduction())
-        .startDate(studyAddDto.getStartDate())
-        .endDate(studyAddDto.getEndDate())
-        .intake(studyAddDto.getIntake())
-        .recruitmentDeadline(studyAddDto.getRecruitmentDeadline())
-        .tagList(tagList)
-        .build();
+  private static StudyDto setStudyDtoByAddDto(
+      MemberDto loginUser, StudyAddDto studyAddDto, List<TagDto> tagList
+  ) {
+    return StudyDto.builder().memberNo(loginUser.getMemberNo()).method(studyAddDto.getMethod())
+        .studyNo(studyAddDto.getStudyNo()).title(studyAddDto.getTitle()).introduction(studyAddDto.getIntroduction())
+        .startDate(studyAddDto.getStartDate()).endDate(studyAddDto.getEndDate()).intake(studyAddDto.getIntake())
+        .recruitmentDeadline(studyAddDto.getRecruitmentDeadline()).tagList(tagList).build();
   }
 
   @GetMapping("view")
   public void view(@LoginUser MemberDto loginUser, @RequestParam int studyNo, Model model) throws Exception {
+
+    // 권한체크 (작성하기 버튼을 보여줄 것인지를 판단하기 위함)
+    boolean authorized = false;
+    List<MemberDto> members = memberService.getAuthorizedMembers(studyNo);
+    for (MemberDto member : members) {
+      if (member.getMemberNo() == loginUser.getMemberNo()) {
+        authorized = true;
+        log.debug("TRUE###");
+        break;
+      }
+    }
+    model.addAttribute("authorized", authorized);
 
     try {
       model.addAttribute("loginUser", loginUser);
@@ -220,9 +222,7 @@ public class StudyController implements InitializingBean {
     }
     model.addAttribute("tagList", studyService.getAllTags());
     model.addAttribute("study", studyDto);
-    List<Integer> tagList = studyDto.getTagList().stream()
-        .map(TagDto::getTagNo)
-        .toList();
+    List<Integer> tagList = studyDto.getTagList().stream().map(TagDto::getTagNo).toList();
     model.addAttribute("studyTags", tagList);
   }
 
@@ -239,9 +239,7 @@ public class StudyController implements InitializingBean {
 
     System.out.println("bindingResult = " + bindingResult);
     if (bindingResult.hasErrors()) {
-      List<String> errorMessages = bindingResult.getFieldErrors().stream()
-          .map(FieldError::getDefaultMessage)
-          .toList();
+      List<String> errorMessages = bindingResult.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
       model.addAttribute("study", studyUpdateDto);
       return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
     }
@@ -266,17 +264,10 @@ public class StudyController implements InitializingBean {
   }
 
   private static StudyDto setStudyDtoByUpdateDto(StudyUpdateDto studyUpdateDto, List<TagDto> tags) {
-    return StudyDto.builder()
-        .studyNo(studyUpdateDto.getStudyNo())
-        .title(studyUpdateDto.getTitle())
-        .method(studyUpdateDto.getMethod())
-        .intake(studyUpdateDto.getIntake())
-        .startDate(studyUpdateDto.getStartDate())
-        .endDate(studyUpdateDto.getEndDate())
-        .tagList(tags)
-        .recruitmentDeadline(studyUpdateDto.getRecruitmentDeadline())
-        .introduction(studyUpdateDto.getIntroduction())
-        .build();
+    return StudyDto.builder().studyNo(studyUpdateDto.getStudyNo()).title(studyUpdateDto.getTitle())
+        .method(studyUpdateDto.getMethod()).intake(studyUpdateDto.getIntake()).startDate(studyUpdateDto.getStartDate())
+        .endDate(studyUpdateDto.getEndDate()).tagList(tags).recruitmentDeadline(studyUpdateDto.getRecruitmentDeadline())
+        .introduction(studyUpdateDto.getIntroduction()).build();
   }
 
   //  @GetMapping("delete")

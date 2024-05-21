@@ -123,7 +123,8 @@
 
       <div class="d-flex justify-content-center button-wrapper"
            data-th-if="*{stat != 'S01-103' && stat != 'S01-104'}">
-        <button id="applyStudyBtn" type="button" class="btn btn-success" data-toggle="modal"
+        <button th:unless="${authorized}" id="applyStudyBtn" type="button" class="btn btn-success"
+                data-toggle="modal"
                 data-target="#applyModal">신청하기
         </button>
 
@@ -133,7 +134,7 @@
              href="/wiki/view.html"><i class="fas fa-folder-open"></i> 위키 보기</a>
         </div>
 
-        <div th:unless="${not #strings.isEmpty(firstWikiNo)}">
+        <div th:if="${#strings.isEmpty(firstWikiNo)} and ${authorized}">
           <a th:href="@{/wiki/view(studyNo=${study.studyNo})}"
              class="btn btn-secondary "
              href="/wiki/view.html"><i class="fas fa-edit"></i> 작성 하기</a>
