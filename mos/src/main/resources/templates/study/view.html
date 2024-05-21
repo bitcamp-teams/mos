@@ -264,18 +264,11 @@
 <!--loginUser to var-->
 <script th:inline="javascript">
   /*<![CDATA[*/
-  var loginUser = /*[[${loginUser}]]*/ 0;
-  console.log(loginUser.userName);
-  console.log(loginUser.memberNo);
+  const loginUser = /*[[${loginUser}]]*/ 0;
+  const authorized = /*[[${authorized}]]*/ false;
   /*]]>*/
 </script>
-<!--jstree-->
-<!--<link rel="stylesheet" href="/plugins/jstree/themes/default/style.css">-->
-<!--<link rel="stylesheet"-->
-<!--      href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>-->
-<!--<script src="/plugins/jstree/jstree.js"></script>-->
 <script src="/js/study/view.js"></script>
-<!--<script src="/js/study/wikitree-view.js"></script>-->
 <script src="/js/comment/study-async-comment.js"></script>
 <link rel="stylesheet" href="/css/wiki/view.css">
 <div data-th-replace="footer::footer">꼬리말</div>
