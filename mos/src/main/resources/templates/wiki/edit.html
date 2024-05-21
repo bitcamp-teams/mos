@@ -1,5 +1,5 @@
 <div th:replace="header::header">머리말</div>
-<link rel="stylesheet" href="/css/wiki/edit.css">
+
 
 <div th:if="${authorized}" class="container-fluid">
   <div class="row justify-content-center flex-nowrap">
@@ -8,9 +8,15 @@
     <!-- 왼쪽 nav : 스터디의 위키 리스트(커리큘럼) -->
     <nav id="resizable" class="resizable-column sidebar-left border">
       <div>
-        <button class="btn btn-primary btn-block align-middle" id="addRootNode">
-          <i class="far fa-file-alt"></i> <span> + </span>
-        </button>
+        <div class="tree-btn-wrapper">
+          <button class="btn btn-outline-info tree-btn" id="addRootNode">
+            <i class="far fa-file-alt"></i> <span> + </span>
+          </button>
+
+          <a class="btn btn-outline-primary tree-btn" id="contentEditLink" href="edit.html"><i
+              class="fas fa-eye"></i></a>
+        </div>
+
         <div id="wikiTree">
           <ul>
             <li>
@@ -25,9 +31,6 @@
       <div>
         <div>
           <h1 id="contentTitle"></h1>
-          <!-- 조회 모드로 전환함-->
-          <a class="btn btn-primary" id="contentEditLink" href="editWiki.html"><i
-              class="fas fa-eye"></i></a>
           <!--        <a id="contentDeleteLink" href="delete.html">[삭제]</a>-->
 
           <!--          <div> 이 위키가 작성된 스터디 = <a th:href="@{/study/view(studyNo=*{studyNo})}"> <span>방문하기</span>-->
@@ -57,6 +60,8 @@
   편집은 팀원들만 가능해요!!
 </div>
 
+<!--css 적용-->
+<link rel="stylesheet" href="/css/wiki/edit.css">
 <!--js-->
 <!-- for resizable column -->
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>

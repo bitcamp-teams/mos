@@ -153,17 +153,19 @@ public class StudyController implements InitializingBean {
   public void view(@LoginUser MemberDto loginUser, @RequestParam int studyNo, Model model) throws Exception {
 
     // 권한체크 (작성하기 버튼을 보여줄 것인지를 판단하기 위함)
-
     boolean authorized = false;
     List<MemberDto> members = memberService.getAuthorizedMembers(studyNo);
-    for (MemberDto member : members) {
-      if (member.getMemberNo() == loginUser.getMemberNo()) {
-        authorized = true;
-        log.debug("TRUE###");
-        break;
+    try {
+      for (MemberDto member : members) {
+        if (member.getMemberNo() == loginUser.getMemberNo()) {
+          authorized = true;
+          break;
+        }
       }
+      model.addAttribute("authorized", authorized);
+    } catch (Exception e) {
+      model.addAttribute("authorized", false);
     }
-    model.addAttribute("authorized", authorized);
 
     try {
       model.addAttribute("loginUser", loginUser);

@@ -12,6 +12,18 @@
   position: relative;
 }
 
+.tree-btn-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.tree-btn {
+  flex: 0 0 50%;
+  max-width: 50%;
+  /*margin: 3px;*/
+}
+
 .sidebar-left {
   overflow-x: auto;
   overflow-y: auto;

@@ -99,7 +99,6 @@ public class WikiController {
       for (MemberDto member : members) {
         if (member.getMemberNo() == loginUser.getMemberNo()) {
           authorized = true;
-          log.debug("TRUE###");
           break;
         }
       }
