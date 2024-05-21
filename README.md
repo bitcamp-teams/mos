@@ -1,3 +1,5 @@
+ ![logo_text](https://github.com/bitcamp-teams/mos/assets/150896440/06022d5c-844c-4d3b-9244-c7a65164386a)
+
 # 모두의 스터디
 ---
 #### ◼ 프로젝트 개요
