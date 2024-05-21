@@ -5,8 +5,18 @@ var studyNo = urlParams.get('studyNo');
 var wikiNo = urlParams.get('wikiNo');
 
 if (wikiNo == null) {
-  $('#contentEditLink').attr('href',
-      '/wiki/edit?studyNo=' + studyNo);
+  $('.main').html("");
+  $('.main').append(`
+    <div class="jumbotron">
+      <h1 class="display-4">환영합니다!</h1>
+      <p class="lead">왼쪽 트리에서 원하는 위키를 클릭해 주세요.</p>
+      ${authorized ? `
+        <hr class="my-4">
+        <p>새로운 위키를 작성하려면 아래 버튼을 클릭하세요.</p>
+        <a class="btn btn-primary btn-lg" href="/wiki/edit?studyNo=${studyNo}" role="button">편집하기</a>
+      ` : ''}
+    </div>
+  `);
 }
 
 const getListUrl = "/api/wiki?studyNo=" + studyNo;

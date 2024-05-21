@@ -95,14 +95,18 @@ public class WikiController {
     // 권한체크, but 비동기 고려해야 함.
     boolean authorized = false;
     List<MemberDto> members = memberService.getAuthorizedMembers(studyNo);
-    for (MemberDto member : members) {
-      if (member.getMemberNo() == loginUser.getMemberNo()) {
-        authorized = true;
-        log.debug("TRUE###");
-        break;
+    try {
+      for (MemberDto member : members) {
+        if (member.getMemberNo() == loginUser.getMemberNo()) {
+          authorized = true;
+          log.debug("TRUE###");
+          break;
+        }
       }
+      model.addAttribute("authorized", authorized);
+    } catch (Exception e) {
+      model.addAttribute("authorized", false);
     }
-    model.addAttribute("authorized", authorized);
 
     try {
       //작성자 번호를 여기서 넣으면 안됨. 비동기라서...

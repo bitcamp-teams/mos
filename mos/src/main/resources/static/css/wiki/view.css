@@ -101,6 +101,7 @@
   margin-left: 40px;
   margin-top: -7px;
 }
+
 .wiki-header {
   display: flex;
   flex-direction: column;
@@ -128,7 +129,12 @@
   justify-content: center;
   align-items: center;
 }
+
 #createdDate {
   color: #495057;
   font-size: 0.8em;
+}
+
+.button-wrapper > .btn {
+  margin: 0 1rem;
 }
