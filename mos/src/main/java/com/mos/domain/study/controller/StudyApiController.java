@@ -33,7 +33,7 @@ public class StudyApiController {
 
   @GetMapping("/list/{flag}")
   public ResponseEntity<?> list(@PathVariable String flag, int page, String searchText) {
-    PageRequest pageRequest = PageRequest.of(page, 3);
+    PageRequest pageRequest = PageRequest.of(page, 6);
     Page<StudyDto> studyList = studyService.list(pageRequest, flag, searchText);
     return ResponseEntity.ok().body(studyList);
   }
