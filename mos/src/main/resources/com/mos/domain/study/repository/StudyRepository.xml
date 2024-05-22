@@ -7,66 +7,361 @@
   <resultMap id="studyList" type="StudyDto">
     <id column="study_no" property="studyNo"/>
     <result column="member_no" property="memberNo"/>
+    <result column="leaderName" property="leaderName"/>
     <result column="title" property="title"/>
+    <result column="introduction" property="introduction"/>
+    <result column="location" property="location"/>
     <result column="intake" property="intake"/>
     <result column="method" property="method"/>
     <result column="recruitment_deadline" property="recruitmentDeadline"/>
+    <result column="created_date" property="createdDate"/>
+    <result column="tags" property="tags"/>
+    <result column="hit_count" property="hitCount"/>
+    <result column="like_count" property="likeCount"/>
   </resultMap>
 
   <resultMap id="studyDetail" type="studyDto">
     <id column="study_no" property="studyNo"/>
     <result column="member_no" property="memberNo"/>
+    <result column="username" property="username"/>
     <result column="title" property="title"/>
     <result column="method" property="method"/>
     <result column="intake" property="intake"/>
     <result column="recruitment_deadline" property="recruitmentDeadline"/>
     <result column="end_date" property="endDate"/>
+    <result column="stat" property="stat"/>
+    <result column="start_date" property="startDate"/>
     <result column="introduction" property="introduction"/>
+    <result column="location" property="location"/>
+    <result column="hit_count" property="hitCount"/>
+    <result column="like_count" property="likeCount"/>
+
+    <collection property="tagList" ofType="TagDto">
+      <id column="tag_no" property="tagNo"/>
+      <result column="name" property="name"/>
+      <result column="path" property="path"/>
+    </collection>
   </resultMap>
 
-  <select id="findAll" resultMap="studyList">
-    SELECT
-      study_no,
-      member_no,
-      title,
-      intake,
-      method,
-      recruitment_deadline
-    FROM
-      study
-    ORDER BY
-      study_no DESC
+  <resultMap id="MemberStudyMap" type="MemberStudyDto">
+    <id column="member_study_stat_no" property="no"/>
+    <result column="stat" property="stat"/>
+    <result column="apply_msg" property="applyMsg"/>
+
+    <association property="studyDto" javaType="StudyDto">
+      <id column="study_no" property="studyNo"/>
+      <result column="member_no" property="memberNo"/>
+      <result column="title" property="title"/>
+      <result column="start_date" property="startDate"/>
+      <result column="end_date" property="endDate"/>
+    </association>
+
+    <association property="memberDto" javaType="MemberDto">
+      <id column="member_no" property="memberNo"/>
+      <result column="photo" property="photo"/>
+      <result column="username" property="userName"/>
+    </association>
+
+  </resultMap>
+
+  <select id="findAll" resultType="StudyDto">
+    SELECT result.*
+    FROM (
+      SELECT
+        s.study_no,
+        s.member_no,
+        (SELECT m.username FROM member m WHERE m.member_no = s.member_no) AS leaderName,
+        s.title,
+        s.introduction,
+        s.intake,
+        s.method,
+        s.recruitment_deadline,
+        s.created_date,
+        s.hit_count,
+        s.like_count,
+        s.thumbnail,
+        m.photo,
+        GROUP_CONCAT(DISTINCT t.name) AS tags,
+        count(sc.comment_no) AS comment_count
+      FROM
+        study s
+        LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+        LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
+        Left Join study_comment sc on s.study_no = sc.study_no
+        left join member m on s.member_no = m.member_no
+      WHERE
+        s.stat != 'S01-105'
+        <if test="searchText != null and searchText != ''">
+          AND title like CONCAT('%',#{searchText},'%') OR introduction like CONCAT('%',#{searchText},'%')
+        </if>
+    GROUP BY s.study_no
+    ) as result
+    <if test="flag != null and flag != ''">
+      ORDER BY result.${flag} desc
+    </if>
+    LIMIT #{pageable.offset}, #{pageable.pageSize};
+  </select>
+
+  <select id="countAll" resultType="long">
+    SELECT COUNT(*) FROM study
+    WHERE 1=1
+    AND stat != 'S01-105'
+    <if test="searchText != null and searchText != ''">
+      AND title like CONCAT('%',#{searchText},'%') OR introduction like CONCAT('%',#{searchText},'%')
+    </if>
   </select>
 
   <select id="getByStudyNo" resultMap="studyDetail">
     SELECT
-      study_no,
-      member_no,
-      title,
-      method,
-      intake,
-      recruitment_deadline,
-		  end_date,
-		  introduction
+    s.study_no,
+    s.member_no,
+    m.username,
+    s.title,
+    s.intake,
+    s.introduction,
+    s.location,
+    s.method,
+    s.recruitment_deadline,
+    s.start_date,
+    s.end_date,
+    s.stat,
+    s.hit_count,
+    s.like_count,
+    t.tag_no,
+    t.name
     FROM
-		  study
-	  WHERE
-		  study_no=#{studyNo};
+    study s
+    JOIN member m ON s.member_no = m.member_no
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
+    WHERE
+    s.study_no=#{studyNo}
+    ORDER BY
+    study_no DESC;
   </select>
 
-  <insert id="add" parameterType="StudyDto">
-<!--  아직 유저 로그인을 구현/통합하지 않았으므로, 스터디장은 1번 유저를 대상으로 하도록 하드코딩하였음 -->
+  <insert id="add" parameterType="StudyDto" useGeneratedKeys="true" keyColumn="study_no"
+          keyProperty="studyNo">
     INSERT INTO
-      study(member_no, method, title, intake, recruitment_deadline, introduction)
-    VALUES(1, #{method}, #{title}, #{intake}, #{recruitmentDeadline}, #{introduction})
+    study(member_no, title, method, location, intake, recruitment_deadline, introduction, start_date, end_date)
+    VALUES(#{memberNo}, #{title}, #{method}, #{location}, #{intake}, #{recruitmentDeadline}, #{introduction},
+    #{startDate}, #{endDate});
   </insert>
 
-  <delete id="delete" parameterType="int">
-    DELETE
-      FROM
-        study
+  <update id="update" parameterType="StudyDto">
+    UPDATE
+    study
+    SET
+    title=#{title},
+    method=#{method},
+    intake=#{intake},
+    start_date=#{startDate},
+    end_date=#{endDate},
+
+    recruitment_deadline=#{recruitmentDeadline},
+    introduction=#{introduction}
     WHERE
-      study_no = #{studyNo}
-  </delete>
+    study_no=#{studyNo};
+  </update>
+
+  <update id="delete" parameterType="int">
+    UPDATE
+    study
+    SET
+    stat = 'S01-105'
+    WHERE
+    study_no = #{studyNo};
+  </update>
+
+  <!-- 조회수 증가 -->
+  <update id="updateHitCount" parameterType="int">
+    UPDATE
+    study
+    SET
+    hit_count = hit_count + 1
+    WHERE
+    study_no=#{studyNo}
+  </update>
+
+  <!-- 좋아요 수 증가 -->
+  <update id="updateLikeCount">
+    UPDATE study
+    SET like_count = #{likeCount}
+    WHERE study_no = #{studyNo}
+  </update>
+
+  <!-- 스터디 신청기능-->
+  <insert id="applyStudy" parameterType="MemberStudyDto">
+    INSERT INTO
+    member_study_stat(member_no, study_no, stat, apply_msg)
+    VALUES(#{memberDto.memberNo}, #{studyDto.studyNo}, #{status}, #{applyMsg})
+  </insert>
+
+  <select id="listAll" resultMap="studyList">
+    SELECT
+    s.study_no,
+    s.member_no,
+    s.title,
+    s.intake,
+    s.method,
+    s.recruitment_deadline,
+    s.created_date,
+    s.hit_count,
+    GROUP_CONCAT(DISTINCT t.name) AS tags
+    FROM
+    study s
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
+    GROUP BY
+    s.study_no
+    ORDER BY
+    created_date DESC;
+  </select>
+
+  <select id="searchByStudy" resultMap="studyDetail">
+    SELECT
+    s.study_no,
+    s.member_no,
+    s.title,
+    s.intake,
+    s.method,
+    s.recruitment_deadline,
+    s.hit_count,
+    s.like_count,
+    t.tag_no,
+    t.name
+    FROM
+    study s
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no
+    <where>
+      s.stat != 'S01-105'
+      <choose>
+        <when test="type == 'title'">
+          <if test="keyword != null and keyword != ''">
+            AND s.title LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+        <when test="type == 'introduction'">
+          <if test="keyword != null and keyword != ''">
+            AND s.introduction LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+        <when test="type == 'tag'">
+          <if test="keyword != null and keyword != ''">
+            AND t.name LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+      </choose>
+    </where>
+    GROUP BY s.study_no
+    ORDER BY s.study_no DESC
+    LIMIT #{pageable.offset}, #{pageable.pageSize};
+  </select>
+
+  <select id="searchCount" resultType="int">
+    SELECT
+    COUNT(DISTINCT s.study_no)
+    FROM
+    study s
+    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no
+    LEFT OUTER JOIN tag t ON sts.tag_no = t.tag_no
+    <where>
+      s.stat != 'S01-105'
+      <choose>
+        <when test="type == 'title'">
+          <if test="keyword != null and keyword != ''">
+            AND s.title LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+        <when test="type == 'introduction'">
+          <if test="keyword != null and keyword != ''">
+            AND s.introduction LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+        <when test="type == 'tag'">
+          <if test="keyword != null and keyword != ''">
+            AND t.name LIKE CONCAT('%', #{keyword}, '%')
+          </if>
+        </when>
+      </choose>
+    </where>
+  </select>
+
+
+  <!--  <select id="searchCount" resultType="int">-->
+  <!--    SELECT-->
+  <!--    count(*)-->
+  <!--    FROM-->
+  <!--    study-->
+  <!--    <where>-->
+  <!--      <if test="type != null and type != ''">-->
+  <!--        AND ${type} LIKE CONCAT('%', #{keyword}, '%')-->
+  <!--      </if>-->
+  <!--    </where>-->
+  <!--  </select>-->
+
+
+  <!--  <select id="searchCount">-->
+  <!--    SELECT-->
+  <!--    count(*)-->
+  <!--    FROM-->
+  <!--    study-->
+  <!--    WHERE #{type} LIKE CONCAT('%', #{keyword}, '%');-->
+  <!--  </select>-->
+
+  <!--  <select id="searchByTitle" resultMap="studyDetail">-->
+  <!--    SELECT-->
+  <!--    s.study_no,-->
+  <!--    s.member_no,-->
+  <!--    s.title,-->
+  <!--    s.intake,-->
+  <!--    s.method,-->
+  <!--    s.recruitment_deadline,-->
+  <!--    t.tag_no,-->
+  <!--    t.name-->
+  <!--    FROM-->
+  <!--    study s-->
+  <!--    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no-->
+  <!--    LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no-->
+  <!--    WHERE s.title LIKE CONCAT('%', #{keyword}, '%')-->
+  <!--    ORDER BY s.study_no DESC;-->
+  <!--  </select>-->
+
+  <!--  <select id="searchByIntroduction" resultMap="studyDetail">-->
+  <!--    SELECT-->
+  <!--    s.study_no,-->
+  <!--    s.member_no,-->
+  <!--    s.title,-->
+  <!--    s.intake,-->
+  <!--    s.method,-->
+  <!--    s.recruitment_deadline,-->
+  <!--    t.tag_no,-->
+  <!--    t.name-->
+  <!--    FROM-->
+  <!--    study s-->
+  <!--    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no-->
+  <!--    LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no-->
+  <!--    WHERE s.introduction LIKE CONCAT('%', #{keyword}, '%')-->
+  <!--    ORDER BY s.study_no DESC;-->
+  <!--  </select>-->
+
+  <!--  <select id="searchByTag" resultMap="studyDetail">-->
+  <!--    SELECT-->
+  <!--    s.study_no,-->
+  <!--    s.member_no,-->
+  <!--    s.title,-->
+  <!--    s.intake,-->
+  <!--    s.method,-->
+  <!--    s.recruitment_deadline,-->
+  <!--    t.tag_no,-->
+  <!--    t.name-->
+  <!--    FROM-->
+  <!--    study s-->
+  <!--    LEFT OUTER JOIN study_tag_stat sts ON s.study_no = sts.study_no-->
+  <!--    LEFT OUTER JOIN tag t ON sts.tag_no=t.tag_no-->
+  <!--    WHERE t.name LIKE CONCAT('%', #{keyword}, '%')-->
+  <!--    ORDER BY s.study_no DESC;-->
+  <!--  </select>-->
 
 </mapper>

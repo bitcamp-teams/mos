@@ -1,18 +1,79 @@
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-  <meta charset='UTF-8'>
-  <title>모두의스터디</title>
-</head>
-<body>
-
 <div data-th-replace="header::header">머리말</div>
+<div class="content-container page-margin wrapper-mos">
 
-<div data-th-replace="/home/rtp_study::rtp_study">실시간 인기 스터디</div>
-<div data-th-replace="/home/nearby_study::nearby_study">내 주변 스터디</div>
-<div data-th-replace="/home/rtp_wiki::rtp_wiki">실시간 인기 글</div>
+  <div class="banner">
+    <div class="banner-content">
+      <h1 class="banner-title">모두의 스터디</h1>
+      <p class="banner-subtitle">스터디를 모집하고 같이 글을 써요</p>
+    </div>
+  </div>
 
+  <div class="HomeTab_wrapper responsive_mainHeaderResponsive sticky">
+    <nav class="HomeTab_left">
+      <div class="HomeTab_tab">
+
+        <!--  트렌딩   -->
+        <a class="HomeTab_active" href="" data-flag="trending">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+               height="1em"
+               width="1em"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" d="M0 0h24v24H0z"></path>
+            <path id="tertiary-fill" d="M6,21H3V17H6Zm8-6H11v6h3Zm8-4H19V21h3Z"></path>
+            <path id="primary-stroke" d="M6,21H3V17H6Zm8-6H11v6h3Zm8-4H19V21h3Z"></path>
+            <path id="secondary-stroke" d="M20,3c-4,7-13,9-17,9M21,7,20,3H16"></path>
+          </svg>
+          <span>인기</span>
+        </a>
+
+        <!--  최신   -->
+        <a class="" href="" data-flag="recent">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" width="1.5rem"
+               height="1.5rem"
+               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" fill="none" width="24" height="24"/>
+            <path
+                d="M23 12l-2.44 2.78.34 3.68-3.61.82-1.89 3.18L12 21l-3.4 1.47-1.89-3.18-3.61-.82.34-3.69L1 12l2.44-2.79-.34-3.68 3.61-.81L8.6 1.54 12 3l3.4-1.46 1.89 3.18 3.61.82-.34 3.68L23 12zm-2.67 0L18.5 9.89l.24-2.79L16 6.5l-1.42-2.43L12 5.18 9.42 4.07 8 6.5l-2.74.59.24 2.79L3.67 12l1.83 2.1-.24 2.8 2.74.6 1.42 2.43L12 18.81l2.58 1.11L16 17.5l2.74-.61-.24-2.79 1.83-2.1zM11 15h2v2h-2v-2zm0-8h2v6h-2V7z"/>
+          </svg>
+          <span>최신</span>
+        </a>
+
+        <!--    3%,     38.33%,     70.33%        -->
+        <div class="HomeTab_indicator" style="left: 2%;"></div>
+      </div>
+    </nav>
+
+    <div class="HomeTab_right">
+      <div id="totalCountContainer" class="total-count-container">
+        총 갯수 : <span id="totalCount">0</span>
+      </div>
+      <div class="search_container">
+        <img class="search_searchImg" src="/img/search.png" alt="search icon">
+        <input placeholder="제목, 글 내용을 검색해보세요." class="search_searchInput" value="">
+        <img class="search_searchInitialize" src="/img/search-close-icon.png" alt="검색 내용 초기화"
+             style="display: none">
+      </div>
+    </div>
+
+  </div>
+  <div class="HomeLayout_block">
+    <div class="HomeLayout_innerBlock">
+      <div class="HomeLayout_mainWrapper">
+        <ul class="PostCardGrid_block grid_homeGrid">
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="loader"></div>
+
+<!--CSS 분리-->
+<link rel="stylesheet" href="/css/index/banner.css">
+<link rel="stylesheet" href="/css/index/main.css">
+<!--필요한 스크립트-->
+<script src="/js/util/url-validator.js"></script>
+<script type="module" src="/js/study/index.js"></script>
 <div data-th-replace="footer::footer">꼬리말</div>
 
-</body>
-</html>

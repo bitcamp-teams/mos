@@ -12,18 +12,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WikiDto {
-  int studyNo;
-  int memberNo;
-  String title;
-  String introduction;
-  String location;
-  Date startDate;
-  Date endDate;
-  String stat;
-  int intake;
-  String method;
-  Date recruitmentDeadline;
-  Date createdDate;
-  Date updatedDate;
-  int siggNo;
+
+  private int wikiNo;
+  private Integer parent_wiki_no;
+  private int studyNo;
+  private String title;
+  private String content;
+  private int ordr;
+  //  private int layer;
+  //  private int layerOrder;
+  private int likes; //반정규화
+  private Date createdDate;
+  private Date updatedDate;
+  private Date contentCreatedDate;
+  private Date contentUpdatedDate;
+  private String stat;
+  private int memberNo;
+  private String username;
+  private String photo; //user profile
+  private String thumbnail; //card thumbnail image uuid
+  private int hitCount;
+  private String studyTitle;
+  private int commentCount;
 }

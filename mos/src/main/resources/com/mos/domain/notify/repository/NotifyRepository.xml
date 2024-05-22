@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mos.domain.notify.repository.NotifyRepository">
+  
+  <resultMap id="NotifyMap" type="NotifyDto">
+    <id column="noti_no" property="id"/>
+    <result column="member_no" property="recipientId"/>
+    <result column="message" property="message"/>
+    <result column="link" property="link"/>
+    <result column="read_or_not" property="read"/>
+  </resultMap>
+
+  <resultMap id="NotifyListMap" type="NotifyListDto">
+    <id column="noti_no" property="id"/>
+    <result column="member_no" property="recipientId"/>
+    <result column="message" property="message"/>
+    <result column="created_date" property="createdDate"/>
+    <result column="link" property="link"/>
+  </resultMap>
+
+  <insert id="add" parameterType="NotifyAddDto">
+    INSERT INTO notification(member_no, message, link)
+    SELECT member_no, #{message}, #{link}
+    FROM member
+    WHERE member_no = #{recipientId};
+  </insert>
+
+  <select id="getNotifyList" resultMap="NotifyListMap">
+    SELECT noti_no, member_no, message, link, created_date
+    FROM notification n
+    where n.member_no = #{recipientId} AND read_or_not = 'N'
+    order by created_date desc
+    LIMIT #{offset}, #{pageSize}
+  </select>
+
+  <select id="notifyCount" resultType="int">
+    SELECT COUNT(*)
+    FROM notification
+    WHERE member_no = #{no}
+  </select>
+
+  <select id="existsById" resultType="boolean">
+    SELECT
+      CASE
+        WHEN COUNT(*) > 0 THEN 'true'  <!-- 이메일이 이미 존재하는 경우 -->
+        ELSE 'false' <!-- 이메일이 존재하지 않는 경우 -->
+      END AS email_exists
+    FROM
+      notification
+    WHERE
+      noti_no = #{id};
+  </select>
+  
+  <update id="updateReadById">
+    UPDATE notification SET read_or_not = 'Y' WHERE noti_no = #{id}
+  </update>
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mos.domain.wiki.repository.WikiApiRepository">
+
+    <select id="findByStudyNo" parameterType="int" resultType="JstreeWikiDto">
+      SELECT wiki_no, parent_wiki_no, title
+        FROM wiki
+        WHERE study_no = #{studyNo}
+
+    </select>
+
+    <select id="findAll" resultType="WikiDto">
+        SELECT
+            w.wiki_no,
+            study_no,
+            title,
+            w.member_no,
+            m.username,
+            m.photo,
+            w.created_date,
+            w.updated_date,
+            w.content,
+            w.stat,
+            w.likes,
+            w.thumbnail,
+            COALESCE(COUNT(wc.comment_no), 0) AS comment_count
+        FROM wiki w
+        JOIN member m ON w.member_no = m.member_no
+        left join mos.wiki_comment wc on w.wiki_no = wc.wiki_no
+        where 1=1
+        <if test="searchText != null and searchText != ''">
+            AND w.title like CONCAT('%',#{searchText},'%') OR w.content like CONCAT('%',#{searchText},'%')
+        </if>
+        group by w.wiki_no
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="findAllCount" resultType="int">
+        SELECT COUNT(*)
+        FROM (
+            SELECT
+                w.wiki_no
+            FROM wiki w
+            JOIN member m ON w.member_no = m.member_no
+            left join mos.wiki_comment wc on w.wiki_no = wc.wiki_no
+            WHERE 1=1
+            <if test="searchText != null and searchText != ''">
+                AND w.title like CONCAT('%',#{searchText},'%') OR w.content like CONCAT('%',#{searchText},'%')
+            </if>
+            group by w.wiki_no
+        ) AS q
+    </select>
+
+    <insert id="saveNode" parameterType="JstreeWikiDto"
+            useGeneratedKeys="true" keyProperty="wikiNo">
+        INSERT INTO wiki(parent_wiki_no, study_no, title, ordr, member_no)
+        VALUES (
+        <choose>
+            <when test="parentWikiNo == 0">NULL,</when>
+            <otherwise>#{parentWikiNo},</otherwise>
+        </choose>
+        #{studyNo}, #{title}, #{ordr}, #{memberNo});
+    </insert>
+
+  <!-- tree 구성을 위한 최소 정보 반환 -->
+  <select id="findByWikiNo" parameterType="int" resultType="JstreeWikiDto">
+        SELECT wiki_no, parent_wiki_no, title, ordr
+        FROM wiki
+        WHERE wiki_no = #{wikiNo};
+    </select>
+
+  <!--	Wiki의 상세 내역을 반환한다.-->
+  <select id="findWikiByWikiNo" resultType="WikiDto">
+        SELECT
+        wiki_no, study_no, title, wiki.member_no, username, member.photo, wiki.created_date, wiki.updated_date, content, likes
+        FROM wiki
+        JOIN member ON wiki.member_no = member.member_no
+        WHERE wiki_no = #{wikiNo};
+    </select>
+
+    <update id="updateByWikiNo" parameterType="JstreeWikiDto">
+        UPDATE wiki
+        SET
+        parent_wiki_no =
+        <choose>
+            <when test="parentWikiNo == 0">NULL,</when>
+            <otherwise>#{parentWikiNo},</otherwise>
+        </choose>
+        title = #{title},
+        ordr = #{ordr}
+        WHERE wiki_no = #{wikiNo}
+    </update>
+
+    <update id="updateWikiContentByWikiNo" parameterType="WikiDto">
+        UPDATE wiki
+        SET content = #{content}
+        WHERE wiki_no = #{wikiNo}
+    </update>
+
+    <delete id="deleteWikiByWikiNo" parameterType="int">
+        WITH RECURSIVE descendants AS (
+        SELECT wiki_no
+        FROM wiki
+        WHERE wiki_no = #{wikiNo}
+
+        UNION ALL
+
+        SELECT w.wiki_no
+        FROM wiki w
+        JOIN descendants d ON w.parent_wiki_no = d.wiki_no
+        )
+        DELETE FROM wiki
+        WHERE wiki_no IN (SELECT wiki_no FROM descendants);
+    </delete>
+
+
+</mapper>

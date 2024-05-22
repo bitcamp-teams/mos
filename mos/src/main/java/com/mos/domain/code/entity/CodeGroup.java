@@ -1,12 +1,12 @@
 package com.mos.domain.code.entity;
 
-import com.mos.domain.code.dto.CodeGroupRequestDto;
 import com.mos.domain.code.dto.CodeGroupResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.sql.Date;
 
 @Builder
@@ -14,8 +14,11 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CodeGroup {
+  @NotBlank
   String codeGroup;
+  @NotBlank
   String codeGroupName;
+  @NotBlank
   String moduleCode;
   Date createDate;
   Date updateDate;

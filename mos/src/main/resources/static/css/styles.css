@@ -1,17 +1,338 @@
-#header {
-  background-color: #DBEAFE;
-  padding: 30px;
+body {
+  padding-top: 64px;
+  background: #f8f9fa !important;
+}
+
+.content-container {
   display: flex;
+  flex-direction: column;
+  /*align-items: flex-start; !* 내부 요소를 왼쪽 정렬 *!*/
+  padding: 20px; /* 컨테이너 주변 여백 */
+  min-height: auto;
+}
+
+.card {
+  padding: 0.4rem;
+  border-radius: 10px;
+
+  :hover {
+    box-shadow: 4px 4px 10px grey;
+  }
+}
+
+.wrapper-mos {
+  height: auto;
+  min-height: 100%;
+  padding-bottom: 180px;
+}
+
+
+.page-margin {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+/* 카드 UI */
+.HomeLayout_block {
+  /*display: flex;*/
+  justify-content: center;
+  flex-flow: row wrap;
+}
+
+.HomeLayout_block .HomeLayout_innerBlock {
+  display: flex;
+  margin: 0 auto;
+  flex-flow: row wrap;
+}
+
+.HomeLayout_mainWrapper {
+  width: 100%;
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+
+.grid_homeGrid {
+  display: grid;
+  grid-gap: 32px;
+  padding: 0;
+  margin: 0;
+  --card-count: 5;
+  --spacer: calc(var(--card-count) - 1);
+  --width: 20%;
+  /*grid-template-columns: repeat(var(--card-count), minmax(calc((var(--width) - (32px * var(--spacer) / var(--card-count))) * 0.8), 1fr));*/
+  grid-template-columns: repeat(var(--card-count), calc(var(--width) - (32px * var(--spacer) / var(--card-count))))
+}
+
+@media screen and (max-width: 1919px) {
+  .grid_homeGrid {
+    --card-count: 4;
+    --width: 25%;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .grid_homeGrid {
+    --card-count: 3;
+    --width: 33.33%
+  }
+}
+
+@media screen and (max-width: 1056px) {
+  .grid_homeGrid {
+    --card-count: 2;
+    --width: 50%
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .grid_homeGrid {
+    grid-template-columns:repeat(1, 100%);
+    grid-gap: 16px
+  }
+}
+
+.PostCard_block {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .04);
+  transition: box-shadow .25s ease-in, transform .25s ease-in;
+}
+
+.PostCard_block:hover {
+  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, .1); /* Adjust shadow values as needed */
+  transform: translateY(-4px);
+}
+
+.PostCard_block .PostCard_styleLink {
+  display: block;
+  color: inherit;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.RatioImage_block {
+  width: 100%;
+  position: relative;
+}
+
+.RatioImage_block img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.PostCard_content {
+  padding: 1rem;
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+}
+
+.PostCard_block .PostCard_styleLink {
+  display: block;
+  color: inherit;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.PostCard_content .PostCard_h4 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0 0 .25rem;
+  line-height: 1.5;
+  word-break: break-word;
+  color: #212529;
+}
+
+.utils_ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.PostCard_content .PostCard_descriptionWrapper {
+  /*flex: 1 1;*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  line-height: 1.2em;
+  height: 3.9375rem;
+}
+
+.PostCard_content p.PostCard_clamp {
+  height: 3.48rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  color: #6f6f6f;
+}
+
+.PostCard_content__W3lPm p {
+  word-break: break-word;
+  word-wrap: break-word;
+  font-size: .875rem;
+  line-height: 1.5;
+  color: #495057;
+  margin: 0 0 1.5rem;
+}
+
+.PostCard_content .PostCard_subInfo {
+  margin-top: auto;
+  font-size: .75rem;
+  line-height: 1.5;
+  color: #868e96;
+}
+
+.PostCard_content .PostCard_subInfo .PostCard_separator {
+  margin-left: .25rem;
+  margin-right: .25rem;
+}
+
+.PostCard_footer {
+  padding: .625rem 1rem;
+  border-top: 1px solid #f1f3f5;
+  display: flex;
+  font-size: .75rem;
+  line-height: 1.5;
   justify-content: space-between;
+}
+
+.PostCard_footer .PostCard_userInfo {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
   align-items: center;
 }
 
-#footer {
-  background-color:#DBEAFE;
-  padding:50px;
-  text-align:center;
-  position: fixed;
-  width: 100%;
-  left: 0;
-  bottom: 0;
+.PostCard_footer .PostCard_userInfo img {
+  -o-object-fit: cover;
+  object-fit: cover;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+  margin-right: .5rem;
 }
+
+.PostCard_footer .PostCard_userInfo span {
+  color: #868e96;
+}
+
+.PostCard_footer .PostCard_likes {
+  display: flex;
+  align-items: center;
+  color: #212529;
+}
+
+.PostCard_footer .PostCard_likes svg {
+  width: .75rem;
+  height: .75rem;
+  margin-right: .5rem;
+}
+
+/* 로딩 */
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey - border 전체 색상 지정*/
+  border-top: 16px solid #3498db; /* Blue - 로딩 영역 색상 지정 */
+  border-radius: 50%; /* 둥근 모서리 효과 */
+  width: 120px; /* 크기 지정 */
+  height: 120px;
+  animation: spin 2s linear infinite;
+  /* 키프레임 애니메이션값 2초 가속도없이 일정하게 연속적인 로딩 */
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.HomeTab_right_wiki {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.search_container {
+  display: flex;
+  width: 300px;
+  height: 38px;
+  padding: 0 20px;
+  align-items: center;
+  grid-gap: 10px;
+  gap: 10px;
+  border-radius: 36px;
+  background: #ffffff;
+  position: relative;
+  box-shadow: 10px 5px 5px rgb(165 23 23 / 5%);
+}
+
+.search_searchImg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.search_searchInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 0;
+  font-weight: 500;
+  font-size: 16px;
+  width: 100%;
+}
+
+.search_searchInitialize {
+  display: block;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+.total-count-container {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  padding: 10px;
+  margin-right: 20px;
+}
+
+.PostCard_clamp {
+  font-weight: lighter;
+
+}
+
+/*.sticky {*/
+/*  position: sticky !important;*/
+/*  top: 0;*/
+/*  z-index: 1000;*/
+/*}*/
+

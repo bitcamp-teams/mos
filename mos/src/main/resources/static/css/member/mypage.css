@@ -1,0 +1,200 @@
+#sidenav {
+    position: fixed;
+    width: 240px;
+    height: calc(100% - 60px); /* 헤더의 높이만큼 빼줍니다 */
+    top: 60px; /* 헤더의 아래에 위치하도록 조정합니다 */
+    left: 0;
+    z-index: 1;
+    overflow-x: hidden;
+    background-color: #e9ecef; /* 필요에 따라 배경색 조정 */
+    border-right: 1px solid #dee2e6; /* 구분선 추가 */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+    transition: transform 0.3s ease, width 0.3s ease; /* 전환 효과 추가 */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* 폰트 스타일 설정 */
+    padding-top: 20px; /* 상단 패딩 추가 */
+}
+
+/* sidenav 링크 스타일 */
+#sidenav a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #333; /* 필요에 따라 텍스트 색상 조정 */
+    display: block;
+    transition: background-color 0.3s, color 0.3s; /* 전환 효과 추가 */
+}
+
+/* sidenav 링크 호버 효과 */
+#sidenav a:hover {
+    background-color: #f1f1f1; /* 호버 효과 추가 */
+    color: #000;
+}
+
+#sidenav a:active {
+    background-color: #ccc;
+    color: #000;
+}
+
+#sidenav.hidden {
+    transform: translateX(-100%);
+}
+
+/* 컨테이너 스타일 */
+.container-mystudy {
+    margin-left: 250px;
+}
+
+.container-profile {
+    margin-left: 250px;
+}
+
+.container-myWikiList {
+    margin-left: 250px;
+}
+
+.container-myStudyCommentList {
+    margin-left: 250px;
+}
+
+.container-myWikiCommentList {
+    margin-left: 250px;
+}
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown {
+  position: relative; /* 상대 위치 */
+  display: inline-block; /* 인라인 브록 디스플레이 */
+}
+
+/* 드롭다운 내용을 숨깁니다 */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* 드롭다운 항목에 마우스를 올리면 내용을 보여줍니다 */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+#profile {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+#profile img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+}
+
+.dashboard-form-container {
+    margin-left: 20%;
+    margin-right: 10%;
+    padding: 10px 10px 20px 20px;
+    background-color: #f8f9fa; /* 배경색 변경 */
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 프로필 섹션 스타일 */
+#profile-2 .txt {
+    margin-bottom: 10px;
+}
+
+#profile-2 div {
+    margin-left: 10px;
+    font-weight: bold;
+    color: #343a40; /* 다크 테마 색상 */
+}
+
+#profile-2 p {
+    margin-left: 20px;
+    color: #6c757d; /* 부트스트랩 색상 */
+}
+
+.custom-card {
+    width: 500px; /* 원하는 너비 값 */
+    height: 300px; /* 원하는 높이 값 */
+}
+
+/* 별표 아이콘에 대한 스타일 */
+.fa-star {
+    color: black; /* 기본 색상 */
+}
+
+/* 색이 채워진 별표 아이콘에 대한 스타일 */
+.filled .fa-star {
+    color: gold; /* 색이 채워진 상태의 색상 */
+}
+
+/* 페이지 네이션 */
+.pagination {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-top: 20px; /* 페이지 버튼과 상단 간격 조절 */
+}
+
+.pagination li {
+  display: inline-block;
+  margin-right: 5px; /* 페이지 버튼 간 간격 조절 */
+}
+
+.pagination li a {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination li a.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+h3 {
+  font-size: 30px;
+  color: #000000;
+  text-transform: uppercase;
+  font-weight: 300;
+  margin-bottom: 15px;
+  font-family: 굴림;
+}
+
+h4 {
+  font-size: 30px;
+  color: #000000;
+  text-transform: uppercase;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+table {
+  border: 1px #a39485 solid;
+  font-size: .9em;
+  box-shadow: 0 2px 5px rgba(0,0,0,.25);
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+thead {
+  font-weight: bold;
+  color: #fff;
+  background: #73685d;
+}

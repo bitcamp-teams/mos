@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="/css/home/styles.css">
+<link rel="stylesheet" href="/css/study/main.css">
+
+
+<div data-th-replace="header::header">머리말</div>
+
+<div class="wrapper-mos">
+    <h1 style="text-align: center;">스터디 모집 목록</h1>
+    <div class="container page-margin">
+        <div class="row">
+            <div class="col-md-4 mb-4" data-th-each="study : ${studyList}" data-th-object="${study}">
+                <div class="card study-card" style="height: 300px; width: 300px">
+                    <div class="card-body">
+                        <h5 class="card-title" data-th-text="*{title}">OO스터디 모집합니다.</h5>
+                        <p class="card-text">
+                            <strong>번호:</strong> <span data-th-text="*{studyNo}">100</span><br>
+                            <strong>진행방법:</strong> <span data-th-text="*{method}">북스터디</span><br>
+                            <strong>스터디장:</strong> <span data-th-text="*{memberNo}">10</span><br>
+                            <strong>정원:</strong> <span data-th-text="*{intake}">5</span><br>
+                            <strong>마감일:</strong> <span data-th-text="*{recruitmentDeadline}">2024-03-27</span>
+                        </p>
+                        <div class="card-text">
+                            <strong>태그:</strong>
+                            <a data-th-each="tag : ${study.tagList}" data-th-object="${tag}" data-th-text="*{name}"
+                               class="badge bg-secondary me-1">Java</a>
+                        </div>
+                        <a data-th-href="@{view(studyNo=*{studyNo})}" class="btn btn-primary mt-3">자세히 보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-th-replace="footer::footer">꼬리말</div>

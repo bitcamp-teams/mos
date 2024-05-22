@@ -1,0 +1,90 @@
+header {
+  justify-content: space-between;
+  position: fixed;
+  background-color: #DEE2E6;
+  top: 0;
+  transition: top 0.5s  ease-in-out;
+  width: 100%;
+  box-shadow: 1px 1px 1px rgba(0,0,0,.1);
+  z-index: 9999;
+}
+
+#mos-logo {
+  height: 30px;
+}
+
+
+.nav-up {
+  top: -80px;
+}
+
+.navbar-badge {
+  font-size: .6rem;
+  font-weight: 300;
+  padding: 2px 4px;
+  position: absolute;
+  right: 5px;
+  top: 9px;
+}
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+  font-family: Arial, sans-serif;
+}
+
+.dropdown-options {
+  display: none;
+  position: absolute;
+  overflow: auto;
+  z-index: 9999;
+  background-color: #FFFFFF;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.dropdown:hover .dropdown-options {
+  display: grid;
+  width: 210px;
+  grid-auto-rows: min-content;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.dropdown-options a {
+  color: #333;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dropdown-options a:hover {
+  background-color: #f1f1f1;
+  color: #000;
+}
+
+/* 추가 스타일 */
+.dropdown-options a:active {
+  background-color: #ddd;
+  color: #000;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+/* 헤더 */

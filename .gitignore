@@ -1,7 +1,13 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,intellij,eclipse,visualstudiocode,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,intellij,eclipse,visualstudiocode,java
 
+//manually added
+node_modules/
+.vscode/
+
+
 build
+*.properties
 ### Eclipse ###
 .metadata
 bin/
@@ -14,7 +20,6 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-
 # External tool builders
 .externalToolBuilders/
 

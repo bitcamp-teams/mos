@@ -1,0 +1,194 @@
+.HomeTab_left, .HomeTab_left .HomeTab_tab {
+  display: flex;
+  position: relative;
+}
+
+.HomeTab_left .HomeTab_tab a.HomeTab_active {
+  color: #212529;
+  font-weight: 700;
+}
+
+.HomeTab_left .HomeTab_tab a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #868e96;
+}
+
+.responsive_mainHeaderResponsive {
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin: 0 auto;
+}
+
+.HomeTab_wrapper {
+  width: 100%;
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.HomeTab_left, .HomeTab_left__o1RQE .HomeTab_tab {
+  display: flex;
+  position: relative;
+}
+
+.HomeTab_left {
+  justify-content: flex-start;
+  align-items: center;
+  height: 48px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.HomeTab_left .HomeTab_tab a svg {
+  font-size: 24px;
+  margin-right: 8px;
+}
+
+.HomeTab_left .HomeTab_tab a + a {
+  margin-left: 20px;
+}
+
+.HomeTab_left .HomeTab_tab a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #868e96;
+}
+
+.HomeTab_left .HomeTab_tab .HomeTab_indicator {
+  position: absolute;
+  width: 44%;
+  height: 2px;
+  background: #343a40;
+  bottom: -10px;
+}
+
+.HomeTab_right {
+  position: relative;
+  display: flex;
+}
+
+.HomeTab_right .HomeTab_selector {
+  background: #fff;
+  height: 32px;
+  width: 100px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-right: 10px;
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, .05);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.HomeTab_right .HomeTab_selector svg {
+  width: 24px;
+  height: 24px;
+}
+
+.HomeTab_right .HomeTab_extra {
+  margin-top: 5px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #868e96
+}
+
+/* 검색 */
+.search_container {
+  display: flex;
+  width: 300px;
+  height: 38px;
+  padding: 0 20px;
+  align-items: center;
+  grid-gap: 10px;
+  gap: 10px;
+  border-radius: 36px;
+  background: #ffffff;
+  position: relative;
+  box-shadow: 10px 5px 5px rgb(165 23 23 / 5%);
+}
+
+.search_searchImg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.search_searchInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 0;
+  font-weight: 500;
+  font-size: 16px;
+  width: 100%;
+}
+
+.search_searchInitialize {
+  display: block;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+.total-count-container {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  padding: 10px;
+  margin-right: 20px;
+}
+
+.total-count-container {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  padding: 10px;
+  margin-right: 20px;
+}
+
+#tertiary-fill {
+  /*fill: #b7b7b7;*/
+  stroke-width: 2;
+}
+
+#primary-stroke {
+  fill: none;
+  /*stroke: rgb(0, 0, 0);*/
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+#secondary-stroke {
+  fill: none;
+  /*stroke: rgb(44, 169, 188);*/
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}

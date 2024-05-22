@@ -1,0 +1,331 @@
+<div data-th-replace="header :: header" xmlns:th="http://www.w3.org/1999/xhtml">머리말</div>
+
+<div class="wrapper-mos">
+    <div data-th-replace="mypage-sidenav :: sidenav">사이드네비</div>
+
+    <div class="container-mystudy">  <!-- 부트스트랩 컨테이너 추가 -->
+        <table class="table">  <!-- 부트스트랩 테이블 클래스 추가 -->
+            <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th></th>
+                <!-- 다른 필요한 열들도 추가할 수 있습니다 -->
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="myTr" data-th-each="memberStudy : ${memberStudyList}"
+                data-th-attr="data-studyNo=${memberStudy.studyDto.studyNo}, data-isFavorite=${memberStudy.favorites}">
+                <td th:classappend="${memberStudy.favorites} ? 'filled' : ''" id="favoriteTd"
+                    onclick="toggleFavorite(this)">
+                    <i class="fas fa-star favorite-icon"></i>
+                </td>
+                <!--                 스터디 제목-->
+                <td>
+                    <a data-th-if="${memberStudy.studyDto != null}"
+                       data-th-text="${memberStudy.studyDto.title}"
+                       data-th-href="@{'/study/view?studyNo=' + ${memberStudy.studyDto.studyNo}}">
+                    </a>
+                    <span data-th-if="${memberStudy.studyDto == null}">제목 없음</span>
+                </td>
+
+                <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.startDate, 'yyyy-MM-dd') : ''}"></td>
+                <td data-th-text="${memberStudy.studyDto != null ? #dates.format(memberStudy.studyDto.endDate, 'yyyy-MM-dd') : ''}"></td>
+                <td>
+                    <form class="studyWithdraw" data-th-if="${memberStudy.status == 'S03-102'}">
+                        <input type="hidden" name="id" data-th-value="${memberStudy.no}">
+                        <input type="hidden" name="message" data-th-value="S03-106">
+                        <button type="submit" class="btn btn-Info" data-th-text="스터디원"></button>
+                    </form>
+                    <form class="studyStatus" data-th-if="${memberStudy.status == 'S03-101'}">
+                        <input type="hidden" name="studyNo" data-th-value="${memberStudy.studyDto.studyNo}">
+                        <input type="hidden" name="status" data-th-value="${memberStudy.status}">
+                        <button type="submit" class="btn btn-Primary" data-th-text="스터디장"></button>
+                    </form>
+                    <form data-th-if="${memberStudy.status == 'S03-106'}">
+                        <button type="button" class="btn btn-Secondary">탈퇴완료</button>
+                    </form>
+                    <form data-th-if="${memberStudy.status == 'S03-104'}">
+                        <button type="button" class="btn btn-Success">신청완료</button>
+                    </form>
+                    <form data-th-if="${memberStudy.status == 'S03-105'}">
+                        <button type="button" class="btn btn-Danger">신청거절</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <ul class="pagination" style="justify-content: center;">
+                <!--                <li class="page-item"><a href="?page=${wiki.number - 1}" class="page-link">이전</a></li>-->
+                <li th:each="pageNum : ${#numbers.sequence(1, memberStudyList.totalPages)}" class="page-item"
+                    th:classappend="${memberStudyList.number == pageNum - 1} ? 'active' : ''">
+                    <a th:href="@{'?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}"></a>
+                </li>
+                <!--                <li  class="page-item"><a th:href="?page=${wiki.number + 1}" class="page-link">다음</a></li>-->
+            </ul>
+        </div>
+    </div>  <!--    부트스트랩 컨테이너 닫기 -->
+
+    <!-- 결과를 표시할 모달 -->
+    <!-- Bootstrap 모달 -->
+    <div class="modal fade" id="jsonResultModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="max-height: 70%; overflow-y: auto;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">스터디 신청 목록</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="weight">
+                    <!-- JSON 결과를 버튼으로 표시할 곳 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function closeModal() {
+            // 모달 요소를 선택
+            var modal = document.getElementById('jsonResultModal');
+
+            // Bootstrap 모달 인스턴스를 가져온다
+            var bootstrapModal = bootstrap.Modal.getInstance(modal);
+
+            // 모달을 닫는다
+            bootstrapModal.hide();
+        }
+
+
+        $(document).ready(function () {
+            // 폼 제출 이벤트를 가로채기
+            $(document).on('submit', '.studyWithdraw', function (e) {
+                e.preventDefault(); // 폼 기본 제출 방지
+                console.log('함수 호출 성공');
+
+                var currentForm = $(this).closest('form'); // 클릭된 버튼을 포함하는 가장 가까운 폼을 찾음
+                var actionUrl = '/member/updateStatus'; // 폼 액션 URL
+                console.log(actionUrl);
+
+                // SweetAlert2로 확인 대화상자 표시
+                Swal.fire({
+                    title: '탈퇴하시겠습니까?',
+                    text: "이 작업은 되돌릴 수 없습니다!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '탈퇴',
+                    cancelButtonText: '취소'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var id = currentForm.find('[name="id"]').val();
+                        var message = currentForm.find('[name="message"]').val();
+                        console.log(id);
+                        console.log(message);
+
+                        // 사용자가 '확인'을 클릭하면, AJAX를 통해 폼 데이터를 서버로 전송
+                        $.ajax({
+                            url: actionUrl, // 서버 엔드포인트 URL
+                            type: 'PATCH', // HTTP 요청 메소드
+                            contentType: 'application/json',
+                            data: JSON.stringify({id: id, message: message}), // 폼 데이터 직렬화
+                            success: function (response) {
+                                // 요청 성공 시 처리 로직
+                                Swal.fire(
+                                    '탈퇴 완료',
+                                    '탈퇴 처리가 완료되었습니다.',
+                                    'success'
+                                );
+                            },
+                            error: function (xhr, status, error) {
+                                // 요청 실패 시 처리 로직
+                                Swal.fire(
+                                    '오류',
+                                    '오류가 발생했습니다. 다시 시도해주세요.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+
+        $(document).ready(function () {
+            var page = 0; // 페이지 번호 초기화
+
+            var isLoading = false; // 현재 로딩 중인지 여부를 추적하는 플래그
+            var isLastPage = false; // 마지막 페이지인지 확인하는 플래그
+
+            $(document).on('submit', '.studyStatus', function (e) {
+                console.log('함수 호출 성공');
+                e.preventDefault(); // 폼 기본 제출 방지
+                page = 0; // 페이지 번호를 0으로 초기화
+                var currentForm = $(this).closest('form'); // 클릭된 버튼을 포함하는 가장 가까운 폼을 찾음
+                var studyNo = currentForm.find("input[name='studyNo']").val(); // 해당 폼의 studyNo를 가져옴
+                console.log(studyNo);
+                isLoading = false;
+                isLastPage = false; // 마지막 페이지 플래그 초기화
+                $('.modal-body').empty(); // 모달 내용 초기화
+                $('.modal-content').scrollTop(0);
+                loadMembers(studyNo); // 멤버 로딩 함수 호출
+            });
+
+            function loadMembers(studyNo) {
+                if (isLoading || isLastPage) return; // 로딩 중이거나 마지막 페이지라면 요청하지 않음
+
+                isLoading = true; // 로딩 상태로 변경
+                var actionUrl = '/member/studyManagement'; // 폼 액션 URL
+                console.log(actionUrl);
+
+                // AJAX 요청
+                $.ajax({
+                    url: actionUrl + '?page=' + page + '&studyNo=' + studyNo, // 페이지 번호를 쿼리 파라미터로 추가
+                    type: 'get',
+                    success: function (response) {
+                        console.log(response.totalPages);
+                        if (response.content.length === 0 && response.totalPages != 0) {
+                            isLastPage = true; // 더 이상 로드할 페이지가 없음
+                        } else if (response.totalPages === 0) {
+                            console.log('신청이 없음');
+                            Swal.fire(
+                                '스터디 신청',
+                                '신청이 없습니다.',
+                                'error'
+                            );
+                        } else {
+                            page++; // 페이지 번호 증가
+                            // JSON 결과를 바탕으로 내용 추가
+                            $.each(response.content, function (index, item) {
+                                var defaultPhotoUrl = '/img/user2-160x160.jpg'; // 기본 사진 URL
+                                console.log(item.memberPhoto)
+                                var photoUrl = item.memberPhoto ? 'https://kr.object.ncloudstorage.com/mos/member/'+ item.memberPhoto : defaultPhotoUrl;
+
+                                var photo = $('<img>').attr('src', photoUrl).css({
+                                    'width': '100px',
+                                    'height': '100px',
+                                    'margin-right': '20px' // 사진 오른쪽에 간격 추가
+                                });
+
+                                var memberName = $('<div>').text(item.memberName).css({
+                                    'font-weight': 'bold',
+                                    'margin-bottom': '10px' // 이름 아래 간격 추가
+                                });
+
+                                var message = item.message ? $('<div>').text(item.message) : $('<div>').text("한 줄 소개가 없습니다.");
+
+                                var messageContainer = $('<div>').css({
+                                    'text-align': 'center',
+                                    'flex': '1'
+                                }).append(memberName).append(message);
+
+                                // '승인' 버튼 생성 및 이벤트 핸들러 설정
+                                var acceptBtn = $('<button>')
+                                    .addClass('btn btn-primary m-2')
+                                    .text('승인')
+                                    .click(function () {
+                                    updateMemberStatus('S03-102', item);
+                                });
+
+                                // '거절' 버튼 생성 및 이벤트 핸들러 설정
+                                var refuseBtn = $('<button>')
+                                    .addClass('btn btn-warning m-2')
+                                    .text('거절')
+                                    .click(function () {
+                                    updateMemberStatus('S03-105', item);
+                                });
+
+                                var buttonContainer = $('<div>').css({
+                                    'display': 'flex',
+                                    'flex-direction': 'column',
+                                    'align-items': 'center'
+                                }).append(acceptBtn).append(refuseBtn);
+
+                                var contentWrapper = $('<div>').css({
+                                    'display': 'flex',
+                                    'align-items': 'center',
+                                    'margin-bottom': '20px' // 각 항목 아래 간격 추가
+                                });
+
+                                contentWrapper.append(photo).append(messageContainer).append(buttonContainer);
+
+                                $('.modal-body').append(contentWrapper); // 모달에 내용 추가
+                            });
+                            $('#jsonResultModal').modal('show'); // 모달 표시
+                        }
+                    }
+                });
+            }
+            function updateMemberStatus(message, item) {
+                $.ajax({
+                    url: '/member/updateStatus', // 실제 서버 엔드포인트로 변경
+                    type: 'PATCH',
+                    contentType: 'application/json',
+                    data: JSON.stringify({id: item.id, message: message}), // 올바른 형태로 데이터 전송
+                    success: function(response) {
+                        console.log('Success:', response);
+                        location.reload(true);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+
+            // 스크롤 이벤트 처리
+            $('.modal-content').scroll(function () {
+                // 모달 내부에서 현재 스크롤 위치 + 모달 창의 높이가 모달 내용의 전체 높이보다 크거나 같을 때
+                if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight - 10) {
+                    loadMembers(); // 추가 멤버 로드 함수 호출
+                }
+            });
+
+        });
+    </script>
+
+
+    <!--<div data-th-replace="member/mystudy-view :: modal(${memberStudyList})"></div>-->
+    <script data-th-inline="javascript">
+
+        function toggleFavorite(icon) {
+            // 아이콘의 부모 요소인 td를 찾아서 해당 요소에 filled 클래스를 토글하여 색이 채워지도록 함
+            var td = icon;
+            var isFavorite = td.classList.toggle('filled');
+
+            // 즐겨찾기 상태를 서버에 업데이트하는 로직
+            var memberNo = [[${session.loginUser.memberNo}]]; // 회원 번호
+            var tr = td.parentNode; // 아이콘의 부모 tr 요소
+            var studyNo = tr.getAttribute("data-studyNo"); // tr 요소에서 data-studyNo 속성 값 가져오기
+
+            console.log("스터디번호: " + studyNo);
+
+            $.ajax({
+                url: '/member/addFavorites',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({memberNo: memberNo, studyNo: studyNo, favorites: isFavorite}),
+                success: function (response) {
+                    if (response) {
+                        console.log('즐겨찾기 상태 업데이트 성공');
+                        $('#favoriteTd').addClass('filled');
+                    }
+                },
+                error: function (error) {
+                    console.error('즐겨찾기 상태 업데이트 실패:', error);
+                }
+            });
+
+
+        }
+    </script>
+
+
+</div>
+<div data-th-replace="footer :: footer">꼬리말</div>

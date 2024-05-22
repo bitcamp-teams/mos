@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mos.domain.wiki.repository.WikiRepository">
+
+  <select id="listByStudyNo" parameterType="int" resultType="WikiDto">
+    SELECT wiki_no, title, ordr, layer, layer_ordr
+    FROM wiki
+    WHERE study_no = #{studyNo}
+    ORDER BY ordr;
+  </select>
+
+  <select id="listByWikiNo" resultType="WikiDto">
+    SELECT wiki_no, study_no, title, content, likes, hit_count
+    FROM wiki
+    ORDER BY wiki_no DESC
+    LIMIT #{offset}, #{pageSize};
+  </select>
+
+  <select id="wikiCount">
+    SELECT count(*)
+    FROM wiki;
+  </select>
+
+  <select id="getByWikiNo" parameterType="int" resultType="WikiDto">
+    SELECT
+      wiki_no, study_no, title, wiki.member_no, username, content_created_date, content_updated_date, content, hit_count, likes
+    FROM wiki
+    JOIN member ON wiki.member_no = member.member_no
+    WHERE wiki_no = #{wikiNo};
+  </select>
+
+  <update id="updateWiki" parameterType="WikiDto">
+    UPDATE
+      wiki
+    SET
+      title=#{title},
+      content=#{content}
+    WHERE
+      wiki_no=#{wikiNo}
+  </update>
+
+  <!-- 조회수 증가 -->
+  <update id="updateHitCount" parameterType="int">
+    UPDATE
+      wiki
+    SET
+      hit_count = hit_count + 1
+    WHERE
+      wiki_no=#{wikiNo}
+  </update>
+
+  <delete id="deleteWiki" parameterType="int">
+    DELETE
+      FROM
+        wiki
+    WHERE
+      wiki_no=#{wikiNo}
+  </delete>
+
+  <insert id="add" parameterType="WikiDto">
+    INSERT INTO
+      wiki(wiki_no, study_no, member_no, title, content)
+    VALUES(#{wikiNo}, #{studyNo}, 1, #{title}, #{content});
+  </insert>
+
+  <select id="getFirstWiki" parameterType="int" resultType="_int">
+    SELECT wiki_no
+    FROM wiki
+    WHERE study_no = #{studyNo}
+    ORDER BY ordr ASC
+    LIMIT 1;
+  </select>
+
+  <select id="findWikiNoByStudyNo" resultType="Integer">
+    SELECT wiki_no
+    FROM wiki
+    WHERE study_no = #{studyNo}
+  </select>
+
+  <!-- 좋아요 수 증가 -->
+  <update id="updateLikeCount" parameterType="int">
+    UPDATE wiki
+    SET likes = #{likes}
+    WHERE wiki_no = #{wikiNo}
+  </update>
+
+</mapper>

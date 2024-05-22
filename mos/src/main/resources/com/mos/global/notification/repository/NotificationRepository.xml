@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mos.global.notification.repository.NotificationRepository">
+
+
+  <insert id="save" parameterType="NotifyDto">
+    INSERT INTO notification(member_no, message, link)
+    SELECT member_no, #{message}, #{link}
+    FROM member
+    WHERE member_no = #{recipientId};
+  </insert>
+
+  <select id="findAllByMemberIdAndUnread" parameterType="NotifyDto" resultType="NotificationDto">
+    SELECT noti_no, member_no, message, link
+    FROM notification n
+    where n.member_no = #{recipientId} AND read_or_not = 'N'
+    order by created_date
+  </select>
+
+  <select id="findById" parameterType="int" resultType="NotificationDto">
+    SELECT noti_no, member_no, message, link
+    FROM notification
+    where noti_no = #{no}
+  </select>
+
+
+  <update id="updateReadById" parameterType="int">
+    UPDATE notification SET read_or_not = 'Y' WHERE noti_no = #{id}
+  </update>
+
+  <update id="updateNotificationRead" parameterType="int">
+    UPDATE notification SET read_or_not = 'Y' WHERE member_no = #{id}
+  </update>
+</mapper>

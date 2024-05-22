@@ -1,0 +1,51 @@
+/*
+/wiki/edit 템플릿을 위한 css
+*/
+
+/*toastr을 위한 css*/
+#status {
+  margin-top: 10px;
+}
+
+/*디자인*/
+.main {
+  position: relative;
+}
+
+.tree-btn-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.tree-btn {
+  flex: 0 0 50%;
+  max-width: 50%;
+  /*margin: 3px;*/
+}
+
+.sidebar-left {
+  overflow-x: auto;
+  overflow-y: auto;
+  position: sticky !important;
+  top: 30px;
+  height: 90vh; /* 뷰포트 전체 높이 */
+}
+
+.sidebar-left {
+  left: 0;
+  width: 20vw;
+}
+
+/*resize하도록 만든 왼쪽 네비게이션에 핸들 디자인을 커스텀함*/
+.ui-resizable-e {
+  width: 15px !important; /* 핸들의 너비 */
+  height: 100%; /* 핸들의 높이 */
+  cursor: ew-resize; /* 커서 모양 */
+  background-color: #e5e5f7;
+  opacity: 0.8;
+}
+
+#footer {
+  display: none;
+}

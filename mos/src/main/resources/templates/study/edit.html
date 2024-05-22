@@ -1,0 +1,244 @@
+<style>
+  .field-error {
+    border-color: red;
+    color: red;
+  }
+</style>
+
+<div data-th-replace="header::header">머리말</div>
+<div class="page-margin wrapper-mos">
+  <div class="py-5 text-center">
+    <h2>모집 글 편집</h2>
+    <hr class="my-4">
+  </div>
+
+<div th:if="${authorized}" class="container-fluid">
+  <div data-th-object="${study}">
+    <form id="studyInfo" action="update" data-th-action="@{/study/update}" method='post'>
+        <!--POST 방식이라 Hidden Field 방식으로 studyNo 전달함-->
+        <input name="studyNo" th:field="*{studyNo}" type="hidden">
+        <!-- Flex Container 시작 -->
+        <div style="display: flex; gap: 20px;">
+          <div style="flex-basis: 50%">
+            <label> 스터디 제목을 입력해주세요!</label>
+            <input data-th-field="*{title}" type="text" class="form-control" data-th-errorclass="field-error">
+            <div class="field-error" data-th-errors="*{title}">제목 오류</div>
+          </div>
+
+          <div style="flex-basis: 50%"><div>
+            <label>스터디 방식을 선택해주세요!</label></div>
+            <div class="form-check-inline">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{method}" id="inlineRadio1" value="온라인" th:checked="true">
+                <label class="form-check-label" for="inlineRadio1">온라인</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{method}" id="inlineRadio2" value="오프라인">
+                <label class="form-check-label" for="inlineRadio2">오프라인</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{method}" id="inlineRadio3" value="자유방식">
+                <label class="form-check-label" for="inlineRadio3">자유방식</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4">
+
+        <!-- Flex Container 시작 -->
+        <div style="display: flex; gap: 20px;">
+          <div style="flex-basis: 50%">
+            <div><label> 모집 인원수를 설정해주세요!</label></div>
+            <input data-th-field="*{intake}" type="number" th:value="5" class="form-control" data-th-errorclass="field-error">
+            <div class="field-error" data-th-errors="*{intake}">인원 수 에러</div>
+          </div>
+          <div style="flex-basis: 50%">
+            <div><label>언제까지 모집하시겠어요?</label></div>
+            <input th:field="*{recruitmentDeadline}" type="date">
+          </div>
+        </div>
+        <hr class="my-4">
+
+        <!-- Flex Container 시작 -->
+        <div style="display: flex; gap: 20px;">
+          <div style="flex-basis: 50%">
+            <label>스터디 진행 기간을 설정해 주세요!</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                  </span>
+              </div>
+              <input type="text" class="form-control float-right" id="period">
+              <input type="hidden" id="startDate" th:field="*{startDate}">
+              <input type="hidden" id="endDate" th:field="*{endDate}">
+            </div>
+          </div>
+          <br>
+          <div style="flex-basis: 50%">
+            <div><label>태그들을 선택하세요!</label></div>
+            <div data-th-each="tag : ${tagList}" data-th-object="${tag}" class="form-check form-check-inline">
+              <label>
+              <input type="checkbox"
+                     data-th-checkbox="true"
+                     data-th-value="*{tagNo}"
+                     name="tags"
+                     class="form-check-input"
+                     th:checked="${#lists.contains(studyTags, tag.tagNo)}">
+              <span data-th-text="*{name}"></span>
+              </label>
+            </div>
+            <div data-th-if="${#fields.hasGlobalErrors()}">
+              <p class="field-error" data-th-text="${#fields.globalErrors()}">태그 에러</p>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4">
+
+      <!--      <p> 예상종료일 = <input name="endDate" th:value="*{endDate}" type="date"></p>-->
+      <!--      <p> 소개 = <input name="introduction" th:value="*{introduction}" type="text"></p>-->
+      <div class="field-error" th:errors="*{introduction}">content 오류</div>
+      <div id="editor"></div>
+      <!--      <input type="hidden" name="introduction" th:attr="introduction=*{introduction}"-->
+      <!--             id="editor-content" value="소개">-->
+      <input type="hidden" name="introduction" th:value="*{introduction}"
+             id="editor-content">
+
+        <div class="py-5 text-center">
+          <button type="submit" class="btn btn-primary">등록</button>
+        </div>
+
+      </form>
+
+    <script data-th-inline="javascript">
+      var content = document.getElementById('editor-content').value;
+      console.log(content); // This should log the value of the introduction field
+      const {Editor} = toastui;
+      const {codeSyntaxHighlight} = Editor.plugin;
+      const studyNo = /*[[${study.studyNo}]]*/'';
+
+      //Date range picker
+      $('#period').daterangepicker({
+        "locale": {
+          "format": "YYYY-MM-DD",
+          "separator": " ~ ",
+          "applyLabel": "확인",
+          "cancelLabel": "취소",
+          "fromLabel": "From",
+          "toLabel": "To",
+          "customRangeLabel": "Custom",
+          "weekLabel": "W",
+          "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
+          "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+        },
+        "startDate": $('#startDate').val(),
+        "endDate": $('#endDate').val(),
+        "drops": "auto"
+      }, function (start, end, label) {
+        console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+        $('input[id="startDate"]').val(start.format("YYYY-MM-DD"));
+        $('input[id="endDate"]').val(end.format("YYYY-MM-DD"));
+      });
+
+      const editor = new toastui.Editor({
+        el: document.querySelector('#editor'), // 에디터를 적용할 요소 (컨테이너)
+        height: '500px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+        initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
+        initialValue: content,
+        // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
+        previewStyle: 'vertical',               // 마크다운 프리뷰 스타일 (tab || vertical)
+        placeholder: '내용을 입력해 주세요.',
+        /* start of hooks */
+        hooks: {
+          async addImageBlobHook(blob, callback) { // 이미지 업로드 로직 커스텀
+            try {
+              /*
+               * 1. 에디터에 업로드한 이미지를 FormData 객체에 저장
+               *    (이때, 컨트롤러 uploadEditorImage 메서드의 파라미터인 'image'와 formData에 append 하는 key('image')값은 동일해야 함)
+               */
+              const formData = new FormData();
+              formData.append('files', blob);
+
+              // 2. FileApiController - uploadEditorImage 메서드 호출
+              const response = await fetch('/storage/file/upload', {
+                method: 'POST',
+                body: formData,
+              });
+
+              // 3. 컨트롤러에서 전달받은 디스크에 저장된 파일명
+              const filename = await response.text();
+              const jsonResponse = JSON.parse(filename);
+              const filePath = jsonResponse[0].filePath;
+              console.log('서버에 저장된 파일명 : ', filename);
+
+              // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
+              const imageUrl = `https://kr.object.ncloudstorage.com/mos/study/${filePath}`;
+              callback(imageUrl, 'image alt attribute');
+
+            } catch (error) {
+              console.error('업로드 실패 : ', error);
+            }
+          }
+        }
+        /* end of hooks */
+      });
+
+      const form = document.getElementById('studyInfo');
+      const editorContent = document.getElementById('editor-content');
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const editorText = editor.getMarkdown(); // editor에서 마크다운 형식의 텍스트를 가져옵니다.
+        document.getElementById('editor-content').value = editorText; // editor의 내용을 editor-content 요소의 value로 설정합니다.
+
+        const formData = new FormData(form); // FormData 객체를 생성하고 form의 데이터를 추가합니다.
+        formData.append('editor-content', editorText); // editor에서 가져온 텍스트를 FormData에 추가합니다.
+        formData.append('startDate', $('input[id="startDate"]').val());
+        formData.append('endDate', $('input[id="endDate"]').val());
+
+        $.ajax({
+          method: 'POST',
+          url: '/study/update',
+          data: formData, // AJAX 요청에 form 데이터를 포함시킵니다.
+          processData: false, // jQuery가 데이터를 처리하지 않도록 설정합니다.
+          contentType: false, // 기본값인 application/x-www-form-urlencoded 대신 FormData의 타입을 사용하도록 설정합니다.
+          success: function () {
+            Swal.fire({
+              title: '스터디 모집글 수정이 완료 되었습니다!',
+              text: '스터디원들의 신청을 조금만 기다려주세요.',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.href = '/study/view?studyNo='+ studyNo;
+              }
+            });
+
+          },
+          error: function(xhr) {
+            if (xhr.status === 400) {
+              var errorMessages = xhr.responseJSON; // This should be an array of error messages
+              var errorText = errorMessages.join('<br>'); // Join error messages with newlines
+
+              Swal.fire({
+                icon: 'error',
+                title: '모집글 수정에 실패했습니다.',
+                html: errorText,
+                showConfirmButton: true
+              });
+            }
+          }
+        });
+      });
+    </script>
+
+
+  </div>
+</div>
+<div th:unless="${authorized}" class="page-margin wrapper-mos">
+  편집은 팀원들만 가능해요!!
+</div>
+
+</div>
+
+<div data-th-replace="footer::footer">꼬리말</div>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mos.domain.wiki.repository.WikiLikeStatRepository">
+
+  <resultMap id="wikiLikes" type="WikiLikeStatDto">
+    <id column="wiki_like_stat_no" property="wikiLikeStatNo"/>
+    <result column="member_no" property="memberNo"/>
+    <result column="wiki_no" property="wikiNo"/>
+  </resultMap>
+
+  <insert id="like" parameterType="WikiLikeStatDto">
+    INSERT INTO
+    wiki_like_stat(member_no,wiki_no)
+    VALUES(#{memberNo}, #{wikiNo})
+  </insert>
+
+
+  <delete id="unlike" parameterType="WikiLikeStatDto">
+    DELETE FROM
+    wiki_like_stat
+    WHERE
+    member_no = #{memberNo} AND wiki_no = #{wikiNo}
+  </delete>
+
+  <select id="checked" parameterType="WikiLikeStatDto" resultType="int">
+    select count(*) from wiki_like_stat where member_no=#{memberNo} AND wiki_no=#{wikiNo}
+  </select>
+
+  <select id="countLikesByWikiNo" parameterType="int" resultType="int">
+    SELECT COUNT(*)
+    FROM wiki_like_stat
+    WHERE wiki_no = #{wikiNo}
+  </select>
+
+
+
+</mapper>

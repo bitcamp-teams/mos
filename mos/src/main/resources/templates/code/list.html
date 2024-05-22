@@ -1,22 +1,6 @@
-<!doctype html>
-<html lang="en" data-th-fragment="codeList">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>admin | 공통코드</title>
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-</head>
 <div data-th-replace="admin/header :: header"></div>
 <div data-th-replace="admin/main-sidebar :: mainSideBar"></div>
-<body class="hold-transition sidebar-mini">
+<!--<body class="hold-transition sidebar-mini">-->
 <div class="wrapper">
 
     <!-- Content Wrapper. Contains page content -->
@@ -62,16 +46,6 @@
                                         <th>수정일</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr data-th-each="board : ${list}" data-th-object="${board}">
-                                        <td data-th-text="*{no}"></td>
-                                        <td><a data-th-href='@{view(category=${category},no=*{no})}'
-                                               data-th-text="*{title}"></a></td>
-                                        <td data-th-text="*{writer.name}"></td>
-                                        <td data-th-text="${#dates.format(board.createdDate,'yyyy-MM-dd')}"></td>
-                                        <td data-th-text="*{fileCount}"></td>
-                                    <tr>
-                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->
@@ -91,41 +65,80 @@
 <!-- ./wrapper -->
 
 
-<!-- DataTables  & Plugins -->
-<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="/plugins/jszip/jszip.min.js"></script>
-<script src="/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<!-- Page specific script -->
-<script>
-    $(function () {
-        codeList()
+<div class="modal" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+        <form id="addFrm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">코드추가</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card card-default">
+                        <div class="card-body">
 
-        $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-        });
-    });
-</script>
-</body>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>코드그룹</label>
+                                        <select name="codeGroup.codeGroup" class="form-control select2bs4 js-example-data-array"
+                                                style="width: 100%;">
+                                        </select>
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <div class="form-group">
+                                        <label for="codeGroupInput">코드그룹명</label>
+                                        <input name="codeGroup.codeGroupName" type="text" class="form-control form-control-border border-width-2"
+                                               id="codeGroupInput" placeholder="ex) 스터디 진행 방식">
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="codeGroupNameInput">모듈명</label>
+                                        <input name="codeGroup.moduleCode" type="text" class="form-control form-control-border border-width-2"
+                                               id="codeGroupNameInput" placeholder="ex) MEMBER">
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="code">코드</label>
+                                        <input name="code" type="text" class="form-control form-control-border border-width-2"
+                                               id="code" placeholder="ex) S01-101">
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="codeName">코드명</label>
+                                        <input name="codeName" type="text" class="form-control form-control-border border-width-2"
+                                               id="codeName" placeholder="ex) 신고">
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    <button type="submit" class="btn btn-primary">추가하기</button>
+                </div>
+            </div>
+        </form>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
 <div data-th-replace="admin/footer :: footer"></div>
-</html>
-
-

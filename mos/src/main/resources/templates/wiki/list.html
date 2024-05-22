@@ -1,0 +1,18 @@
+<link href="/css/wiki/indentation.css" rel="stylesheet">
+
+<div th:replace="header::header">머리말</div>
+
+<div class="page-margin wrapper-mos">
+    <h1>위키 리스트 확인</h1>
+    <a href="javascript:history.back()">뒤로 가기</a>&nbsp;
+    <a data-th-href="@{/wiki/form(studyNo=${studyNo})}" href="/wiki/form.html">작성하기</a>
+    <ul>
+        <li th:class="'indent-' + ${wiki.layer}" th:each="wiki : ${wikis}">
+            <a href="wiki/viewWiki"
+               th:href="@{/wiki/viewWiki(wikiNo=*{wiki.wikiNo})}">
+                <span th:text="${wiki.title}">리스트</span></a>
+        </li>
+    </ul>
+
+</div>
+<div th:replace="footer::footer">꼬리말</div>

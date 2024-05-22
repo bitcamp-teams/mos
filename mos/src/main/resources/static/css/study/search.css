@@ -1,0 +1,34 @@
+.content-container {
+        display: flex;
+        flex-direction: column;
+        /*align-items: flex-start; !* 내부 요소를 왼쪽 정렬 *!*/
+        padding: 20px; /* 컨테이너 주변 여백 */
+    }
+
+    #searchForm {
+        align-self: flex-end; /* 검색창을 오른쪽에 배치 */
+        margin-bottom: 20px; /* 검색창 아래 여백 */
+    }
+
+    .search-container {
+        display: flex;
+        justify-content: flex-start; /* 내부 요소를 왼쪽 정렬 */
+        align-items: center; /* 내부 요소를 수직 중앙 정렬 */
+        gap: 10px; /* 각 요소 사이의 간격 조정 */
+    }
+
+    .search-container label {
+        white-space: nowrap; /* 라벨 텍스트가 넘치지 않도록 줄바꿈 방지 */
+    }
+
+    #type {
+        width: 160px;
+    }
+
+    #keyword {
+        flex: 1; /* 입력 필드가 가능한 최대 너비를 가질 수 있도록 설정 */
+    }
+
+    button[type="submit"] {
+        min-width: 80px; /* 최소 너비 설정 */
+    }

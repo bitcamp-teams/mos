@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mos.domain.comment.repository.CommentRepository">
+
+  <resultMap id="StudyCommentDtoList" type="StudyCommentDto">
+    <id column="comment_no" property="commentNo"/>
+    <result column="study_no" property="studyNo"/>
+    <result column="content" property="content"/>
+    <result column="created_date" property="createdDate"/>
+    <result column="parent_comment_no" property="parentCommentNo"/>
+    <result column="layer" property="layer"/>
+    <result column="stat" property="stat"/>
+  </resultMap>
+
+  <select id="findAllStudyComments" resultMap="StudyCommentDtoList">
+    SELECT study_no, comment_no, study_comment.member_no, study_comment.stat, username, content, study_comment.created_date, parent_comment_no, layer
+    FROM study_comment
+    JOIN member ON study_comment.member_no = member.member_no
+    WHERE study_no = #{studyNo}
+    ORDER BY parent_comment_no ASC, layer ASC, comment_no ASC
+  </select>
+
+  <!--부모가 되는 댓글이 없는, 게시글에 직접 댓글을 다는 경우-->
+  <insert id="addStudyComment" parameterType="StudyDto" useGeneratedKeys="true">
+    INSERT INTO
+      study_comment(member_no, study_no, content)
+    VALUES
+      (#{memberNo}, #{studyNo}, #{content})
+  </insert>
+
+  <update id="deleteStudyComment" parameterType="int">
+    UPDATE
+      study_comment
+    SET
+      content = "삭제되었습니다.",
+      stat = "삭제"
+    WHERE
+      comment_no = #{commentNo}
+  </update>
+
+<!--  스터디 댓글 변경 기능을 위한 매퍼 추가  -->
+
+
+<!--  위키 댓글을 위한 매퍼  -->
+
+  <resultMap id="WikiCommentDtoList" type="WikiCommentDto">
+    <id column="comment_no" property="commentNo"/>
+    <result column="wiki_no" property="wikiNo"/>
+    <result column="content" property="content"/>
+    <result column="created_date" property="createdDate"/>
+    <result column="parent_comment_no" property="parentCommentNo"/>
+    <result column="layer" property="layer"/>
+    <result column="stat" property="stat"/>
+  </resultMap>
+
+  <select id="findAllWikiComments" resultMap="WikiCommentDtoList">
+    SELECT wiki_no, comment_no, wiki_comment.member_no, wiki_comment.stat, username, content, wiki_comment.created_date, parent_comment_no, layer
+    FROM wiki_comment
+    JOIN member ON wiki_comment.member_no = member.member_no
+    WHERE wiki_no = #{wikiNo}
+    ORDER BY parent_comment_no ASC, layer ASC, comment_no ASC
+  </select>
+
+  <!--부모가 되는 댓글이 없는, 게시글에 직접 댓글을 다는 경우-->
+  <insert id="addWikiComment" parameterType="WikiDto" useGeneratedKeys="true">
+    INSERT INTO
+      wiki_comment(member_no, wiki_no, content)
+    VALUES
+      (#{memberNo}, #{wikiNo}, #{content})
+  </insert>
+
+  <update id="deleteWikiComment" parameterType="int">
+    UPDATE
+      wiki_comment
+    SET
+      content = "삭제되었습니다.",
+      stat = "삭제"
+    WHERE
+      comment_no = #{commentNo}
+  </update>
+
+</mapper>

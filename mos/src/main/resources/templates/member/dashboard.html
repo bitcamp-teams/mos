@@ -1,0 +1,33 @@
+<div data-th-replace="header :: header">머리말</div>
+<div class="wrapper-mos">
+  <div data-th-replace="mypage-sidenav :: sidenav">사이드네비</div>
+  <div id="dashboard" class="dashboard-form-container" data-th-object="${member}">
+    <div id="profile">
+      <div class="rounded">
+        <a data-th-href="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}}"
+           data-th-if="*{photo}">
+          <img class="rounded-circle"
+               data-th-src="@{'https://kr.object.ncloudstorage.com/mos/member/' + *{photo}}"></a><br>
+        <a data-th-unless="*{photo}" href='/img/user2-160x160.jpg'>
+          <img class="rounded-circle" height='80px' src='/img/user2-160x160.jpg'></a><br>
+      </div>
+      <div id="profile-2">
+        <div class="txt">
+          <div>Email:</div>
+          <p data-th-text='*{email}'> user1@test.com</p>
+        </div>
+        <div class="txt">
+          <div>닉네임:</div>
+          <p data-th-text='*{userName}'> 홍길동 </p>
+        </div>
+      </div>
+    </div>
+    <div class="card custom-card bg-light mb-3">
+      <div class="card-header">자기소개</div>
+      <div class="card-body">
+        <p class="card-text" data-th-text='*{biography}'>개발자 3년차입니다..</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div data-th-replace="footer :: footer">꼬리말</div>

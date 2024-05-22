@@ -1,49 +1,28 @@
 package com.mos.domain.member.dto;
 
-public class MemberJoinDto {
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+
+@Data
+public class MemberJoinDto implements Serializable {
+    private int memberNo;
+    @Email @NotBlank
     private String email;
+    @NotBlank
+    @Size(min = 3)
+    @JsonAlias({"userName", "name"})
     private String name;
     private String belong;
     private String career;
     private String jobGroup;
+    private String platform;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getBelong() {
-        return belong;
-    }
-
-    public void setBelong(String belong) {
-        this.belong = belong;
-    }
-
-    public String getCareer() {
-        return career;
-    }
-
-    public void setCareer(String career) {
-        this.career = career;
-    }
-
-    public String getJobGroup() {
-        return jobGroup;
-    }
-
-    public void setJobGroup(String jobGroup) {
-        this.jobGroup = jobGroup;
-    }
 }

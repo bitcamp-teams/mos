@@ -1,0 +1,136 @@
+textarea#applyMsg::placeholder {
+  color: #aaa; /* 회색 톤 */
+  font-style: italic; /* 기울임꼴 */
+}
+
+.card {
+  border: none;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.study-card-body {
+  padding: 30px;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.row {
+  margin-bottom: 30px;
+}
+
+.row .col-sm-6 {
+  padding-right: 30px;
+}
+
+.row .col-sm-6:last-child {
+  padding-right: 0;
+  padding-left: 30px;
+  border-left: 1px solid #eee;
+}
+
+.font-weight-bold {
+  color: #666;
+  font-weight: 600;
+}
+
+.ml-2 {
+  color: #333;
+  font-weight: normal;
+}
+
+.badge {
+  font-weight: normal;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+
+.like-container {
+  position: relative;
+  margin-top: 15px;
+}
+
+.like-icon {
+  font-size: 1.4rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.liked {
+  color: #ff69b4;
+}
+
+.like-count {
+  position: absolute;
+  top: -12px;
+  left: 12px;
+  background-color: #ff69b4;
+  color: #fff;
+  font-size: 0.6rem;
+  padding: 1px 4px;
+  border-radius: 50%;
+}
+
+.fa-heart {
+  /*cursor: pointer; !* make the icon clickable *!*/
+}
+
+.study-edit {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.study-three h1 {
+  font-size: 3em;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5em;
+  padding-bottom: 15px;
+  position: relative;
+  text-align: center;
+}
+
+.study-three h1:before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  height: 5px;
+  width: 55px;
+  background-color: #111;
+}
+
+.study-three h1:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 2px;
+  height: 1px;
+  width: 95%;
+  max-width: 255px;
+  background-color: #333;
+}
+
+
+#profile-image {
+  width: 100px;
+  height: 100px;
+  box-shadow: 1px 1px 4px 0px #808080;
+}
+
+#author {
+  margin-top: 10px;
+  font-size: 0.8em;
+  font-weight: bold;
+}

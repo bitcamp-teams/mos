@@ -1,0 +1,11 @@
+#footer {
+  background-color: #DEE2E6;
+  padding: 5px;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  height: 80px;
+  /*transform: translateY(-100%);*/
+}

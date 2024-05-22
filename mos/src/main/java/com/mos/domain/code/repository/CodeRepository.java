@@ -13,7 +13,7 @@ public interface CodeRepository {
 
   void addCodeGroup(CodeGroup codeGroup);
 
-  int delete(int no);
+  int delete(Code code);
 
   List<CodeGroup> findAllGroup(Paging paging);
   List<Code> findAllCode(Paging paging);
