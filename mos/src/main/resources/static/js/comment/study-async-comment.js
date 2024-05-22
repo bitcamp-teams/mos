@@ -154,6 +154,10 @@ function getComments() {
 
         // 대댓글 버튼 클릭 이벤트 처리
         replyButton.click(function () {
+          if (loginUser == null) {
+            Swal.fire('로그인하셔야 댓글을 달 수 있어요!');
+            return;
+          }
           // 버튼 감추기
           replyButton.css('display', 'none');
 
@@ -165,8 +169,10 @@ function getComments() {
           let replyTextarea = $('<textarea>').addClass('form-control mb-2');
           let replySubmitBtn = $('<button>').addClass(
               'btn btn-primary btn-sm').text('대댓글 작성');
+          let replyCancelBtn = $('<button>').addClass(
+              'btn btn-danger btn-sm').text('작성 취소').css('margin', '0 1rem');
 
-          replyForm.append(replyTextarea, replySubmitBtn);
+          replyForm.append(replyTextarea, replySubmitBtn, replyCancelBtn);
           commentElement.append(replyForm);
 
           // 대댓글 작성 버튼 클릭 이벤트 처리
@@ -196,6 +202,11 @@ function getComments() {
             // 대댓글 입력 폼 제거
             replyForm.remove();
           });
+
+          replyCancelBtn.on('click', function () {
+            replyButton.css('display', '');
+            replyForm.remove();
+          })
         });
 
       });
