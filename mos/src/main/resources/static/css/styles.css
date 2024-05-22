@@ -27,7 +27,6 @@ body {
 }
 
 
-
 .page-margin {
   margin-left: 5%;
   margin-right: 5%;
@@ -61,7 +60,7 @@ body {
   --spacer: calc(var(--card-count) - 1);
   --width: 20%;
   /*grid-template-columns: repeat(var(--card-count), minmax(calc((var(--width) - (32px * var(--spacer) / var(--card-count))) * 0.8), 1fr));*/
-  grid-template-columns: repeat(var(--card-count),calc(var(--width) - (32px * var(--spacer)/var(--card-count))))
+  grid-template-columns: repeat(var(--card-count), calc(var(--width) - (32px * var(--spacer) / var(--card-count))))
 }
 
 @media screen and (max-width: 1919px) {
@@ -73,21 +72,21 @@ body {
 
 @media screen and (max-width: 1440px) {
   .grid_homeGrid {
-    --card-count:3;
+    --card-count: 3;
     --width: 33.33%
   }
 }
 
 @media screen and (max-width: 1056px) {
   .grid_homeGrid {
-    --card-count:2;
+    --card-count: 2;
     --width: 50%
   }
 }
 
 @media screen and (max-width: 768px) {
   .grid_homeGrid {
-    grid-template-columns:repeat(1,100%);
+    grid-template-columns:repeat(1, 100%);
     grid-gap: 16px
   }
 }
@@ -146,6 +145,7 @@ body {
 
 .PostCard_content .PostCard_h4 {
   font-size: 1rem;
+  font-weight: bold;
   margin: 0 0 .25rem;
   line-height: 1.5;
   word-break: break-word;
@@ -166,19 +166,20 @@ body {
   display: -webkit-box;
   -webkit-line-clamp: 2; /* 라인수 */
   -webkit-box-orient: vertical;
-  word-wrap:break-word;
+  word-wrap: break-word;
   line-height: 1.2em;
   height: 3.9375rem;
 }
 
 .PostCard_content p.PostCard_clamp {
-  height: 3.9375rem;
+  height: 3.48rem;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-all;
+  color: #6f6f6f;
 }
 
 .PostCard_content__W3lPm p {
@@ -263,8 +264,12 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 .HomeTab_right_wiki {
