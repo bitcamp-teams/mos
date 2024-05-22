@@ -79,7 +79,7 @@
 
 .HomeTab_right {
   position: relative;
-  display: flex;
+  /*display: flex;*/
 }
 
 .HomeTab_right .HomeTab_selector {
