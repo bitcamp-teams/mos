@@ -21,3 +21,17 @@
 ![image](https://github.com/bitcamp-teams/mos/assets/150896440/f7d6bf44-8d14-4a0f-896a-d9f7870b6713)
 
 ![image](https://github.com/bitcamp-teams/mos/assets/150896440/30f7f394-ac95-41b3-830c-d76435625694)
+
+---
+
+## CI/CD
+<img width="1268" alt="image" src="https://github.com/bitcamp-teams/mos/assets/48509269/a9e46b70-d88d-4279-a6b7-c0eec238ccc0">
+
+---
+
+## 요청 흐름도
+<img width="1267" alt="image" src="https://github.com/bitcamp-teams/mos/assets/48509269/e05006b3-cd5a-467a-bf6c-a3c0f5b7d430">
+
+---
+
+## 
