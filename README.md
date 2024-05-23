@@ -25,13 +25,25 @@
 ---
 
 ## CI/CD
-<img width="1268" alt="image" src="https://github.com/bitcamp-teams/mos/assets/48509269/a9e46b70-d88d-4279-a6b7-c0eec238ccc0">
+
+![45](https://github.com/bitcamp-teams/mos/assets/48509269/abef67da-ec15-4bf5-9910-de293a327dde)
 
 ---
 
 ## 요청 흐름도
-<img width="1267" alt="image" src="https://github.com/bitcamp-teams/mos/assets/48509269/e05006b3-cd5a-467a-bf6c-a3c0f5b7d430">
+
+![46](https://github.com/bitcamp-teams/mos/assets/48509269/58583472-38b5-4684-881b-5161b242ac52)
 
 ---
 
-## 
+## DB 이중화
+
+![47](https://github.com/bitcamp-teams/mos/assets/48509269/1e5c194a-fad3-4fb6-b30e-6db9e246b39e)
+
+---
+
+## 실시간 알림
+
+![52](https://github.com/bitcamp-teams/mos/assets/48509269/ac9e340a-4329-4ba9-b389-56ce9d1d8b2c)
+
+
