@@ -106,7 +106,7 @@ public class WikiApiController {
   }
 
   @GetMapping("list")
-  public ResponseEntity<?> list(@PageableDefault(size = 20) Pageable page, String searchText) {
+  public ResponseEntity<?> list(@PageableDefault(size = 6) Pageable page, String searchText) {
     Page<WikiDto> list = wikiApiService.getList(page, searchText);
     return ResponseEntity.ok().body(list);
   }
