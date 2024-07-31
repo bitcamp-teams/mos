@@ -2,6 +2,62 @@
 
 # 모두의 스터디
 ---
+
+| [Full Presentation is Here](https://portfolio-joonhoekim.my.canva.site/videos/d3ee0dfc1c3c42c8645a9152f9338830.mp4) |
+|:-------------------------------------------:|
+
+<table align="center">
+  <caption>프로젝트 주요기능 데모</caption>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/a63c93ec-994c-43f3-8572-59b6e4f37e51" alt="모스 무한스크롤"><br>
+      무한스크롤 피드
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/469b8dc4-4f83-4bfe-916b-a3b02a39b08f" alt="반응형디자인"><br>
+      반응형 디자인
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/fb355ebb-30ac-45da-9feb-fc40d26d1538" alt="위키뷰어및에디터"><br>
+      위키 뷰어 및 에디터
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/8759b6a3-b2a0-44d2-8065-67a8c3d5a8b6" alt="이미지업로드"><br>
+      커스텀 훅을 적용한 이미지 업로드
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/40732808-d354-4627-b93a-e54b6a19ff18" alt="스터디 신청 수락"><br>
+      스터디 신청 수락
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/958f5c2a-2066-40fc-8c2d-c32d6813e965" alt="모스 스터디 참여"><br>
+      스터디 참여
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/6ff2b152-13c9-4236-a48d-e53e2b6fd9e5" alt="댓글기능"><br>
+      댓글 기능
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/f617bf01-0d07-481d-926f-093cdd350a4c" alt="실시간 알림"><br>
+      실시간 알림
+    </td>
+  </tr>
+</table>
+
 #### ◼ 프로젝트 개요
 스터디를 모집하고 함께 창작물을 산출해보는 서비스가 있다면 어떨까? 
 
