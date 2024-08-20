@@ -3,7 +3,7 @@
 # 모두의 스터디
 ---
 
-| [Full Presentation is Here](https://portfolio-joonhoekim.my.canva.site/) | [Canva](bit.ly/3XMcnnI) |
+| [Full Presentation is Here](https://portfolio-joonhoekim.my.canva.site/) | [Canva](https://bit.ly/3XMcnnI) |
 |:-------------------------------------------:|:-------------------------------------------:|
 
 <table align="center">
