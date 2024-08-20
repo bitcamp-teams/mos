@@ -3,8 +3,8 @@
 # 모두의 스터디
 ---
 
-| [Full Presentation is Here](https://portfolio-joonhoekim.my.canva.site/) |
-|:-------------------------------------------:|
+| [Full Presentation is Here](https://portfolio-joonhoekim.my.canva.site/) | [Canva](bit.ly/3XMcnnI) |
+|:-------------------------------------------:|:-------------------------------------------:|
 
 <table align="center">
   <caption>프로젝트 주요기능 데모</caption>
